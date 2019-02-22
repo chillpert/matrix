@@ -1,2 +1,0 @@
-INFO[17:4:20]: Application created
-INFO[17:4:21]: Application successfully initialized
