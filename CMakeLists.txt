@@ -10,8 +10,6 @@ include_directories(external/include)
 include_directories(framework/include)
 include_directories(application/include)
 link_directories(external/libs)
-#link_directories(build/bin/Matrix)
-#link_directories(build/bin/Sandbox)
 
 # Macros
 IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -27,10 +25,18 @@ IF (WIN32)
     ENDIF ()
 ENDIF ()
 
+IF (MSCV)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Yustdafx.h /FIstdafx.h")
+ENDIF ()
+
 # Files for library
 file(GLOB FILES_LIB
     "framework/include/*.h"
     "framework/source/*.cpp"
+    "framework/platform/*.h"
+    "framework/platform/*.cpp"
+    "framework/pch/*.h"
+    "framework/pch/*.cpp"
 )
 
 # Library 
@@ -82,6 +88,11 @@ set_target_properties(Sandbox
     ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "lib/minsizerel"
     LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "lib/minsizerel"
     RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "bin/minsizerel"   
+)
+
+set_source_files_properties(framework/pch/stdafx.cpp
+    PROPERTIES
+    COMPILE_FLAGS "/Ycstdafx.h"
 )
 
 

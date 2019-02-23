@@ -1,3 +1,5 @@
+/*
+
 #include "Matrix.h"
 
 void initialize() {
@@ -13,6 +15,10 @@ void update() {
 }
 
 int main() {
-    //Matrix::Application* app = &Matrix::Application::get();
-    //app->start(initialize, render, update);
+    // use singleton to get application reference
+    Matrix::Application* app = &Matrix::Application::get();
+    // start application and pass your functions
+    app->start(initialize, render, update);
 }
+
+*/
