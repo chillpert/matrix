@@ -1,6 +1,7 @@
 #ifdef PLATFORM_WINDOWS_X64
     #ifdef DEBUG
-        #include "Logger.h"
+        #include "matrix/src/Logger.h"
+        
         #include <fstream>
         #include <windows.h> 
         #include <ctime>
@@ -35,7 +36,7 @@
             void Logger::p_Fatal(std::string message) {
                 std::string t = getTime();
                 SetConsoleTextAttribute(hConsole, 12);
-                std::string finalMessage = "FATAL[" + t + "]: " + message + "\n";
+                std::string finalMessage = "FATAL  [" + t + "]: " + message + "\n";
                 std::cerr << finalMessage;
                 SetConsoleTextAttribute(hConsole, 7);
                 writeToFile(finalMessage);
@@ -53,7 +54,16 @@
             void Logger::p_Info(std::string message) {
                 std::string t = getTime();
                 SetConsoleTextAttribute(hConsole, 8);
-                std::string finalMessage = "INFO[" + t + "]: " + message + "\n";
+                std::string finalMessage = "INFO   [" + t + "]: " + message + "\n";
+                std::cerr << finalMessage;
+                SetConsoleTextAttribute(hConsole, 7);
+                writeToFile(finalMessage);
+            }
+
+            void Logger::p_Success(std::string message) {
+                std::string t = getTime();
+                SetConsoleTextAttribute(hConsole, 2);
+                std::string finalMessage = "SUCCESS[" + t + "]: " + message + "\n";
                 std::cerr << finalMessage;
                 SetConsoleTextAttribute(hConsole, 7);
                 writeToFile(finalMessage);

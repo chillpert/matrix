@@ -5,7 +5,7 @@
 #include <iostream>
 
 // project files
-#include "Logger.h"
-#include "Core.h"
+#include "matrix/src/Logger.h"
+#include "matrix/src/Core.h"
 
 #endif // STDAFX_H

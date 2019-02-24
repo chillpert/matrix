@@ -1,6 +1,6 @@
-#include "Shader.h"
-#include "Utils.h"
-#include "Logger.h"
+#include "matrix/src/Shader.h"
+#include "matrix/src/Utils.h"
+#include "matrix/src/Logger.h"
 
 #ifndef M_RESOURCE_PATH 
     #error Resource path is not defined

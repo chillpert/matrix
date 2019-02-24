@@ -1,0 +1,26 @@
+#ifndef API_H
+#define API_H
+
+#ifdef OPENGL_ACTIVE
+    #define API_TYPE new Matrix::API_OpenGL();
+#else
+    #error "Matrix Framework only supports OpenGL for now"
+#endif
+
+#include "matrix/src/Core.h"
+
+namespace Matrix {
+
+    class MATRIX_API API {
+    public:
+        API() {}
+        ~API() {}
+
+        virtual bool createContext() const { return false; };
+        virtual void render() const {};
+    protected:
+
+    };
+}
+
+#endif // API_H

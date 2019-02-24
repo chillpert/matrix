@@ -1,7 +1,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "Core.h"
+#include "matrix/src/Core.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
