@@ -4,7 +4,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#include "matrix/src/platform/API.h"
+#include "matrix/src/platform/api/API.h"
 #include "matrix/src/Core.h"
 
 namespace Matrix {

@@ -1,9 +1,13 @@
 #include "matrix/src/platform/window/WindowGLFW.h"
-#include "Matrix/src/Logger.h"
+#include "matrix/src/event/KeyboardEvent.h"
+#include "matrix/src/event/MouseEvent.h"
+#include "matrix/src/Logger.h"
 
 #ifdef GLFW_ACTIVE
 
     namespace Matrix {
+
+        static bool initialized = 0;
         
         bool WindowGLFW::createContext() {
             if (!glfwInit()) {
@@ -24,8 +28,10 @@
                     glfwSetCursorPosCallback(m_Window, mouse_callback);
                     glfwSetScrollCallback(m_Window, scroll_callback);
                     glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                    glfwSetKeyCallback(m_Window, key_callback);
                 
                     SUCCESS("GLFW context");
+                    initialized = 1;
                     return true;
                 }
             }
@@ -51,11 +57,6 @@
             glfwTerminate();
         }
     
-        void processInput(GLFWwindow *window) {
-            //if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {}
-               // Application::get().stop();
-        }
-    
         void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
             //glViewport(0, 0, width, height);
         }
@@ -65,8 +66,28 @@
         }
     
         void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-        
+            
         }
+
+        void error_callback(int error, const char* description) {
+            FATAL(description);
+        }
+
+        void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+            switch (action) {
+                case GLFW_PRESS: {
+                    KeyboardButtonPressed event(key);
+                    break;
+                }
+                case GLFW_RELEASE: {
+                    KeyboardButtonReleased event(key);
+                    break;
+                }
+                case GLFW_REPEAT: {
+                    break;
+                }    
+            }
+        }        
     }
 
 #endif

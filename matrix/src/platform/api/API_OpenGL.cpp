@@ -1,4 +1,4 @@
-#include "matrix/src/platform/API_OpenGL.h"
+#include "matrix/src/platform/api/API_OpenGL.h"
 #include "Matrix/src/Logger.h"
 
 #ifdef OPENGL_ACTIVE
@@ -12,7 +12,7 @@ namespace Matrix {
             FATAL("GLEW initialisation");
             return false;
         } else {
-            SUCCESS("OpenGL context created");
+            SUCCESS("OpenGL context");
             return true;
         }
     }

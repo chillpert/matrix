@@ -39,11 +39,14 @@ file(GLOB FILES_LIB
     "matrix/src/pch/*.h"
     "matrix/src/pch/*.cpp"
 
-    "matrix/src/platform/*.h"
-    "matrix/src/platform/*.cpp"
+    "matrix/src/platform/api/*.h"
+    "matrix/src/platform/api/*.cpp"
 
     "matrix/src/platform/window/*.h"
     "matrix/src/platform/window/*.cpp"
+
+    "matrix/src/event/*.h"
+    "matrix/src/event/*.cpp"
 
     "matrix/src/*.h"
     "matrix/src/*.cpp"
