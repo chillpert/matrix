@@ -50,6 +50,9 @@ file(GLOB FILES_LIB
 
     "matrix/src/*.h"
     "matrix/src/*.cpp"
+
+    "matrix/src/platform/api/renderer/*.h"
+    "matrix/src/platform/api/renderer/*.cpp"
 )
 
 # Library 

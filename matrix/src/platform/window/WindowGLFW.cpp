@@ -4,6 +4,11 @@
 #include "matrix/src/Logger.h"
 
 #ifdef GLFW_ACTIVE
+    #ifdef DEBUG
+        #define LOGEVENT event.printEventType();
+    #else
+        #define LOGEVENT
+    #endif
 
     namespace Matrix {
 
@@ -77,13 +82,18 @@
             switch (action) {
                 case GLFW_PRESS: {
                     KeyboardButtonPressed event(key);
+                    event.handle();
+                    LOGEVENT;
                     break;
                 }
                 case GLFW_RELEASE: {
                     KeyboardButtonReleased event(key);
+                    event.handle();
+                    LOGEVENT;
                     break;
                 }
                 case GLFW_REPEAT: {
+                    
                     break;
                 }    
             }

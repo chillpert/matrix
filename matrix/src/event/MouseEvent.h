@@ -1,11 +1,12 @@
 #ifndef MOUSEEVENT_H
 #define MOUSEEVENT_H
 
+#include "matrix/src/Core.h"
 #include "matrix/src/event/Event.h"
 
 namespace Matrix {
 
-    class MouseEvent : public Event {
+    class MATRIX_API MouseEvent : public Event {
     public:
         MouseEvent() {}
         ~MouseEvent() {}
@@ -18,7 +19,7 @@ namespace Matrix {
         EventType event = e_DefaultMouse;
     };
 
-    class MouseButtonPressed : public MouseEvent {
+    class MATRIX_API MouseButtonPressed : public MouseEvent {
     public:
         MouseButtonPressed(int button)
             : m_KeyCode(button) {}
@@ -30,7 +31,7 @@ namespace Matrix {
         int m_KeyCode;
     };
 
-    class MouseButtonReleased : public MouseEvent {
+    class MATRIX_API MouseButtonReleased : public MouseEvent {
     public:
         MouseButtonReleased(int button)
             : m_KeyCode(button) {}

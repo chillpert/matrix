@@ -1,6 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include "matrix/src/Core.h"
 #include "matrix/src/Logger.h"
 
 enum EventType {
@@ -12,12 +13,12 @@ enum EventType {
 
 namespace Matrix {
 
-    class Event {
+    class MATRIX_API Event {
     public:
         Event() {}
         ~Event() {}
 
-        virtual void handleEvent();
+        virtual void handle();
         virtual void printEventType() const;
     protected:
         EventType event = e_Default;
