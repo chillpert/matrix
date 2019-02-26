@@ -1,11 +1,6 @@
 #ifdef PLATFORM_WINDOWS_X64
     #ifdef DEBUG
-        #include "matrix/src/Logger.h"
-        
-        #include <fstream>
-        #include <windows.h> 
-        #include <ctime>
-        #include <iostream>
+        #include "matrix/src/pch/stdafx.h"
 
         namespace Matrix {
 

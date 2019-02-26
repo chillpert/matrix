@@ -1,7 +1,6 @@
 #include "matrix/src/platform/window/WindowGLFW.h"
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
-#include "matrix/src/Logger.h"
 
 #ifdef GLFW_ACTIVE
     #ifdef DEBUG
@@ -12,8 +11,6 @@
 
     namespace Matrix {
 
-        static bool initialized = 0;
-        
         bool WindowGLFW::createContext() {
             if (!glfwInit()) {
                 FATAL("GLFW initialisation");
@@ -36,7 +33,6 @@
                     glfwSetKeyCallback(m_Window, key_callback);
                 
                     SUCCESS("GLFW context");
-                    initialized = 1;
                     return true;
                 }
             }

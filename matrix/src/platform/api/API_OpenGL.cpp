@@ -1,5 +1,4 @@
 #include "matrix/src/platform/api/API_OpenGL.h"
-#include "Matrix/src/Logger.h"
 
 #ifdef OPENGL_ACTIVE
 

@@ -1,7 +1,5 @@
 #include "matrix/src/event/MouseEvent.h"
 
-#include <string>
-
 namespace Matrix {
 
     void MouseEvent::printEventType() const {

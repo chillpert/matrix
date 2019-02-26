@@ -7,12 +7,10 @@
     #error "Matrix Framework only supports GLFW for now"
 #endif
 
-#include "matrix/src/Core.h"
-
-#include <string>
+#include "matrix/src/pch/stdafx.h"
 
 namespace Matrix {
-    
+ 
     class MATRIX_API Window {
     public:
         Window() {}

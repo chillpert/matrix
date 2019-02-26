@@ -1,17 +1,11 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#define GLEW_STATIC
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include "matrix/src/Core.h"
+#include "matrix/src/pch/stdafx.h"
 #include "matrix/src/platform/window/Window.h"
 #include "matrix/src/platform/window/WindowGLFW.h"
 #include "matrix/src/platform/api/API.h"
 #include "matrix/src/platform/api/API_OpenGL.h"
-
-#include <string>
 
 namespace Matrix {
 

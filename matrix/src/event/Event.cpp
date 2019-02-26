@@ -1,5 +1,4 @@
 #include "matrix/src/event/Event.h"
-#include "matrix/src/Application.h"
 
 namespace Matrix {
 

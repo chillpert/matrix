@@ -1,5 +1,4 @@
 #include "matrix/src/Application.h"
-#include "matrix/src/Logger.h"
 
 namespace Matrix {
     

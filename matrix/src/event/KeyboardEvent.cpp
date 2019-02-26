@@ -1,7 +1,5 @@
 #include "matrix/src/event/KeyboardEvent.h"
-#include "matrix/src/platform/window/ControllerGLFW.h"
-
-#include <string>
+#include "matrix/src/platform/window/Controller.h"
 
 namespace Matrix {
 
@@ -15,7 +13,7 @@ namespace Matrix {
     }
 
     void KeyboardButtonPressed::handle() {
-        ControllerGLFW::get().handleKeyPressed(m_KeyCode);
+        Controller::get().handleKeyPressed(m_KeyCode);
     }
 
     void KeyboardButtonPressed::printEventType() const {
@@ -24,7 +22,7 @@ namespace Matrix {
     }
 
     void KeyboardButtonReleased::handle() {
-        ControllerGLFW::get().handleKeyReleased(m_KeyCode);
+        Controller::get().handleKeyReleased(m_KeyCode);
     }
 
     void KeyboardButtonReleased::printEventType() const {

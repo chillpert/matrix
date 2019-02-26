@@ -5,9 +5,10 @@
 #include "matrix/src/Application.h"
 #include "matrix/src/Logger.h"
 #include "matrix/src/platform/window/Window.h"
+#include "matrix/src/platform/window/Controller.h"
 
 // render
-#include "matrix/src/platform/api/renderer/Shader.h"
+#include "matrix/src/renderer/Shader.h"
 
 
 #endif // MATRIX_H

@@ -1,22 +1,22 @@
-#ifndef CONTROLLERGLFW_H
-#define CONTROLLERGLFW_H
+#ifndef CONTROLLER_H
+#define CONTROLLER_H
 
-#include "matrix/src/Core.h"
+#include "matrix/src/pch/stdafx.h"
 
 namespace Matrix {
     
-    class MATRIX_API ControllerGLFW {
+    class MATRIX_API Controller {
     public:
-        ~ControllerGLFW() {}
+        ~Controller() {}
 
-        static ControllerGLFW get();
+        static Controller get();
 
         void handleKeyPressed(int keyCode);
         void handleKeyReleased(int keyCode);
 
         void handleMouseMoved(int x, int y);
     private:
-        ControllerGLFW() {}
+        Controller() {}
         // last position of mouse
         int m_X;
         int m_Y;
@@ -27,4 +27,4 @@ namespace Matrix {
     };
 }
 
-#endif // CONTROLLERGLFW_H
+#endif // CONTROLLER_H

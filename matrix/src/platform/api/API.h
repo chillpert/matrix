@@ -7,7 +7,7 @@
     #error "Matrix Framework only supports OpenGL for now"
 #endif
 
-#include "matrix/src/Core.h"
+#include "matrix/src/pch/stdafx.h"
 
 namespace Matrix {
 

@@ -1,8 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include "matrix/src/Core.h"
-#include "matrix/src/Logger.h"
+#include "matrix/src/pch/stdafx.h"
 
 enum EventType {
     e_Default = 1, e_DefaultKeyboard = 2, e_DefaultMouse = 3,

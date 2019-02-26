@@ -1,7 +1,6 @@
 #ifndef MOUSEEVENT_H
 #define MOUSEEVENT_H
 
-#include "matrix/src/Core.h"
 #include "matrix/src/event/Event.h"
 
 namespace Matrix {

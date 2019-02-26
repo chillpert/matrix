@@ -17,11 +17,9 @@ IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(DEBUG)
 ENDIF ()
 
-add_compile_definitions(M_RESOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
-
-add_compile_definitions(GLFW_ACTIVE)
-
-add_compile_definitions(OPENGL_ACTIVE)
+IF (MSCV)
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Yustdafx.h /FIstdafx.h")
+ENDIF ()
 
 IF (WIN32)
     IF (CMAKE_CL_64)
@@ -30,9 +28,10 @@ IF (WIN32)
     ENDIF ()
 ENDIF ()
 
-IF (MSCV)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Yustdafx.h /FIstdafx.h")
-ENDIF ()
+add_compile_definitions(M_RESOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+add_compile_definitions(GLFW_ACTIVE)
+add_compile_definitions(OPENGL_ACTIVE)
+add_compile_definitions(GLFW_DEFAULT_CONTROLLER)
 
 # Files for library
 file(GLOB FILES_LIB
@@ -51,8 +50,8 @@ file(GLOB FILES_LIB
     "matrix/src/*.h"
     "matrix/src/*.cpp"
 
-    "matrix/src/platform/api/renderer/*.h"
-    "matrix/src/platform/api/renderer/*.cpp"
+    "matrix/src/renderer/*.h"
+    "matrix/src/renderer/*.cpp"
 )
 
 # Library 

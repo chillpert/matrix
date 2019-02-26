@@ -1,9 +1,6 @@
 #ifndef WINDOWGLFW_H
 #define WINDOWGLFW_H
 
-#include <GLFW/glfw3.h>
-
-#include "matrix/src/Core.h"
 #include "matrix/src/platform/window/Window.h"
 
 namespace Matrix {
