@@ -1,6 +1,10 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 
+#ifdef MX_PLATFORM_WINDOWS_X64
+    #include <windows.h> 
+#endif
+
 // external libraries
 #include "matrix/src/Utils.h"
 #include <GLFW/glfw3.h>
@@ -14,10 +18,6 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
-
-#ifdef MX_PLATFORM_WINDOWS_X64
-    #include <windows.h> 
-#endif
 
 // project files
 #include "matrix/src/Logger.h"

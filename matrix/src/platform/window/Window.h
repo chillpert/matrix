@@ -11,21 +11,23 @@
 
 namespace Matrix {
 
-    class MATRIX_API Window {
-    public:
-        Window() {}
-        ~Window() {}
-        
-        void setWidth(int width);
-        void setHeight(int height);
-        void setTitle(std::string title);
-        
-        virtual void update() const {};
-        virtual void render() const {};
+    
 
-        virtual bool createContext() { return false; }
-        virtual void resize() const {}
-        virtual void close() const {}
+    class Window {
+    public:
+        MATRIX_API Window() {}
+        MATRIX_API ~Window() {}
+        
+        MATRIX_API void setWidth(int width);
+        MATRIX_API void setHeight(int height);
+        MATRIX_API void setTitle(std::string title);
+        
+        MATRIX_API virtual void update() const {};
+        MATRIX_API virtual void render() const {};
+
+        MATRIX_API virtual bool createContext() { return false; }
+        MATRIX_API virtual void resize() const {}
+        MATRIX_API virtual void close() const {}
     
         int m_Width = 1200;
         int m_Height = 600;

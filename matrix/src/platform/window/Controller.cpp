@@ -42,9 +42,7 @@ namespace Matrix {
 
     void Controller::handleKeyReleased(int keyCode) {
         m_KeyReleased = keyCode;
-        switch (keyCode) {
-            
-        }
+        
     }
 
     void Controller::handleMouseMoved(int x, int y) {

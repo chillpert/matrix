@@ -5,19 +5,19 @@
 
 namespace Matrix {
 
-    class MATRIX_API WindowGLFW : public Window {
+    class WindowGLFW : public Window {
     public:
-        WindowGLFW() {}
-        ~WindowGLFW() {}
+        MATRIX_API WindowGLFW() {}
+        MATRIX_API ~WindowGLFW() {}
 
-        void update() const override; 
-        void render() const override; 
+        MATRIX_API void update() const override; 
+        MATRIX_API void render() const override; 
 
-        bool createContext() override;
-        void resize() const override;
-        void close() const override; 
+        MATRIX_API bool createContext() override;
+        MATRIX_API void resize() const override;
+        MATRIX_API void close() const override; 
 
-        inline auto getWindow() { return m_Window; }
+        MATRIX_API inline auto getWindow() { return m_Window; }
     private:
         GLFWwindow* m_Window;
     };

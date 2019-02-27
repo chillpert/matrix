@@ -14,6 +14,8 @@
     #endif
 #endif
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "matrix/src/pch/stdafx.h"
 
 namespace Matrix {
