@@ -60,6 +60,7 @@ file(GLOB FILES_LIB
     "matrix/src/event/*.cpp"
     "matrix/src/*.cpp"
     "matrix/src/renderer/*.cpp"
+    "matrix/src/platform/controller/*.cpp"
 )
 
 # library 
@@ -71,9 +72,8 @@ IF (USE_GLFW)
         glfw3
     )
 ELSEIF (USE_SDL2)
-    set(WINDOW_LIB ${WINDOW_LIB}
-        SDL2main    
-        SDL2   
+    set(WINDOW_LIB ${WINDOW_LIB}   
+        SDL2
     )
 ENDIF ()
 

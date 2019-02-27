@@ -27,7 +27,7 @@ namespace Matrix {
 
     void Application::update(void (*update_func)()) {
         m_Window->update();
-
+        m_Window->controllerCallback();
         update_func();
     }
 

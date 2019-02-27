@@ -3,6 +3,8 @@
 
 #include "matrix/src/platform/window/Window.h"
 
+#ifdef MX_GLFW_ACTIVE
+
 namespace Matrix {
 
     class WindowGLFW : public Window {
@@ -17,6 +19,8 @@ namespace Matrix {
         MATRIX_API void resize() const override;
         MATRIX_API void close() const override; 
 
+        MATRIX_API void controllerCallback() override {}
+
         MATRIX_API inline auto getWindow() { return m_Window; }
     private:
         GLFWwindow* m_Window;
@@ -28,5 +32,7 @@ namespace Matrix {
     void error_callback(int error, const char* description);
     void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 }
+
+#endif 
 
 #endif // WINDOWGLFW_H

@@ -1,0 +1,17 @@
+INFO   [22:58:11]: Creating Application
+SUCCESS[22:58:12]: GLFW context
+SUCCESS[22:58:12]: OpenGL context
+SUCCESS[22:58:12]: Application initialization
+WARNING[22:58:12]: Key 83 is not programmed
+INFO   [22:58:12]: Event: KeyboardButtonPressed: 83
+INFO   [22:58:13]: Event: KeyboardButtonReleased: 83
+WARNING[22:58:13]: Key 68 is not programmed
+INFO   [22:58:13]: Event: KeyboardButtonPressed: 68
+INFO   [22:58:13]: Event: KeyboardButtonReleased: 68
+WARNING[22:58:13]: Key 65 is not programmed
+INFO   [22:58:13]: Event: KeyboardButtonPressed: 65
+INFO   [22:58:13]: Event: KeyboardButtonReleased: 65
+WARNING[22:58:13]: Key 83 is not programmed
+INFO   [22:58:13]: Event: KeyboardButtonPressed: 83
+INFO   [22:58:13]: Event: KeyboardButtonReleased: 83
+INFO   [22:58:14]: Event: KeyboardButtonPressed: 256

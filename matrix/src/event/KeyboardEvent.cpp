@@ -1,5 +1,8 @@
 #include "matrix/src/event/KeyboardEvent.h"
-#include "matrix/src/platform/window/Controller.h"
+#include "matrix/src/platform/controller/Controller.h"
+
+#define CONTROLLER_KEYBOARD_PRESSED(x)  Controller::get().handleKeyPressed(x);
+#define CONTROLLER_KEYBOARD_RELEASED(x) Controller::get().handleKeyReleased(x);
 
 namespace Matrix {
 
@@ -13,7 +16,7 @@ namespace Matrix {
     }
 
     void KeyboardButtonPressed::handle() {
-        Controller::get().handleKeyPressed(m_KeyCode);
+        CONTROLLER_KEYBOARD_PRESSED(m_KeyCode);
     }
 
     void KeyboardButtonPressed::printEventType() const {
@@ -22,7 +25,7 @@ namespace Matrix {
     }
 
     void KeyboardButtonReleased::handle() {
-        Controller::get().handleKeyReleased(m_KeyCode);
+        CONTROLLER_KEYBOARD_RELEASED(m_KeyCode);
     }
 
     void KeyboardButtonReleased::printEventType() const {

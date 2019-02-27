@@ -7,7 +7,14 @@
 
 // external libraries
 #include "matrix/src/Utils.h"
-#include <GLFW/glfw3.h>
+
+#ifdef MX_GLFW_ACTIVE
+    #include <GLFW/glfw3.h>
+#elif MX_SDL2_ACTIVE
+    #include <SDL2/SDL.h>
+    #undef main
+#endif
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>

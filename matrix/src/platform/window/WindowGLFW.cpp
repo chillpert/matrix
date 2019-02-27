@@ -2,11 +2,7 @@
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
 
-#ifdef MX_DEBUG
-    #define LOGEVENT event.printEventType();
-#else
-    #define LOGEVENT
-#endif
+#ifdef MX_GLFW_ACTIVE
 
 namespace Matrix {
     bool WindowGLFW::createContext() {
@@ -93,3 +89,5 @@ namespace Matrix {
         }
     }        
 }
+
+#endif

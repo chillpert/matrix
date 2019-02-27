@@ -10,6 +10,7 @@ namespace Matrix {
         MouseEvent() {}
         ~MouseEvent() {}
 
+        void handle() override;
         void printEventType() const override;
     protected:
         int m_KeyCode;
@@ -24,6 +25,7 @@ namespace Matrix {
             : m_KeyCode(button) {}
         ~MouseButtonPressed() {}
 
+        void handle() override;
         void printEventType() const override;
     private:
         EventType event = e_MouseButtonPressed;
@@ -36,6 +38,7 @@ namespace Matrix {
             : m_KeyCode(button) {}
         ~MouseButtonReleased() {}
 
+        void handle() override;
         void printEventType() const override;
     private:
         EventType event = e_MouseButtonReleased;
@@ -48,6 +51,7 @@ namespace Matrix {
             : m_X(x), m_Y(y) {}
         ~MouseMoved() {}
 
+        void handle() override;
         void printEventType() const override;
     private:
         EventType event = e_MouseMoved;
