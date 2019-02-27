@@ -1,4 +1,4 @@
-#include "matrix/src/renderer/Shader.h"
+#include "matrix/src/Shader.h"
 
 #ifndef MX_TEXTURE_PATH 
     #error Texture path is not defined
