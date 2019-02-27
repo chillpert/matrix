@@ -1,17 +1,15 @@
 #include "matrix/src/platform/api/API_OpenGL.h"
 
-#ifdef OPENGL_ACTIVE
-
 namespace Matrix {
 
     bool API_OpenGL::createContext() const {
         glewExperimental = GL_TRUE; 
         GLenum glewError = glewInit();
         if (glewError != GLEW_OK) {
-            FATAL("GLEW initialisation");
+            MX_FATAL("GLEW initialisation");
             return false;
         } else {
-            SUCCESS("OpenGL context");
+            MX_SUCCESS("OpenGL context");
             return true;
         }
     }
@@ -22,5 +20,3 @@ namespace Matrix {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
     }
 }
-
-#endif

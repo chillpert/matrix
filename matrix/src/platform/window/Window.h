@@ -1,7 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#ifdef GLFW_ACTIVE
+#ifdef MX_GLFW_ACTIVE
     #define WINDOW_TYPE new Matrix::WindowGLFW();
 #else
     #error "Matrix Framework only supports GLFW for now"
@@ -10,12 +10,12 @@
 #include "matrix/src/pch/stdafx.h"
 
 namespace Matrix {
- 
+
     class MATRIX_API Window {
     public:
         Window() {}
         ~Window() {}
-
+        
         void setWidth(int width);
         void setHeight(int height);
         void setTitle(std::string title);
@@ -27,9 +27,9 @@ namespace Matrix {
         virtual void resize() const {}
         virtual void close() const {}
     
-        int m_Width;
-        int m_Height;
-        std::string m_Title;
+        int m_Width = 1200;
+        int m_Height = 600;
+        std::string m_Title = "Matrix Framework";
     };
 }
 

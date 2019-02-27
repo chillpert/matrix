@@ -3,7 +3,7 @@
 namespace Matrix {
     
     Application::Application() {
-        INFO("Creating Application");
+        MX_INFO("Creating Application");
     }
 
     Application::~Application() {
@@ -16,17 +16,13 @@ namespace Matrix {
     }
 
     void Application::initialize(void (*initialize_func)()) {
-        // setting window attributes
-        m_Window->setTitle("Matrix Framework");
-        m_Window->setWidth(1200);
-        m_Window->setHeight(600);
+        // setting window 
         m_Running = m_Window->createContext();
         
         // setting API
         m_Running = m_API->createContext();
 
-        m_Running = true;
-        SUCCESS("Application initialized");
+        m_Running ? MX_SUCCESS("Application initialization") : MX_FATAL("Application initialization");
     }
 
     void Application::update(void (*update_func)()) {

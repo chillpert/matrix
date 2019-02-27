@@ -14,7 +14,7 @@ link_directories(external/libs)
 
 # Macros
 IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    add_compile_definitions(DEBUG)
+    add_compile_definitions(MX_DEBUG)
 ENDIF ()
 
 IF (MSCV)
@@ -23,34 +23,28 @@ ENDIF ()
 
 IF (WIN32)
     IF (CMAKE_CL_64)
-        add_compile_definitions(PLATFORM_WINDOWS_X64)
-        add_compile_definitions(BUILD_DLL)
+        add_compile_definitions(MX_PLATFORM_WINDOWS_X64)
+        add_compile_definitions(MX_BUILD_DLL)
     ENDIF ()
 ENDIF ()
 
-add_compile_definitions(M_RESOURCE_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
-add_compile_definitions(GLFW_ACTIVE)
-add_compile_definitions(OPENGL_ACTIVE)
-add_compile_definitions(GLFW_DEFAULT_CONTROLLER)
+# resource directories
+add_compile_definitions(MX_TEXTURE_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/textures/")
+add_compile_definitions(MX_MODEL_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/models/")
+add_compile_definitions(MX_SHADER_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/")
+
+# platform
+add_compile_definitions(MX_OPENGL_ACTIVE)
+add_compile_definitions(MX_GLFW_ACTIVE)
+add_compile_definitions(MX_DEFAULT_CONTROLLER)
 
 # Files for library
 file(GLOB FILES_LIB
-    "matrix/src/pch/*.h"
     "matrix/src/pch/*.cpp"
-
-    "matrix/src/platform/api/*.h"
     "matrix/src/platform/api/*.cpp"
-
-    "matrix/src/platform/window/*.h"
     "matrix/src/platform/window/*.cpp"
-
-    "matrix/src/event/*.h"
     "matrix/src/event/*.cpp"
-
-    "matrix/src/*.h"
     "matrix/src/*.cpp"
-
-    "matrix/src/renderer/*.h"
     "matrix/src/renderer/*.cpp"
 )
 

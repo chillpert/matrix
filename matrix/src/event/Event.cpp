@@ -4,7 +4,7 @@ namespace Matrix {
 
     void Event::printEventType() const {
         if (event == 0) 
-            INFO("Event: Default");
+            MX_INFO("Event: Default");
     }
 
     void Event::handle() {

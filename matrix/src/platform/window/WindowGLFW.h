@@ -22,11 +22,11 @@ namespace Matrix {
         GLFWwindow* m_Window;
     };
 
-    MATRIX_API void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-    MATRIX_API void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-    MATRIX_API void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-    MATRIX_API void error_callback(int error, const char* description);
-    MATRIX_API void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+    void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+    void error_callback(int error, const char* description);
+    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 }
 
 #endif // WINDOWGLFW_H
