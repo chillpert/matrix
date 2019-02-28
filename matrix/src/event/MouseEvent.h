@@ -45,7 +45,7 @@ namespace Matrix {
         int m_KeyCode;
     };
 
-    class MouseMoved : public MouseEvent {
+    class MATRIX_API MouseMoved : public MouseEvent {
     public:
         MouseMoved(int x, int y)
             : m_X(x), m_Y(y) {}

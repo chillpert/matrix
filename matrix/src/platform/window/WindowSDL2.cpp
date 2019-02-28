@@ -51,10 +51,6 @@ namespace Matrix {
         SDL_GL_SwapWindow(m_Window);
     }
 
-    void WindowSDL2::resize() const {
-
-    }
-
     void WindowSDL2::close() const {
         SDL_DestroyWindow(m_Window);
         SDL_Quit();
@@ -91,6 +87,14 @@ namespace Matrix {
                 LOGEVENT;
             }
         }   
+    }
+
+    void WindowSDL2::setTitle() {
+        SDL_SetWindowTitle(m_Window, m_Props.m_Title.c_str());
+    }
+
+    void WindowSDL2::resize() {
+
     }
 }
 

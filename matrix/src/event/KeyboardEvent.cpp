@@ -1,5 +1,5 @@
 #include "matrix/src/event/KeyboardEvent.h"
-#include "matrix/src/platform/controller/Controller.h"
+#include "matrix/src/controller/Controller.h"
 
 #define CONTROLLER_KEYBOARD_PRESSED(x)  Controller::get().handleKeyPressed(x);
 #define CONTROLLER_KEYBOARD_RELEASED(x) Controller::get().handleKeyReleased(x);

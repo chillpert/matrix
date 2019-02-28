@@ -14,12 +14,13 @@ namespace Matrix {
 
         MATRIX_API void update() const override; 
         MATRIX_API void render() const override; 
-
         MATRIX_API bool createContext() override;
-        MATRIX_API void resize() const override;
+        
         MATRIX_API void close() const override; 
-
         MATRIX_API void controllerCallback() override {}
+
+        MATRIX_API void setTitle() override;
+        MATRIX_API void resize() override;        
 
         MATRIX_API inline auto getWindow() { return m_Window; }
     private:

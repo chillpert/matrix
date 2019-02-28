@@ -1,0 +1,14 @@
+# todo
+- figure out a way how to set certain actions to button events from application side
+
+# changelog
+- added application class
+- added custom logger for easy message printing
+- added declspec macros for exporting to dynamic library
+- added precompiled header
+- added glfw 
+- added api class utilizing glew when OpenGl is picked
+- added event system
+- added sdl2
+- added universal controller
+- improved cmakelists

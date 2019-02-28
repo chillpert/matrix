@@ -2,24 +2,26 @@
 #define CONTROLLER_H
 
 #ifdef MX_GLFW_ACTIVE
-    #define W_KEY 
-    #define A_KEY
-    #define S_KEY
-    #define D_KEY
-    #define C_KEY
-    #define SPACE_KEY
-    #define ESCAPE_KEY GLFW_KEY_ESCAPE
-    #define L_SHIFT_KEY
+    #define MX_W_KEY 
+    #define MX_A_KEY
+    #define MX_S_KEY
+    #define MX_D_KEY
+    #define MX_C_KEY
+    #define MX_SPACE_KEY    GLFW_KEY_SPACE
+    #define MX_ESCAPE_KEY   GLFW_KEY_ESCAPE
+    #define MX_L_SHIFT_KEY
 #elif MX_SDL2_ACTIVE
-    #define W_KEY 
-    #define A_KEY
-    #define S_KEY
-    #define D_KEY
-    #define C_KEY
-    #define SPACE_KEY
-    #define ESCAPE_KEY SDLK_ESCAPE
-    #define L_SHIFT_KEY
+    #define MX_W_KEY 
+    #define MX_A_KEY
+    #define MX_S_KEY
+    #define MX_D_KEY
+    #define MX_C_KEY
+    #define MX_SPACE_KEY    SDLK_SPACE
+    #define MX_ESCAPE_KEY   SDLK_ESCAPE
+    #define MX_L_SHIFT_KEY
 #endif
+
+#define PRINT_KEY(x) #x
 
 #include "matrix/src/pch/stdafx.h"
 

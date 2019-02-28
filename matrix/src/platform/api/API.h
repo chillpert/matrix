@@ -2,7 +2,7 @@
 #define API_H
 
 #ifdef MX_OPENGL_ACTIVE
-    #define API_TYPE new Matrix::API_OpenGL();
+    #define MX_API_TYPE new Matrix::API_OpenGL();
 #else
     #error "Matrix Framework only supports OpenGL for now"
 #endif

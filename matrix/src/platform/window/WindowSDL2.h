@@ -14,13 +14,14 @@ namespace Matrix {
 
         MATRIX_API void update() const override; 
         MATRIX_API void render() const override; 
-
         MATRIX_API bool createContext() override;
-        MATRIX_API void resize() const override;
-        MATRIX_API void close() const override;
 
+        MATRIX_API void close() const override;
         MATRIX_API void controllerCallback() override;
 
+        MATRIX_API void setTitle() override;
+        MATRIX_API void resize() override;
+        
         MATRIX_API inline SDL_Window* getWindow() { return m_Window; } 
         MATRIX_API inline SDL_GLContext &getSurface() { return m_Context; }
     private:

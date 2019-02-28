@@ -27,8 +27,8 @@ namespace Matrix {
     private: 
         Application();
         
-        API* m_API = API_TYPE;
-        Window* m_Window = WINDOW_TYPE;
+        API* m_API = MX_API_TYPE;
+        Window* m_Window = MX_WINDOW_TYPE;
         bool m_Running;
     };  
 }

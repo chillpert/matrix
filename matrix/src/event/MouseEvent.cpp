@@ -1,5 +1,5 @@
 #include "matrix/src/event/MouseEvent.h"
-#include "matrix/src/platform/controller/Controller.h"
+#include "matrix/src/controller/Controller.h"
 
 #define CONTROLLER_MOUSE_MOVED(x,y)       Controller::get().handleMouseMoved(x,y);
 #define CONTROLLER_MOUSE_PRESSED(x,y)     Controller::get().handleMousePressed(x,y);

@@ -43,10 +43,6 @@ namespace Matrix {
         glfwPollEvents();
     }
 
-    void WindowGLFW::resize() const {
-        
-    }
-
     void WindowGLFW::close() const {
         glfwDestroyWindow(m_Window);
         glfwTerminate();
@@ -87,7 +83,15 @@ namespace Matrix {
                 break;
             }    
         }
-    }        
+    }     
+
+    void WindowGLFW::setTitle() {
+        glfwSetWindowTitle(m_Window, m_Props.m_Title.c_str());
+    }
+
+    void WindowGLFW::resize() {
+
+    }
 }
 
 #endif

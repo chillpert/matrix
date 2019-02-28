@@ -2,9 +2,9 @@
 #define WINDOW_H
 
 #ifdef MX_GLFW_ACTIVE
-    #define WINDOW_TYPE new Matrix::WindowGLFW();
+    #define MX_WINDOW_TYPE new Matrix::WindowGLFW();
 #elif MX_SDL2_ACTIVE
-    #define WINDOW_TYPE new Matrix::WindowSDL2();
+    #define MX_WINDOW_TYPE new Matrix::WindowSDL2();
 #else 
     #error "Matrix Framework only supports GLFW and SDL2"
 #endif
@@ -24,14 +24,15 @@ namespace Matrix {
         MATRIX_API Window() {}
         MATRIX_API virtual ~Window() {}
         
-        MATRIX_API virtual void update() const {};
-        MATRIX_API virtual void render() const {};
-
+        MATRIX_API virtual void update() const {}
+        MATRIX_API virtual void render() const {}
         MATRIX_API virtual bool createContext() { return false; }
-        MATRIX_API virtual void resize() const {}
-        MATRIX_API virtual void close() const {}
 
+        MATRIX_API virtual void close() const {}
         MATRIX_API virtual void controllerCallback() {}
+
+        MATRIX_API void setTitle(std::string title);
+        MATRIX_API void resize(int width, int height);
         
         struct WindowProps {
             WindowProps() 
@@ -42,8 +43,11 @@ namespace Matrix {
             int m_Height;
             std::string m_Title;
         };
-
+ 
+    protected:
         WindowProps m_Props; 
+        MATRIX_API virtual void setTitle() {}
+        MATRIX_API virtual void resize() {}
     };
 }
 

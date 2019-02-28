@@ -9,6 +9,8 @@ link_directories(external/libs)
         # api
             IF (USE_OPENGL AND USE_DIRECTX)
                 message(FATAL_ERROR "You can not use OpenGL and DirectX simultaneously")
+            ELSEIF (NOT USE_OPENGL AND NOT USE_DIRECTX)
+                message(FATAL_ERROR "You have to use either OpenGL or DirectX")
             ELSEIF (USE_DIRECTX)
                 message("Using DirectX")
                 add_compile_definitions(MX_DIRECTX_ACTIVE)
@@ -19,6 +21,8 @@ link_directories(external/libs)
         # window
             IF (USE_GLFW AND USE_SDL2)
                 message(FATAL_ERROR "You can not use GLFW and SDL2 simultaneously")
+            ELSEIF (NOT USE_GLFW AND NOT USE_SDL2)
+                message(FATAL_ERROR "You have to use either SDL2 or GLFW")
             ELSEIF (USE_SDL2)
                 add_compile_definitions(MX_SDL2_ACTIVE)
                 message("Using SDL2")
@@ -60,7 +64,7 @@ file(GLOB FILES_LIB
     "matrix/src/event/*.cpp"
     "matrix/src/*.cpp"
     "matrix/src/renderer/*.cpp"
-    "matrix/src/platform/controller/*.cpp"
+    "matrix/src/controller/*.cpp"
 )
 
 # library 
