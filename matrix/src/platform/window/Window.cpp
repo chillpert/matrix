@@ -1,6 +1,6 @@
 #include "matrix/src/platform/window/Window.h"
 
-namespace Matrix {
+namespace MX {
 
     void Window::setTitle(std::string title) {
         m_Props.m_Title = title;

@@ -10,7 +10,7 @@
     #error Shader path is not defined
 #endif
 
-namespace Matrix {
+namespace MX {
 
 
 }

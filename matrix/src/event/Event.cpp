@@ -1,6 +1,6 @@
 #include "matrix/src/event/Event.h"
 
-namespace Matrix {
+namespace MX {
 
     void Event::printEventType() const {
         if (event == 0) 

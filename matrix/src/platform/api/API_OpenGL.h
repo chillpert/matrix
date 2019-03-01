@@ -3,9 +3,9 @@
 
 #include "matrix/src/platform/api/API.h"
 
-namespace Matrix {
+namespace MX {
 
-    class MATRIX_API API_OpenGL : public API {
+    class MX_API API_OpenGL : public API {
     public:
         API_OpenGL() {}
         ~API_OpenGL() {}

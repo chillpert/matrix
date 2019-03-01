@@ -1,6 +1,6 @@
 #include "matrix/src/Camera.h"
 
-namespace Matrix {
+namespace MX {
 
     Camera::Camera() {
         update();

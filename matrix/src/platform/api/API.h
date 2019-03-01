@@ -2,16 +2,16 @@
 #define API_H
 
 #ifdef MX_OPENGL_ACTIVE
-    #define MX_API_TYPE new Matrix::API_OpenGL();
+    #define MX_API_TYPE new MX::API_OpenGL();
 #else
     #error "Matrix Framework only supports OpenGL for now"
 #endif
 
 #include "matrix/src/pch/stdafx.h"
 
-namespace Matrix {
+namespace MX {
 
-    class MATRIX_API API {
+    class MX_API API {
     public:
         API() {}
         ~API() {}

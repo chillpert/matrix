@@ -5,25 +5,25 @@
 
 #ifdef MX_SDL2_ACTIVE
 
-namespace Matrix {
+namespace MX {
 
     class WindowSDL2 : public Window {
     public:
-    	MATRIX_API WindowSDL2() {}
-        MATRIX_API ~WindowSDL2() {}
+    	MX_API WindowSDL2() {}
+        MX_API ~WindowSDL2() {}
 
-        MATRIX_API void update() const override; 
-        MATRIX_API void render() const override; 
-        MATRIX_API bool createContext() override;
+        MX_API void update() const override; 
+        MX_API void render() const override; 
+        MX_API bool createContext() override;
 
-        MATRIX_API void close() const override;
-        MATRIX_API void controllerCallback() override;
+        MX_API void close() const override;
+        MX_API void controllerCallback() override;
 
-        MATRIX_API void setTitle() override;
-        MATRIX_API void resize() override;
+        MX_API void setTitle() override;
+        MX_API void resize() override;
         
-        MATRIX_API inline SDL_Window* getWindow() { return m_Window; } 
-        MATRIX_API inline SDL_GLContext &getSurface() { return m_Context; }
+        MX_API inline SDL_Window* getWindow() { return m_Window; } 
+        MX_API inline SDL_GLContext &getSurface() { return m_Context; }
     private:
         SDL_Window* m_Window = NULL;
         SDL_GLContext m_Context;

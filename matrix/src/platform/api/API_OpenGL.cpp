@@ -1,6 +1,6 @@
 #include "matrix/src/platform/api/API_OpenGL.h"
 
-namespace Matrix {
+namespace MX {
 
     bool API_OpenGL::createContext() const {
         glewExperimental = GL_TRUE; 

@@ -3,9 +3,9 @@
 
 #include "matrix/src/event/Event.h"
 
-namespace Matrix {
+namespace MX {
 
-    class MATRIX_API MouseEvent : public Event {
+    class MX_API MouseEvent : public Event {
     public:
         MouseEvent() {}
         ~MouseEvent() {}
@@ -19,7 +19,7 @@ namespace Matrix {
         EventType event = e_DefaultMouse;
     };
 
-    class MATRIX_API MouseButtonPressed : public MouseEvent {
+    class MX_API MouseButtonPressed : public MouseEvent {
     public:
         MouseButtonPressed(int button)
             : m_KeyCode(button) {}
@@ -32,7 +32,7 @@ namespace Matrix {
         int m_KeyCode;
     };
 
-    class MATRIX_API MouseButtonReleased : public MouseEvent {
+    class MX_API MouseButtonReleased : public MouseEvent {
     public:
         MouseButtonReleased(int button)
             : m_KeyCode(button) {}
@@ -45,7 +45,7 @@ namespace Matrix {
         int m_KeyCode;
     };
 
-    class MATRIX_API MouseMoved : public MouseEvent {
+    class MX_API MouseMoved : public MouseEvent {
     public:
         MouseMoved(int x, int y)
             : m_X(x), m_Y(y) {}
@@ -57,6 +57,20 @@ namespace Matrix {
         EventType event = e_MouseMoved;
         int m_X;
         int m_Y;
+    };
+
+    class MX_API MouseScrolled : public MouseEvent {
+    public:
+        MouseScrolled(int xAxis, int yAxis)
+            : m_Xaxis(xAxis), m_Yaxis(yAxis) {}
+        ~MouseScrolled() {}
+
+        void handle() override;
+        void printEventType() const override;
+    private:
+        EventType event = e_MouseScrolled;
+        int m_Xaxis;
+        int m_Yaxis;
     };
 }
 

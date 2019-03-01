@@ -2,9 +2,9 @@
 #define WINDOW_H
 
 #ifdef MX_GLFW_ACTIVE
-    #define MX_WINDOW_TYPE new Matrix::WindowGLFW();
+    #define MX_WINDOW_TYPE new MX::WindowGLFW();
 #elif MX_SDL2_ACTIVE
-    #define MX_WINDOW_TYPE new Matrix::WindowSDL2();
+    #define MX_WINDOW_TYPE new MX::WindowSDL2();
 #else 
     #error "Matrix Framework only supports GLFW and SDL2"
 #endif
@@ -17,22 +17,22 @@
 
 #include "matrix/src/pch/stdafx.h"
 
-namespace Matrix {
+namespace MX {
 
     class Window {
     public:
-        MATRIX_API Window() {}
-        MATRIX_API virtual ~Window() {}
+        MX_API Window() {}
+        MX_API virtual ~Window() {}
         
-        MATRIX_API virtual void update() const {}
-        MATRIX_API virtual void render() const {}
-        MATRIX_API virtual bool createContext() { return false; }
+        MX_API virtual void update() const {}
+        MX_API virtual void render() const {}
+        MX_API virtual bool createContext() { return false; }
 
-        MATRIX_API virtual void close() const {}
-        MATRIX_API virtual void controllerCallback() {}
+        MX_API virtual void close() const {}
+        MX_API virtual void controllerCallback() {}
 
-        MATRIX_API void setTitle(std::string title);
-        MATRIX_API void resize(int width, int height);
+        MX_API void setTitle(std::string title);
+        MX_API void resize(int width, int height);
         
         struct WindowProps {
             WindowProps() 
@@ -46,8 +46,8 @@ namespace Matrix {
  
     protected:
         WindowProps m_Props; 
-        MATRIX_API virtual void setTitle() {}
-        MATRIX_API virtual void resize() {}
+        MX_API virtual void setTitle() {}
+        MX_API virtual void resize() {}
     };
 }
 

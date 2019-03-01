@@ -1,6 +1,6 @@
 #include "matrix/src/controller/InputMap.h"
 
-namespace Matrix {
+namespace MX {
 
     float speed = 1.0f;
 }

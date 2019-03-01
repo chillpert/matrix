@@ -3,9 +3,9 @@
 
 #include "matrix/src/event/Event.h"
 
-namespace Matrix {
+namespace MX {
 
-    class MATRIX_API KeyboardEvent : public Event {
+    class MX_API KeyboardEvent : public Event {
     public:
         KeyboardEvent() {}
         ~KeyboardEvent() {}
@@ -18,7 +18,7 @@ namespace Matrix {
         EventType event = e_DefaultKeyboard;
     };
 
-    class MATRIX_API KeyboardButtonPressed : public KeyboardEvent {
+    class MX_API KeyboardButtonPressed : public KeyboardEvent {
     public:
         KeyboardButtonPressed(int button)
             : m_KeyCode(button) {}
@@ -31,7 +31,7 @@ namespace Matrix {
         int m_KeyCode;
     };
 
-    class MATRIX_API KeyboardButtonReleased : public KeyboardEvent {
+    class MX_API KeyboardButtonReleased : public KeyboardEvent {
     public:
         KeyboardButtonReleased(int button) 
             : m_KeyCode(button) {}

@@ -4,7 +4,8 @@
 
 #ifdef MX_GLFW_ACTIVE
 
-namespace Matrix {
+namespace MX {
+    
     bool WindowGLFW::createContext() {
         if (!glfwInit()) {
             MX_FATAL("GLFW initialization");
@@ -20,11 +21,80 @@ namespace Matrix {
                 return false;
             } else {
                 glfwMakeContextCurrent(m_Window);
-                glfwSetFramebufferSizeCallback(m_Window, framebuffer_size_callback);
-                glfwSetCursorPosCallback(m_Window, mouse_callback);
-                glfwSetScrollCallback(m_Window, scroll_callback);
+
                 glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-                glfwSetKeyCallback(m_Window, key_callback);
+
+                glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+                });
+
+                glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos) {
+                });
+                
+                glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset) { 
+                    xoffset = xoffset + 0.5 - (xoffset < 0);
+                    yoffset = yoffset + 0.5 - (yoffset < 0);
+                    int x = int(xoffset);
+                    int y = int(yoffset);
+                    MouseScrolled event(x, y);
+                    event.handle();
+                    LOGEVENT;
+                });
+            
+                glfwSetErrorCallback([](int, const char* description) {
+                    std::string message = description;
+                    MX_FATAL(message);
+                });
+
+                glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+                    switch (action) {
+                        case GLFW_PRESS: {
+                            KeyboardButtonPressed event(key);
+                            event.handle();
+                            LOGEVENT;
+                            break;
+                        }
+                        case GLFW_RELEASE: {
+                            KeyboardButtonReleased event(key);
+                            event.handle();
+                            LOGEVENT;
+                            break;
+                        }
+                        case GLFW_REPEAT: {
+                            KeyboardButtonPressed event(key);
+                            event.handle();
+                            LOGEVENT;
+                            break;
+                        }    
+                    }
+                });
+
+                glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos) {
+                    xpos = xpos + 0.5 - (xpos < 0);
+                    ypos = ypos + 0.5 - (ypos < 0);
+                    int x = int(xpos);
+                    int y = int(ypos);
+                    MouseMoved event(x, y);
+                    event.handle();
+                    LOGEVENT;
+                });
+
+                glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
+                    switch(action) {
+                        case GLFW_PRESS:
+                        {
+                            MouseButtonPressed event(button);
+                            event.handle();
+                            LOGEVENT;
+                            break;
+                        }
+                        case GLFW_RELEASE:
+                        {
+                            MouseButtonReleased event(button);
+                            event.handle();
+                            LOGEVENT;
+                        }
+                    }
+                });
             
                 MX_SUCCESS("GLFW context");
                 return true;
@@ -48,49 +118,12 @@ namespace Matrix {
         glfwTerminate();
     }
 
-    void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-        
-    }
+    void WindowGLFW::resize() {
 
-    void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    
     }
-
-    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-        
-    }
-
-    void error_callback(int error, const char* description) {
-        MX_FATAL(description);
-    }
-
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-        switch (action) {
-            case GLFW_PRESS: {
-                KeyboardButtonPressed event(key);
-                event.handle();
-                LOGEVENT;
-                break;
-            }
-            case GLFW_RELEASE: {
-                KeyboardButtonReleased event(key);
-                event.handle();
-                LOGEVENT;
-                break;
-            }
-            case GLFW_REPEAT: {
-                
-                break;
-            }    
-        }
-    }     
 
     void WindowGLFW::setTitle() {
         glfwSetWindowTitle(m_Window, m_Props.m_Title.c_str());
-    }
-
-    void WindowGLFW::resize() {
-
     }
 }
 

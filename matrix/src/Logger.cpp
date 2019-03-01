@@ -18,7 +18,7 @@
 
 #include "matrix/src/pch/stdafx.h"
 
-namespace Matrix {
+namespace MX {
     
     MX_CONSOLE_HANDLE;
 

@@ -4,7 +4,7 @@
 
 #ifdef MX_SDL2_ACTIVE
 
-namespace Matrix {
+namespace MX {
 
     static std::string SDL_ErrorMessage;
 
@@ -83,6 +83,11 @@ namespace Matrix {
             }
             if (event.type == SDL_MOUSEBUTTONUP) {
                 MouseButtonReleased event(event.button.button);
+                event.handle();
+                LOGEVENT;
+            }
+            if (event.type == SDL_MOUSEWHEEL) {
+                MouseScrolled event(event.wheel.x, event.wheel.y);
                 event.handle();
                 LOGEVENT;
             }

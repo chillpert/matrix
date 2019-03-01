@@ -2,10 +2,10 @@
 #define LOGGER_H
 
 #ifdef MX_DEBUG
-    #define MX_FATAL(x)   Matrix::Logger::p_Fatal(x)
-    #define MX_WARN(x)    Matrix::Logger::p_Warn(x)
-    #define MX_INFO(x)    Matrix::Logger::p_Info(x)
-    #define MX_SUCCESS(x) Matrix::Logger::p_Success(x)
+    #define MX_FATAL(x)   MX::Logger::p_Fatal(x)
+    #define MX_WARN(x)    MX::Logger::p_Warn(x)
+    #define MX_INFO(x)    MX::Logger::p_Info(x)
+    #define MX_SUCCESS(x) MX::Logger::p_Success(x)
 #else
     #define MX_FATAL(x) 
     #define MX_WARN(x) 
@@ -17,9 +17,9 @@
 
 #include <string>
 
-namespace Matrix {
+namespace MX {
 
-    struct MATRIX_API Logger {
+    struct MX_API Logger {
         static std::string getTime();
         static void writeToFile(std::string message);
         static void p_Fatal(std::string message);

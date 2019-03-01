@@ -1,11 +1,7 @@
 #include "matrix/src/event/MouseEvent.h"
 #include "matrix/src/controller/Controller.h"
 
-#define CONTROLLER_MOUSE_MOVED(x,y)       Controller::get().handleMouseMoved(x,y);
-#define CONTROLLER_MOUSE_PRESSED(x,y)     Controller::get().handleMousePressed(x,y);
-#define CONTROLLER_MOUSE_RELEASED(x,y)    Controller::get().handleMouseReleased(x,y);
-
-namespace Matrix {
+namespace MX {
 
     void MouseEvent::handle() {
 
@@ -17,7 +13,7 @@ namespace Matrix {
     }
 
     void MouseButtonPressed::handle() {
-        CONTROLLER_MOUSE_PRESSED(m_X, m_Y);
+        Controller::get().handleMousePressed(m_KeyCode);
     }
 
     void MouseButtonPressed::printEventType() const {
@@ -26,7 +22,7 @@ namespace Matrix {
     }
 
     void MouseButtonReleased::handle() {
-        CONTROLLER_MOUSE_RELEASED(m_X, m_Y);
+        Controller::get().handleMouseReleased(m_KeyCode);
     }
 
     void MouseButtonReleased::printEventType() const {
@@ -35,11 +31,20 @@ namespace Matrix {
     }
 
     void MouseMoved::handle() {
-        CONTROLLER_MOUSE_MOVED(m_X, m_Y);
+        Controller::get().handleMouseMoved(m_X, m_Y);
     }
 
     void MouseMoved::printEventType() const {
         if (event == 8) 
             MX_INFO("Event: MouseMoved: " + std::to_string(m_X) + ", " + std::to_string(m_Y));
+    }
+
+    void MouseScrolled::handle() {
+        Controller::get().handleMouseScrolled(m_Xaxis, m_Yaxis);
+    }
+
+    void MouseScrolled::printEventType() const {
+        Controller::get().handleMouseScrolled(m_Xaxis, m_Yaxis);
+        MX_INFO("Event: MouseScrolled: " + std::to_string(m_Xaxis) + ", " + std::to_string(m_Yaxis));
     }
 }

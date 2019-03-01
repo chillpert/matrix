@@ -1,6 +1,6 @@
 #include "matrix/src/Application.h"
 
-namespace Matrix {
+namespace MX {
     
     Application::Application() {
         MX_INFO("Creating Application");

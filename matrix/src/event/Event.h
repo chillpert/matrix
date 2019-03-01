@@ -7,12 +7,13 @@ enum EventType {
     e_Default = 1, e_DefaultKeyboard = 2, e_DefaultMouse = 3,
     e_KeyboardButtonPressed = 4, e_KeyboardButtonReleased = 5,
     e_MouseButtonPressed = 6, e_MouseButtonReleased = 7,
-    e_MouseMoved = 8
+    e_MouseMoved = 8,
+    e_MouseScrolled = 9
 };
 
-namespace Matrix {
+namespace MX {
 
-    class MATRIX_API Event {
+    class MX_API Event {
     public:
         Event() {}
         ~Event() {}

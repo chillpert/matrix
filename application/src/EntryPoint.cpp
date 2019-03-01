@@ -13,7 +13,7 @@ void update() {
 }
 
 int main() {    
-    Matrix::Application* app = &Matrix::Application::get();
+    MX::Application* app = &MX::Application::get();
     
     app->initialize(initialize);
 

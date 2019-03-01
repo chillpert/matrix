@@ -3,7 +3,7 @@
 
 #include "matrix/src/pch/stdafx.h"
 
-namespace Matrix {
+namespace MX {
 
     class Shader {
     public:

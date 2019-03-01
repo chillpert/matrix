@@ -16,4 +16,3 @@ option(USE_DIRECTX "use DirectX" OFF)
 include(${CMAKE_CURRENT_SOURCE_DIR}/matrix/CMakeLists.txt)
 # config for your application
 include(${CMAKE_CURRENT_SOURCE_DIR}/application/CMakeLists.txt)
-

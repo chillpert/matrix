@@ -5,33 +5,27 @@
 
 #ifdef MX_GLFW_ACTIVE
 
-namespace Matrix {
+namespace MX {
 
     class WindowGLFW : public Window {
     public:
-        MATRIX_API WindowGLFW() {}
-        MATRIX_API ~WindowGLFW() {}
+        MX_API WindowGLFW() {}
+        MX_API ~WindowGLFW() {}
 
-        MATRIX_API void update() const override; 
-        MATRIX_API void render() const override; 
-        MATRIX_API bool createContext() override;
+        MX_API void update() const override; 
+        MX_API void render() const override; 
+        MX_API bool createContext() override;
         
-        MATRIX_API void close() const override; 
-        MATRIX_API void controllerCallback() override {}
+        MX_API void close() const override; 
+        MX_API void controllerCallback() override {}
 
-        MATRIX_API void setTitle() override;
-        MATRIX_API void resize() override;        
+        MX_API void setTitle() override;
+        MX_API void resize() override;        
 
-        MATRIX_API inline auto getWindow() { return m_Window; }
+        MX_API inline auto getWindow() { return m_Window; }
     private:
         GLFWwindow* m_Window;
     };
-
-    void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-    void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-    void error_callback(int error, const char* description);
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 }
 
 #endif 

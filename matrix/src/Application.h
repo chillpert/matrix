@@ -8,9 +8,9 @@
 #include "matrix/src/platform/api/API.h"
 #include "matrix/src/platform/api/API_OpenGL.h"
 
-namespace Matrix {
+namespace MX {
 
-    class MATRIX_API Application {
+    class MX_API Application {
     public:
         ~Application();
         static Application &get();

@@ -3,7 +3,7 @@
 
 #include "matrix/src/pch/stdafx.h"
 
-namespace Matrix {
+namespace MX {
 
     // move camera
     enum m_Camera {
@@ -14,13 +14,13 @@ namespace Matrix {
     public:
         ~Camera() {}
     
-        MATRIX_API static Camera& get() {
+        MX_API static Camera& get() {
             static Camera instance;
             return instance;
         }
 
-        MATRIX_API void processKeyboard(m_Camera direction, float speed); 
-        MATRIX_API void processMouse(float xoffset, float yoffset);
+        MX_API void processKeyboard(m_Camera direction, float speed); 
+        MX_API void processMouse(float xoffset, float yoffset);
 
         glm::fmat4& getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_WorldUp); }
     private:
