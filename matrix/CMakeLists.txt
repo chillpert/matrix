@@ -65,6 +65,7 @@ file(GLOB FILES_LIB
     "matrix/src/*.cpp"
     "matrix/src/renderer/*.cpp"
     "matrix/src/controller/*.cpp"
+    "matrix/src/layers/*.cpp"
 )
 
 # library 
