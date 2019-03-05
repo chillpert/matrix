@@ -53,6 +53,9 @@ namespace MX {
         void handleMousePressed(int keyCode);
         void handleMouseReleased(int keyCode);
         void handleMouseScrolled(int x, int y);
+
+        void handleCloseWindow();
+        void handleResizeWindow(int width, int height);
     protected:
         Controller() {}
         // last position of mouse

@@ -14,7 +14,7 @@ void update() {
 
 int main() {    
     MX::Application* app = &MX::Application::get();
-    
+
     app->initialize(initialize);
 
     app->getWindow()->setTitle("My Application");

@@ -1,6 +1,7 @@
 #include "matrix/src/platform/window/WindowGLFW.h"
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
+#include "matrix/src/event/WindowEvent.h"
 
 #ifdef MX_GLFW_ACTIVE
 
@@ -22,12 +23,10 @@ namespace MX {
             } else {
                 glfwMakeContextCurrent(m_Window);
 
-                glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+                glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
                 glfwSetFramebufferSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
-                });
-
-                glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos) {
+                
                 });
                 
                 glfwSetScrollCallback(m_Window, [](GLFWwindow* window, double xoffset, double yoffset) { 
@@ -94,6 +93,18 @@ namespace MX {
                             LOGEVENT;
                         }
                     }
+                });
+
+                glfwSetWindowCloseCallback(m_Window, [](GLFWwindow* window) {
+                    WindowClosed event;
+                    event.handle();
+                    LOGEVENT;
+                });
+
+                glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
+                    WindowResized event(width, height);
+                    event.handle();
+                    LOGEVENT;
                 });
             
                 MX_SUCCESS("GLFW context");

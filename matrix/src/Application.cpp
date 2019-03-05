@@ -21,8 +21,12 @@ namespace MX {
         
         // setting API
         m_Running = m_API->createContext();
-
-        m_Running ? MX_SUCCESS("Application initialization") : MX_FATAL("Application initialization");
+        
+        if (m_Running) {
+            MX_SUCCESS("Application initialization");
+        } else {
+            MX_FATAL("Application initialization");
+        }
     }
 
     void Application::update(void (*update_func)()) {

@@ -7,14 +7,16 @@
 #include "matrix/src/platform/window/WindowSDL2.h"
 #include "matrix/src/platform/api/API.h"
 #include "matrix/src/platform/api/API_OpenGL.h"
+#include "matrix/src/layers/LayerStack.h"
 
 namespace MX {
 
-    class MX_API Application {
+    class MX_API Application {     
     public:
         ~Application();
+
         static Application &get();
-        
+    
         void initialize(void (*initialize_func)());
         void render(void (*render_func)());
         void update(void (*update_func)());
@@ -23,12 +25,14 @@ namespace MX {
 
         inline bool isRunning() { return m_Running; }
         inline auto getWindow() { return m_Window; }
-        
-    private: 
+
+    private:
         Application();
-        
+
+    protected:   
         API* m_API = MX_API_TYPE;
         Window* m_Window = MX_WINDOW_TYPE;
+        LayerStack* m_LayerStack = new LayerStack;
         bool m_Running;
     };  
 }

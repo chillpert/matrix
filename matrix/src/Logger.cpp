@@ -12,6 +12,13 @@
                                     std::string finalMessage = "SUCCESS[" + t + "]: " + message + "\n";
         #define MX_PRINT_RESET      SetConsoleTextAttribute(hConsole, 7);        
     #endif
+#else
+    #define MX_CONSOLE_HANDLE   std::string finalMessage;
+    #define MX_PRINT_FATAL      std::string finalMessage;                        
+    #define MX_PRINT_WARN       std::string finalMessage;                          
+    #define MX_PRINT_INFO       std::string finalMessage;                           
+    #define MX_PRINT_SUCCESS    std::string finalMessage;                  
+    #define MX_PRINT_RESET        
 #endif
 
 #define _CRT_SECURE_NO_WARNINGS

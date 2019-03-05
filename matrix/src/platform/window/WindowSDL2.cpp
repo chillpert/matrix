@@ -1,6 +1,7 @@
 #include "matrix/src/platform/window/WindowSDL2.h"
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
+#include "matrix/src/event/WindowEvent.h"
 
 #ifdef MX_SDL2_ACTIVE
 
@@ -15,13 +16,13 @@ namespace MX {
             return 0;
         } else {
             MX_SUCCESS("SDL2 context");
-
+            
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
             SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-            SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
+            SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
             m_Window = SDL_CreateWindow(m_Props.m_Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
-                                        m_Props.m_Width, m_Props.m_Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+                                        m_Props.m_Width, m_Props.m_Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
             if (m_Window == NULL) {
                 SDL_ErrorMessage = SDL_GetError();
                 MX_FATAL("SDL2 window: " + SDL_ErrorMessage);
@@ -90,6 +91,24 @@ namespace MX {
                 MouseScrolled event(event.wheel.x, event.wheel.y);
                 event.handle();
                 LOGEVENT;
+            }
+            if (event.type == SDL_WINDOWEVENT) {
+                switch (event.window.event) {
+                    case SDL_WINDOWEVENT_CLOSE:
+                    {
+                        WindowClosed event;
+                        event.handle();
+                        LOGEVENT;
+                        break;
+                    }
+                    case SDL_WINDOWEVENT_RESIZED:
+                    {
+                        WindowResized event(int(event.window.data1), int(event.window.data1));
+                        event.handle();
+                        LOGEVENT;
+                        break;
+                    }
+                }
             }
         }   
     }
