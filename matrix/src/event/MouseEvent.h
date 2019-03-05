@@ -7,70 +7,56 @@ namespace MX {
 
     class MX_API MouseEvent : public Event {
     public:
-        MouseEvent() {}
+        MouseEvent() {
+            MX_SET_EVENT_TYPE(e_DefaultMouse);
+        }
         ~MouseEvent() {}
 
-        void handle() override;
-        void printEventType() const override;
-    protected:
-        int m_KeyCode;
-        int m_X, m_Y;
-    private:
-        EventType event = e_DefaultMouse;
+        void handle() override {};
     };
 
     class MX_API MouseButtonPressed : public MouseEvent {
     public:
-        MouseButtonPressed(int button)
-            : m_KeyCode(button) {}
+        MouseButtonPressed(int button) {
+            setKeyCode(button);
+            MX_SET_EVENT_TYPE(e_MouseButtonPressed);
+        }
         ~MouseButtonPressed() {}
 
         void handle() override;
-        void printEventType() const override;
-    private:
-        EventType event = e_MouseButtonPressed;
-        int m_KeyCode;
     };
 
     class MX_API MouseButtonReleased : public MouseEvent {
     public:
-        MouseButtonReleased(int button)
-            : m_KeyCode(button) {}
+        MouseButtonReleased(int button) {
+            setKeyCode(button);
+            MX_SET_EVENT_TYPE(e_MouseButtonReleased);
+        }
         ~MouseButtonReleased() {}
 
         void handle() override;
-        void printEventType() const override;
-    private:
-        EventType event = e_MouseButtonReleased;
-        int m_KeyCode;
     };
 
     class MX_API MouseMoved : public MouseEvent {
     public:
-        MouseMoved(int x, int y)
-            : m_X(x), m_Y(y) {}
+        MouseMoved(int x, int y) {
+            setCoordinates(x, y);
+            MX_SET_EVENT_TYPE(e_MouseMoved);
+        }
         ~MouseMoved() {}
 
         void handle() override;
-        void printEventType() const override;
-    private:
-        EventType event = e_MouseMoved;
-        int m_X;
-        int m_Y;
     };
 
     class MX_API MouseScrolled : public MouseEvent {
     public:
-        MouseScrolled(int xAxis, int yAxis)
-            : m_Xaxis(xAxis), m_Yaxis(yAxis) {}
+        MouseScrolled(int xAxis, int yAxis) {
+            setAxis(xAxis, yAxis);
+            MX_SET_EVENT_TYPE(e_MouseScrolled);
+        }
         ~MouseScrolled() {}
 
         void handle() override;
-        void printEventType() const override;
-    private:
-        EventType event = e_MouseScrolled;
-        int m_Xaxis;
-        int m_Yaxis;
     };
 }
 

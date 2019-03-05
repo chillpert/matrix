@@ -7,41 +7,34 @@ namespace MX {
 
     class MX_API KeyboardEvent : public Event {
     public:
-        KeyboardEvent() {}
+        KeyboardEvent() {
+            MX_SET_EVENT_TYPE(e_DefaultKeyboard);
+        }
         ~KeyboardEvent() {}
 
-        void handle() override;
-        void printEventType() const override;
-    protected:
-        int m_KeyCode;
-    private:
-        EventType event = e_DefaultKeyboard;
+        void handle() override {}
     };
 
     class MX_API KeyboardButtonPressed : public KeyboardEvent {
     public:
-        KeyboardButtonPressed(int button)
-            : m_KeyCode(button) {}
+        KeyboardButtonPressed(int button) {
+            setKeyCode(button);
+            MX_SET_EVENT_TYPE(e_KeyboardButtonPressed);
+        }
         ~KeyboardButtonPressed() {}
 
         void handle() override;
-        void printEventType() const override;
-    private:
-        EventType event = e_KeyboardButtonPressed;
-        int m_KeyCode;
     };
 
     class MX_API KeyboardButtonReleased : public KeyboardEvent {
     public:
-        KeyboardButtonReleased(int button) 
-            : m_KeyCode(button) {}
+        KeyboardButtonReleased(int button) {
+            setKeyCode(button);
+            MX_SET_EVENT_TYPE(e_KeyboardButtonReleased);
+        }
         ~KeyboardButtonReleased() {}
 
         void handle() override;
-        void printEventType() const override;
-    private:
-        EventType event = e_KeyboardButtonReleased;
-        int m_KeyCode;
     };
 }
 

@@ -44,8 +44,8 @@ namespace MX {
             std::string m_Title;
         };
  
-    protected:
         WindowProps m_Props; 
+    protected:
         MX_API virtual void setTitle() {}
         MX_API virtual void resize() {}
     };
