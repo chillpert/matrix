@@ -35,3 +35,9 @@ set_target_properties(Matrix Sandbox
     LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "lib/minsizerel"
     RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "bin/minsizerel"   
 )
+
+# copy dll to exe directory
+add_custom_command(TARGET Sandbox POST_BUILD        
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different  
+        "${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll"    
+        $<TARGET_FILE_DIR:Sandbox>)                
