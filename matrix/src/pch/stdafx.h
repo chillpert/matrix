@@ -25,6 +25,7 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
+#include <algorithm>
 
 // project files
 #include "matrix/src/Logger.h"

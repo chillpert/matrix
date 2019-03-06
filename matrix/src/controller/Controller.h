@@ -56,7 +56,7 @@ namespace MX {
 
         void handleCloseWindow();
         void handleResizeWindow(int width, int height);
-    protected:
+    private:
         Controller() {}
         // last position of mouse
         int m_X;

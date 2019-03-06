@@ -14,7 +14,7 @@ namespace MX {
     class MX_API API {
     public:
         API() {}
-        ~API() {}
+        virtual ~API() {}
     
         virtual bool createContext() const { return false; }
         virtual void render() const {}

@@ -118,7 +118,7 @@ namespace MX {
     }
 
     void WindowSDL2::resize() {
-
+        SDL_SetWindowSize(m_Window, m_Props.m_Width, m_Props.m_Height);
     }
 }
 
