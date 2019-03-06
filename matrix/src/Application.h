@@ -13,7 +13,7 @@ namespace MX {
 
     class MX_API Application {     
     public:
-        ~Application();
+        virtual ~Application();
 
         static Application &get();
     
@@ -24,7 +24,8 @@ namespace MX {
         void clean();
 
         inline bool isRunning() { return m_Running; }
-        inline auto getWindow() { return m_Window; }
+        inline Window* getWindow() { return m_Window; }
+        inline LayerStack* getLayerStack() { return m_LayerStack; }
 
     private:
         Application();

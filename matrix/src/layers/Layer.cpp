@@ -2,7 +2,5 @@
 
 namespace MX {
 
-    void Layer::handleEvent() {
-        m_Event.handle();
-    }
+   
 }
