@@ -26,6 +26,7 @@ int main() {
     }
     app->clean();
 
+    // layer testing
     MX::Layer l1("l1");
     MX::Layer l2("l2");
     MX::Layer l3("l3");
