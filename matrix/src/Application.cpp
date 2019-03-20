@@ -1,4 +1,5 @@
 #include "matrix/src/Application.h"
+#include <string>
 
 namespace MX {
     
@@ -22,6 +23,8 @@ namespace MX {
         // setting API
         m_Running = m_API->createContext();
         
+        m_GUI->initialize();
+
         if (m_Running) {
             MX_SUCCESS("Application initialization");
         } else {
@@ -32,18 +35,20 @@ namespace MX {
     void Application::update(void (*update_func)()) {
         m_Window->update();
         m_Window->controllerCallback();
+         
         update_func();
     }
 
-    void Application::render(void (*render_func)()) {
-        m_API->render();
-        
-        render_func();  
-
+    void Application::render() {
         m_Window->render();
+        m_API->clear();
+
+        m_API->render();
+        m_GUI->render();   
     }
 
     void Application::clean() {
+        m_GUI->clean();
         m_Window->close();
     }
 

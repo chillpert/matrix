@@ -53,6 +53,7 @@ namespace MX {
     }
 
     void WindowSDL2::close() const {
+        SDL_GL_DeleteContext(m_Context);
         SDL_DestroyWindow(m_Window);
         SDL_Quit();
     }

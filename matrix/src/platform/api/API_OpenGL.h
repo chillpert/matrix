@@ -11,7 +11,9 @@ namespace MX {
         ~API_OpenGL() {}
 
         bool createContext() const override;
+        void update() const override;
         void render() const override; 
+        void clear() const override;
     private:
     
     };

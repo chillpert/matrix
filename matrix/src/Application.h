@@ -7,6 +7,8 @@
 #include "matrix/src/platform/window/WindowSDL2.h"
 #include "matrix/src/platform/api/API.h"
 #include "matrix/src/platform/api/API_OpenGL.h"
+#include "matrix/src/platform/gui/GUI.h"
+#include "matrix/src/platform/gui/GUI_ImGui.h"
 #include "matrix/src/layers/LayerStack.h"
 
 namespace MX {
@@ -18,7 +20,7 @@ namespace MX {
         static Application &get();
     
         void initialize(void (*initialize_func)());
-        void render(void (*render_func)());
+        void render();
         void update(void (*update_func)());
         void stop();
         void clean();
@@ -32,6 +34,7 @@ namespace MX {
 
     protected:   
         API* m_API = MX_API_TYPE;
+        GUI* m_GUI = MX_GUI_TYPE;
         Window* m_Window = MX_WINDOW_TYPE;
         LayerStack* m_LayerStack = new LayerStack;
         bool m_Running;

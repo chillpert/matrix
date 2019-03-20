@@ -106,7 +106,8 @@ namespace MX {
                     event.handle();
                     LOGEVENT;
                 });
-            
+
+                glfwSwapInterval(1);
                 MX_SUCCESS("GLFW context");
                 return true;
             }
@@ -116,12 +117,12 @@ namespace MX {
     }
 
     void WindowGLFW::update() const {
-        
+    
     }
 
     void WindowGLFW::render() const {
-        glfwSwapBuffers(m_Window);
         glfwPollEvents();
+        glfwSwapBuffers(m_Window);
     }
 
     void WindowGLFW::close() const {

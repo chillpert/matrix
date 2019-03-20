@@ -32,7 +32,13 @@ link_directories(external/libs)
             ENDIF ()
         # controller
             add_compile_definitions(MX_DEFAULT_CONTROLLER)
-
+        # gui
+            IF (USE_IMGUI)
+                message("Using ImGui")
+                add_compile_definitions(MX_IMGUI_ACTIVE)
+            ELSE ()
+                message("No GUI selected")
+            ENDIF ()
     # compilation
         IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
             add_compile_definitions(MX_DEBUG)
@@ -56,16 +62,57 @@ link_directories(external/libs)
         add_compile_definitions(MX_MODEL_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/models/")
         add_compile_definitions(MX_SHADER_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/")
 
+# external cpp files
+    # IMGUI
+    IF (USE_OPENGL)
+        set(IMGUI_API ${IMGUI_API}
+            "external/include/IMGUI/imgui_impl_opengl3.cpp"
+        )
+    ELSEIF (USE_DIRECTX)
+        set(IMGUI_API ${IMGUI_API}
+        
+        )
+    ENDIF() 
+
+    IF (USE_GLFW)
+        set(IMGUI_WINDOW ${IMGUI_WINDOW}
+            "external/include/IMGUI/imgui_impl_glfw.cpp"
+        )
+    ELSEIF (USE_SDL2)
+        set(IMGUI_WINDOW ${IMGUI_WINDOW}
+            "external/include/IMGUI/imgui_impl_sdl.cpp"
+        )
+    ENDIF()
+
+    set(IMGUI_FILES ${IMGUI_FILES}
+        "external/include/IMGUI/imgui.cpp"
+        "external/include/IMGUI/imgui_demo.cpp"
+        "external/include/IMGUI/imgui_draw.cpp"
+        "external/include/IMGUI/imgui_widgets.cpp"
+    )
+
+    IF (USE_IMGUI)
+        set(GUI_FILES ${GUI_FILES}
+            ${IMGUI_FILES}
+            ${IMGUI_API}
+            ${IMGUI_WINDOW}
+        )
+    ELSE ()
+        set(GUI_FILES ${GUI_FILES})
+    ENDIF ()
+
 # files for library
 file(GLOB FILES_LIB
+    "matrix/src/controller/*.cpp"
+    "matrix/src/event/*.cpp"
+    "matrix/src/layers/*.cpp"
     "matrix/src/pch/*.cpp"
     "matrix/src/platform/api/*.cpp"
+    "matrix/src/platform/gui/*.cpp"
     "matrix/src/platform/window/*.cpp"
-    "matrix/src/event/*.cpp"
-    "matrix/src/*.cpp"
-    "matrix/src/renderer/*.cpp"
-    "matrix/src/controller/*.cpp"
-    "matrix/src/layers/*.cpp"
+    "matrix/src/*.cpp"         
+
+    ${GUI_FILES}
 )
 
 # library 

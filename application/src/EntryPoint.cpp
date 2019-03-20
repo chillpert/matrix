@@ -5,10 +5,6 @@ void initialize() {
     
 }
 
-void render() {
-    
-}
-
 void update() {
     
 }
@@ -22,7 +18,7 @@ int main() {
     // rendering loop
     while(app->isRunning()) {
         app->update(update);        
-        app->render(render);
+        app->render();
     }
     app->clean();
 

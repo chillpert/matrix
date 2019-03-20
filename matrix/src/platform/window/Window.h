@@ -2,9 +2,9 @@
 #define WINDOW_H
 
 #ifdef MX_GLFW_ACTIVE
-    #define MX_WINDOW_TYPE new MX::WindowGLFW();
+    #define MX_WINDOW_TYPE &MX::WindowGLFW::get();
 #elif MX_SDL2_ACTIVE
-    #define MX_WINDOW_TYPE new MX::WindowSDL2();
+    #define MX_WINDOW_TYPE &MX::WindowSDL2::get();
 #else 
     #error "Matrix Framework only supports GLFW and SDL2"
 #endif
@@ -33,7 +33,7 @@ namespace MX {
 
         MX_API void setTitle(std::string title);
         MX_API void resize(int width, int height);
-        
+
         struct WindowProps {
             WindowProps() 
                 : m_Width(1200), m_Height(600), m_Title("Matrix Framework") {}
