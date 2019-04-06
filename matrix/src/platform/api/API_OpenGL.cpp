@@ -12,6 +12,7 @@ namespace MX {
             MX_SUCCESS("OpenGL context");
             return true;
         }
+        MX_API_ERROR;
     }
 
     void API_OpenGL::update() const {
@@ -28,6 +29,7 @@ namespace MX {
     }
 
     void API_OpenGL::clear() const {
+        glViewport(0, 0, 1200, 600);
         glClearColor(0.0f, 0.0f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }

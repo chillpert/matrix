@@ -3,8 +3,10 @@
 
 #ifdef MX_OPENGL_ACTIVE
     #define MX_API_TYPE new MX::API_OpenGL();
+#elif MX_DIRECTX_ACTIVE
+    #define MX_API_TYPE new MX::API_DirectX();
 #else
-    #error "Matrix Framework only supports OpenGL for now"
+    #error "Matrix Framework only supports OpenGL and DirectX for now"
 #endif
 
 #include "matrix/src/pch/stdafx.h"
