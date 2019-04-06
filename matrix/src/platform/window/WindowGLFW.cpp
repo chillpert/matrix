@@ -12,9 +12,9 @@ namespace MX {
             MX_FATAL("GLFW initialization");
             return false;
         } else {
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+            //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             
             m_Window = glfwCreateWindow(m_Props.m_Width, m_Props.m_Height, m_Props.m_Title.c_str(), NULL, NULL);
             if (!m_Window) {
@@ -91,6 +91,7 @@ namespace MX {
                             MouseButtonReleased event(button);
                             event.handle();
                             LOGEVENT;
+                            break;
                         }
                     }
                 });
@@ -117,12 +118,12 @@ namespace MX {
     }
 
     void WindowGLFW::update() const {
-    
+        
     }
 
     void WindowGLFW::render() const {
-        glfwPollEvents();
         glfwSwapBuffers(m_Window);
+        glfwPollEvents();
     }
 
     void WindowGLFW::close() const {

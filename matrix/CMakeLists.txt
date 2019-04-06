@@ -116,7 +116,7 @@ file(GLOB FILES_LIB
 )
 
 # library 
-add_library(Matrix SHARED ${FILES_LIB} )
+add_library(Matrix SHARED ${FILES_LIB})
 
 # set window 
 IF (USE_GLFW)

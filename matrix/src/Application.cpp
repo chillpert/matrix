@@ -17,12 +17,13 @@ namespace MX {
     }
 
     void Application::initialize(void (*initialize_func)()) {
-        // setting window 
+        // set up window 
         m_Running = m_Window->createContext();
         
-        // setting API
+        // set up API
         m_Running = m_API->createContext();
         
+        // set up GUI
         m_GUI->initialize();
 
         if (m_Running) {
@@ -34,21 +35,27 @@ namespace MX {
 
     void Application::update(void (*update_func)()) {
         m_Window->update();
+
         m_Window->controllerCallback();
          
         update_func();
     }
 
     void Application::render() {
-        m_Window->render();
+        m_Window->update();
+
         m_API->clear();
 
         m_API->render();
+
         m_GUI->render();   
+
+        m_Window->render();
     }
 
     void Application::clean() {
         m_GUI->clean();
+
         m_Window->close();
     }
 

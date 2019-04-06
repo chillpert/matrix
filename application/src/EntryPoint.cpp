@@ -9,7 +9,8 @@ void update() {
     
 }
 
-int main() {    
+int main() {
+    // application testing
     MX::Application* app = &MX::Application::get();
 
     app->initialize(initialize);
@@ -20,6 +21,15 @@ int main() {
         app->update(update);        
         app->render();
     }
+
+    // shader testing
+    MX_SHADER s1("trivial");
+    MX_INFO(s1.getVsPath()); 
+    MX_INFO(s1.getFsPath());  
+    s1.create();
+    MX_INFO(std::to_string(s1.getID()));
+
+
     app->clean();
 
     // layer testing

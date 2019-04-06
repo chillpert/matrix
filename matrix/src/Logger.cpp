@@ -1,5 +1,11 @@
 #ifdef MX_DEBUG
+    #define MX_LOG_FATAL   std::string finalMessage = "FATAL  [" + t + "]: " + message + "\n";
+    #define MX_LOG_WARN    std::string finalMessage = "WARNING[" + t + "]: " + message + "\n";
+    #define MX_LOG_INFO    std::string finalMessage = "INFO   [" + t + "]: " + message + "\n";
+    #define MX_LOG_SUCCESS std::string finalMessage = "SUCCESS[" + t + "]: " + message + "\n";
+
     #ifdef MX_PLATFORM_WINDOWS_X64
+        // coloured console output for Windows only
         #define MX_CONSOLE_HANDLE HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
         
         #define MX_PRINT_FATAL      SetConsoleTextAttribute(hConsole, 12);\
@@ -31,7 +37,7 @@ namespace MX {
 
     static bool clearFlag = 1;
 
-    void Logger::writeToFile(std::string message) {
+    void Logger::writeToFile(const std::string &message) {
         if (clearFlag) {
             remove("log.txt");
             clearFlag = 0;
@@ -51,7 +57,7 @@ namespace MX {
         return h + ":" + m + ":" + s;
     }
 
-    void Logger::p_Fatal(std::string message) {
+    void Logger::p_Fatal(const std::string &message) {
         std::string t = getTime();
         MX_PRINT_FATAL;
         std::cerr << finalMessage;
@@ -59,7 +65,7 @@ namespace MX {
         writeToFile(finalMessage);
     }
 
-    void Logger::p_Warn(std::string message) {
+    void Logger::p_Warn(const std::string &message) {
         std::string t = getTime();
         MX_PRINT_WARN;
         std::cerr << finalMessage;
@@ -67,7 +73,7 @@ namespace MX {
         writeToFile(finalMessage);
     }
 
-    void Logger::p_Info(std::string message) {
+    void Logger::p_Info(const std::string &message) {
         std::string t = getTime();
         MX_PRINT_INFO;
         std::cerr << finalMessage;
@@ -75,11 +81,35 @@ namespace MX {
         writeToFile(finalMessage);
     }
 
-    void Logger::p_Success(std::string message) {
+    void Logger::p_Success(const std::string &message) {
         std::string t = getTime();
         MX_PRINT_SUCCESS;
         std::cerr << finalMessage;
         MX_PRINT_RESET;
+        writeToFile(finalMessage);
+    }
+
+    void Logger::p_Fatal_log(const std::string &message) {
+        std::string t = getTime();
+        MX_LOG_FATAL;
+        writeToFile(finalMessage);
+    }
+
+    void Logger::p_Warn_log(const std::string &message) {
+        std::string t = getTime();
+        MX_LOG_WARN;
+        writeToFile(finalMessage);
+    }
+
+    void Logger::p_Info_log(const std::string &message) {
+        std::string t = getTime();
+        MX_LOG_INFO;
+        writeToFile(finalMessage);
+    }
+
+    void Logger::p_Success_log(const std::string &message) {
+        std::string t = getTime();
+        MX_LOG_SUCCESS;
         writeToFile(finalMessage);
     }
 }

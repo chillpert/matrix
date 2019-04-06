@@ -1,7 +1,11 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include <string>
+
+namespace MX {
+
+    std::string parseFile(const std::string& path);
+}
 
 #endif // UTILS_H
