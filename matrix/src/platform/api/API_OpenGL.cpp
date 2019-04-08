@@ -20,12 +20,7 @@ namespace MX {
     }
 
     void API_OpenGL::render() const {
-        glBegin(GL_TRIANGLES);
-        glColor3f(0.1f, 0.2f, 0.3f);
-        glVertex3f(-1, -1, 0);
-        glVertex3f(1, -1, 0);
-        glVertex3f(0, 1, 0);
-        glEnd();
+        
     }
 
     void API_OpenGL::clear() const {

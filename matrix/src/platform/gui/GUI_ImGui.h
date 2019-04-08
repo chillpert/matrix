@@ -11,6 +11,7 @@ namespace MX {
         MX_API ~GUI_ImGui() {}
 
         MX_API void initialize() override;
+        MX_API void update() override;
         MX_API void render() override;
         MX_API void clean() override;
     };

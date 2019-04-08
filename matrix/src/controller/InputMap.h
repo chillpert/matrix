@@ -2,6 +2,7 @@
 #define INPUTMAP_H
 
 #include "matrix/src/controller/Controller.h"
+#include "matrix/src/Camera.h"
 
 namespace MX {
 
@@ -10,7 +11,7 @@ namespace MX {
 
 // keyboard (pressed)                  
 #define MX_Q_PRESSED
-#define MX_W_PRESSED
+#define MX_W_PRESSED    Camera::get().processKeyboard(FORWARDS, 3.0f);           
 #define MX_E_PRESSED
 #define MX_R_PRESSED
 #define MX_T_PRESSED
@@ -144,5 +145,7 @@ namespace MX {
 #define MX_RIGHT_RELEASED
 #define MX_MIDDLE_RELEASED
 #define MX_SCROLL_DOWN
+// mouse (moved)
+#define MX_MOUSE_MOVED(x, y) Camera::get().processMouse(x,y);
 
 #endif // INPUTMAP_H

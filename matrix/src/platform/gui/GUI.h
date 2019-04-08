@@ -17,6 +17,7 @@ namespace MX {
         MX_API virtual ~GUI() {}
 
         MX_API virtual void initialize() {} 
+        MX_API virtual void update() {}
         MX_API virtual void render() {}
         MX_API virtual void clean() {}
     };
