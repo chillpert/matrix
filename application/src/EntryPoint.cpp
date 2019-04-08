@@ -1,12 +1,28 @@
 #include "matrix/Matrix.h"
 #include <string>
 
+MX::Camera* cam = &MX::Camera::get();
+MX::Shader_OpenGL s1("trivial");
+MX::Model m1("cube.obj");
+
 void initialize() {
     
 }
 
 void update() {
-    
+    s1.use();
+    glm::fmat4 view_matrix = cam->getViewMatrix();
+    s1.setfMat4("view", view_matrix);
+    glm::fmat4 projection_matrix = cam->getProjectionMatrix();
+    s1.setfMat4("projection", projection_matrix);
+}
+
+void render() {
+    s1.use();
+    glm::fmat4 model_matrix = glm::fmat4(1.0f);
+    s1.setfMat4("model", model_matrix);
+    m1.setVertexAttributes();
+    m1.draw();
 }
 
 int main() {
@@ -14,22 +30,20 @@ int main() {
     MX::Application* app = &MX::Application::get();
 
     app->initialize(initialize);
-    
     app->getWindow()->setTitle("My Application");
+
+    // shader testing
+    s1.create();
+    s1.use();
+    
+    // model testing
+    m1.setGeometry(GL_TRIANGLES); 
+
     // rendering loop
     while(app->isRunning()) {
         app->update(update);        
-        app->render();
+        app->render(render);
     }
-
-    // shader testing
-    MX_SHADER s1("trivial");
-    MX_INFO(s1.getVsPath()); 
-    MX_INFO(s1.getFsPath());  
-    s1.create();
-    MX_INFO(std::to_string(s1.getID()));
-
-
     app->clean();
 
     // layer testing

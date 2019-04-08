@@ -37,16 +37,18 @@ namespace MX {
         m_Window->update();
 
         m_Window->controllerCallback();
+
+        m_GUI->update();
          
         update_func();
     }
 
-    void Application::render() {
-        m_Window->update();
-
+    void Application::render(void (*render_func)()) {
         m_API->clear();
 
         m_API->render();
+
+        render_func();
 
         m_GUI->render();   
 

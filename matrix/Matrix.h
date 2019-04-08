@@ -4,6 +4,8 @@
 // application
 #include "matrix/src/Application.h"
 #include "matrix/src/Logger.h"
+#include "matrix/src/Camera.h"
+#include "matrix/src/Model.h"
 // layers
 #include "matrix/src/layers/Layer.h"
 #include "matrix/src/layers/LayerStack.h"

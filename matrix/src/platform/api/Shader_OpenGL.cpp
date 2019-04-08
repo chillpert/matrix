@@ -3,6 +3,7 @@
 namespace MX {
 
     Shader_OpenGL::Shader_OpenGL(const std::string &name) {
+        m_Name = name;
         m_VsPath.append(name + ".vert");
         m_FsPath.append(name + ".frag");
     }
@@ -27,7 +28,43 @@ namespace MX {
 	    glDeleteShader(vs);
 	    glDeleteShader(fs);
 
-        MX_SUCCESS("MX: OpenGL: Shader at\n" + m_VsPath + "\n" + m_FsPath);
+        MX_SUCCESS("MX: OpenGL: Shader: " + m_Name);
+    }
+
+    void Shader_OpenGL::setBool(const std::string &name, const bool &value) const {         
+        glUniform1i(glGetUniformLocation(m_ID, name.c_str()), (int)value); 
+    }
+
+    void Shader_OpenGL::setInt(const std::string &name, const int &value) const { 
+        glUniform1i(glGetUniformLocation(m_ID, name.c_str()), value); 
+    }
+
+    void Shader_OpenGL::setFloat(const std::string &name, const float &value) const { 
+        glUniform1f(glGetUniformLocation(m_ID, name.c_str()), value); 
+    }
+
+    void Shader_OpenGL::setfVec2(const std::string &name, const glm::fvec2 &value) const { 
+        glUniform2fv(glGetUniformLocation(m_ID, name.c_str()), 1, &value[0]); 
+    }
+
+    void Shader_OpenGL::setfVec3(const std::string &name, const glm::fvec3 &value) const { 
+        glUniform3fv(glGetUniformLocation(m_ID, name.c_str()), 1, &value[0]); 
+    }
+
+    void Shader_OpenGL::setfVec4(const std::string &name, const glm::fvec4 &value) const { 
+        glUniform4fv(glGetUniformLocation(m_ID, name.c_str()), 1, &value[0]); 
+    }
+
+    void Shader_OpenGL::setfMat2(const std::string &name, const glm::fmat2 &mat) const {
+        glUniformMatrix2fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
+
+    void Shader_OpenGL::setfMat3(const std::string &name, const glm::fmat3 &mat) const {
+        glUniformMatrix3fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+    }
+
+    void Shader_OpenGL::setfMat4(const std::string &name, const glm::fmat4 &mat) const {
+        glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
     }
 
     void use(Shader_OpenGL &shader) {
@@ -39,7 +76,7 @@ namespace MX {
 	    const char* src = source.c_str();
 	    glShaderSource(ID, 1, &src, nullptr);
 	    glCompileShader(ID);
-
+    
         errorCheck(ID, GL_COMPILE_STATUS);
 
 	    return ID;

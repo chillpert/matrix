@@ -3,8 +3,8 @@
 
 #include "matrix/src/pch/stdafx.h"
 #include "matrix/src/platform/window/Window.h"
-#include "matrix/src/platform/window/WindowGLFW.h"
-#include "matrix/src/platform/window/WindowSDL2.h"
+#include "matrix/src/platform/window/Window_GLFW.h"
+#include "matrix/src/platform/window/Window_SDL2.h"
 #include "matrix/src/platform/api/API.h"
 #include "matrix/src/platform/api/API_OpenGL.h"
 #include "matrix/src/platform/gui/GUI.h"
@@ -20,7 +20,7 @@ namespace MX {
         static Application &get();
     
         void initialize(void (*initialize_func)());
-        void render();
+        void render(void (*render_func)());
         void update(void (*update_func)());
         void stop();
         void clean();
