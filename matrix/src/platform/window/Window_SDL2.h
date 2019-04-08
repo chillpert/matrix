@@ -1,5 +1,5 @@
-#ifndef WINDOWSDL2_H
-#define WINDOWSDL2_H
+#ifndef Window_SDL2_H
+#define Window_SDL2_H
 
 #include "matrix/src/platform/window/Window.h"
 
@@ -7,14 +7,14 @@
 
 namespace MX {
 
-    class WindowSDL2 : public Window {
+    class Window_SDL2 : public Window {
     public:
-    	MX_API static WindowSDL2& get() {
-            static WindowSDL2 instance;
+    	MX_API static Window_SDL2& get() {
+            static Window_SDL2 instance;
             return instance;
         }
 
-        MX_API ~WindowSDL2() {}
+        MX_API ~Window_SDL2() {}
 
         MX_API void update() const override; 
         MX_API void render() const override; 
@@ -29,7 +29,7 @@ namespace MX {
         MX_API inline SDL_Window* getWindow() { return m_Window; } 
         MX_API inline SDL_GLContext& getContext() { return m_Context; }
     private:
-        MX_API WindowSDL2() {}
+        MX_API Window_SDL2() {}
 
         SDL_Window* m_Window = NULL;
         SDL_GLContext m_Context;
@@ -38,4 +38,4 @@ namespace MX {
 
 #endif
 
-#endif // WINDOWSDL2_H
+#endif // Window_SDL2_H

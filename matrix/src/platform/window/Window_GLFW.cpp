@@ -1,4 +1,4 @@
-#include "matrix/src/platform/window/WindowGLFW.h"
+#include "matrix/src/platform/window/Window_GLFW.h"
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
 #include "matrix/src/event/WindowEvent.h"
@@ -7,12 +7,12 @@
 
 namespace MX {
     
-    bool WindowGLFW::createContext() {
+    bool Window_GLFW::createContext() {
         if (!glfwInit()) {
             MX_FATAL("GLFW initialization");
             return false;
         } else {
-            //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
             //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
             
@@ -117,25 +117,25 @@ namespace MX {
         return false;
     }
 
-    void WindowGLFW::update() const {
+    void Window_GLFW::update() const {
         
     }
 
-    void WindowGLFW::render() const {
+    void Window_GLFW::render() const {
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
     }
 
-    void WindowGLFW::close() const {
+    void Window_GLFW::close() const {
         glfwDestroyWindow(m_Window);
         glfwTerminate();
     }
 
-    void WindowGLFW::resize() {
+    void Window_GLFW::resize() {
 
     }
 
-    void WindowGLFW::setTitle() {
+    void Window_GLFW::setTitle() {
         glfwSetWindowTitle(m_Window, m_Props.m_Title.c_str());
     }
 }

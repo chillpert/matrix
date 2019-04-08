@@ -2,9 +2,9 @@
 #define WINDOW_H
 
 #ifdef MX_GLFW_ACTIVE
-    #define MX_WINDOW_TYPE &MX::WindowGLFW::get();
+    #define MX_WINDOW_TYPE &MX::Window_GLFW::get();
 #elif MX_SDL2_ACTIVE
-    #define MX_WINDOW_TYPE &MX::WindowSDL2::get();
+    #define MX_WINDOW_TYPE &MX::Window_SDL2::get();
 #else 
     #error "Matrix Framework only supports GLFW and SDL2"
 #endif

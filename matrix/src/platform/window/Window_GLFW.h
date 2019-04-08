@@ -1,5 +1,5 @@
-#ifndef WINDOWGLFW_H
-#define WINDOWGLFW_H
+#ifndef Window_GLFW_H
+#define Window_GLFW_H
 
 #include "matrix/src/platform/window/Window.h"
 
@@ -7,14 +7,14 @@
 
 namespace MX {
 
-    class WindowGLFW : public Window {
+    class Window_GLFW : public Window {
     public:
-        MX_API static WindowGLFW& get() {
-            static WindowGLFW instance;
+        MX_API static Window_GLFW& get() {
+            static Window_GLFW instance;
             return instance;
         }
 
-        MX_API ~WindowGLFW() {}
+        MX_API ~Window_GLFW() {}
 
         MX_API void update() const override; 
         MX_API void render() const override; 
@@ -28,7 +28,7 @@ namespace MX {
 
         MX_API inline auto getWindow() { return m_Window; }
     private:
-        MX_API WindowGLFW() {}
+        MX_API Window_GLFW() {}
 
         GLFWwindow* m_Window;
     };
@@ -36,4 +36,4 @@ namespace MX {
 
 #endif 
 
-#endif // WINDOWGLFW_H
+#endif // Window_GLFW_H

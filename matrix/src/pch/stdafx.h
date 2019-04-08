@@ -34,6 +34,7 @@
 #include <fstream>
 #include <ctime>
 #include <algorithm>
+#include <vector>
 
 // project files
 #include "matrix/src/Utils.h"

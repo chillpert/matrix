@@ -1,4 +1,4 @@
-#include "matrix/src/platform/window/WindowSDL2.h"
+#include "matrix/src/platform/window/Window_SDL2.h"
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
 #include "matrix/src/event/WindowEvent.h"
@@ -9,7 +9,7 @@ namespace MX {
 
     static std::string SDL_ErrorMessage;
 
-    bool WindowSDL2::createContext() {
+    bool Window_SDL2::createContext() {
         if (SDL_Init(SDL_INIT_VIDEO) < 0) {
             SDL_ErrorMessage = SDL_GetError();
             MX_FATAL("SDL2 context: " + SDL_ErrorMessage);
@@ -43,22 +43,22 @@ namespace MX {
         return 0;
     }
 
-    void WindowSDL2::update() const {
+    void Window_SDL2::update() const {
         
     }
 
-    void WindowSDL2::render() const {
+    void Window_SDL2::render() const {
         SDL_SetWindowTitle(m_Window, m_Props.m_Title.c_str());
         SDL_GL_SwapWindow(m_Window);
     }
 
-    void WindowSDL2::close() const {
+    void Window_SDL2::close() const {
         SDL_GL_DeleteContext(m_Context);
         SDL_DestroyWindow(m_Window);
         SDL_Quit();
     }
 
-    void WindowSDL2::controllerCallback() {
+    void Window_SDL2::controllerCallback() {
         SDL_Event event;
         while (SDL_PollEvent(&event) != 0) {
             if (event.type == SDL_KEYDOWN) {
@@ -114,11 +114,11 @@ namespace MX {
         }   
     }
 
-    void WindowSDL2::setTitle() {
+    void Window_SDL2::setTitle() {
         SDL_SetWindowTitle(m_Window, m_Props.m_Title.c_str());
     }
 
-    void WindowSDL2::resize() {
+    void Window_SDL2::resize() {
         SDL_SetWindowSize(m_Window, m_Props.m_Width, m_Props.m_Height);
     }
 }
