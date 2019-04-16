@@ -19,6 +19,8 @@
         }
 
     #endif
+#else
+    #define MX_API_ERROR
 #endif
 
 #endif // API_ERRORHANDLING_H

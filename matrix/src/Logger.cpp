@@ -25,6 +25,11 @@
     #define MX_PRINT_INFO       std::string finalMessage;                           
     #define MX_PRINT_SUCCESS    std::string finalMessage;                  
     #define MX_PRINT_RESET        
+
+    #define MX_LOG_FATAL   std::string finalMessage;
+    #define MX_LOG_WARN    std::string finalMessage;
+    #define MX_LOG_INFO    std::string finalMessage;
+    #define MX_LOG_SUCCESS std::string finalMessage;
 #endif
 
 #define _CRT_SECURE_NO_WARNINGS

@@ -8,7 +8,7 @@ namespace MX {
     }
 
     Application::~Application() {
-
+        
     }
 
     Application &Application::get() {

@@ -17,6 +17,11 @@
     #define MX_WARN(x) 
     #define MX_INFO(x)
     #define MX_SUCCESS(x)
+
+    #define MX_FATAL_LOG(x)  
+    #define MX_WARN_LOG(x)   
+    #define MX_INFO_LOG(x)   
+    #define MX_SUCCESS_LOG(x)
 #endif
 
 #include "matrix/src/Core.h"

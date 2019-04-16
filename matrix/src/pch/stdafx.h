@@ -35,6 +35,7 @@
 #include <ctime>
 #include <algorithm>
 #include <vector>
+#include <iterator>
 
 // project files
 #include "matrix/src/Utils.h"
