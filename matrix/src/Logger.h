@@ -28,7 +28,7 @@
 
 #include <string>
 
-namespace M
+namespace MX
 {
   struct MX_API Logger
   {
