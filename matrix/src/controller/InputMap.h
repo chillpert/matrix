@@ -3,15 +3,17 @@
 
 #include "matrix/src/controller/Controller.h"
 #include "matrix/src/Camera.h"
+#include "matrix/src/Camera_Test.h"
 
-namespace MX {
-
-    extern float speed;
+namespace MX 
+{
+  extern float speed;
 }
 
 // keyboard (pressed)                  
 #define MX_Q_PRESSED
-#define MX_W_PRESSED    Camera::get().processKeyboard(FORWARDS, 3.0f);           
+#define MX_W_PRESSED  MX::Camera_Test::get().proessKeyboard(m_forwards, 5.0f);    
+//Camera::get().processKeyboard(FORWARDS, 3.0f);           
 #define MX_E_PRESSED
 #define MX_R_PRESSED
 #define MX_T_PRESSED
@@ -37,7 +39,7 @@ namespace MX {
 #define MX_N_PRESSED
 #define MX_M_PRESSED
 
-#define MX_ESCAPE_PRESSED       MX::Controller::get().handleCloseWindow(); 
+#define MX_ESCAPE_PRESSED MX::Controller::get().handleCloseWindow(); 
 #define MX_TAB_PRESSED      
 #define MX_CAPS_LOCK_PRESSED   
 #define MX_L_SHIFT_PRESSED 
@@ -140,12 +142,14 @@ namespace MX {
 #define MX_RIGHT_PRESSED
 #define MX_MIDDLE_PRESSED
 #define MX_SCROLL_UP
+
 // mouse (released)
 #define MX_LEFT_RELEASED        
 #define MX_RIGHT_RELEASED
 #define MX_MIDDLE_RELEASED
 #define MX_SCROLL_DOWN
+
 // mouse (moved)
-#define MX_MOUSE_MOVED(x, y) Camera::get().processMouse(x,y);
+#define MX_MOUSE_MOVED(x, y)  Camera::get().processMouse(x,y);
 
 #endif // INPUTMAP_H

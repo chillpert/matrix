@@ -3,18 +3,19 @@
 
 #include "matrix/src/platform/gui/GUI.h"
 
-namespace MX {
+namespace MX
+{
+  class GUI_ImGui: public GUI
+  {
+  public: 
+    MX_API GUI_ImGui() {}
+    MX_API ~GUI_ImGui() {}
 
-    class GUI_ImGui: public GUI {
-    public: 
-        MX_API GUI_ImGui() {}
-        MX_API ~GUI_ImGui() {}
-
-        MX_API void initialize() override;
-        MX_API void update() override;
-        MX_API void render() override;
-        MX_API void clean() override;
-    };
+    MX_API void initialize() override;
+    MX_API void update() override;
+    MX_API void render() override;
+    MX_API void clean() override;
+  };
 }
 
 #endif // GUI_IMGUI_H

@@ -1,67 +1,82 @@
 #include "matrix/src/Application.h"
 #include <string>
 
-namespace MX {
+namespace MX
+{
+  Application::Application()
+  {
+    MX_INFO("MX: Application: Created");
+  }
+
+  Application::~Application()
+  {
+    MX_INFO("MX: Application: Destroyed");
+  }
+
+  Application &Application::get()
+  {
+    static Application instance;
+    return instance;
+  }
+
+  void Application::initialize(void (*initialize_func)())
+  {
+    // set up window 
+    m_Running = m_Window->createContext();
     
-    Application::Application() {
-        MX_INFO("Creating Application");
+    // set up API
+    m_Running = m_API->createContext();
+    
+    // set up GUI
+    m_GUI->initialize();
+
+    initialize_func();
+
+    if (m_Running)
+    {
+        MX_SUCCESS("MX: Application: Initialization");
     }
-
-    Application::~Application() {
-        
+    else
+    {
+        MX_FATAL("MX: Application: Initialization");
     }
+  }
 
-    Application &Application::get() {
-        static Application instance;
-        return instance;
-    }
+  void Application::update(void (*update_func)())
+  {
+    m_Window->update();
 
-    void Application::initialize(void (*initialize_func)()) {
-        // set up window 
-        m_Running = m_Window->createContext();
-        
-        // set up API
-        m_Running = m_API->createContext();
-        
-        // set up GUI
-        m_GUI->initialize();
+    m_Window->controllerCallback();
 
-        if (m_Running) {
-            MX_SUCCESS("Application initialization");
-        } else {
-            MX_FATAL("Application initialization");
-        }
-    }
+    m_GUI->update();
+     
+    update_func();
+  }
 
-    void Application::update(void (*update_func)()) {
-        m_Window->update();
+  void Application::render(void (*render_func)())
+  {
+    m_API->clear();
 
-        m_Window->controllerCallback();
+    m_API->render();
 
-        m_GUI->update();
-         
-        update_func();
-    }
+    render_func();
 
-    void Application::render(void (*render_func)()) {
-        m_API->clear();
+    m_GUI->render();   
 
-        m_API->render();
+    m_Window->render();
+  }
 
-        render_func();
+  void Application::clean()
+  {
+    m_GUI->clean();
 
-        m_GUI->render();   
+    m_Window->close();
 
-        m_Window->render();
-    }
+    MX_SUCCESS("MX: Application: Closed");
+  }
 
-    void Application::clean() {
-        m_GUI->clean();
-
-        m_Window->close();
-    }
-
-    void Application::stop() {
-        m_Running = false;
-    }
+  void Application::stop()
+  {
+    m_Running = false;
+  }
 }

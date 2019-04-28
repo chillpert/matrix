@@ -11,34 +11,33 @@
 #include "matrix/src/platform/gui/GUI_ImGui.h"
 #include "matrix/src/layers/LayerStack.h"
 
-namespace MX {
+namespace MX
+{
+  class MX_API Application
+  {     
+  public:
+    virtual ~Application();
 
-    class MX_API Application {     
-    public:
-        virtual ~Application();
+    static Application &get();
+  
+    void initialize(void (*initialize_func)());
+    void render(void (*render_func)());
+    void update(void (*update_func)());
+    void stop();
+    void clean();
 
-        static Application &get();
-    
-        void initialize(void (*initialize_func)());
-        void render(void (*render_func)());
-        void update(void (*update_func)());
-        void stop();
-        void clean();
-
-        inline bool isRunning() { return m_Running; }
-        inline Window* getWindow() { return m_Window; }
-        inline LayerStack* getLayerStack() { return m_LayerStack; }
-
-    private:
-        Application();
-
-    protected:   
-        API* m_API = MX_API_TYPE;
-        GUI* m_GUI = MX_GUI_TYPE;
-        Window* m_Window = MX_WINDOW_TYPE;
-        LayerStack* m_LayerStack = new LayerStack;
-        bool m_Running;
-    };  
+    inline bool isRunning() { return m_Running; }
+    inline Window* getWindow() { return m_Window; }
+    inline LayerStack* getLayerStack() { return m_LayerStack; }
+  private:
+    Application();
+  protected:   
+    API* m_API = MX_API_TYPE;
+    GUI* m_GUI = MX_GUI_TYPE;
+    Window* m_Window = MX_WINDOW_TYPE;
+    LayerStack* m_LayerStack = new LayerStack;
+    bool m_Running;
+  };  
 }
 
 #endif // APPLICATION_H

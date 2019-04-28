@@ -2,53 +2,55 @@
 #define WINDOW_H
 
 #ifdef MX_GLFW_ACTIVE
-    #define MX_WINDOW_TYPE &MX::Window_GLFW::get();
+  #define MX_WINDOW_TYPE &MX::Window_GLFW::get();
 #elif MX_SDL2_ACTIVE
-    #define MX_WINDOW_TYPE &MX::Window_SDL2::get();
+  #define MX_WINDOW_TYPE &MX::Window_SDL2::get();
 #else 
-    #error "Matrix Framework only supports GLFW and SDL2"
+  #error "Matrix Framework only supports GLFW and SDL2"
 #endif
 
 #ifdef MX_DEBUG
-    #define LOGEVENT event.printEventType();
+  #define LOGEVENT event.printEventType();
 #else
-    #define LOGEVENT
+  #define LOGEVENT
 #endif
 
 #include "matrix/src/pch/stdafx.h"
 
-namespace MX {
+namespace MX
+{
+  class Window
+  {
+  public:
+    MX_API Window() {}
+    MX_API virtual ~Window() {}
+    
+    MX_API virtual void update() const {}
+    MX_API virtual void render() const {}
+    MX_API virtual bool createContext() { return false; }
 
-    class Window {
-    public:
-        MX_API Window() {}
-        MX_API virtual ~Window() {}
-        
-        MX_API virtual void update() const {}
-        MX_API virtual void render() const {}
-        MX_API virtual bool createContext() { return false; }
+    MX_API virtual void close() const {}
+    MX_API virtual void controllerCallback() {}
 
-        MX_API virtual void close() const {}
-        MX_API virtual void controllerCallback() {}
+    MX_API void setTitle(std::string title);
+    MX_API void resize(int width, int height);
 
-        MX_API void setTitle(std::string title);
-        MX_API void resize(int width, int height);
+    struct WindowProps
+    {
+      WindowProps() 
+        : m_Width(1200), m_Height(600), m_Title("Matrix Framework") {}
+      ~WindowProps() {}
 
-        struct WindowProps {
-            WindowProps() 
-                : m_Width(1200), m_Height(600), m_Title("Matrix Framework") {}
-            ~WindowProps() {}
-
-            int m_Width;
-            int m_Height;
-            std::string m_Title;
-        };
- 
-        WindowProps m_Props; 
-    protected:
-        MX_API virtual void setTitle() {}
-        MX_API virtual void resize() {}
+      int m_Width;
+      int m_Height;
+      std::string m_Title;
     };
+ 
+    WindowProps m_Props; 
+  protected:
+    MX_API virtual void setTitle() {}
+    MX_API virtual void resize() {}
+  };
 }
 
 #endif // WINDOW_H

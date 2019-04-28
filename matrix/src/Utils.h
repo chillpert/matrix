@@ -3,9 +3,9 @@
 
 #include <string>
 
-namespace MX {
-
-    std::string parseFile(const std::string& path);
+namespace MX
+{
+  std::string parseFile(const std::string& path);
 }
 
 #endif // UTILS_H
