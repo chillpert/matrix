@@ -14,19 +14,15 @@ namespace MX
   class Camera
   {
   public:
-    MX_API static Camera get()
-    {
-      static Camera instance;
-      return instance;
-    }
-    MX_API ~Camera() {}
+    MX_API static Camera &get();
   
     MX_API void processKeyboard(m_Camera direction, float speed); 
     MX_API void processMouse(float xoffset, float yoffset);
 
-    const glm::mat4 &getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_WorldUp); }
-    const glm::mat4 &getProjectionMatrix() { return glm::perspective(glm::radians(m_Fov), (float)1200 / (float)600, 0.1f, 100.0f); }
-  private:
+    MX_API const glm::mat4 &getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_WorldUp); }
+    MX_API const glm::mat4 &getProjectionMatrix() { return glm::perspective(glm::radians(m_Fov), (float)1200 / (float)600, 0.1f, 100.0f); }
+
+  // private:
     glm::fvec3 m_Position; 
     glm::fvec3 m_Front;
     glm::fvec3 m_WorldUp;
@@ -37,6 +33,8 @@ namespace MX
     float m_Pitch;
     float m_Sensitivity;
     float m_Fov;
+
+    MX_API void update();
     
     MX_API Camera()
       : m_Position(glm::vec3(0.0f, 0.0f, 3.0f)), 
@@ -49,8 +47,9 @@ namespace MX
     {
       update();
     }
-    
-    MX_API void update();
+
+    MX_API ~Camera() {}
+
   };
 }
 

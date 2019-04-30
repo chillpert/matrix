@@ -2,6 +2,11 @@
 
 namespace MX
 {
+  Camera &Camera::get()
+  {
+    static Camera instance;
+    return instance;
+  }
 
   void Camera::update()
   {
@@ -31,10 +36,10 @@ namespace MX
         m_Position += m_Right * speed;
         break;
       case UP:
-        m_Position.y += speed;
+        m_Position.y += speed / 5.0f;
         break;
       case DOWN:
-        m_Position.y -= speed;
+        m_Position.y -= speed / 5.0f;
         break;
       default:
         MX_WARN("Camera direction unkown");
@@ -52,24 +57,17 @@ namespace MX
     m_Pitch += yoffset;
 
     if (m_Yaw > 360.0f)
-    {
       m_Yaw = fmod(m_Yaw, 360.0f);
-    }
 
     if (m_Yaw < 0.0f)
-    {
       m_Yaw = 360.0f + fmod(m_Yaw, 360.0f);
-    }
 
     if (m_Pitch > 89.0f)
-    {
       m_Pitch = 89.0f;
-    }
+
 
     if (m_Pitch < -89.0f)
-    {
       m_Pitch = -89.0f;
-    }
 
     update();
   }
