@@ -10,8 +10,7 @@ namespace MX
   void Wavefront_Parser::start()
   {
     MX_INFO("MX: Model: Wavefront Parser: started");
-    //Wavefront_Description description = config.setConfig(m_Model->getPath());
-
+    
     bool V_VN_VT_flag = 0;
     
     if (/*description != Error*/1)
@@ -60,6 +59,8 @@ namespace MX
         }
       }
 
+      MX_FATAL("Test" + std::to_string(debug_counter));
+
       //MX_INFO(toString());
 
       for (unsigned int i = 0; i < temp_f_V.size(); i++) {
@@ -97,79 +98,6 @@ namespace MX
       "\ttemp_f_Vt: "   + std::to_string(temp_f_Vt.size())  + "\n" +
       "\ttemp_f_Vn: "   + std::to_string(temp_f_Vn.size())  + "\n";
     return message;
-  }
-
-  // finds out what data is available
-  Wavefront_Description Wavefront_Config::setConfig(const std::string &path)
-  {
-    std::ifstream file(path);
-    
-    std::string line;
-    while (std::getline(file, line))
-    {
-        
-      if (line.length() > 2)
-      {
-        // v
-        if (!hasV && line.at(0) == 'v' && line.at(1) == ' ') 
-          hasV = 1;
-        // vt
-        else if (!hasVt && line.at(0) == 'v' && line.at(1) == 't') 
-          hasVt = 1;
-        // vn
-        else if (!hasVn && line.at(0) == 'v' && line.at(1) == 'n') 
-  	      hasVn = 1;
-        // f
-        else if (!faces_1 && !faces_2 && !faces_3 && !faces_4 && line.at(0) == 'f')
-        {
-          // all possible face descriptions as regular expressions
-          std::regex reg_v("(f ([0-9]+) ([0-9]+) ([0-9]+)$)");
-          std::regex reg_v_vt("(f ([0-9]+)/([0-9]+) ([0-9]+)/([0-9]+) ([0-9]+)/([0-9]+)$)");
-          std::regex reg_v_vn("(f ([0-9]+)//([0-9]+) ([0-9]+)//([0-9]+) ([0-9]+)//([0-9]+)$)");
-          std::regex reg_v_vn_vt("(f ([0-9]+/[0-9]+/[0-9]+) ([0-9]+/[0-9]+/[0-9]+) ([0-9]+/[0-9]+/[0-9]+)$)");
-
-          std::smatch matches;
-      
-          // f v v v
-          if (std::regex_search(line, matches, reg_v))
-          {
-            faces_1 = 1;
-          } 
-          // f v/vt v/vt v/vt
-          else if (std::regex_search(line, matches, reg_v_vt))
-          {
-            faces_2 = 1;
-          } 
-          // f v//vn v//vn v//vn
-          else if (std::regex_search(line, matches, reg_v_vn))
-          {
-            faces_3 = 1;
-          } 
-          // f v/vt/vn v/vt/vn v/vt/vn
-          else if (std::regex_search(line, matches, reg_v_vn_vt))
-          {
-            faces_4 = 1;
-          } 
-          else
-          {
-            MX_WARN("MX: Model: Wavefront Parser: Can not parse face description");
-          }
-        }                
-      }
-    }
-
-    //MX_INFO(toString(path));
-
-    if (hasV && hasVn && hasVt)
-      return V_VN_VT;
-    else if (hasV && hasVt) 
-      return V_VT;
-    else if (hasV && hasVn) 
-      return V_VN;
-    else if (hasV) 
-      return V;
-    else 
-      return Error;
   }
 
   std::string Wavefront_Config::toString(const std::string &path)

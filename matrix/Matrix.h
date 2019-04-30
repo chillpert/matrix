@@ -7,11 +7,6 @@
 // debugging
 #ifdef MX_DEBUG
   #include "matrix/src/Logger.h"
-
-  // testing classes
-  #include "matrix/src/Model_Test.h"
-  #include "matrix/src/Shader_Test.h"
-  #include "matrix/src/Camera_Test.h"
 #endif
 
 #include "matrix/src/Camera.h"

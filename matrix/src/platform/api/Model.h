@@ -34,7 +34,7 @@ namespace MX
     MX_API Model() {}
     MX_API ~Model() {}
 
-    MX_API virtual void parse() = 0;
+    MX_API virtual void initialize() = 0;
     MX_API virtual void draw() = 0;
     MX_API virtual void setGeometry(unsigned int draw_mode) = 0;
     

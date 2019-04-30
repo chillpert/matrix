@@ -1,6 +1,46 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
+#include "matrix/src/pch/stdafx.h"
+
+namespace MX 
+{
+  class MX_API Controller 
+  {
+  public:
+    inline static Controller &get() 
+    {
+      static Controller instance;
+      return instance;
+    }
+
+    void handleKeyPressed(int keyCode);
+    void handleKeyReleased(int keyCode);
+
+    void handleMouseMoved(int x, int y);
+    void handleMousePressed(int keyCode);
+    void handleMouseReleased(int keyCode);
+    void handleMouseScrolled(int x, int y);
+
+    void handleCloseWindow();
+    void handleResizeWindow(int width, int height);
+    
+  private:
+    Controller() {}
+    ~Controller() {}
+
+    // last position of mouse
+    int m_X;
+    int m_Y;
+
+    // last button pressed
+    int m_KeyPressed;
+
+    // last button released
+    int m_KeyReleased;
+  };
+}
+
 #ifdef MX_GLFW_ACTIVE
 
   // Keyboard
@@ -144,47 +184,5 @@
 #endif
 
 #define PRINT_KEY(x) #x
-
-#include "matrix/src/pch/stdafx.h"
-
-namespace MX 
-{
-
-  class MX_API Controller 
-  {
-  public:
-    ~Controller() {}
-    
-    inline static Controller& get() 
-    {
-        static Controller instance;
-        return instance;
-    }
-
-    void handleKeyPressed(int keyCode);
-    void handleKeyReleased(int keyCode);
-
-    void handleMouseMoved(int x, int y);
-    void handleMousePressed(int keyCode);
-    void handleMouseReleased(int keyCode);
-    void handleMouseScrolled(int x, int y);
-
-    void handleCloseWindow();
-    void handleResizeWindow(int width, int height);
-    
-  private:
-    Controller() {}
-
-    // last position of mouse
-    int m_X;
-    int m_Y;
-
-    // last button pressed
-    int m_KeyPressed;
-
-    // last button released
-    int m_KeyReleased;
-  };
-}
 
 #endif // CONTROLLER_H

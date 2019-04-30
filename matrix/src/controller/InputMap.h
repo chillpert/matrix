@@ -3,18 +3,16 @@
 
 #include "matrix/src/controller/Controller.h"
 #include "matrix/src/Camera.h"
-#include "matrix/src/Camera_Test.h"
 
 namespace MX 
 {
   extern float speed;
-}
 
 // keyboard (pressed)                  
 #define MX_Q_PRESSED
-#define MX_W_PRESSED  MX::Camera_Test::get().proessKeyboard(m_forwards, 5.0f);    
+#define MX_W_PRESSED Camera::get().processKeyboard(FORWARDS, speed);    
 //Camera::get().processKeyboard(FORWARDS, 3.0f);           
-#define MX_E_PRESSED
+#define MX_E_PRESSED 
 #define MX_R_PRESSED
 #define MX_T_PRESSED
 #define MX_Z_PRESSED
@@ -22,9 +20,9 @@ namespace MX
 #define MX_I_PRESSED
 #define MX_O_PRESSED
 #define MX_P_PRESSED
-#define MX_A_PRESSED
-#define MX_S_PRESSED
-#define MX_D_PRESSED
+#define MX_A_PRESSED Camera::get().processKeyboard(LEFT, speed);
+#define MX_S_PRESSED Camera::get().processKeyboard(BACKWARDS, speed);
+#define MX_D_PRESSED Camera::get().processKeyboard(RIGHT, speed);
 #define MX_F_PRESSED
 #define MX_G_PRESSED
 #define MX_H_PRESSED
@@ -33,7 +31,7 @@ namespace MX
 #define MX_L_PRESSED
 #define MX_Y_PRESSED
 #define MX_X_PRESSED
-#define MX_C_PRESSED
+#define MX_C_PRESSED Camera::get().processKeyboard(DOWN, speed);
 #define MX_V_PRESSED
 #define MX_B_PRESSED
 #define MX_N_PRESSED
@@ -45,7 +43,7 @@ namespace MX
 #define MX_L_SHIFT_PRESSED 
 #define MX_L_CTRL_PRESSED   
 #define MX_L_ALT_PRESSED    
-#define MX_SPACE_PRESSED    
+#define MX_SPACE_PRESSED MX::Camera::get().processKeyboard(UP, 5.0f);    
 #define MX_R_ALT_PRESSED   
 #define MX_R_CTRL_PRESSED   
 #define MX_R_SHIFT_PRESSED  
@@ -150,6 +148,8 @@ namespace MX
 #define MX_SCROLL_DOWN
 
 // mouse (moved)
-#define MX_MOUSE_MOVED(x, y)  Camera::get().processMouse(x,y);
+#define MX_MOUSE_MOVED(x, y)  MX::Camera::get().processMouse(x,y);
+
+}
 
 #endif // INPUTMAP_H

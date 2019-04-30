@@ -1,12 +1,7 @@
+#define GLM_ENABLE_EXPERIMENTAL 
+#include <GLM/gtx/string_cast.hpp>
+
 #include "matrix/Matrix.h"
-
-//MX::Camera* cam = &MX::Camera::get();
-MX_MODEL model("monkey.obj");
-
-//MX_SHADER s1("trivial");
-
-//MX::Model_Test model("monkey.obj");
-MX::Shader_Test s2("trivial");
 
 /* 
   order to draw stuff
@@ -21,48 +16,40 @@ MX::Shader_Test s2("trivial");
    9. bind default
 */  
 
+MX_MODEL m1("monkey.obj");
+MX_SHADER s1("trivial");
+MX::Camera *cam = &MX::Camera::get();
+
 void initialize() 
 {
-  MX::Camera_Test::get();
-  //s1.create();
-  //model.parse(); 
-  model.setGeometry(GL_TRIANGLES);
-
-  s2.createShader();
-  //model.setGeometry(GL_TRIANGLES);
+  s1.create();
+  m1.initialize(); 
 }
 
 void update() 
-{
-  //s1.use();
-  //glm::fmat4 view_matrix = cam->getViewMatrix();
-  //glm::fmat4 projection_matrix = cam->getProjectionMatrix();
-  //s1.setfMat4("view", view_matrix);
-  //s1.setfMat4("projection", projection_matrix);
-
-  s2.use();
-  glm::fmat4 view_matrix = MX::Camera_Test::get().getViewMatrix();
-  glm::fmat4 projection_matrix = MX::Camera_Test::get().getProjectionMatrix();
-  s2.setView(view_matrix);
-  s2.setProjection(projection_matrix);
+{  
+  s1.use();
+  glm::fmat4 view_matrix = cam->getViewMatrix();
+  glm::fmat4 projection_matrix = cam->getProjectionMatrix();
+  s1.setfMat4("view", view_matrix);
+  s1.setfMat4("projection", projection_matrix);
 }
 
 float time_ = 0.0f;
 
 void render() 
 {
-  s2.use();
-  glm::fmat4 model_matrix = glm::fmat4(1.0f);
-  //s1.setfMat4("model", model_matrix);
-  
   time_ = float(SDL_GetTicks()) / 1000.0f;
+
+  s1.use();
+  glm::fmat4 model_matrix = glm::fmat4(1.0f);
   model_matrix = glm::rotate(model_matrix, 2.0f * float(time_), glm::fvec3(0.0f, 1.0f, 0.0f));
-  s2.setModel(model_matrix);
-  
-  
-  model.draw();
-  //model.setVertexAttributes();
-  //model.draw();
+  s1.setfMat4("model", model_matrix);
+  s1.setfVec3("lightPosition", glm::vec3(5, -5, 1));
+  s1.setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+  s1.setfVec3("viewPos", cam->m_Position);
+
+  m1.draw();
 }
 
 int main() 
@@ -70,11 +57,12 @@ int main()
   // application testing
   MX::Application* app = &MX::Application::get();
 
-  app->initialize(initialize);
   app->getWindow()->setTitle("My Application");
+  app->initialize(initialize);
 
   // rendering loop
-  while(app->isRunning()) {
+  while(app->isRunning()) 
+  {
     app->update(update);        
     app->render(render);
   }

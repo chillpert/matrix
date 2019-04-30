@@ -25,8 +25,6 @@ namespace MX
         : hasV(0), hasVn(0), hasVt(0), faces_1(0), faces_2(0), faces_3(0), faces_4(0) {}
     MX_API ~Wavefront_Config() {}
 
-    // finds out what data is available
-    MX_API Wavefront_Description setConfig(const std::string &path);
     // returns all values of the members of this struct
     MX_API std::string toString(const std::string &path);
 
