@@ -9,14 +9,12 @@ namespace MX
 {
   class Window_GLFW : public Window
   {
-  public:
+  public:    
     MX_API static Window_GLFW& get()
     {
       static Window_GLFW instance;
       return instance;
     }
-
-    MX_API ~Window_GLFW() {}
 
     MX_API void update() const override; 
     MX_API void render() const override; 
@@ -29,8 +27,10 @@ namespace MX
     MX_API void resize() override;        
 
     MX_API inline auto getWindow() { return m_Window; }
+    
   private:
     MX_API Window_GLFW() {}
+    MX_API ~Window_GLFW() {}
 
     GLFWwindow* m_Window;
   };

@@ -25,10 +25,10 @@ namespace MX
   {
   public:    
     MX_API Model_OpenGL() {}
-    MX_API Model_OpenGL(const std::string &name);
+    MX_API Model_OpenGL(const std::string &name, bool instantParse = 0);
     MX_API ~Model_OpenGL() {}
     
-    MX_API void parse() override;
+    MX_API void initialize() override;
     MX_API void draw() override;
     MX_API void setGeometry(unsigned int draw_mode) override;
 

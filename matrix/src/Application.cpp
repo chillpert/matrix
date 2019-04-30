@@ -10,6 +10,9 @@ namespace MX
 
   Application::~Application()
   {
+    delete m_API;
+    delete m_GUI;
+    delete m_LayerStack; 
     MX_INFO("MX: Application: Destroyed");
   }
 
@@ -33,13 +36,9 @@ namespace MX
     initialize_func();
 
     if (m_Running)
-    {
-        MX_SUCCESS("MX: Application: Initialization");
-    }
+      MX_SUCCESS("MX: Application: Initialization");
     else
-    {
-        MX_FATAL("MX: Application: Initialization");
-    }
+      MX_FATAL("MX: Application: Initialization");
   }
 
   void Application::update(void (*update_func)())
@@ -49,7 +48,9 @@ namespace MX
     m_Window->controllerCallback();
 
     m_GUI->update();
-     
+
+    m_API->update();
+    
     update_func();
   }
 

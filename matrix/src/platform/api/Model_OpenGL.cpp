@@ -4,11 +4,13 @@
 namespace MX
 {
 
-  Model_OpenGL::Model_OpenGL(const std::string &name)
+  Model_OpenGL::Model_OpenGL(const std::string &name, bool instantParse)
   {
     m_Name = name;
     m_Path = MX_MODEL_PATH + name;
-    parse();
+    
+    if (instantParse)
+      initialize();
   }
 
   void Model_OpenGL::setName(const std::string &name)
@@ -17,12 +19,13 @@ namespace MX
     m_Path = MX_MODEL_PATH + name;
   }
 
-  void Model_OpenGL::parse()
+  void Model_OpenGL::initialize()
   {
     if (m_Name.find(".obj"))
     {
       Wavefront_Parser parser(*this);
       parser.start();
+      setGeometry(GL_TRIANGLES);
     }
     else
     {

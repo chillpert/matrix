@@ -16,8 +16,6 @@ namespace MX
   class MX_API Application
   {     
   public:
-    virtual ~Application();
-
     static Application &get();
   
     void initialize(void (*initialize_func)());
@@ -29,8 +27,11 @@ namespace MX
     inline bool isRunning() { return m_Running; }
     inline Window* getWindow() { return m_Window; }
     inline LayerStack* getLayerStack() { return m_LayerStack; }
+
   private:
     Application();
+    ~Application();
+
   protected:   
     API* m_API = MX_API_TYPE;
     GUI* m_GUI = MX_GUI_TYPE;

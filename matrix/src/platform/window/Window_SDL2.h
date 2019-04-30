@@ -10,13 +10,11 @@ namespace MX
   class Window_SDL2 : public Window
   {
   public:
-  	MX_API static Window_SDL2& get()
+  	MX_API static Window_SDL2 &get()
     {
       static Window_SDL2 instance;
       return instance;
     }
-
-    MX_API ~Window_SDL2() {}
 
     MX_API void update() const override; 
     MX_API void render() const override; 
@@ -32,6 +30,7 @@ namespace MX
     MX_API inline SDL_GLContext& getContext() { return m_Context; }
   private:
     MX_API Window_SDL2() {}
+    MX_API ~Window_SDL2() {}
 
     SDL_Window* m_Window = NULL;
     SDL_GLContext m_Context;
