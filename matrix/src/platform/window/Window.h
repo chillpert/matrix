@@ -27,7 +27,7 @@ namespace MX
     
     MX_API virtual void update() {}
     MX_API virtual void render() const {}
-    MX_API virtual bool createContext() { return false; }
+    MX_API virtual bool initialize() { return false; }
 
     MX_API virtual void close() const {}
     MX_API virtual void controllerCallback() {}

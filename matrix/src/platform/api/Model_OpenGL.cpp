@@ -4,12 +4,12 @@
 namespace MX
 {
 
-  Model_OpenGL::Model_OpenGL(const std::string &name, bool instantParse)
+  Model_OpenGL::Model_OpenGL(const std::string &name, bool instantInitialize)
   {
     m_Name = name;
     m_Path = MX_MODEL_PATH + name;
     
-    if (instantParse)
+    if (instantInitialize)
       initialize();
   }
 

@@ -25,7 +25,7 @@ namespace MX
   void Application::initialize(void (*initialize_func)())
   {
     // set up window 
-    m_Running = m_Window->createContext();
+    m_Running = m_Window->initialize();
     
     // set up API
     m_Running = m_API->initialize();

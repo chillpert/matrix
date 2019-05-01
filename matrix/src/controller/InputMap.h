@@ -37,7 +37,7 @@ namespace MX
 #define MX_N_PRESSED
 #define MX_M_PRESSED
 
-#define MX_ESCAPE_PRESSED MX::Controller::get().handleCloseWindow(); 
+#define MX_ESCAPE_PRESSED Controller::get().handleCloseWindow(); 
 #define MX_TAB_PRESSED      
 #define MX_CAPS_LOCK_PRESSED   
 #define MX_L_SHIFT_PRESSED 

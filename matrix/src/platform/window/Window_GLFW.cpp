@@ -7,7 +7,7 @@
 
 namespace MX
 {
-  bool Window_GLFW::createContext()
+  bool Window_GLFW::initialize()
   {
     if (!glfwInit())
     {
@@ -51,8 +51,8 @@ namespace MX
       
         glfwSetErrorCallback([](int, const char* description)
         {
-            std::string message = description;
-            MX_FATAL(message);
+          std::string message = description;
+          MX_FATAL(message);
         });
 
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -85,13 +85,13 @@ namespace MX
 
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xpos, double ypos)
         {
-            xpos = xpos + 0.5 - (xpos < 0);
-            ypos = ypos + 0.5 - (ypos < 0);
-            int x = int(xpos);
-            int y = int(ypos);
-            MouseMoved event(x, y);
-            event.handle();
-            LOGEVENT;
+          xpos = xpos + 0.5 - (xpos < 0);
+          ypos = ypos + 0.5 - (ypos < 0);
+          int x = int(xpos);
+          int y = int(ypos);
+          MouseMoved event(x, y);
+          event.handle();
+          LOGEVENT;
         });
 
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)

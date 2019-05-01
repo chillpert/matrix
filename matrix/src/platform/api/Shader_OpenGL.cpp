@@ -14,7 +14,7 @@ namespace MX
     glUseProgram(m_ID); 
   }
 
-  void Shader_OpenGL::create()
+  void Shader_OpenGL::initialize()
   {
     m_ID = glCreateProgram();
 

@@ -4,6 +4,9 @@
 // application
 #include "matrix/src/Application.h"
 
+// world and levels
+#include "matrix/src/layers/Level.h"
+
 // debugging
 #ifdef MX_DEBUG
   #include "matrix/src/Logger.h"

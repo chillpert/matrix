@@ -9,7 +9,7 @@ namespace MX
 {
   static std::string SDL_ErrorMessage;
 
-  bool Window_SDL2::createContext()
+  bool Window_SDL2::initialize()
   {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {

@@ -18,7 +18,7 @@ namespace MX
 
     MX_API void update() override; 
     MX_API void render() const override; 
-    MX_API bool createContext() override;
+    MX_API bool initialize() override;
     
     MX_API void close() const override; 
     MX_API void controllerCallback() override {}

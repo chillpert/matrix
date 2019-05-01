@@ -12,7 +12,7 @@ namespace MX
     MX_API Shader_OpenGL(const std::string &name);
     MX_API ~Shader_OpenGL() {}
 
-    MX_API void create();
+    MX_API void initialize();
     MX_API void use() const;
 
     MX_API void  setBool(const std::string &name, const bool &value)        const;
