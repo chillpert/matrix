@@ -19,10 +19,11 @@ namespace MX
     MX_API void processKeyboard(m_Camera direction, float speed); 
     MX_API void processMouse(float xoffset, float yoffset);
 
-    MX_API const glm::mat4 &getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_WorldUp); }
-    MX_API const glm::mat4 &getProjectionMatrix() { return glm::perspective(glm::radians(m_Fov), (float)1200 / (float)600, 0.1f, 100.0f); }
+    MX_API inline glm::mat4 getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_WorldUp); }
+    MX_API inline glm::mat4 getProjectionMatrix() { return glm::perspective(glm::radians(m_Fov), (float)1200 / (float)600, 0.1f, 100.0f); }
 
-  // private:
+    MX_API inline glm::fvec3 getPosition() { return m_Position; }
+  private:
     glm::fvec3 m_Position; 
     glm::fvec3 m_Front;
     glm::fvec3 m_WorldUp;

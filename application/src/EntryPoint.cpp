@@ -1,20 +1,4 @@
-#define GLM_ENABLE_EXPERIMENTAL 
-#include <GLM/gtx/string_cast.hpp>
-
 #include "matrix/Matrix.h"
-
-/* 
-  order to draw stuff
-   1. initialize shader
-   2. create shader
-   3. initialize model
-   4. parse model
-   5. activate shader
-   6. upload all three matrices
-   7. bind vertex arrays
-   8. draw
-   9. bind default
-*/  
 
 MX_MODEL m1("monkey.obj");
 MX_SHADER s1("trivial");
@@ -35,19 +19,15 @@ void update()
   s1.setfMat4("projection", projection_matrix);
 }
 
-float time_ = 0.0f;
-
 void render() 
 {
-  time_ = float(SDL_GetTicks()) / 1000.0f;
-
   s1.use();
   glm::fmat4 model_matrix = glm::fmat4(1.0f);
-  model_matrix = glm::rotate(model_matrix, 2.0f * float(time_), glm::fvec3(0.0f, 1.0f, 0.0f));
+  model_matrix = glm::rotate(model_matrix, 2.0f * float(MX::app.m_Window->m_Props.m_Time), glm::fvec3(0.0f, 1.0f, 0.0f));
   s1.setfMat4("model", model_matrix);
   s1.setfVec3("lightPosition", glm::vec3(5, -5, 1));
   s1.setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-  s1.setfVec3("viewPos", cam->m_Position);
+  s1.setfVec3("viewPos", cam->getPosition());
 
   m1.draw();
 }
@@ -55,18 +35,16 @@ void render()
 int main() 
 {
   // application testing
-  MX::Application* app = &MX::Application::get();
-
-  app->getWindow()->setTitle("My Application");
-  app->initialize(initialize);
+  MX::app.m_Window->setTitle("My Application");
+  MX::app.initialize(initialize);
 
   // rendering loop
-  while(app->isRunning()) 
+  while(MX::app.m_Running) 
   {
-    app->update(update);        
-    app->render(render);
+    MX::app.update(update);        
+    MX::app.render(render);
   }
-  app->clean();
+  MX::app.clean();
   
   return 0;
 }

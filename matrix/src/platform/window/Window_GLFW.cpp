@@ -139,9 +139,9 @@ namespace MX
     return false;
   }
 
-  void Window_GLFW::update() const
-  {
-      
+  void Window_GLFW::update()
+  { 
+    m_Props.m_Time = glfwGetTime();
   }
 
   void Window_GLFW::render() const

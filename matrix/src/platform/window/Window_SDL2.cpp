@@ -54,9 +54,9 @@ namespace MX
     return 0;
   }
 
-  void Window_SDL2::update() const
+  void Window_SDL2::update() 
   {
-      
+    m_Props.m_Time = SDL_GetTicks() / 1000.0f;
   }
 
   void Window_SDL2::render() const

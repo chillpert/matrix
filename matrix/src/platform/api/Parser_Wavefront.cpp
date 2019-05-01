@@ -59,7 +59,7 @@ namespace MX
         }
       }
 
-      MX_FATAL("Test" + std::to_string(debug_counter));
+      //MX_FATAL("Test" + std::to_string(debug_counter));
 
       //MX_INFO(toString());
 

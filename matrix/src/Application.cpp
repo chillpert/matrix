@@ -28,7 +28,7 @@ namespace MX
     m_Running = m_Window->createContext();
     
     // set up API
-    m_Running = m_API->createContext();
+    m_Running = m_API->initialize();
     
     // set up GUI
     m_GUI->initialize();
@@ -74,10 +74,5 @@ namespace MX
     m_Window->close();
 
     MX_SUCCESS("MX: Application: Closed");
-  }
-
-  void Application::stop()
-  {
-    m_Running = false;
   }
 }

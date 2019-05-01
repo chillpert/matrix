@@ -25,7 +25,7 @@ namespace MX
     MX_API Window() {}
     MX_API virtual ~Window() {}
     
-    MX_API virtual void update() const {}
+    MX_API virtual void update() {}
     MX_API virtual void render() const {}
     MX_API virtual bool createContext() { return false; }
 
@@ -38,11 +38,12 @@ namespace MX
     struct WindowProps
     {
       WindowProps() 
-        : m_Width(1200), m_Height(600), m_Title("Matrix Framework") {}
+        : m_Width(1200), m_Height(600), m_Time(0.0), m_Title("Matrix Framework") {}
       ~WindowProps() {}
 
       int m_Width;
       int m_Height;
+      double m_Time;
       std::string m_Title;
     };
  

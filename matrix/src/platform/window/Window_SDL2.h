@@ -16,7 +16,7 @@ namespace MX
       return instance;
     }
 
-    MX_API void update() const override; 
+    MX_API void update() override; 
     MX_API void render() const override; 
     MX_API bool createContext() override;
 

@@ -13,6 +13,9 @@
 
 namespace MX
 {
+  // use as short cut
+  #define app Application::get()
+
   class MX_API Application
   {     
   public:
@@ -23,21 +26,16 @@ namespace MX
     void update(void (*update_func)());
     void stop();
     void clean();
-
-    inline bool isRunning() { return m_Running; }
-    inline Window* getWindow() { return m_Window; }
-    inline LayerStack* getLayerStack() { return m_LayerStack; }
-
-  private:
-    Application();
-    ~Application();
-
-  protected:   
+     
     API* m_API = MX_API_TYPE;
     GUI* m_GUI = MX_GUI_TYPE;
     Window* m_Window = MX_WINDOW_TYPE;
     LayerStack* m_LayerStack = new LayerStack;
     bool m_Running;
+  
+  private:
+    Application();
+    ~Application();
   };  
 }
 

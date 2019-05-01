@@ -19,7 +19,7 @@ namespace MX
     API() {}
     virtual ~API() {}
   
-    virtual bool createContext() const { return false; }
+    virtual bool initialize() const { return false; }
     virtual void update() const {}
     virtual void render() const {}
     virtual void clear() const {}
