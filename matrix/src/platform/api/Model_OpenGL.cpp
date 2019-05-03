@@ -3,7 +3,31 @@
 
 namespace MX
 {
+  GL_ModelObjects::GL_ModelObjects(const GL_ModelObjects &model)
+  {
+    VAO = model.VAO;
+    VBO = model.VBO;
+    NBO = model.NBO;
+    TBO = model.TBO;
+    EBO = model.EBO;
 
+    draw_mode = model.draw_mode;
+    num_elements = model.num_elements;   
+  }
+
+  Model_OpenGL::Model_OpenGL(const Model_OpenGL &model)
+  {
+    m_Name = model.m_Name;
+    m_Path = model.m_Path;
+
+    m_MaterialList = model.m_MaterialList;
+    m_V = model.m_V;
+    m_Vt = model.m_Vt;
+    m_Vn = model.m_Vn;
+    
+    m_ModelObject = GL_ModelObjects(model.m_ModelObject);
+  }
+  
   Model_OpenGL::Model_OpenGL(const std::string &name, bool instantInitialize)
   {
     m_Name = name;

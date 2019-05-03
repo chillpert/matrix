@@ -9,7 +9,8 @@ namespace MX
   {
   public:
     MX_API Shader_OpenGL() {}
-    MX_API Shader_OpenGL(const std::string &name);
+    MX_API Shader_OpenGL(const Shader_OpenGL &shader);
+    MX_API Shader_OpenGL(const std::string &name, bool instantInitialization = 0);
     MX_API ~Shader_OpenGL() {}
 
     MX_API void initialize();
@@ -26,6 +27,7 @@ namespace MX
     MX_API void setfMat4(const std::string &name, const glm::fmat4 &mat)    const;
 
     MX_API inline unsigned int &getID() { return m_ID; }
+    MX_API Shader_OpenGL operator=(const Shader_OpenGL &shader);
   private:
     unsigned int m_ID;
   };

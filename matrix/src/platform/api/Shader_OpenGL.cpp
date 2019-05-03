@@ -2,11 +2,25 @@
 
 namespace MX
 {
-  Shader_OpenGL::Shader_OpenGL(const std::string &name)
+  Shader_OpenGL::Shader_OpenGL(const std::string &name, bool instantInitialization)
   {
     m_Name = name;
     m_VsPath.append(name + ".vert");
     m_FsPath.append(name + ".frag");
+
+    if (instantInitialization)
+      initialize();
+  }
+
+  Shader_OpenGL::Shader_OpenGL(const Shader_OpenGL &shader)
+  {
+    m_ID = shader.m_ID;
+
+    m_Name = shader.m_Name;
+    m_VsPath = shader.m_VsPath;
+    m_FsPath = shader.m_FsPath;
+    m_VsSource = shader.m_VsSource;
+    m_FsSource = shader.m_FsSource;
   }
 
   void Shader_OpenGL::use() const
@@ -110,5 +124,11 @@ namespace MX
       glGetProgramInfoLog(ID, 512, NULL, infoLog);
       MX_FATAL("MX: Shader: " + std::string(infoLog));
     }
+  }
+
+  Shader_OpenGL Shader_OpenGL::operator=(const Shader_OpenGL &shader)
+  {
+    Shader_OpenGL temp(shader);
+    return temp;
   }
 }

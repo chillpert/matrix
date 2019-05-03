@@ -62,6 +62,7 @@ namespace MX
     
     // returns the length of all the temporary vectors
     MX_API std::string toString();
+    
   private:
     MX_MODEL *m_Model;
 

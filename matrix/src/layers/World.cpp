@@ -2,18 +2,51 @@
 
 namespace MX
 {
-  void World::push(const Level &level)
+  World &World::get()
   {
-    levels.push_back(level);
+    static World instance;
+    return instance;
+  }
+
+  void World::initialize()
+  {
+    m_ActiveLevel->initialize();
+  }
+
+  void World::update()
+  {
+    m_ActiveLevel->update();
   }
 
   void World::render()
   {
-    activeLevel.render();
+    m_ActiveLevel->render();
   }
 
-  void World::setActiveLevel(const Level &lv)
+  void World::push(Level *level)
   {
-    activeLevel = lv;
+    m_ExistingLevels.push_back(level);
+    MX_INFO("MX: World: Level: " + level->m_Name + ": Added");
+  }
+
+  void World::pop(const std::string &name)
+  {
+    for (unsigned int i = 0; i < m_ExistingLevels.size(); i++)
+    {
+      if (m_ExistingLevels.at(i)->m_Name == name)
+      {
+        delete m_ExistingLevels.at(i);
+        try 
+        {
+          m_ExistingLevels.erase(m_ExistingLevels.begin() + i);
+        }
+        catch (std::exception e)
+        {
+          MX_FATAL(e.what());
+        }
+
+        MX_WARN("MX: World: Level " + m_ExistingLevels.at(i)->m_Name + ": Deleted");
+      }
+    }
   }
 }

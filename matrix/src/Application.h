@@ -13,9 +13,6 @@
 
 namespace MX
 {
-  // use as short cut to get singleton
-  #define app Application::get()
-
   class MX_API Application
   {     
   public:

@@ -26,6 +26,15 @@
 
 #endif
 
+#include "matrix/src/layers/World.h"
+#include "matrix/src/layers/Level.h"
+#include "matrix/src/platform/api/Model.h"
+#ifdef MX_OPENGL_ACTIVE 
+  #include "matrix/src/platform/api/Model_OpenGL.h"
+#elif MX_DIRECTX_ACTIVE
+  #include "matrix/src/platform/api/Model_DirectX.h"
+#endif
+
 namespace MX
 {
   void GUI_ImGui::initialize()
@@ -49,11 +58,146 @@ namespace MX
     #endif
   }
 
+  static float xSlider = 0.0f;
+  static float ySlider = 0.0f;
+  static float zSlider = 0.0f;
+
+  static bool no_titlebar = false;
+  static bool no_scrollbar = false;
+  static bool no_menu = false;
+  static bool no_move = false;
+  static bool no_resize = false;
+  static bool no_collapse = false;
+  static bool no_close = false;
+  static bool no_nav = false;
+  static bool no_background = false;
+  static bool no_bring_to_front = false;
+  static bool p_open = true;
+
   void GUI_ImGui::render()
   {
     #ifdef MX_IMGUI_ACTIVE
-      ImGui::Begin("ImGui Window");
-      ImGui::Text("Hello there");
+    
+      ImGuiWindowFlags window_flags = 0;
+      if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+      if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+      if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+      if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+      if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+      if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+      if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+      if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+      if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+      
+      ImGui::Begin("World Editor", &p_open, window_flags);
+
+      if (ImGui::BeginMenuBar())
+      {
+        if (ImGui::BeginMenu("projects"))
+        {
+          ImGui::MenuItem("new");
+          ImGui::MenuItem("open");
+          ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("settings"))
+        {
+          ImGui::MenuItem("save");
+          ImGui::MenuItem("save as");
+          ImGui::MenuItem("import config");
+          ImGui::MenuItem("export config");
+          ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("help"))
+        {
+          ImGui::MenuItem("about");
+          ImGui::MenuItem("search");
+          ImGui::MenuItem("credits");
+          ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+      }
+
+      static int item_current_levels = 0;
+      const char* items_levels[] = {"main menu", "tutorial", "jungle"};
+      ImGui::Combo("select level", &item_current_levels, items_levels, IM_ARRAYSIZE(items_levels));
+
+      if (ImGui::Button("add"))
+      {
+        MX_WARN("button add pressed");
+      }
+
+      ImGui::SameLine();
+
+      if (ImGui::Button("delete"))
+      { 
+        MX_WARN("button delete pressed");
+      }
+
+      ImGui::NewLine();
+
+      const char* items[] = {"...", "monkey"};
+
+      
+      
+      static int item_objects_to_spawn = 0;
+      ImGui::Text("select object:");
+      ImGui::Combo("##objects_list", &item_objects_to_spawn, items, IM_ARRAYSIZE(items));
+
+      // spawn selected object
+      if (ImGui::Button("spawn"))
+      {
+        if (item_objects_to_spawn == 1)
+        {
+          item_objects_to_spawn = 0;
+          
+          World::get().m_ActiveLevel->push("monkey_1", "monkey.obj");
+          MX_WARN("monkey spawned");
+        }
+      }
+
+      /*
+      TODO
+        figure out a way to only parse objects once, and then reuse the model
+        dont use the model class for any of this in here
+        maybe try to parse all existing objects first (with application start up)
+
+        use node class to store transform
+        if node has file_name monkey.obj then apply transforms and draw it
+      */
+      
+/*
+      // delete selected object
+      if (ImGui::Button("delete"))
+      {
+        if (item_current_objects == 1)
+        {
+          item_current_objects = 0;
+
+          // World::get().m_ActiveLevel->pop("monkey.obj");
+          MX_WARN("monkey deleted");
+        }
+      }
+*/
+      //ImGui::Checkbox("Rotate", &rotateFlag);
+      //ImGui::SliderFloat("Speed:", &)
+
+      ImGui::NewLine();
+
+      if (ImGui::CollapsingHeader("Scale"))
+      {
+        ImGui::SliderFloat("x", &xSlider, 0.0f, 100.0f);
+        ImGui::SliderFloat("y", &ySlider, 0.0f, 100.0f);
+        ImGui::SliderFloat("z", &zSlider, 0.0f, 100.0f);
+      }
+      if (ImGui::CollapsingHeader("Rotate"))
+      {
+        ImGui::Text("add rotation implementation");
+      }
+      if (ImGui::CollapsingHeader("Translate"))
+      {
+        ImGui::Text("nothing to be seen here");
+      }
+
       ImGui::End();
 
       ImGui::Render();

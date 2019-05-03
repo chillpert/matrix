@@ -1,37 +1,36 @@
 #include "matrix/Matrix.h"
 
-MX::Level l1("level1");
+MX::Level debug_level("level1");
 
 void initialize() 
 {
-  MX_MODEL model("monkey.obj", 1);
-  l1.push(model);
-  l1.initialize();
+  MX::World::get().m_ActiveLevel = &debug_level;
+  debug_level.initialize();
 }
 
 void update()
 {
-  l1.update();
+  debug_level.update();
 }
 
 void render() 
 {
-  l1.render();
+  debug_level.render();
 }
 
 int main() 
 {
   // application testing
-  MX::app.m_Window->setTitle("My Application");
-  MX::app.initialize(initialize);
+  MX::Application::get().m_Window->setTitle("My Application");
+  MX::Application::get().initialize(initialize);
 
   // rendering loop
-  while(MX::app.m_Running) 
+  while(MX::Application::get().m_Running) 
   {
-    MX::app.update(update);        
-    MX::app.render(render);
+    MX::Application::get().update(update);        
+    MX::Application::get().render(render);
   }
-  MX::app.clean();
+  MX::Application::get().clean();
   
   return 0;
 }

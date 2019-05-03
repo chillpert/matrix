@@ -84,7 +84,7 @@ namespace MX
       MX_FATAL("MX: Model: Wavefront Parser: Error in file format");
     }
 
-    MX_SUCCESS("MX: Model: Wavefron Parser: Completed");
+    MX_SUCCESS("MX: Model: Wavefront Parser: Completed");
   }
 
   std::string Wavefront_Parser::toString()

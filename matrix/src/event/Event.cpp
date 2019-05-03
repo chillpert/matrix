@@ -36,43 +36,43 @@ namespace MX
     switch (m_Event) 
     {
       case 1:
-        MX_INFO("MX: Event: Default");
+        MX_INFO_LOG("MX: Event: Default");
         break;
       case 2:
-        MX_INFO("MX: Event: DefaultKeyboard");
+        MX_INFO_LOG("MX: Event: DefaultKeyboard");
         break;
       case 3:
-        MX_INFO("MX: Event: DefaultMouse");
+        MX_INFO_LOG("MX: Event: DefaultMouse");
         break;
       case 4:
-        MX_INFO("MX: Event: KeyboardButtonPressed: " + std::to_string(m_KeyCode));
+        MX_INFO_LOG("MX: Event: KeyboardButtonPressed: " + std::to_string(m_KeyCode));
         break;
       case 5:
-        MX_INFO("MX: Event: KeyboardButtonReleased: " + std::to_string(m_KeyCode));
+        MX_INFO_LOG("MX: Event: KeyboardButtonReleased: " + std::to_string(m_KeyCode));
         break;
       case 6:
-        MX_INFO("MX: Event: MouseButtonPressed: " + std::to_string(m_KeyCode));
+        MX_INFO_LOG("MX: Event: MouseButtonPressed: " + std::to_string(m_KeyCode));
         break;
       case 7:
-        MX_INFO("MX: Event: MouseButtonReleased: " + std::to_string(m_KeyCode));
+        MX_INFO_LOG("MX: Event: MouseButtonReleased: " + std::to_string(m_KeyCode));
         break;
       case 8:
-        MX_INFO("MX: Event: MouseMoved: " + std::to_string(m_X) + ", " + std::to_string(m_Y));
+        MX_INFO_LOG("MX: Event: MouseMoved: " + std::to_string(m_X) + ", " + std::to_string(m_Y));
         break;
       case 9: 
-        MX_INFO("MX: Event: MouseScrolled: " + std::to_string(m_Xaxis) + ", " + std::to_string(m_Yaxis));
+        MX_INFO_LOG("MX: Event: MouseScrolled: " + std::to_string(m_Xaxis) + ", " + std::to_string(m_Yaxis));
         break;
       case 10:
-        MX_INFO("MX: Event: DefaultWindow"); 
+        MX_INFO_LOG("MX: Event: DefaultWindow"); 
         break; 
       case 11: 
-        MX_INFO("MX: Event: WindowClosed");
+        MX_INFO_LOG("MX: Event: WindowClosed");
         break;
       case 12: 
-        MX_INFO("MX: Event: WindowResized: " + std::to_string(m_Width) + ", " + std::to_string(m_Height));
+        MX_INFO_LOG("MX: Event: WindowResized: " + std::to_string(m_Width) + ", " + std::to_string(m_Height));
         break;
       default:
-        MX_WARN("MX: Event: Unkown");
+        MX_WARN_LOG("MX: Event: Unkown");
         break;
     }
   }

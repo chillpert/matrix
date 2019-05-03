@@ -28,6 +28,7 @@ namespace MX
     MX_API inline std::string &getFsPath() { return m_FsPath; }
     MX_API inline std::string &getVsSource() { return m_VsSource; }
     MX_API inline std::string &getFsSource() { return m_FsSource; }
+    
   protected:
     std::string m_Name;
     std::string m_VsPath;

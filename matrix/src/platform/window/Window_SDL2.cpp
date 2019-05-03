@@ -14,12 +14,12 @@ namespace MX
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
       SDL_ErrorMessage = SDL_GetError();
-      MX_FATAL("SDL2 context: " + SDL_ErrorMessage);
+      MX_FATAL("MX: Window: SDL2: context: " + SDL_ErrorMessage);
       return 0;
     }
     else
     {
-      MX_SUCCESS("SDL2 context");
+      MX_SUCCESS("MX: Window: SDL2: context");
       
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
@@ -30,23 +30,23 @@ namespace MX
       if (m_Window == NULL)
       {
         SDL_ErrorMessage = SDL_GetError();
-        MX_FATAL("SDL2 window: " + SDL_ErrorMessage);
+        MX_FATAL("MX: Window: SDL2: " + SDL_ErrorMessage);
 
         return 0;
       }
       else
       {
-        MX_SUCCESS("SDL2 window");
+        MX_SUCCESS("MX: Window: SDL2");
 
         m_Context = SDL_GL_CreateContext(m_Window);
         if (m_Context == NULL)
         {
           SDL_ErrorMessage = SDL_GetError();
-          MX_FATAL("SDL2 GL context: " + SDL_ErrorMessage);
+          MX_FATAL("MX: Window: SDL2: GL context: " + SDL_ErrorMessage);
         }
         else
         {
-          MX_SUCCESS("SDL2 GL context");
+          MX_SUCCESS("MX: Window: SDL2: GL context");
           return 1;
         }
       }

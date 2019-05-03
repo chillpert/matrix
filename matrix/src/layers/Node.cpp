@@ -2,19 +2,37 @@
 
 namespace MX
 {
-  Node* &Node::getChild(std::string aName)
+  void Node::addChild(Node* node)
+  {
+    node->setParent(this);
+    m_Children.emplace_back(node);
+    // m_Children.push_back(node);
+  }
+
+  void Node::setParent(Node* node)
+  {
+    m_Parent = node;
+    //std::clog << node->getName() << " <-- " << name << std::endl;
+  }
+
+  void Node::rotate(const glm::fvec3 &vec, float speed)
+  {
+    m_WorldTransform = glm::rotate(m_WorldTransform, speed, vec);
+  }
+
+  Node* &Node::getChild(const std::string &name)
   {
     int size = m_Children.size();
 
     for (unsigned int i = 0; i < size; i++)
     {
-      if (m_Children.at(i)->m_Name == aName)
+      if (m_Children.at(i)->m_Name == name)
       {
         return m_Children.at(i);
-      } 
+      }
     }
 
-    std::cerr << aName + " is not a child of " + m_Name << std::endl;
+    std::cerr << name + " is not a child of " + m_Name << std::endl;
     throw std::exception();
   }
 
@@ -26,6 +44,7 @@ namespace MX
   void Node::setWorldTransform(const glm::fmat4& mat)
   {
     glm::fmat4 trans = glm::fmat4(1.0f);
+    // apply transformation in here
     m_WorldTransform = mat * m_LocalTransform * trans;
   }
 

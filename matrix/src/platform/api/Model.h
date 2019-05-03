@@ -53,9 +53,6 @@ namespace MX
     std::vector<glm::vec3> m_V;
     std::vector<glm::vec2> m_Vt;
     std::vector<glm::vec3> m_Vn;
-
-  public:
-    glm::fmat4 model_matrix = glm::fmat4(1.0f);
   };
 }
 

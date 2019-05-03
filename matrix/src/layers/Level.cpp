@@ -4,63 +4,67 @@
 
 namespace MX
 {
-  MX_SHADER s1("trivial");
-  MX_MODEL m1("monkey.obj");
-
   void Level::initialize()
   {
-    s1.initialize();
-    m1.initialize();
+    std::string shader_name = "trivial";
+    
+    m_Sg.m_Shader.setName(shader_name);
+    m_Sg.m_Shader.initialize();
+    
+    MX_INFO("MX: Level: " + m_Name + ": Initalized with default shader: " + shader_name);
   }
 
   void Level::update()
   {
-    s1.use();
-    glm::fmat4 view_matrix = MX::Camera::get().getViewMatrix();
-    glm::fmat4 projection_matrix = MX::Camera::get().getProjectionMatrix();
-    s1.setfMat4("view", view_matrix);
-    s1.setfMat4("projection", projection_matrix);
+    m_Sg.m_Shader.use();
+    m_Sg.m_Shader.setfMat4("view", MX::Camera::get().getViewMatrix());
+    m_Sg.m_Shader.setfMat4("projection", MX::Camera::get().getProjectionMatrix());
   }
 
   void Level::render()
   {
-    s1.use();
-    m.model_matrix = glm::rotate(m.model_matrix, 0.05f, glm::fvec3(0.0f, 1.0f, 0.0f));
-    s1.setfMat4("model", m.model_matrix);
-    s1.setfVec3("lightPosition", glm::vec3(5, -5, 1));
-    s1.setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    s1.setfVec3("viewPos", MX::Camera::get().getPosition());
-    m1.draw();
+    m_Sg.m_Shader.use();
+    m_Sg.m_Shader.setfVec3("lightPosition", glm::vec3(5, -5, 1));
+    m_Sg.m_Shader.setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+    m_Sg.m_Shader.setfVec3("viewPos", MX::Camera::get().getPosition());
 
-    //m_SG.render();
+    m_Sg.render();
   }
 
-  template <typename T>
-  void Level::push(T obj)
+  void Level::push(const std::string &object_name, const std::string &file_name)
   {
-    if (typeid(T) == typeid(MX_MODEL))
+    bool objectExists = 0;
+
+    for (auto &it : m_Sg.m_Models)
     {
-      MX_INFO("MX: Level: " + m_Name + ": Added: Model");
+      if (it.getName() == file_name)
+      {
+        MX_INFO("MX: Model Handler: Object already exists: Continue without parsing");
+
+        objectExists = 1;
+        m_Sg.m_Root->addChild(new Node(object_name, file_name));
+        break;
+      }
     }
-    else if (typeid(T) == typeid(MX_SHADER))
+
+    if (!objectExists)
     {
-      MX_INFO("MX: Level: " + m_Name + ": Added: Shader");
-    }
-    else
-    {
-      MX_WARN("MX: Level: " + m_Name + ": Failed to add entity");
+      MX_INFO("MX: Model Handler: Object does not exist: Continue with parsing");
+
+      MX_MODEL temp(file_name, 1);
+      m_Sg.m_Models.push_back(temp);
+      m_Sg.m_Root->addChild(new Node(object_name, file_name));
     }
   }
 
-  template <typename T>
-  T &find(const std::string &name)
+  void Level::pop(const std::string &name)
   {
-    return m_SG.find(name);
+
   }
 
-  template MX_API void Level::push(MX_MODEL m);
-  template MX_API void Level::push(MX_SHADER s);
-
-  template MX_API MX_MODEL &Level::find(const std::string &name);
-  template MX_API MX_MODEL &Level::find(const std::string &name);
+  void Level::setShader(const std::string &name)
+  {
+    m_Sg.m_Shader = MX_SHADER(name, 1);
+    MX_INFO("MX: Level: " + m_Name + ": Added: Shader");
+  }
 }
