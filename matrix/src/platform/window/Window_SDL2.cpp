@@ -74,22 +74,22 @@ namespace MX
 
   void Window_SDL2::controllerCallback()
   {
-    SDL_Event event;
-    while (SDL_PollEvent(&event) != 0)
+    SDL_Event SDLevent;
+    while (SDL_PollEvent(&SDLevent) != 0)
     {
-      if (event.type == SDL_KEYDOWN)
+      if (SDLevent.type == SDL_KEYDOWN)
       {
-        KeyboardButtonPressed event(event.key.keysym.sym);
+        KeyboardButtonPressed event(SDLevent.key.keysym.sym);
         event.handle();
         LOGEVENT;
       }
-      if (event.type == SDL_KEYUP)
+      if (SDLevent.type == SDL_KEYUP)
       {
-        KeyboardButtonReleased event(event.key.keysym.sym);
+        KeyboardButtonReleased event(SDLevent.key.keysym.sym);
         event.handle();
         LOGEVENT;
       }
-      if (event.type == SDL_MOUSEMOTION)
+      if (SDLevent.type == SDL_MOUSEMOTION)
       {
         int x, y;
         SDL_GetMouseState(&x, &y);
@@ -97,27 +97,27 @@ namespace MX
         event.handle();
         LOGEVENT;
       }
-      if (event.type == SDL_MOUSEBUTTONDOWN)
+      if (SDLevent.type == SDL_MOUSEBUTTONDOWN)
       { 
-        MouseButtonPressed event(event.button.button);
+        MouseButtonPressed event(SDLevent.button.button);
         event.handle();
         LOGEVENT;
       }
-      if (event.type == SDL_MOUSEBUTTONUP)
+      if (SDLevent.type == SDL_MOUSEBUTTONUP)
       {
-        MouseButtonReleased event(event.button.button);
+        MouseButtonReleased event(SDLevent.button.button);
         event.handle();
         LOGEVENT;
       }
-      if (event.type == SDL_MOUSEWHEEL)
+      if (SDLevent.type == SDL_MOUSEWHEEL)
       {
-        MouseScrolled event(event.wheel.x, event.wheel.y);
+        MouseScrolled event(SDLevent.wheel.x, SDLevent.wheel.y);
         event.handle();
         LOGEVENT;
       }
-      if (event.type == SDL_WINDOWEVENT)
+      if (SDLevent.type == SDL_WINDOWEVENT)
       {
-        switch (event.window.event)
+        switch (SDLevent.window.event)
         {
           case SDL_WINDOWEVENT_CLOSE:
           {
@@ -128,7 +128,7 @@ namespace MX
           }
           case SDL_WINDOWEVENT_RESIZED:
           {
-            WindowResized event(int(event.window.data1), int(event.window.data1));
+            WindowResized event(int(SDLevent.window.data1), int(SDLevent.window.data1));
             event.handle();
             LOGEVENT;
             break;
