@@ -17,11 +17,11 @@ add_executable(Sandbox application/src/EntryPoint.cpp ${FILES_EXE})
 
 # link against Matrix Framework
 target_link_libraries(Sandbox
-  Matrix
+  MatrixLib
 )
 
 # configure output directories
-set_target_properties(Matrix Sandbox
+set_target_properties(MatrixLib Sandbox
   PROPERTIES
   ARCHIVE_OUTPUT_DIRECTORY_DEBUG "lib/debug"
   LIBRARY_OUTPUT_DIRECTORY_DEBUG "lib/debug"

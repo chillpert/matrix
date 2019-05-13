@@ -1,4 +1,4 @@
-#include "matrix/src/Event/WindowEvent.h"
+#include "matrix/src/event/WindowEvent.h"
 #include "matrix/src/controller/Controller.h"
 
 namespace MX 

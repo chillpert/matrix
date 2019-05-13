@@ -21,8 +21,8 @@ void render()
 int main() 
 {
   // application testing
-  MX::Application::get().m_Window->setTitle("My Application");
   MX::Application::get().initialize(initialize);
+  MX::Application::get().m_Window->setTitle("My Application");
 
   // rendering loop
   while(MX::Application::get().m_Running) 

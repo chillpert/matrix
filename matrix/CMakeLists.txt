@@ -34,7 +34,10 @@ link_directories(external/libs)
       ELSEIF (USE_SDL2)
         add_compile_definitions(MX_SDL2_ACTIVE)
         message("Using SDL2")
-      
+        IF (UNIX)
+          #find_package(SDL2_REQUIRED)
+          #include_directories(${SDL2_INCLUDE_DIRS})
+        ENDIF ()
       ELSEIF (USE_GLFW)
         message("Using GLFW")
         add_compile_definitions(MX_GLFW_ACTIVE)
@@ -64,10 +67,13 @@ link_directories(external/libs)
 
   # operating system
   IF (WIN32)
-      IF (CMAKE_CL_64)
-          add_compile_definitions(MX_PLATFORM_WINDOWS_X64)
-          add_compile_definitions(MX_BUILD_DLL)
-      ENDIF ()
+    IF (CMAKE_CL_64)
+      add_compile_definitions(MX_PLATFORM_WINDOWS_X64)
+      add_compile_definitions(MX_BUILD_DLL)
+    ENDIF ()
+  ELSEIF (UNIX)
+    add_compile_definitions(MX_PLATFORM_UNIX_X64)
+    add_compile_definitions(MX_BUILD_DLL)
   ENDIF ()
 
   # resource directories
@@ -132,7 +138,7 @@ file(GLOB FILES_LIB
 )
 
 # library 
-add_library(Matrix SHARED ${FILES_LIB})
+add_library(MatrixLib SHARED ${FILES_LIB})
 
 # set window 
 IF (USE_GLFW)
@@ -147,11 +153,16 @@ ENDIF ()
 
 # set api 
 IF (USE_OPENGL)
+  IF (WIN32)
+    set(STATIC_GLEW ${STATIC_GLEW} glew32s)
+  ELSEIF (UNIX)
+    set(STATIC_GLEW ${STATIC_GLEW} libGLEW.a)
+  ENDIF ()
   find_package(OpenGL REQUIRED)
   include_directories(${OPENGL_INCLUDE_DIRS})
   set(API_LIB ${API_LIB}
     ${OPENGL_LIBRARIES}
-    glew32s
+    ${STATIC_GLEW}
   )
 
 ELSEIF (USE_DIRECTX)
@@ -160,7 +171,7 @@ ELSEIF (USE_DIRECTX)
   )
 ENDIF ()
 
-target_link_libraries(Matrix
+target_link_libraries(MatrixLib
   ${API_LIB}
   ${WINDOW_LIB}
 )

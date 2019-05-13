@@ -28,7 +28,7 @@ namespace MX
     MX_API void render();
     
   private:
-    MX_API void recursive_render(Node &it, glm::fmat4 &mat = glm::fmat4(1.0f));
+    MX_API void recursive_render(Node &it, glm::fmat4 mat = glm::fmat4(1.0f));
 
   public:
     Node *m_Root = new Node("root of sg");

@@ -49,7 +49,7 @@
   #include "matrix/src/platform/window/Window.h"
 
   #ifdef MX_SDL2_ACTIVE
-    #include <SDL2/SDL.h>
+    #include "SDL2/SDL.h"
   #elif MX_GLFW_ACTIVE
     #include <GLFW/glfw3.h>
   #endif

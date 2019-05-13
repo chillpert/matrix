@@ -17,16 +17,16 @@
   #ifdef MX_GLFW_ACTIVE
     #include <GLFW/glfw3.h>
   #elif MX_SDL2_ACTIVE
-    #include <SDL2/SDL.h>
+    #include "SDL2/SDL.h"
     #undef main
   #endif
 
   // maths
   #define GLM_ENABLE_EXPERIMENTAL 
   #include <GLM/gtx/string_cast.hpp>
-  #include <glm/glm.hpp>
-  #include <glm/gtc/matrix_transform.hpp>
-  #include <glm/gtc/type_ptr.hpp>
+  #include <GLM/glm.hpp>
+  #include <GLM/gtc/matrix_transform.hpp>
+  #include <GLM/gtc/type_ptr.hpp>
 
 // libraries
 #ifdef MX_PLATFORM_WINDOWS_X64

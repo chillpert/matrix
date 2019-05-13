@@ -7,7 +7,7 @@ namespace MX
     recursive_render(*m_Root);
   }
 
-  void SceneGraph::recursive_render(Node &it, glm::fmat4 &mat)
+  void SceneGraph::recursive_render(Node &it, glm::fmat4 mat)
   {  
     it.setWorldTransform(mat);
     
