@@ -3,18 +3,6 @@
 
 namespace MX
 {
-  GL_ModelObjects::GL_ModelObjects(const GL_ModelObjects &model)
-  {
-    VAO = model.VAO;
-    VBO = model.VBO;
-    NBO = model.NBO;
-    TBO = model.TBO;
-    EBO = model.EBO;
-
-    draw_mode = model.draw_mode;
-    num_elements = model.num_elements;   
-  }
-
   Model_OpenGL::Model_OpenGL(const Model_OpenGL &model)
   {
     m_Name = model.m_Name;

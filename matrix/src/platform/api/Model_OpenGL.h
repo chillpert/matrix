@@ -7,11 +7,6 @@ namespace MX
 {
   struct GL_ModelObjects
   {
-    GL_ModelObjects() 
-      : VAO(0), VBO(0), NBO(0), TBO(0), EBO(0), draw_mode(GL_NONE), num_elements(0) {}
-    GL_ModelObjects(const GL_ModelObjects &model);
-    ~GL_ModelObjects() {}
-
     unsigned int VAO;
     unsigned int VBO;
     unsigned int NBO;

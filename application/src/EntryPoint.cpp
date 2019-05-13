@@ -18,8 +18,9 @@ void render()
   debug_level.render();
 }
 
-int main() 
+int main()
 {
+  MX_FATAL("hi");
   // application testing
   MX::Application::get().initialize(initialize);
   MX::Application::get().m_Window->setTitle("My Application");

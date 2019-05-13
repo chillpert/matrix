@@ -37,14 +37,10 @@ namespace MX
 
     struct WindowProps
     {
-      WindowProps() 
-        : m_Width(1200), m_Height(600), m_Time(0.0), m_Title("Matrix Framework") {}
-      ~WindowProps() {}
-
-      int m_Width;
-      int m_Height;
-      double m_Time;
-      std::string m_Title;
+      int m_Width = 1200;
+      int m_Height = 600;
+      double m_Time = 0.0;
+      std::string m_Title = "Matrix Framework";
     };
  
     WindowProps m_Props; 
