@@ -42,13 +42,38 @@ namespace MX
 	  glAttachShader(m_ID, fs);
 	  glLinkProgram(m_ID);
 	  glValidateProgram(m_ID);
-
+    
     errorCheck(m_ID, GL_LINK_STATUS);
       
 	  glDeleteShader(vs);
 	  glDeleteShader(fs);
 
     MX_SUCCESS("MX: API: OpenGL: Shader: " + m_Name);
+  }
+
+  unsigned int compile(unsigned int type, const std::string& source)
+  {
+    unsigned int ID = glCreateShader(type);
+	  const char* src = source.c_str();
+	  glShaderSource(ID, 1, &src, nullptr);
+	  glCompileShader(ID);
+
+    errorCheck(ID, GL_COMPILE_STATUS);
+
+	  return ID;
+  }
+
+  void errorCheck(const unsigned int &ID, int type)
+  {
+    int success;
+    char infoLog[512];
+	  glGetProgramiv(ID, type, &success);
+
+    if (!success)
+    {
+      glGetProgramInfoLog(ID, 512, NULL, infoLog);
+      MX_FATAL("MX: Shader: " + std::string(infoLog));
+    }
   }
 
   void Shader_OpenGL::setBool(const std::string &name, const bool &value) const
@@ -99,31 +124,6 @@ namespace MX
   void use(Shader_OpenGL &shader)
   {
     glUseProgram(shader.getID());
-  }
-
-  unsigned int compile(unsigned int type, const std::string& source)
-  {
-    unsigned int ID = glCreateShader(type);
-	  const char* src = source.c_str();
-	  glShaderSource(ID, 1, &src, nullptr);
-	  glCompileShader(ID);
-  
-    errorCheck(ID, GL_COMPILE_STATUS);
-
-	  return ID;
-  }
-
-  void errorCheck(const unsigned int &ID, int type)
-  {
-    int success;
-    char infoLog[512];
-	  glGetProgramiv(ID, type, &success);
-
-    if (!success)
-    {
-      glGetProgramInfoLog(ID, 512, NULL, infoLog);
-      MX_FATAL("MX: Shader: " + std::string(infoLog));
-    }
   }
 
   Shader_OpenGL Shader_OpenGL::operator=(const Shader_OpenGL &shader)

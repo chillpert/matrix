@@ -10,22 +10,22 @@
     #define MX_PRINT_WARN     SetConsoleTextAttribute(hConsole, 14); std::string finalMessage = "WARNING[" + t + "]: " + message + "\n";
     #define MX_PRINT_INFO     SetConsoleTextAttribute(hConsole, 8); std::string finalMessage = "INFO   [" + t + "]: " + message + "\n";
     #define MX_PRINT_SUCCESS  SetConsoleTextAttribute(hConsole, 2); std::string finalMessage = "SUCCESS[" + t + "]: " + message + "\n";
-    #define MX_PRINT_RESET    SetConsoleTextAttribute(hConsole, 7);        
+    #define MX_PRINT_RESET    SetConsoleTextAttribute(hConsole, 7);
   #elif MX_PLATFORM_UNIX_X64
     #define MX_CONSOLE_HANDLE
-    #define MX_PRINT_FATAL    std::string finalMessage = "\033[31mFATAL  [" + t + "\033[31m]: " + message + "\033[0m\n"; 
+    #define MX_PRINT_FATAL    std::string finalMessage = "\033[31mFATAL  [" + t + "]: " + message + "\033[0m\n";
     #define MX_PRINT_WARN     std::string finalMessage = "\033[33mWARNING[" + t + "]: " + message + "\033[0m\n";
     #define MX_PRINT_INFO     std::string finalMessage = "\033[90mINFO   [" + t + "]: " + message + "\033[0m\n";
     #define MX_PRINT_SUCCESS  std::string finalMessage = "\033[32mSUCCESS[" + t + "]: " + message + "\033[0m\n";
-    #define MX_PRINT_RESET      
+    #define MX_PRINT_RESET
   #endif
 #else
   #define MX_CONSOLE_HANDLE   std::string finalMessage;
-  #define MX_PRINT_FATAL      std::string finalMessage;                        
-  #define MX_PRINT_WARN       std::string finalMessage;                          
-  #define MX_PRINT_INFO       std::string finalMessage;                           
-  #define MX_PRINT_SUCCESS    std::string finalMessage;                  
-  #define MX_PRINT_RESET        
+  #define MX_PRINT_FATAL      std::string finalMessage;
+  #define MX_PRINT_WARN       std::string finalMessage;
+  #define MX_PRINT_INFO       std::string finalMessage;
+  #define MX_PRINT_SUCCESS    std::string finalMessage;
+  #define MX_PRINT_RESET
 
   #define MX_LOG_FATAL   std::string finalMessage;
   #define MX_LOG_WARN    std::string finalMessage;
@@ -39,7 +39,7 @@
 
 namespace MX
 {
-    
+
   MX_CONSOLE_HANDLE;
 
   static bool clearFlag = 1;

@@ -8,8 +8,8 @@ add_compile_definitions(MX_TEST)
 
 ########### CHANGE THIS #############
 # needs clean reconfigure 
-option(USE_GLFW "use GLFW" OFF)
-option(USE_SDL2 "use SDL2" ON)
+option(USE_GLFW "use GLFW" ON)
+option(USE_SDL2 "use SDL2" OFF)
 
 option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)

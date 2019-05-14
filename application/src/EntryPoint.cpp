@@ -2,7 +2,7 @@
 
 MX::Level debug_level("level1");
 
-void initialize() 
+void initialize()
 {
   MX::World::get().m_ActiveLevel = &debug_level;
   debug_level.initialize();
@@ -13,22 +13,21 @@ void update()
   debug_level.update();
 }
 
-void render() 
+void render()
 {
   debug_level.render();
 }
 
 int main()
 {
-  MX_FATAL("hi");
   // application testing
   MX::Application::get().initialize(initialize);
   MX::Application::get().m_Window->setTitle("My Application");
 
   // rendering loop
-  while(MX::Application::get().m_Running) 
+  while(MX::Application::get().m_Running)
   {
-    MX::Application::get().update(update);        
+    MX::Application::get().update(update);
     MX::Application::get().render(render);
   }
   MX::Application::get().clean();

@@ -7,7 +7,7 @@
   #define MX_WARN(x)    MX::Logger::p_Warn(x)
   #define MX_INFO(x)    MX::Logger::p_Info(x)
   #define MX_SUCCESS(x) MX::Logger::p_Success(x)
-  // logs to file
+  // logs to file only
   #define MX_FATAL_LOG(x)   MX::Logger::p_Fatal_log(x)
   #define MX_WARN_LOG(x)    MX::Logger::p_Warn_log(x)
   #define MX_INFO_LOG(x)    MX::Logger::p_Info_log(x)
@@ -43,7 +43,7 @@ namespace MX
     static void p_Warn_log(const std::string &message);
     static void p_Info_log(const std::string &message);  
     static void p_Success_log(const std::string &message);
-  };       
+  };
 }
 
 #endif // LOGGER_H
