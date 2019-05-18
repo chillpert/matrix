@@ -1,21 +1,25 @@
 #include "matrix/Matrix.h"
 
-MX::Scene debug_scene("scene1");
+MX::Scene debug_scene("The Void");
+MX::Scene debug_scene2("Main Menu");
 
 void initialize()
 {
-  MX::World::get().m_ActiveScene = &debug_scene;
-  debug_scene.initialize();
+  // MX::World::get().m_ActiveScene = &debug_scene;
+  MX::World::get().push(&debug_scene2);
+  MX::World::get().push(&debug_scene);
+
+  MX::World::get().initialize();
 }
 
 void update()
 {
-  debug_scene.update();
+  MX::World::get().update();
 }
 
 void render()
 {
-  debug_scene.render();
+  MX::World::get().render();
 }
 
 int main()

@@ -42,7 +42,15 @@ namespace MX
         MX_INFO("MX: Model Handler: Object already exists: Continue without parsing");
 
         objectExists = 1;
-        m_Sg.m_Root->addChild(new Node(object_name, file_name));
+        Node *temp_node = new Node(object_name, file_name);
+        m_Sg.m_Root->addChild(temp_node);
+        std::cout << "Creating object: " << object_name << ": " << temp_node << " or " << &temp_node << std::endl;
+
+        MX_WARN("Printing list");
+        for (const auto &it : m_Sg.m_Root->getChildren())
+        {
+          std::cout << it->m_Name << ": " << it << " or " << &it;
+        }
         break;
       }
     }
@@ -53,13 +61,22 @@ namespace MX
 
       MX_MODEL temp(file_name, 1);
       m_Sg.m_Models.push_back(temp);
-      m_Sg.m_Root->addChild(new Node(object_name, file_name));
+
+      Node *temp_node = new Node(object_name, file_name);
+      m_Sg.m_Root->addChild(temp_node);
+      std::cout << "Creating object: " << object_name << ": " << temp_node << std::endl;
+
+      MX_WARN("Printing list");
+      for (const auto &it : m_Sg.m_Root->getChildren())
+      {
+        std::cout << it->m_Name << ": " << it << std::endl;
+      }
     }
   }
 
   void Scene::pop(const std::string &name)
   {
-    m_Sg.recursive_delete(m_Sg.recursive_search(name, m_Sg.m_Root));
+    //m_Sg.recursive_delete(m_Sg->recursive_search(name, m_Sg.m_Root));
   }
 
   void Scene::setShader(const std::string &name)

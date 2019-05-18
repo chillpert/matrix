@@ -16,7 +16,7 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    MX_API void push(Scene *Scene);
+    MX_API void push(Scene *scene);
     MX_API void pop(const std::string &name);
   
   private:

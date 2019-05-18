@@ -7,14 +7,14 @@ namespace MX
     recursive_render(*m_Root);
   }
 
-  Node *SceneGraph::recursive_search(const std::string &name, Node *it)
+  Node &SceneGraph::recursive_search(const std::string &name, Node *it)
   {
     MX_INFO_LOG("MX: SceneGraph: Searching: Comparing: " + name + " and " + it->m_Name);
     MX_WARN("Current Node's name: " + it->m_Name);
     if (it->m_Name == name)
     {
       MX_FATAL("returning: " + it->m_Name);
-      return it;
+      return *it;
     }
     else
     {
@@ -33,12 +33,35 @@ namespace MX
       for (Node *itChild : it->getChildren())
       {
         recursive_delete(itChild);
-        delete itChild;
+        delete itChild; // maybe remove this line later
       }
     }
     else
     {
+      Node *parent = it->getParent();
+
+      for (std::list<Node*>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
+      {
+        if ((*iter)->m_Name == it->m_Name)
+        {
+          std::cout << "deleting: " << it->m_Name << " from parent " << parent->m_Name << std::endl; 
+          parent->getChildren().erase(iter);
+          break;
+        }
+      }
+      
       delete it;
+    }
+  }
+
+  void SceneGraph::getAllObjects(std::vector<std::string> *vec, Node *it)
+  {
+    vec->push_back(it->m_Name);
+
+    if (!it->getChildren().empty())
+    {
+      for (Node *itChild : it->getChildren())
+        getAllObjects(vec, itChild);
     }
   }
 

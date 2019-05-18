@@ -10,7 +10,8 @@ namespace MX
 
   void World::initialize()
   {
-    m_ActiveScene->initialize();
+    for (auto &it : m_ExistingScenes)
+      it->initialize();
   }
 
   void World::update()
@@ -23,10 +24,11 @@ namespace MX
     m_ActiveScene->render();
   }
 
-  void World::push(Scene *Scene)
+  void World::push(Scene *scene)
   {
-    m_ExistingScenes.push_back(Scene);
-    MX_INFO("MX: World: Scene: " + Scene->m_Name + ": Added");
+    m_ExistingScenes.push_back(scene);
+    m_ActiveScene = scene;
+    MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
   }
 
   void World::pop(const std::string &name)
