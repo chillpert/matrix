@@ -4,8 +4,6 @@ project(${PROJECT_NAME} VERSION 0.1.0)
 
 message(${PROJECT_NAME})
 
-add_compile_definitions(MX_TEST)
-
 ########### CHANGE THIS #############
 # needs clean reconfigure 
 option(USE_GLFW "use GLFW" ON)
@@ -15,6 +13,7 @@ option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)
 
 option(USE_IMGUI "use ImGui" ON)
+option(LOG_EVENTS "log Events" OFF)
 #####################################
 
 # config for Matrix Framework

@@ -1,5 +1,5 @@
-#ifndef LEVEL_H
-#define LEVEL_H
+#ifndef SCENE_H
+#define SCENE_H
 
 #include "matrix/src/pch/stdafx.h"
 
@@ -18,17 +18,20 @@
 
 namespace MX
 {
-  class Level
+  class Scene
   {
   public:
-    MX_API Level() {}
-    MX_API Level(const std::string &name)
+    MX_API Scene() {}
+    MX_API Scene(const std::string &name)
       : m_Name(name) {}
-    MX_API ~Level() {}
+    MX_API ~Scene() {}
 
     MX_API void initialize();
     MX_API void update();
     MX_API void render();
+
+    // return 1 if name is unique, searches the entire scene's scenegraph
+    MX_API bool addItemEntry(const std::string &name);
     
     MX_API void push(const std::string &object_name, const std::string &file_name);
     MX_API void pop(const std::string &name);
@@ -41,4 +44,4 @@ namespace MX
   };
 }
 
-#endif // LEVEL_H
+#endif // SCENE_H

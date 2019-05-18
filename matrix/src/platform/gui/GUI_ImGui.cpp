@@ -27,7 +27,7 @@
 #endif
 
 #include "matrix/src/layers/World.h"
-#include "matrix/src/layers/Level.h"
+#include "matrix/src/layers/Scene.h"
 #include "matrix/src/platform/api/Model.h"
 #ifdef MX_OPENGL_ACTIVE 
   #include "matrix/src/platform/api/Model_OpenGL.h"
@@ -73,6 +73,25 @@ namespace MX
   static bool no_background = false;
   static bool no_bring_to_front = false;
   static bool p_open = true;
+  static bool enter_name = false;
+
+  void enterNameWindow()
+  {
+    ImGui::Begin("new Window");
+    
+    ImGui::Text("hello there");
+
+    static char input[128];
+    static int i0 = 123;
+    ImGui::InputText("input text", input, IM_ARRAYSIZE(input));
+
+    if (ImGui::Button("confirm")) // && name not already used)
+    {
+      enter_name = 0;
+    }
+
+    ImGui::End();
+  }
 
   void GUI_ImGui::render()
   {
@@ -117,9 +136,9 @@ namespace MX
         ImGui::EndMenuBar();
       }
 
-      static int item_current_levels = 0;
-      const char* items_levels[] = {"main menu", "tutorial", "jungle"};
-      ImGui::Combo("select level", &item_current_levels, items_levels, IM_ARRAYSIZE(items_levels));
+      static int item_current_Scenes = 0;
+      const char* items_Scenes[] = {"main menu", "tutorial", "jungle"};
+      ImGui::Combo("select Scene", &item_current_Scenes, items_Scenes, IM_ARRAYSIZE(items_Scenes));
 
       if (ImGui::Button("add"))
       {
@@ -135,35 +154,66 @@ namespace MX
 
       ImGui::NewLine();
 
-      const char* items[] = {"...", "monkey"};
-
-      
+      const char* items[] = {"...", "monkey", "cube", "rock", "sphere"};
       
       static int item_objects_to_spawn = 0;
       ImGui::Text("select object:");
       ImGui::Combo("##objects_list", &item_objects_to_spawn, items, IM_ARRAYSIZE(items));
+
+      if (enter_name)
+        enterNameWindow();
 
       // spawn selected object
       if (ImGui::Button("spawn"))
       {
         if (item_objects_to_spawn == 1)
         {
+          //enter_name = 1;
+          //if (!enter_name)
+          //{
+            World::get().m_ActiveScene->push("monkey1", "monkey.obj");
+            item_objects_to_spawn = 0;
+            MX_WARN("monkey spawned");
+          //}
+        }
+
+        if (item_objects_to_spawn == 2)
+        {
           item_objects_to_spawn = 0;
           
-          World::get().m_ActiveLevel->push("monkey_1", "monkey.obj");
-          MX_WARN("monkey spawned");
+          World::get().m_ActiveScene->push("cube1", "cube.obj");
+          MX_WARN("cube spawned");
+        }
+
+        if (item_objects_to_spawn == 3)
+        {
+          item_objects_to_spawn = 0;
+          
+          World::get().m_ActiveScene->push("rock1", "rock.obj");
+          MX_WARN("rock spawned");
+        }
+
+        if (item_objects_to_spawn == 4)
+        {
+          item_objects_to_spawn = 0;
+          
+          World::get().m_ActiveScene->push("sphere1", "sphere.obj");
+          MX_WARN("sphere spawned");
         }
       }
 
-      /*
-      TODO
-        figure out a way to only parse objects once, and then reuse the model
-        dont use the model class for any of this in here
-        maybe try to parse all existing objects first (with application start up)
+      if (ImGui::Button("delete monkey"))
+      {
+        MX_WARN("active scene: " + World::get().m_ActiveScene->m_Name);
+        for (const auto &it : World::get().m_ActiveScene->m_Sg.m_Root->getChildren())
+        {
+          std::cout << it->m_Name << ", ";
+        }
 
-        use node class to store transform
-        if node has file_name monkey.obj then apply transforms and draw it
-      */
+        std::cout << std::endl;
+        
+        MX_SUCCESS(World::get().m_ActiveScene->m_Sg.recursive_search("monkey1", World::get().m_ActiveScene->m_Sg.m_Root)->m_Name + " found!");
+      }
       
 /*
       // delete selected object
@@ -173,7 +223,7 @@ namespace MX
         {
           item_current_objects = 0;
 
-          // World::get().m_ActiveLevel->pop("monkey.obj");
+          // World::get().m_ActiveScene->pop("monkey.obj");
           MX_WARN("monkey deleted");
         }
       }

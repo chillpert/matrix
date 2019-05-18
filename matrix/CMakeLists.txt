@@ -43,6 +43,12 @@ link_directories(external/libs)
         add_compile_definitions(MX_GLFW_ACTIVE)
       ENDIF ()
 
+    # log events
+      IF (LOG_EVENTS)
+        message("Logging events enabled")
+        add_compile_definitions(MX_LOG_EVENTS)
+      ENDIF ()
+
     # controller
       add_compile_definitions(MX_DEFAULT_CONTROLLER)
 

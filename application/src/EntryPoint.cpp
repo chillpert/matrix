@@ -1,21 +1,21 @@
 #include "matrix/Matrix.h"
 
-MX::Level debug_level("level1");
+MX::Scene debug_scene("scene1");
 
 void initialize()
 {
-  MX::World::get().m_ActiveLevel = &debug_level;
-  debug_level.initialize();
+  MX::World::get().m_ActiveScene = &debug_scene;
+  debug_scene.initialize();
 }
 
 void update()
 {
-  debug_level.update();
+  debug_scene.update();
 }
 
 void render()
 {
-  debug_level.render();
+  debug_scene.render();
 }
 
 int main()

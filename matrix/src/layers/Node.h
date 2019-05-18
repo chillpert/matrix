@@ -14,7 +14,7 @@ namespace MX
     
     void addChild(Node* node); 
     Node* &getChild(const std::string &name);
-    std::vector<Node*> &getChildren() { return m_Children; }
+    std::list<Node*> &getChildren() { return m_Children; }
 
     void setParent(Node* node);
     Node* &getParent() { return m_Parent; }
@@ -39,7 +39,7 @@ namespace MX
     glm::fmat4 m_WorldTransform = glm::fmat4(1.0f);
 
     Node* m_Parent;
-    std::vector<Node*> m_Children;  
+    std::list<Node*> m_Children;  
 
   public:
     std::string m_Name;

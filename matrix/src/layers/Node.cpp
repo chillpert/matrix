@@ -22,14 +22,10 @@ namespace MX
 
   Node* &Node::getChild(const std::string &name)
   {
-    int size = m_Children.size();
-
-    for (unsigned int i = 0; i < size; i++)
+    for (auto &it : m_Children)
     {
-      if (m_Children.at(i)->m_Name == name)
-      {
-        return m_Children.at(i);
-      }
+      if (it->m_Name == name)
+        return it;
     }
 
     std::cerr << name + " is not a child of " + m_Name << std::endl;
@@ -37,8 +33,8 @@ namespace MX
   }
 
   void Node::setLocalTransform(const glm::fmat4& mat)
-  {  
-    m_LocalTransform = mat * m_LocalTransform; 
+  {
+    m_LocalTransform = mat * m_LocalTransform;
   }
 
   void Node::setWorldTransform(const glm::fmat4& mat)

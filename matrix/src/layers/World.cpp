@@ -10,42 +10,42 @@ namespace MX
 
   void World::initialize()
   {
-    m_ActiveLevel->initialize();
+    m_ActiveScene->initialize();
   }
 
   void World::update()
   {
-    m_ActiveLevel->update();
+    m_ActiveScene->update();
   }
 
   void World::render()
   {
-    m_ActiveLevel->render();
+    m_ActiveScene->render();
   }
 
-  void World::push(Level *level)
+  void World::push(Scene *Scene)
   {
-    m_ExistingLevels.push_back(level);
-    MX_INFO("MX: World: Level: " + level->m_Name + ": Added");
+    m_ExistingScenes.push_back(Scene);
+    MX_INFO("MX: World: Scene: " + Scene->m_Name + ": Added");
   }
 
   void World::pop(const std::string &name)
   {
-    for (unsigned int i = 0; i < m_ExistingLevels.size(); i++)
+    for (unsigned int i = 0; i < m_ExistingScenes.size(); i++)
     {
-      if (m_ExistingLevels.at(i)->m_Name == name)
+      if (m_ExistingScenes.at(i)->m_Name == name)
       {
-        delete m_ExistingLevels.at(i);
+        delete m_ExistingScenes.at(i);
         try 
         {
-          m_ExistingLevels.erase(m_ExistingLevels.begin() + i);
+          m_ExistingScenes.erase(m_ExistingScenes.begin() + i);
         }
         catch (std::exception e)
         {
           MX_FATAL(e.what());
         }
 
-        MX_WARN("MX: World: Level " + m_ExistingLevels.at(i)->m_Name + ": Deleted");
+        MX_WARN("MX: World: Scene " + m_ExistingScenes.at(i)->m_Name + ": Deleted");
       }
     }
   }

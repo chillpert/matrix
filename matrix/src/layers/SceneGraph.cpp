@@ -7,6 +7,41 @@ namespace MX
     recursive_render(*m_Root);
   }
 
+  Node *SceneGraph::recursive_search(const std::string &name, Node *it)
+  {
+    MX_INFO_LOG("MX: SceneGraph: Searching: Comparing: " + name + " and " + it->m_Name);
+    MX_WARN("Current Node's name: " + it->m_Name);
+    if (it->m_Name == name)
+    {
+      MX_FATAL("returning: " + it->m_Name);
+      return it;
+    }
+    else
+    {
+      if (!it->getChildren().empty())
+      {
+        for (Node *itChild : it->getChildren())
+          recursive_search(name, itChild);
+      }
+    }
+  }
+
+  void SceneGraph::recursive_delete(Node *it)
+  {
+    if (!it->getChildren().empty())
+    {
+      for (Node *itChild : it->getChildren())
+      {
+        recursive_delete(itChild);
+        delete itChild;
+      }
+    }
+    else
+    {
+      delete it;
+    }
+  }
+
   void SceneGraph::recursive_render(Node &it, glm::fmat4 mat)
   {  
     it.setWorldTransform(mat);

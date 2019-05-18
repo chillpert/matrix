@@ -33,6 +33,7 @@ namespace MX
 
   void Event::printEventType() const 
   {
+  #ifdef MX_LOG_EVENTS
     switch (m_Event) 
     {
       case 1:
@@ -75,6 +76,7 @@ namespace MX
         MX_WARN_LOG("MX: Event: Unkown");
         break;
     }
+  #endif
   }
 
   void Event::handle() 

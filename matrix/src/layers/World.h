@@ -2,7 +2,7 @@
 #define WORLD_H
 
 #include "matrix/src/pch/stdafx.h"
-#include "matrix/src/layers/Level.h"
+#include "matrix/src/layers/Scene.h"
 
 namespace MX 
 {
@@ -16,15 +16,15 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    MX_API void push(Level *level);
+    MX_API void push(Scene *Scene);
     MX_API void pop(const std::string &name);
   
   private:
     MX_API World() {}
 
   public:
-    Level *m_ActiveLevel;
-    std::vector<Level*> m_ExistingLevels;
+    Scene *m_ActiveScene;
+    std::vector<Scene*> m_ExistingScenes;
   };
 }
 

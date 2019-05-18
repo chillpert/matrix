@@ -4,10 +4,10 @@
 // application
 #include "matrix/src/Application.h"
 
-// world and levels
+// world and scenes
 #include "matrix/src/layers/World.h"
 #include "matrix/src/layers/Node.h"
-#include "matrix/src/layers/Level.h"
+#include "matrix/src/layers/Scene.h"
 
 // debugging
 #ifdef MX_DEBUG
