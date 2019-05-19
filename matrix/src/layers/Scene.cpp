@@ -31,6 +31,7 @@ namespace MX
     m_Sg.render();
   }
 
+  // adds object to scene graph
   void Scene::push(const std::string &object_name, const std::string &file_name)
   {
     bool objectExists = 0;
@@ -39,49 +40,56 @@ namespace MX
     {
       if (it.getName() == file_name)
       {
-        MX_INFO("MX: Model Handler: Object already exists: Continue without parsing");
+        MX_INFO_LOG("MX: Model Handler: Object already exists: Continue without parsing");
 
         objectExists = 1;
         Node *temp_node = new Node(object_name, file_name);
         m_Sg.m_Root->addChild(temp_node);
-        std::cout << "Creating object: " << object_name << ": " << temp_node << " or " << &temp_node << std::endl;
 
-        MX_WARN("Printing list");
-        for (const auto &it : m_Sg.m_Root->getChildren())
-        {
-          std::cout << it->m_Name << ": " << it << " or " << &it;
-        }
+        #ifdef MX_DEBUG
+          std::ostringstream address; 
+          address << temp_node;
+          std::string address_s =  address.str(); 
+          MX_INFO_LOG("MX: Scene: Push: " + object_name + ": Address: " + address_s);
+        #endif
         break;
       }
     }
 
     if (!objectExists)
     {
-      MX_INFO("MX: Model Handler: Object does not exist: Continue with parsing");
+      MX_INFO_LOG("MX: Model Handler: Object does not exist: Continue with parsing");
 
       MX_MODEL temp(file_name, 1);
       m_Sg.m_Models.push_back(temp);
 
       Node *temp_node = new Node(object_name, file_name);
       m_Sg.m_Root->addChild(temp_node);
-      std::cout << "Creating object: " << object_name << ": " << temp_node << std::endl;
-
-      MX_WARN("Printing list");
-      for (const auto &it : m_Sg.m_Root->getChildren())
-      {
-        std::cout << it->m_Name << ": " << it << std::endl;
-      }
+      
+      #ifdef MX_DEBUG
+        std::ostringstream address; 
+        address << temp_node;
+        std::string address_s =  address.str(); 
+        MX_INFO_LOG("MX: Scene: Push: " + object_name + ": Address: " + address_s);
+      #endif
     }
+
+    MX_SUCCESS_LOG("MX: Scene: Push: " + object_name);
   }
 
+  // delete object from scene graph
   void Scene::pop(const std::string &name)
   {
-    //m_Sg.recursive_delete(m_Sg->recursive_search(name, m_Sg.m_Root));
+    MX_INFO_LOG("MX: Scene: Pop: " + name);
+    m_Sg.recursive_search(name, m_Sg.m_Root);
+    m_Sg.recursive_delete(search_holder);
+    MX_SUCCESS_LOG("MX: Scene: Pop: " + name);
   }
 
   void Scene::setShader(const std::string &name)
   {
+    MX_INFO_LOG("MX: Scene: Shader: " + m_Name);
     m_Sg.m_Shader = MX_SHADER(name, 1);
-    MX_INFO("MX: Scene: " + m_Name + ": Added: Shader");
+    MX_SUCCESS_LOG("MX: Scene: Shader: " + m_Name);
   }
 }

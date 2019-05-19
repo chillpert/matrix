@@ -125,57 +125,36 @@ namespace MX
     {
       if (item_objects_to_spawn == 1)
       {
-        //enter_name = 1;
-        //if (!enter_name)
-        //{
-          World::get().m_ActiveScene->push("monkey1", "monkey.obj");
-          item_objects_to_spawn = 0;
-          MX_WARN("monkey spawned");
-        //}
+        item_objects_to_spawn = 0;
+        World::get().m_ActiveScene->push("monkey1", "monkey.obj");
       }
 
       if (item_objects_to_spawn == 2)
       {
         item_objects_to_spawn = 0;
-        
         World::get().m_ActiveScene->push("cube1", "cube.obj");
-        MX_WARN("cube spawned");
       }
 
       if (item_objects_to_spawn == 3)
       {
         item_objects_to_spawn = 0;
-        
         World::get().m_ActiveScene->push("rock1", "rock.obj");
-        MX_WARN("rock spawned");
       }
 
       if (item_objects_to_spawn == 4)
       {
         item_objects_to_spawn = 0;
-        
         World::get().m_ActiveScene->push("sphere1", "sphere.obj");
-        MX_WARN("sphere spawned");
       }
     }
 
     // display all active objects
     std::vector<std::string> active_objects_s;
-    std::vector<char*> active_objects_c;
-
     World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
-
-    std::transform(active_objects_s.begin(), active_objects_s.end(), std::back_inserter(active_objects_c), [](const std::string &s){
-      char *pc = new char[s.size()+1];
-      std::strcpy(pc, s.c_str());
-      return pc;
-    });
 
     const char* active_objects[active_objects_s.size()];
     for (unsigned int i = 0; i < active_objects_s.size(); ++i)
-    {
-      active_objects[i] = active_objects_c[i];
-    }
+      active_objects[i] = active_objects_s[i].c_str();
 
     ImGui::Text("select object:");
     static int item_objects_to_delete = 0;
@@ -186,52 +165,29 @@ namespace MX
     // delete
     if (ImGui::Button("delete"))
     {
-/*
-      MX_WARN("before scene: " + World::get().m_ActiveScene->m_Name);
-      for (const auto &it : World::get().m_ActiveScene->m_Sg.m_Root->getChildren())
-      {
-        std::cout << it->m_Name << ": " << it << std::endl;
-      }
-
-      Node *t = &World::get().m_ActiveScene->m_Sg.recursive_search("monkey1", World::get().m_ActiveScene->m_Sg.m_Root); 
-      std::cout << "pls: " << t << std::endl;
-*/
-      //World::get().m_ActiveScene->m_Sg.recursive_delete(&World::get().m_ActiveScene->m_Sg.recursive_search("monkey1", World::get().m_ActiveScene->m_Sg.m_Root));
-/*
-      MX_WARN("after delete: " + World::get().m_ActiveScene->m_Name);
-      for (const auto &it : World::get().m_ActiveScene->m_Sg.m_Root->getChildren())
-      {
-        std::cout << it->m_Name << ": " << it << std::endl;
-      }
-*/
       if (item_objects_to_delete == 1)
       {
-        MX_FATAL("deleting " + active_objects_s.at(1));
-        World::get().m_ActiveScene->m_Sg.recursive_delete(&World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(1), World::get().m_ActiveScene->m_Sg.m_Root));
         item_objects_to_delete = 0;
+        World::get().m_ActiveScene->pop(active_objects_s.at(1));
       }
 
       if (item_objects_to_delete == 2)
       {
-        MX_FATAL("deleting " + active_objects_s.at(2));
-        World::get().m_ActiveScene->m_Sg.recursive_delete(&World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(2), World::get().m_ActiveScene->m_Sg.m_Root));
         item_objects_to_delete = 0;
+        World::get().m_ActiveScene->pop(active_objects_s.at(2));  
       }
 
       if (item_objects_to_delete == 3)
       {
-        MX_FATAL("deleting cube" + active_objects_s.at(3));
-        World::get().m_ActiveScene->m_Sg.recursive_delete(&World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(3), World::get().m_ActiveScene->m_Sg.m_Root));
         item_objects_to_delete = 0;
+        World::get().m_ActiveScene->pop(active_objects_s.at(3));
       }
 
       if (item_objects_to_delete == 4)
       {
-        MX_FATAL("deleting cube" + active_objects_s.at(4));
-        World::get().m_ActiveScene->m_Sg.recursive_delete(&World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(4), World::get().m_ActiveScene->m_Sg.m_Root));
         item_objects_to_delete = 0;
+        World::get().m_ActiveScene->pop(active_objects_s.at(4));
       }
-
     }
     
     //ImGui::Checkbox("Rotate", &rotateFlag);

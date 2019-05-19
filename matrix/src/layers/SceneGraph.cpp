@@ -2,21 +2,21 @@
 
 namespace MX
 {
+/*
+  if recursive search is called then this pointer will
+  point to the item that has been search the last time
+*/
+  Node *search_holder = NULL;
+
   void SceneGraph::render()
-  {    
+  {
     recursive_render(*m_Root);
   }
 
-  Node &SceneGraph::recursive_search(const std::string &name, Node *it)
+  // set the global search_holder pointer to a hit if possible
+  void SceneGraph::recursive_search(const std::string &name, Node *it)
   {
-    MX_INFO_LOG("MX: SceneGraph: Searching: Comparing: " + name + " and " + it->m_Name);
-    MX_WARN("Current Node's name: " + it->m_Name);
-    if (it->m_Name == name)
-    {
-      MX_FATAL("returning: " + it->m_Name);
-      return *it;
-    }
-    else
+    if (it->m_Name != name)
     {
       if (!it->getChildren().empty())
       {
@@ -24,8 +24,11 @@ namespace MX
           recursive_search(name, itChild);
       }
     }
+    else
+      search_holder = it;
   }
 
+  // deletes all children recursively from a given node
   void SceneGraph::recursive_delete(Node *it)
   {
     if (!it->getChildren().empty())
@@ -33,7 +36,7 @@ namespace MX
       for (Node *itChild : it->getChildren())
       {
         recursive_delete(itChild);
-        delete itChild; // maybe remove this line later
+        delete itChild;
       }
     }
     else
@@ -44,12 +47,10 @@ namespace MX
       {
         if ((*iter)->m_Name == it->m_Name)
         {
-          std::cout << "deleting: " << it->m_Name << " from parent " << parent->m_Name << std::endl; 
           parent->getChildren().erase(iter);
           break;
         }
       }
-      
       delete it;
     }
   }
@@ -69,7 +70,7 @@ namespace MX
   {  
     it.setWorldTransform(mat);
     
-    for (auto &model : m_Models) 
+    for (auto &model : m_Models)
     {
       if (model.getName() == it.m_ModelName)
       {
@@ -85,10 +86,6 @@ namespace MX
         Node ptr = *itChild;
         recursive_render(*itChild, it.getWorldTransform());
       }
-    }
-    else
-    {
-      // MX_INFO_LOG("MX: Scene Graph: Recursive Render: " + it.m_Name + " does not have any children");
     }
   }
 }

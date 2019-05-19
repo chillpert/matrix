@@ -269,7 +269,7 @@ namespace MX
   {
     m_X = x;
     m_Y = y;
-    //MX_MOUSE_MOVED(float(m_X), float(m_Y));
+    MX_MOUSE_MOVED(float(m_X), float(m_Y));
   }
 
   void Controller::handleMousePressed(int keyCode)

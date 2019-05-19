@@ -65,7 +65,6 @@ namespace MX
     if (m_Pitch > 89.0f)
       m_Pitch = 89.0f;
 
-
     if (m_Pitch < -89.0f)
       m_Pitch = -89.0f;
 

@@ -27,7 +27,7 @@ namespace MX
     MX_API void update();
     MX_API void render();
     
-    MX_API Node &recursive_search(const std::string &name, Node *it);
+    MX_API void recursive_search(const std::string &name, Node *it);
     MX_API void recursive_delete(Node *it);
     MX_API void getAllObjects(std::vector<std::string> *vec, Node *it);
   private:
@@ -38,6 +38,8 @@ namespace MX
     std::vector<MX_MODEL> m_Models;
     MX_SHADER m_Shader;
   };
+
+  extern Node *search_holder;
 }
 
 #endif // SCENEGRAPH_HPP
