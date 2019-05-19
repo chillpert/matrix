@@ -14,13 +14,10 @@ namespace MX
     t_front.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
     t_front.y = sin(glm::radians(m_Pitch));
     t_front.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
-    m_Front = glm::normalize(t_front); 
-    m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));  
+    m_Front = glm::normalize(t_front);
+    m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
     m_Up    = glm::normalize(glm::cross(m_Right, m_Front));
   }
-
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
 
   void Camera::processKeyboard(m_Camera direction, float speed)
   {
