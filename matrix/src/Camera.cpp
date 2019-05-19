@@ -19,6 +19,9 @@ namespace MX
     m_Up    = glm::normalize(glm::cross(m_Right, m_Front));
   }
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
+
   void Camera::processKeyboard(m_Camera direction, float speed)
   {
     switch (direction)

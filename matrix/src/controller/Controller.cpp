@@ -263,13 +263,25 @@ namespace MX
         MX_WARN("MX: Key released: " + std::to_string(keyCode) + " is not programmed"); break;            
     }
   }
-    
+  
+  static bool firstMouse = true;
+
+  float lastX = 1200 / 2.0f;
+  float lastY = 600 / 2.0f;
 
   void Controller::handleMouseMoved(int x, int y)
   {
+    if (firstMouse) {
+      m_X = x;
+      m_Y = y;
+      firstMouse = false;
+    }
+    float xoffset = x - m_X;
+    float yoffset = m_Y - y; 
     m_X = x;
     m_Y = y;
-    //MX_MOUSE_MOVED(float(m_X), float(m_Y));
+
+    MX_MOUSE_MOVED(float(xoffset), float(yoffset));
   }
 
   void Controller::handleMousePressed(int keyCode)
