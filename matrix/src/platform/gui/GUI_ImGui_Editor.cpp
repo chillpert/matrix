@@ -82,15 +82,16 @@ namespace MX
     }
 
     // display all scenes
-    const char* available_scenes[World::get().m_ExistingScenes.size() + 1];
-    available_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();
+    std::vector<const char*> all_current_scenes;
+    all_current_scenes.resize(World::get().m_ExistingScenes.size() + 1);
+    all_current_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();
 
     for (unsigned int i = 0; i < World::get().m_ExistingScenes.size(); ++i)
-      available_scenes[i+1] = World::get().m_ExistingScenes[i]->m_Name.c_str();
+      all_current_scenes[i+1] = World::get().m_ExistingScenes[i]->m_Name.c_str();
 
     static int item_current_scenes = 0;
     ImGui::Text("select scene:");
-    ImGui::Combo("##all_scenes_to_select", &item_current_scenes, available_scenes, IM_ARRAYSIZE(available_scenes));
+    ImGui::Combo("##all_scenes_to_select", &item_current_scenes, all_current_scenes.data(), all_current_scenes.size());
 
     ImGui::SameLine();
 
@@ -152,13 +153,15 @@ namespace MX
     std::vector<std::string> active_objects_s;
     World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
 
-    const char* active_objects[active_objects_s.size()];
+    std::vector<const char*> all_active_objects;
+    all_active_objects.resize(active_objects_s.size());
+
     for (unsigned int i = 0; i < active_objects_s.size(); ++i)
-      active_objects[i] = active_objects_s[i].c_str();
+      all_active_objects[i] = active_objects_s[i].c_str();
 
     ImGui::Text("select object:");
     static int item_objects_to_delete = 0;
-    ImGui::Combo("##all_objects_to_delete", &item_objects_to_delete, active_objects, IM_ARRAYSIZE(active_objects));
+    ImGui::Combo("##all_objects_to_delete", &item_objects_to_delete, all_active_objects.data(), all_active_objects.size());
 
     ImGui::SameLine();
 
