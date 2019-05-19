@@ -2,12 +2,6 @@
 
 namespace MX
 {
-  Camera &Camera::get()
-  {
-    static Camera instance;
-    return instance;
-  }
-
   void Camera::update()
   {
     glm::vec3 t_front;

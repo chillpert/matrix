@@ -1,6 +1,5 @@
 #include "matrix/src/layers/Scene.h"
 #include "matrix/src/Application.h"
-#include "matrix/src/Camera.h"
 
 namespace MX
 {
@@ -17,8 +16,8 @@ namespace MX
   void Scene::update()
   {
     m_Sg.m_Shader.use();
-    m_Sg.m_Shader.setfMat4("view", MX::Camera::get().getViewMatrix());
-    m_Sg.m_Shader.setfMat4("projection", MX::Camera::get().getProjectionMatrix());
+    m_Sg.m_Shader.setfMat4("view", m_Cam.getViewMatrix());
+    m_Sg.m_Shader.setfMat4("projection", m_Cam.getProjectionMatrix());
   }
 
   void Scene::render()
@@ -26,7 +25,7 @@ namespace MX
     m_Sg.m_Shader.use();
     m_Sg.m_Shader.setfVec3("lightPosition", glm::vec3(5, -5, 1));
     m_Sg.m_Shader.setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    m_Sg.m_Shader.setfVec3("viewPos", MX::Camera::get().getPosition());
+    m_Sg.m_Shader.setfVec3("viewPos", m_Cam.getPosition());
 
     m_Sg.render();
   }

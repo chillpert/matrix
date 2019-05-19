@@ -14,7 +14,19 @@ namespace MX
   class Camera
   {
   public:
-    MX_API static Camera &get();
+    MX_API Camera()
+      : m_Position(glm::vec3(0.0f, 0.0f, 3.0f)), 
+        m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+        m_WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)),
+        m_Yaw(-90.0f),
+        m_Pitch(0.0f),
+        m_Sensitivity(0.06f),
+        m_Fov(45.0f)
+    {
+      update();
+    }
+
+    MX_API ~Camera() {}
   
     MX_API void processKeyboard(m_Camera direction, float speed); 
     MX_API void processMouse(float xoffset, float yoffset);
@@ -36,21 +48,6 @@ namespace MX
     float m_Fov;
 
     MX_API void update();
-    
-    MX_API Camera()
-      : m_Position(glm::vec3(0.0f, 0.0f, 3.0f)), 
-        m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-        m_WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)),
-        m_Yaw(-90.0f),
-        m_Pitch(0.0f),
-        m_Sensitivity(0.06f),
-        m_Fov(45.0f)
-    {
-      update();
-    }
-
-    MX_API ~Camera() {}
-
   };
 }
 

@@ -14,6 +14,7 @@
   #include "matrix/src/platform/api/Shader_DirectX.h"
 #endif
 
+#include "matrix/src/Camera.h"
 #include "matrix/src/layers/SceneGraph.h"
 
 namespace MX
@@ -39,6 +40,7 @@ namespace MX
     MX_API void setShader(const std::string &name);
 
   public:
+    Camera m_Cam;
     SceneGraph m_Sg;
     std::string m_Name;
   };
