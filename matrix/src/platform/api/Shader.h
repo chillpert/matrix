@@ -23,6 +23,8 @@ namespace MX
     MX_API void setFsPath(const std::string &fsPath);
     MX_API void setName(const std::string &name);
 
+    MX_API virtual void update() {}
+
     MX_API inline std::string &getName() { return m_Name; }
     MX_API inline std::string &getVsPath() { return m_VsPath; }
     MX_API inline std::string &getFsPath() { return m_FsPath; }

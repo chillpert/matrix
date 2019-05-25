@@ -2,6 +2,7 @@
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
 #include "matrix/src/event/WindowEvent.h"
+#include "matrix/src/controller/Controller.h"
 
 #ifdef MX_GLFW_ACTIVE
 
@@ -16,9 +17,15 @@ namespace MX
     }
     else
     {
-      //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-      //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-      //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+      const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+      glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+      glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+      glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+      glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+      glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+      glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+      glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
       
       m_Window = glfwCreateWindow(m_Props.m_Width, m_Props.m_Height, m_Props.m_Title.c_str(), NULL, NULL);
 
@@ -141,7 +148,14 @@ namespace MX
 
   void Window_GLFW::update()
   { 
-    m_Props.m_Time = glfwGetTime();
+    m_Props.m_Time = (float) glfwGetTime();
+    updateTime();
+
+    // update mouse visibility
+    if (Controller::get().m_MouseHidden)
+      glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    else
+      glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
   }
 
   void Window_GLFW::render() const
@@ -156,9 +170,9 @@ namespace MX
     glfwTerminate();
   }
 
-  void Window_GLFW::resize()
+  void Window_GLFW::resizeWindow(int width, int height)
   {
-
+    glfwSetWindowSize(m_Window, width, height);
   }
 
   void Window_GLFW::setTitle()

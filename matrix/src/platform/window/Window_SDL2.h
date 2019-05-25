@@ -24,7 +24,7 @@ namespace MX
     MX_API void controllerCallback() override;
 
     MX_API void setTitle() override;
-    MX_API void resize() override;
+    MX_API void resizeWindow(int width, int height) override;
     
     MX_API inline SDL_Window* getWindow() { return m_Window; } 
     MX_API inline SDL_GLContext& getContext() { return m_Context; }

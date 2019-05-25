@@ -1,4 +1,5 @@
 #include "matrix/src/platform/api/Shader_OpenGL.h"
+#include "matrix/src/layers/World.h"
 
 namespace MX
 {
@@ -30,6 +31,8 @@ namespace MX
 
   void Shader_OpenGL::initialize()
   {
+    setName("trivial");
+
     m_ID = glCreateProgram();
 
     m_VsSource = parseFile(m_VsPath);
@@ -49,6 +52,17 @@ namespace MX
 	  glDeleteShader(fs);
 
     MX_SUCCESS("MX: API: OpenGL: Shader: " + m_Name);
+  }
+
+  void Shader_OpenGL::update()
+  {
+    use();
+    setfMat4("view", World::get().m_ActiveScene->m_Cam.getViewMatrix());
+    setfMat4("projection", World::get().m_ActiveScene->m_Cam.getProjectionMatrix());
+
+    setfVec3("lightPosition", glm::vec3(5, -5, 1));
+    setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+    setfVec3("viewPos", World::get().m_ActiveScene->m_Cam.getPosition());
   }
 
   unsigned int compile(unsigned int type, const std::string& source)
@@ -124,11 +138,5 @@ namespace MX
   void use(Shader_OpenGL &shader)
   {
     glUseProgram(shader.getID());
-  }
-
-  Shader_OpenGL Shader_OpenGL::operator=(const Shader_OpenGL &shader)
-  {
-    Shader_OpenGL temp(shader);
-    return temp;
   }
 }

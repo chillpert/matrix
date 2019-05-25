@@ -2,6 +2,8 @@
 #include "matrix/src/event/KeyboardEvent.h"
 #include "matrix/src/event/MouseEvent.h"
 #include "matrix/src/event/WindowEvent.h"
+#include "matrix/src/controller/Controller.h"
+#include "matrix/src/layers/World.h"
 
 #ifdef MX_SDL2_ACTIVE
 
@@ -20,7 +22,7 @@ namespace MX
     else
     {
       MX_SUCCESS("MX: Window: SDL2: context");
-      
+            
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -56,7 +58,15 @@ namespace MX
 
   void Window_SDL2::update() 
   {
-    m_Props.m_Time = SDL_GetTicks() / 1000.0f;
+    m_Props.m_Time = (float) (SDL_GetTicks()) / 1000.0f;
+    updateTime();
+
+    // update mouse visibility
+    if (Controller::get().m_MouseHidden)
+      SDL_SetRelativeMouseMode(SDL_TRUE);
+    else
+      SDL_SetRelativeMouseMode(SDL_FALSE);
+
   }
 
   void Window_SDL2::render() const
@@ -128,7 +138,7 @@ namespace MX
           }
           case SDL_WINDOWEVENT_RESIZED:
           {
-            WindowResized event(int(SDLevent.window.data1), int(SDLevent.window.data1));
+            WindowResized event(SDLevent.window.data1, SDLevent.window.data2);
             event.handle();
             LOGEVENT;
             break;
@@ -143,9 +153,10 @@ namespace MX
     SDL_SetWindowTitle(m_Window, m_Props.m_Title.c_str());
   }
 
-  void Window_SDL2::resize()
+  void Window_SDL2::resizeWindow(int width, int height)
   {
-    SDL_SetWindowSize(m_Window, m_Props.m_Width, m_Props.m_Height);
+    World::get().m_ActiveScene->m_Cam.setScreenDimensions(width, height);
+    SDL_SetWindowSize(m_Window, width, height);
   }
 }
 

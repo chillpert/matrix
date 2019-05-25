@@ -1,4 +1,8 @@
+#include "matrix/src/Utils.h"
 #include "matrix/src/platform/gui/GUI_ImGui.h"
+#include "matrix/src/Application.h"
+#include "matrix/src/event/WindowEvent.h"
+#include "matrix/src/controller/Controller.h"
 
 namespace MX
 {
@@ -9,7 +13,7 @@ namespace MX
   static bool no_titlebar = false;
   static bool no_scrollbar = false;
   static bool no_menu = false;
-  static bool no_move = false;
+  static bool no_move = true;
   static bool no_resize = false;
   static bool no_collapse = false;
   static bool no_close = false;
@@ -21,7 +25,7 @@ namespace MX
 
   void enterNameWindow()
   {
-    #ifdef MX_IMGUI_ACTIVE
+  #ifdef MX_IMGUI_ACTIVE
     ImGui::Begin("new Window");
     
     ImGui::Text("hello there");
@@ -36,12 +40,12 @@ namespace MX
     }
 
     ImGui::End();
-    #endif
+  #endif
   }
 
   void renderEditor()
   {
-    #ifdef MX_IMGUI_ACTIVE
+  #ifdef MX_IMGUI_ACTIVE
     ImGuiWindowFlags window_flags = 0;
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -59,23 +63,48 @@ namespace MX
     {
       if (ImGui::BeginMenu("projects"))
       {
-        ImGui::MenuItem("new");
-        ImGui::MenuItem("open");
+        if (ImGui::MenuItem("new")) {}
+        if (ImGui::MenuItem("open")) {}
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("settings"))
       {
-        ImGui::MenuItem("save");
-        ImGui::MenuItem("save as");
-        ImGui::MenuItem("import config");
-        ImGui::MenuItem("export config");
+        if (ImGui::MenuItem("save")) {}
+        if (ImGui::MenuItem("save as")) {}
+        if (ImGui::MenuItem("import config")) {}
+        if (ImGui::MenuItem("export config")) {}
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("help"))
       {
-        ImGui::MenuItem("about");
-        ImGui::MenuItem("search");
-        ImGui::MenuItem("credits");
+        if (ImGui::MenuItem("about")) {}
+        if (ImGui::MenuItem("search")) {}
+        if (ImGui::MenuItem("credits")) {}
+        ImGui::EndMenu();
+      }
+      if (ImGui::BeginMenu("screen"))
+      {
+        if (ImGui::MenuItem("toggle max size"))
+        {
+          if (Application::get().m_Window->m_Props.m_FullScreen == 0)
+          {
+            WindowResized event(1920, 1080);
+            event.handle();
+            LOGEVENT(event);
+            Application::get().m_Window->m_Props.m_FullScreen = 1;
+          }
+          else
+          {
+            WindowResized event(initial_window_width, initial_window_height);
+            event.handle();
+            LOGEVENT(event);
+            Application::get().m_Window->m_Props.m_FullScreen = 0;
+          }
+        }
+        if (ImGui::MenuItem("set resolution"))
+        {
+
+        }
         ImGui::EndMenu();
       }
       ImGui::EndMenuBar();
@@ -215,6 +244,6 @@ namespace MX
 
     ImGui::End();
 
-    #endif
+  #endif
   }  
 }

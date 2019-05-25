@@ -5,28 +5,17 @@ namespace MX
 {
   void Scene::initialize()
   {
-    std::string shader_name = "trivial";
-    
-    m_Sg.m_Shader.setName(shader_name);
     m_Sg.m_Shader.initialize();
-    
-    MX_INFO("MX: Scene: " + m_Name + ": Initalized with default shader: " + shader_name);
   }
 
   void Scene::update()
   {
-    m_Sg.m_Shader.use();
-    m_Sg.m_Shader.setfMat4("view", m_Cam.getViewMatrix());
-    m_Sg.m_Shader.setfMat4("projection", m_Cam.getProjectionMatrix());
+    m_Cam.update();
+    m_Sg.m_Shader.update();
   }
 
   void Scene::render()
   {
-    m_Sg.m_Shader.use();
-    m_Sg.m_Shader.setfVec3("lightPosition", glm::vec3(5, -5, 1));
-    m_Sg.m_Shader.setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    m_Sg.m_Shader.setfVec3("viewPos", m_Cam.getPosition());
-
     m_Sg.render();
   }
 

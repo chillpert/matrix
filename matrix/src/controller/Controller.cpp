@@ -266,8 +266,8 @@ namespace MX
   
   static bool firstMouse = true;
 
-  float lastX = 1200 / 2.0f;
-  float lastY = 600 / 2.0f;
+  float lastX = initial_window_width / 2.0f;
+  float lastY = initial_window_height / 2.0f;
 
   void Controller::handleMouseMoved(int x, int y)
   {
@@ -332,7 +332,6 @@ namespace MX
 
   void Controller::handleResizeWindow(int width, int height)
   {
-    Application::get().m_Window->m_Props.m_Width = width;
-    Application::get().m_Window->m_Props.m_Height = height;
+    Application::get().m_Window->resize(width, height);
   }
 }

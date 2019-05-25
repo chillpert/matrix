@@ -14,6 +14,7 @@ namespace MX
     MX_API ~Shader_OpenGL() {}
 
     MX_API void initialize();
+    MX_API void update() override;
     MX_API void use() const;
 
     MX_API void  setBool(const std::string &name, const bool &value)        const;
@@ -27,7 +28,6 @@ namespace MX
     MX_API void setfMat4(const std::string &name, const glm::fmat4 &mat)    const;
 
     MX_API inline unsigned int &getID() { return m_ID; }
-    MX_API Shader_OpenGL operator=(const Shader_OpenGL &shader);
   private:
     unsigned int m_ID;
   };

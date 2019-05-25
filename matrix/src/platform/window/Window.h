@@ -26,6 +26,7 @@ namespace MX
     MX_API virtual ~Window() {}
     
     MX_API virtual void update() {}
+    MX_API void updateTime();
     MX_API virtual void render() const {}
     MX_API virtual bool initialize() { return false; }
 
@@ -37,16 +38,23 @@ namespace MX
 
     struct WindowProps
     {
-      int m_Width = 1200;
-      int m_Height = 600;
-      double m_Time = 0.0;
-      std::string m_Title = "Matrix Framework";
+      int m_Width = initial_window_width;
+      int m_Height = initial_window_height;
+
+      bool m_FullScreen = 0;
+
+      // timing
+      float m_DeltaTime = 0.0f;
+      float m_LastFrame = 0.0f;
+      float m_Time = 0.0;
+      
+      std::string m_Title = "My Project | unsaved";
     };
  
     WindowProps m_Props; 
   protected:
     MX_API virtual void setTitle() {}
-    MX_API virtual void resize() {}
+    MX_API virtual void resizeWindow(int width, int height) {}
   };
 }
 

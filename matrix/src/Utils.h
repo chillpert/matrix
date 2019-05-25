@@ -7,6 +7,9 @@
 namespace MX
 {
   std::string parseFile(const std::string& path);
+
+  const int initial_window_width = 1200;
+  const int initial_window_height = 600;
 }
 
 #endif // UTILS_H

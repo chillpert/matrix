@@ -1,8 +1,15 @@
 #include "matrix/src/Camera.h"
+#include "matrix/src/controller/InputMap.h"
+#include "matrix/src/Application.h"
 
 namespace MX
 {
   void Camera::update()
+  {
+    processKeyboard();
+  }
+
+  void Camera::updateVectors()
   {
     glm::vec3 t_front;
     t_front.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
@@ -13,39 +20,33 @@ namespace MX
     m_Up    = glm::normalize(glm::cross(m_Right, m_Front));
   }
 
-  void Camera::processKeyboard(m_Camera direction, float speed)
+  void Camera::setScreenDimensions(int width, int height)
   {
-    switch (direction)
-    {
-      case FORWARDS:
-        m_Position += m_Front * speed;
-        break;
-      case BACKWARDS:
-        m_Position -= m_Front * speed;
-        break;
-      case LEFT:
-        m_Position -= m_Right * speed; 
-        break;
-      case RIGHT:
-        m_Position += m_Right * speed;
-        break;
-      case UP:
-        m_Position.y += speed / 5.0f;
-        break;
-      case DOWN:
-        m_Position.y -= speed / 5.0f;
-        break;
-      default:
-        MX_WARN("Camera direction unkown");
-        break;
-    }
-    update();
+    m_ScreenWidth = (float) width;
+    m_ScreenHeight = (float) height;
+  }
+
+  void Camera::processKeyboard()
+  {
+    float finalSpeed = speed * Application::get().m_Window->m_Props.m_DeltaTime;
+    if (key_w)
+      m_Position += m_Front * finalSpeed;
+    if (key_s)
+      m_Position -= m_Front * finalSpeed;
+    if (key_a)
+      m_Position -= m_Right * finalSpeed; 
+    if (key_d)
+      m_Position += m_Right * finalSpeed;
+    if (key_c)
+      m_Position.y -= finalSpeed / 2.0f;
+    if (key_space)
+      m_Position.y += finalSpeed / 2.0f;
   }
 
   void Camera::processMouse(float xoffset, float yoffset)
   {
-    xoffset *= m_Sensitivity;
-    yoffset *= m_Sensitivity;
+    xoffset *= m_Sensitivity; // for mouse smoothing (* Application::get().m_Window->m_Props.m_DeltaTime;)
+    yoffset *= m_Sensitivity; // for mouse smoothing (* Application::get().m_Window->m_Props.m_DeltaTime;)
 
     m_Yaw   += xoffset;
     m_Pitch += yoffset;
@@ -62,6 +63,6 @@ namespace MX
     if (m_Pitch < -89.0f)
       m_Pitch = -89.0f;
 
-    update();
+    updateVectors();
   }
 }

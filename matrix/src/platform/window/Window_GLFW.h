@@ -17,14 +17,14 @@ namespace MX
     }
 
     MX_API void update() override; 
-    MX_API void render() const override; 
+    MX_API void render() const override;
     MX_API bool initialize() override;
     
     MX_API void close() const override; 
     MX_API void controllerCallback() override {}
 
     MX_API void setTitle() override;
-    MX_API void resize() override;        
+    MX_API void resizeWindow(int width, int height) override;        
 
     MX_API inline auto getWindow() { return m_Window; }
     

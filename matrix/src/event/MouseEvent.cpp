@@ -16,7 +16,8 @@ namespace MX
 
   void MouseMoved::handle()
   {
-    Controller::get().handleMouseMoved(m_X, m_Y);
+    if (Controller::get().m_MouseHidden)
+      Controller::get().handleMouseMoved(m_X, m_Y);
   }
 
   void MouseScrolled::handle()

@@ -26,7 +26,7 @@ namespace MX
   public:
     Event() 
     {
-        m_Event = e_Default;
+      m_Event = e_Default;
     }
     ~Event() {}
 

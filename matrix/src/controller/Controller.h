@@ -25,6 +25,8 @@ namespace MX
     void handleCloseWindow();
     void handleResizeWindow(int width, int height);
     
+    // toggle mouse hidden
+    bool m_MouseHidden = 1;
   private:
     Controller() {}
     ~Controller() {}

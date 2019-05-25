@@ -13,7 +13,7 @@ option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)
 
 option(USE_IMGUI "use ImGui" ON)
-option(LOG_EVENTS "log Events" OFF)
+option(LOG_EVENTS "log window related events" OFF)
 #####################################
 
 # config for Matrix Framework
