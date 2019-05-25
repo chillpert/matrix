@@ -21,28 +21,71 @@ namespace MX
   static bool no_background = false;
   static bool no_bring_to_front = false;
   static bool p_open = true;
-  static bool enter_name = false;
 
-  void enterNameWindow()
+  static int item_objects_to_spawn = 0;
+  const char* items[] = {"", "monkey", "cube", "rock", "sphere"};
+
+  static bool show_event_window = 0;
+  static std::string event_window_title = "undefined window title";
+  static std::string event_window_message = "undefined window message";
+
+  static bool show_input_window = 0;
+  static std::string input_window_title = "undefined window title";
+  static std::string input_window_message = "undefined window message";
+
+  void openInputWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGui::Begin("new Window");
-    
-    ImGui::Text("hello there");
+    ImGui::Begin(input_window_title.c_str());
+    ImGui::Text(input_window_message.c_str());
 
     static char input[128];
-    static int i0 = 123;
-    ImGui::InputText("input text", input, IM_ARRAYSIZE(input));
-
-    if (ImGui::Button("confirm")) // && name not already used)
+    try 
     {
-      enter_name = 0;
+      ImGui::InputText("##type in name for object to spawn", input, IM_ARRAYSIZE(input));
+    }
+    catch (std::exception e)
+    {
+      MX_FATAL("MX: GUI: Input Window: " + std::string(e.what()));
     }
 
+    if (ImGui::Button("confirm##confirm naming"))
+    {
+      std::vector<std::string> active_objects_s;
+      World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
+      for (const std::string &it : active_objects_s)
+      {
+        if (it == input)
+        {
+          event_window_title = "Warning";
+          event_window_message = "This name is already being used";
+          show_event_window = 1;
+          break;
+        }
+      }
+      if (!strlen(input) == 0 && !show_event_window)
+      {
+        World::get().m_ActiveScene->push(input, items[item_objects_to_spawn] + std::string(".obj"));
+        item_objects_to_spawn = 0;
+        show_input_window = 0;
+        memset(&input[0], 0, sizeof(input));
+      }
+    }
     ImGui::End();
   #endif
   }
 
+  void openEventWindow()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    ImGui::Begin(event_window_title.c_str());
+    ImGui::Text(event_window_message.c_str());
+    if (ImGui::Button("Confirm"))
+      show_event_window = 0;
+    ImGui::End();
+  #endif
+  }
+ 
   void renderEditor()
   {
   #ifdef MX_IMGUI_ACTIVE
@@ -56,7 +99,13 @@ namespace MX
     if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
-    
+
+    if (show_event_window)
+      openEventWindow();
+    else if (show_input_window)
+      openInputWindow();
+    else
+    {
     ImGui::Begin("World Editor", &p_open, window_flags);
 
     if (ImGui::BeginMenuBar())
@@ -126,61 +175,26 @@ namespace MX
 
     if (ImGui::Button("load"))
     {
-      if (item_current_scenes == 1)
-      {
-        World::get().m_ActiveScene = World::get().m_ExistingScenes[0];
-        item_current_scenes = 0;
-      }
-
-      if (item_current_scenes == 2)
-      {
-        World::get().m_ActiveScene = World::get().m_ExistingScenes[1];
-        item_current_scenes = 0;
-      }
-    }
-
-    const char* items[] = {"", "monkey", "cube", "rock", "sphere"};
-    
-    static int item_objects_to_spawn = 0;
-    ImGui::Text("select object:");
-    ImGui::Combo("##all_objects_to_spawn", &item_objects_to_spawn, items, IM_ARRAYSIZE(items));
-
-    if (enter_name)
-      enterNameWindow();
-
-    ImGui::SameLine();
-
-    // spawn selected object
-    if (ImGui::Button("spawn"))
-    {
-      if (item_objects_to_spawn == 1)
-      {
-        item_objects_to_spawn = 0;
-        World::get().m_ActiveScene->push("monkey1", "monkey.obj");
-      }
-
-      if (item_objects_to_spawn == 2)
-      {
-        item_objects_to_spawn = 0;
-        World::get().m_ActiveScene->push("cube1", "cube.obj");
-      }
-
-      if (item_objects_to_spawn == 3)
-      {
-        item_objects_to_spawn = 0;
-        World::get().m_ActiveScene->push("rock1", "rock.obj");
-      }
-
-      if (item_objects_to_spawn == 4)
-      {
-        item_objects_to_spawn = 0;
-        World::get().m_ActiveScene->push("sphere1", "sphere.obj");
-      }
+      World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
+      item_current_scenes = 0;
     }
 
     // display all active objects
     std::vector<std::string> active_objects_s;
     World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
+    
+    ImGui::Text("select object:");
+    ImGui::Combo("##all_objects_to_spawn", &item_objects_to_spawn, items, IM_ARRAYSIZE(items));
+
+    ImGui::SameLine();
+
+    // spawn selected object
+    if (ImGui::Button("spawn") && item_objects_to_spawn != 0)
+    {
+      input_window_title = "Info";
+      input_window_message = "Please enter a new name";
+      show_input_window = 1;
+    }
 
     std::vector<const char*> all_active_objects;
     all_active_objects.resize(active_objects_s.size());
@@ -188,62 +202,77 @@ namespace MX
     for (unsigned int i = 0; i < active_objects_s.size(); ++i)
       all_active_objects[i] = active_objects_s[i].c_str();
 
-    ImGui::Text("select object:");
-    static int item_objects_to_delete = 0;
-    ImGui::Combo("##all_objects_to_delete", &item_objects_to_delete, all_active_objects.data(), all_active_objects.size());
+    ImGui::Text("select model:");
+    static int item_objects_to_select = 0;
+    ImGui::Combo("##all_objects_to_delete", &item_objects_to_select, all_active_objects.data(), all_active_objects.size());
 
     ImGui::SameLine();
 
     // delete
-    if (ImGui::Button("delete"))
+    if (ImGui::Button("delete") && item_objects_to_select != 0)
     {
-      if (item_objects_to_delete == 1)
-      {
-        item_objects_to_delete = 0;
-        World::get().m_ActiveScene->pop(active_objects_s.at(1));
-      }
-
-      if (item_objects_to_delete == 2)
-      {
-        item_objects_to_delete = 0;
-        World::get().m_ActiveScene->pop(active_objects_s.at(2));  
-      }
-
-      if (item_objects_to_delete == 3)
-      {
-        item_objects_to_delete = 0;
-        World::get().m_ActiveScene->pop(active_objects_s.at(3));
-      }
-
-      if (item_objects_to_delete == 4)
-      {
-        item_objects_to_delete = 0;
-        World::get().m_ActiveScene->pop(active_objects_s.at(4));
-      }
+      World::get().m_ActiveScene->pop(active_objects_s.at(item_objects_to_select));
+      item_objects_to_select = 0;
     }
-    
-    //ImGui::Checkbox("Rotate", &rotateFlag);
-    //ImGui::SliderFloat("Speed:", &)
 
     ImGui::NewLine();
 
-    if (ImGui::CollapsingHeader("Scale"))
-    {
-      ImGui::SliderFloat("x", &xSlider, 0.0f, 100.0f);
-      ImGui::SliderFloat("y", &ySlider, 0.0f, 100.0f);
-      ImGui::SliderFloat("z", &zSlider, 0.0f, 100.0f);
-    }
-    if (ImGui::CollapsingHeader("Rotate"))
-    {
-      ImGui::Text("add rotation implementation");
-    }
     if (ImGui::CollapsingHeader("Translate"))
     {
-      ImGui::Text("nothing to be seen here");
+      static bool movedSlider = 0;
+
+      ImGui::Text("X - Axis");
+      if (ImGui::Button("+ ##x+"))
+      {
+        xSlider += 0.2f;
+        movedSlider = 1;
+      }
+      ImGui::SameLine();
+      if (ImGui::Button("- ##x-"))
+      {
+        xSlider -= 0.2f;
+        movedSlider = 1;
+      }
+      
+      ImGui::Text("Y - Axis");
+      if (ImGui::Button("+ ##y+"))
+      {
+        ySlider += 0.2f;
+        movedSlider = 1;
+      }
+      ImGui::SameLine();
+      if (ImGui::Button("- ##y-"))
+      {
+        ySlider -= 0.2f;
+        movedSlider = 1;
+      }
+      
+      ImGui::Text("Z - Axis");
+      if (ImGui::Button("+ ##z+"))
+      {
+        zSlider += 0.2f;
+        movedSlider = 1;
+      }
+      ImGui::SameLine();
+      if (ImGui::Button("- ##z-"))
+      {
+        zSlider -= 0.2f;
+        movedSlider = 1;
+      }
+
+      if (movedSlider)
+      {
+        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        glm::fmat4 model_matrix = glm::fmat4(1.0f);
+        model_matrix = glm::translate(model_matrix, glm::vec3(xSlider, ySlider, zSlider));
+        search_holder->setLocalTransform(model_matrix);
+        movedSlider = 0;
+      }
     }
 
     ImGui::End();
 
   #endif
   }  
+  }
 }

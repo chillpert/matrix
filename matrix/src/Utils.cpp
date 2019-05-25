@@ -18,5 +18,10 @@ namespace MX
 	  }     
 	  return ss[0].str();
   }
+
+	std::string tokenizeLine(const std::string &delimiter)
+	{
+		
+	}
 }
 

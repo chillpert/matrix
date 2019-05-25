@@ -37,7 +37,7 @@ namespace MX
     MX_API void setScreenDimensions(int width, int height);
 
   private:
-    glm::fvec3 m_Position; 
+    glm::fvec3 m_Position;
     glm::fvec3 m_Front;
     glm::fvec3 m_WorldUp;
     glm::fvec3 m_Up;
