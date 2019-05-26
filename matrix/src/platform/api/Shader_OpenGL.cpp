@@ -38,10 +38,10 @@ namespace MX
     m_VsSource = parseFile(m_VsPath);
     m_FsSource = parseFile(m_FsPath);
     
-	  unsigned int vs = compile(GL_VERTEX_SHADER, m_VsSource);
+	  GLuint vs = compile(GL_VERTEX_SHADER, m_VsSource);
     if (vs == -1)
       glDeleteShader(vs);
-	  unsigned int fs = compile(GL_FRAGMENT_SHADER, m_FsSource);
+	  GLuint fs = compile(GL_FRAGMENT_SHADER, m_FsSource);
     if (fs == -1)
       glDeleteShader(fs);
 
@@ -75,9 +75,9 @@ namespace MX
     setfVec3("viewPos", World::get().m_ActiveScene->m_Cam.getPosition());
   }
 
-  unsigned int compile(unsigned int type, const std::string& source)
+  GLuint compile(GLuint type, const std::string& source)
   {
-    unsigned int ID = glCreateShader(type);
+    GLuint ID = glCreateShader(type);
 	  const char* src = source.c_str();
 	  glShaderSource(ID, 1, &src, nullptr);
 	  glCompileShader(ID);
@@ -91,9 +91,9 @@ namespace MX
 	  return ID;
   }
 
-  bool errorCheck(const unsigned int &ID, int type)
+  bool errorCheck(const GLuint &ID, GLint type)
   {
-    int success;
+    GLint success;
     std::vector<char> infoLog;
 	  glGetProgramiv(ID, type, &success);
 
@@ -131,7 +131,7 @@ namespace MX
 
   void Shader_OpenGL::setBool(const std::string &name, const bool &value) const
   {         
-    glUniform1i(glGetUniformLocation(m_ID, name.c_str()), (int)value); 
+    glUniform1i(glGetUniformLocation(m_ID, name.c_str()), (int) value); 
   }
 
   void Shader_OpenGL::setInt(const std::string &name, const int &value) const

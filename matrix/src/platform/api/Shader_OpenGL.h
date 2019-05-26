@@ -27,16 +27,16 @@ namespace MX
     MX_API void setfMat3(const std::string &name, const glm::fmat3 &mat)    const;
     MX_API void setfMat4(const std::string &name, const glm::fmat4 &mat)    const;
 
-    MX_API inline unsigned int &getID() { return m_ID; }
+    MX_API GLuint &getID() { return m_ID; }
   private:
-    unsigned int m_ID;
+    GLuint m_ID;
   };
 
   MX_API void use(Shader_OpenGL &shader);
-  MX_API unsigned int compile(unsigned int type, const std::string& source);
+  MX_API GLuint compile(GLuint type, const std::string& source);
 
   // prints and logs error message if available
-  MX_API bool errorCheck(const unsigned int &ID, int type);
+  MX_API bool errorCheck(const GLuint &ID, GLint type);
 }
 
 #endif // SHADER_OPENGL_H
