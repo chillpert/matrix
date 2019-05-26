@@ -36,7 +36,7 @@ namespace MX
   MX_API unsigned int compile(unsigned int type, const std::string& source);
 
   // prints and logs error message if available
-  MX_API void errorCheck(const unsigned int &ID, int type);
+  MX_API bool errorCheck(const unsigned int &ID, int type);
 }
 
 #endif // SHADER_OPENGL_H

@@ -39,18 +39,28 @@ namespace MX
     m_FsSource = parseFile(m_FsPath);
     
 	  unsigned int vs = compile(GL_VERTEX_SHADER, m_VsSource);
+    if (vs == -1)
+      glDeleteShader(vs);
 	  unsigned int fs = compile(GL_FRAGMENT_SHADER, m_FsSource);
+    if (fs == -1)
+      glDeleteShader(fs);
 
 	  glAttachShader(m_ID, vs);
 	  glAttachShader(m_ID, fs);
 	  glLinkProgram(m_ID);
 	  glValidateProgram(m_ID);
     
-    errorCheck(m_ID, GL_LINK_STATUS);
-      
-	  glDeleteShader(vs);
-	  glDeleteShader(fs);
+    if (!errorCheck(m_ID, GL_LINK_STATUS))
+    {
+      glDeleteProgram(m_ID);
+      glDeleteShader(vs);
+      glDeleteShader(fs);
+      return;
+    }
 
+    glDetachShader(m_ID, vs);
+    glDetachShader(m_ID, fs);
+      
     MX_SUCCESS("MX: API: OpenGL: Shader: " + m_Name);
   }
 
@@ -72,22 +82,51 @@ namespace MX
 	  glShaderSource(ID, 1, &src, nullptr);
 	  glCompileShader(ID);
 
-    errorCheck(ID, GL_COMPILE_STATUS);
+    if (!errorCheck(ID, GL_COMPILE_STATUS))
+    {
+      MX_FATAL_LOG("MX: Shader: OpenGL: Compiling Failed: Deleting Shader");
+      return -1;
+    }
 
 	  return ID;
   }
 
-  void errorCheck(const unsigned int &ID, int type)
+  bool errorCheck(const unsigned int &ID, int type)
   {
     int success;
-    char infoLog[512];
+    std::vector<char> infoLog;
 	  glGetProgramiv(ID, type, &success);
 
     if (!success)
     {
-      glGetProgramInfoLog(ID, 512, NULL, infoLog);
-      MX_FATAL("MX: Shader: " + std::string(infoLog));
+      GLint maxLength = 0;
+      switch (type)
+      {
+        case GL_LINK_STATUS:
+          glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &maxLength);
+          infoLog.resize(maxLength);
+          glGetProgramInfoLog(ID, maxLength, &maxLength, infoLog.data());
+          break;
+        case GL_COMPILE_STATUS:
+          glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &maxLength);
+          glGetShaderInfoLog(ID, maxLength, &maxLength, infoLog.data());
+          break;
+        default:
+          MX_FATAL("MX: Shader: OpenGL: Unkown Error Occured");
+          break;
+      }
+
+      std::string errorMessage;
+
+      for (auto it : infoLog)
+        errorMessage += it;
+
+      MX_FATAL("MX: Shader: OpenGL: Error: " + errorMessage);
+
+      return 0;
     }
+
+    return 1;
   }
 
   void Shader_OpenGL::setBool(const std::string &name, const bool &value) const
