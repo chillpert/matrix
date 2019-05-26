@@ -28,94 +28,116 @@ namespace MX
   static bool show_event_window = 0;
   static std::string event_window_title = "undefined window title";
   static std::string event_window_message = "undefined window message";
+  static std::string event_window_button = "undefined window button label";
 
   static bool show_input_window = 0;
   static std::string input_window_title = "undefined window title";
   static std::string input_window_message = "undefined window message";
 
-  static bool show_resolution_window = 0;
-  static std::string resolution_window_title = "undefined window title";
-  static std::string resolution_window_message = "undefined window message";
-
-  void openResolutionWindow()
+  enum InputTypes
   {
-  #ifdef MX_IMGUI_ACTIVE
-    ImGui::Begin(resolution_window_title.c_str());
-    ImGui::Text(resolution_window_message.c_str());
+    mx_name,      // string input
+    mx_resolution // two integer input
+  };
 
-    static int input[2];
-    try
-    {
-      ImGui::InputInt2("##resolution input int2", input, IM_ARRAYSIZE(input));
-    }
-    catch(const std::exception& e)
-    {
-      MX_FATAL("MX: GUI: Resolution Input Window: " + std::string(e.what()));
-    }
+  InputTypes currentInputType = mx_name;
 
-    if (ImGui::Button("confirm##confirm resolution input"))
-    {
-      if (input[0] > 1920 || input[1] > 1080 || input[0] < 200 || input[1] < 200)
-      {
-        event_window_title = "Warning";
-        event_window_message = "Invalid resolution";
-        show_event_window = 1;
-      }
-      else
-      {
-        WindowResized event(input[0], input[1]);
-        event.handle();
-        LOGEVENT(event);
-
-        if (input[0] == 1920 && input[1] == 1080)
-          Application::get().m_Window->m_Props.m_FullScreen = 1;
-
-        show_resolution_window = 0;
-      }      
-    }
-    
-    ImGui::End();
-  #endif
-  }
-
+  /*
+    #####################################################################
+    Opens an input window for different input types defined by InputTypes
+    #####################################################################
+  */
   void openInputWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
     ImGui::Begin(input_window_title.c_str());
     ImGui::Text(input_window_message.c_str());
 
-    static char input[128];
-    try 
+    switch (currentInputType)
     {
-      ImGui::InputText("##type in name for object to spawn", input, IM_ARRAYSIZE(input));
-    }
-    catch (std::exception e)
-    {
-      MX_FATAL("MX: GUI: Input Window: " + std::string(e.what()));
+      // string
+      case mx_name:
+      {
+        static char input[128];
+        try 
+        {
+          ImGui::InputText("##type in name for object to spawn", input, IM_ARRAYSIZE(input));
+        }
+        catch (std::exception e)
+        {
+          MX_FATAL("MX: GUI: Input Window: " + std::string(e.what()));
+        }
+
+        if (ImGui::Button("confirm##confirm naming"))
+        {
+          std::vector<std::string> active_objects_s;
+          World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
+          for (const std::string &it : active_objects_s)
+          {
+            if (it == input)
+            {
+              event_window_title = "Warning";
+              event_window_message = "This name is already being used";
+              event_window_button = "Confirm";
+              show_event_window = 1;
+              break;
+            }
+          }
+          if (!strlen(input) == 0 && !show_event_window)
+          {
+            World::get().m_ActiveScene->push(input, items[item_objects_to_spawn] + std::string(".obj"));
+            item_objects_to_spawn = 0;
+            show_input_window = 0;
+            memset(&input[0], 0, sizeof(input));
+          }
+        }
+        break;
+      }
+      // two integer
+      case mx_resolution:
+      {
+        static int input[2];
+        try
+        {
+          ImGui::InputInt2("##resolution input int2", input, IM_ARRAYSIZE(input));
+        }
+        catch(const std::exception& e)
+        {
+          MX_FATAL("MX: GUI: Resolution Input Window: " + std::string(e.what()));
+        }
+    
+        if (ImGui::Button("confirm##confirm resolution input"))
+        {
+          if (input[0] > 1920 || input[1] > 1080 || input[0] < 200 || input[1] < 200)
+          {
+            event_window_title = "Warning";
+            event_window_message = "Invalid resolution";
+            show_event_window = 1;
+          }
+          else
+          {
+            WindowResized event(input[0], input[1]);
+            event.handle();
+            LOGEVENT(event);
+    
+            if (input[0] == 1920 && input[1] == 1080)
+              Application::get().m_Window->m_Props.m_FullScreen = 1;
+    
+            show_input_window = 0;
+          }      
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("cancel"))
+          show_input_window = 0;
+
+        break;
+      }
+      default:
+        break;
     }
 
-    if (ImGui::Button("confirm##confirm naming"))
-    {
-      std::vector<std::string> active_objects_s;
-      World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
-      for (const std::string &it : active_objects_s)
-      {
-        if (it == input)
-        {
-          event_window_title = "Warning";
-          event_window_message = "This name is already being used";
-          show_event_window = 1;
-          break;
-        }
-      }
-      if (!strlen(input) == 0 && !show_event_window)
-      {
-        World::get().m_ActiveScene->push(input, items[item_objects_to_spawn] + std::string(".obj"));
-        item_objects_to_spawn = 0;
-        show_input_window = 0;
-        memset(&input[0], 0, sizeof(input));
-      }
-    }
     ImGui::End();
   #endif
   }
@@ -125,12 +147,18 @@ namespace MX
   #ifdef MX_IMGUI_ACTIVE
     ImGui::Begin(event_window_title.c_str());
     ImGui::Text(event_window_message.c_str());
-    if (ImGui::Button("Confirm"))
+    std::string buttonLabel = event_window_button + "##button labeling for event window";
+    if (ImGui::Button(buttonLabel.c_str()))
       show_event_window = 0;
     ImGui::End();
   #endif
   }
- 
+
+  /*
+    #####################################################################
+                              main GUI function
+    #####################################################################
+  */
   void renderEditor()
   {
   #ifdef MX_IMGUI_ACTIVE
@@ -145,38 +173,69 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-
     if (show_event_window)
       openEventWindow();
     else if (show_input_window)
       openInputWindow();
-    else if (show_resolution_window)
-     openResolutionWindow();
     else
     {
     ImGui::Begin("World Editor", &p_open, window_flags);
 
     if (ImGui::BeginMenuBar())
     {
-      if (ImGui::BeginMenu("projects"))
+      if (ImGui::BeginMenu("scenes##manage scenes"))
       {
-        if (ImGui::MenuItem("new")) {}
-        if (ImGui::MenuItem("open")) {}
+        if (ImGui::MenuItem("new##create new scene"))
+        {
+
+        }
+        if (ImGui::MenuItem("load##load existing scene"))
+        {
+
+        }
+        if (ImGui::MenuItem("open##opens scene from file"))
+        {
+
+        }
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("settings"))
       {
-        if (ImGui::MenuItem("save")) {}
-        if (ImGui::MenuItem("save as")) {}
-        if (ImGui::MenuItem("import config")) {}
-        if (ImGui::MenuItem("export config")) {}
+        if (ImGui::MenuItem("save"))
+        {
+          
+        }
+        if (ImGui::MenuItem("save as"))
+        {
+
+        }
+        if (ImGui::MenuItem("import config"))
+        {
+
+        }
+        if (ImGui::MenuItem("export config"))
+        {
+
+        }
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("help"))
       {
-        if (ImGui::MenuItem("about")) {}
-        if (ImGui::MenuItem("search")) {}
-        if (ImGui::MenuItem("credits")) {}
+        if (ImGui::MenuItem("about"))
+        {
+          event_window_title = "About";
+          event_window_message = "Waehlt die Partei,\ndenn sie ist sehr gut!";
+          event_window_button = "Yes";
+          show_event_window = 1;
+        }
+        if (ImGui::MenuItem("search"))
+        {
+
+        }
+        if (ImGui::MenuItem("credits"))
+        {
+
+        }
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("screen"))
@@ -200,9 +259,10 @@ namespace MX
         }
         if (ImGui::MenuItem("set resolution"))
         {
-          resolution_window_title = "Info";
-          resolution_window_message = "Please enter a resolution";
-          show_resolution_window = 1;
+          input_window_title = "Info";
+          input_window_message = "Please enter a resolution";
+          show_input_window = 1;
+          currentInputType = mx_resolution;
         }
         ImGui::EndMenu();
       }
@@ -244,6 +304,7 @@ namespace MX
       input_window_title = "Info";
       input_window_message = "Please enter a new name";
       show_input_window = 1;
+      currentInputType = mx_name;
     }
 
     std::vector<const char*> all_active_objects;
