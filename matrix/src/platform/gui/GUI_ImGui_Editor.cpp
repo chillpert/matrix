@@ -33,6 +33,51 @@ namespace MX
   static std::string input_window_title = "undefined window title";
   static std::string input_window_message = "undefined window message";
 
+  static bool show_resolution_window = 0;
+  static std::string resolution_window_title = "undefined window title";
+  static std::string resolution_window_message = "undefined window message";
+
+  void openResolutionWindow()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    ImGui::Begin(resolution_window_title.c_str());
+    ImGui::Text(resolution_window_message.c_str());
+
+    static int input[2];
+    try
+    {
+      ImGui::InputInt2("##resolution input int2", input, IM_ARRAYSIZE(input));
+    }
+    catch(const std::exception& e)
+    {
+      MX_FATAL("MX: GUI: Resolution Input Window: " + std::string(e.what()));
+    }
+
+    if (ImGui::Button("confirm##confirm resolution input"))
+    {
+      if (input[0] > 1920 || input[1] > 1080 || input[0] < 200 || input[1] < 200)
+      {
+        event_window_title = "Warning";
+        event_window_message = "Invalid resolution";
+        show_event_window = 1;
+      }
+      else
+      {
+        WindowResized event(input[0], input[1]);
+        event.handle();
+        LOGEVENT(event);
+
+        if (input[0] == 1920 && input[1] == 1080)
+          Application::get().m_Window->m_Props.m_FullScreen = 1;
+
+        show_resolution_window = 0;
+      }      
+    }
+    
+    ImGui::End();
+  #endif
+  }
+
   void openInputWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
@@ -100,10 +145,13 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
+
     if (show_event_window)
       openEventWindow();
     else if (show_input_window)
       openInputWindow();
+    else if (show_resolution_window)
+     openResolutionWindow();
     else
     {
     ImGui::Begin("World Editor", &p_open, window_flags);
@@ -152,7 +200,9 @@ namespace MX
         }
         if (ImGui::MenuItem("set resolution"))
         {
-
+          resolution_window_title = "Info";
+          resolution_window_message = "Please enter a resolution";
+          show_resolution_window = 1;
         }
         ImGui::EndMenu();
       }
@@ -163,7 +213,7 @@ namespace MX
     std::vector<const char*> all_current_scenes;
     all_current_scenes.resize(World::get().m_ExistingScenes.size() + 1);
     all_current_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();
-
+ 
     for (unsigned int i = 0; i < World::get().m_ExistingScenes.size(); ++i)
       all_current_scenes[i+1] = World::get().m_ExistingScenes[i]->m_Name.c_str();
 

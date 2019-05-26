@@ -3,6 +3,7 @@
 #include "matrix/src/event/MouseEvent.h"
 #include "matrix/src/event/WindowEvent.h"
 #include "matrix/src/controller/Controller.h"
+#include "matrix/src/layers/World.h"
 
 #ifdef MX_GLFW_ACTIVE
 
@@ -172,6 +173,7 @@ namespace MX
 
   void Window_GLFW::resizeWindow(int width, int height)
   {
+    World::get().m_ActiveScene->m_Cam.setScreenDimensions(width, height);
     glfwSetWindowSize(m_Window, width, height);
   }
 
