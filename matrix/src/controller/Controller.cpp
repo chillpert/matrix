@@ -263,18 +263,17 @@ namespace MX
         MX_WARN("MX: Key released: " + std::to_string(keyCode) + " is not programmed"); break;            
     }
   }
-  
-  static bool firstMouse = true;
 
   float lastX = initial_window_width / 2.0f;
   float lastY = initial_window_height / 2.0f;
 
   void Controller::handleMouseMoved(int x, int y)
   {
-    if (firstMouse) {
+    if (m_FirstMouse) {
+      MX_WARN("first mouse");
       m_X = x;
       m_Y = y;
-      firstMouse = false;
+      m_FirstMouse = false;
     }
     float xoffset = x - m_X;
     float yoffset = m_Y - y; 

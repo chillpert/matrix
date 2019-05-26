@@ -27,9 +27,8 @@ namespace MX
     
     // toggle mouse hidden
     bool m_MouseHidden = 1;
-  private:
-    Controller() {}
-    ~Controller() {}
+
+    bool m_FirstMouse = 1;
 
     // last position of mouse
     int m_X;
@@ -40,6 +39,10 @@ namespace MX
 
     // last button released
     int m_KeyReleased;
+    
+  private:
+    Controller() {}
+    ~Controller() {}
   };
 }
 

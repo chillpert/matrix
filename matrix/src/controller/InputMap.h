@@ -145,7 +145,8 @@ namespace MX
 
   // mouse (pressed)
   #define MX_LEFT_PRESSED          
-  #define MX_RIGHT_PRESSED  Controller::get().m_MouseHidden = !Controller::get().m_MouseHidden;
+  #define MX_RIGHT_PRESSED  Controller::get().m_MouseHidden = !Controller::get().m_MouseHidden;\
+                            Controller::get().m_FirstMouse = 1;
   #define MX_MIDDLE_PRESSED
   #define MX_SCROLL_UP
 
