@@ -5,20 +5,20 @@ namespace MX
 {
   static bool no_titlebar = 1;
   static bool no_scrollbar = 0;
-  static bool no_menu = 0;
-  static bool no_move = 0;
+  static bool no_menu = 1;
+  static bool no_move = 1;
   static bool no_resize = 1;
-  static bool no_collapse = 0;
+  static bool no_collapse = 1;
   static bool no_close = 1;
   static bool no_nav = 0;
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
-  static bool p_open = 1;
+  static bool p_open = 0;
 
   void GUI_ImGui::renderHierarchyWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGuiWindowFlags window_flags = 0;
+    static ImGuiWindowFlags window_flags = 0;
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -30,7 +30,19 @@ namespace MX
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
     ImGui::Begin("Hierarchy", &p_open, window_flags);
-
+/*
+    if (ImGui::BeginTabBar("##tabs"))
+    {
+      if (ImGui::BeginTabItem("Sizes"))
+      {
+        ImGui::EndTabItem();
+      }
+      if (ImGui::BeginTabItem("Colors"))
+      {
+        ImGui::EndTabItem();
+      }
+    }
+*/
     ImGui::SetWindowPos(ImVec2(0.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f + 21.0f));
     ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
 

@@ -4,11 +4,38 @@
 
 namespace MX
 {
+  static bool no_titlebar = 0;
+  static bool no_scrollbar = 0;
+  static bool no_menu = 1;
+  static bool no_move = 1;
+  static bool no_resize = 1;
+  static bool no_collapse = 1;
+  static bool no_close = 1;
+  static bool no_nav = 0;
+  static bool no_background = 0;
+  static bool no_bring_to_front = 0;
+  static bool p_open = 1;
+
+  static ImGuiWindowFlags window_flags = 0;
+
   void GUI_ImGui::renderEventWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGui::Begin(event_window_title.c_str());
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+    ImGui::Begin(event_window_title.c_str(), &p_open, window_flags);
     ImGui::Text(event_window_message.c_str());
+
+    ImGui::NewLine();
+
     std::string buttonLabel = event_window_button + "##button labeling for event window";
     if (ImGui::Button(buttonLabel.c_str()))
       set_show_event_window(0);
@@ -23,7 +50,17 @@ namespace MX
   void GUI_ImGui::renderInputWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGui::Begin(input_window_title.c_str());
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+    ImGui::Begin(input_window_title.c_str(), &p_open, window_flags);
     ImGui::Text(input_window_message.c_str());
 
     switch (currentInputType)

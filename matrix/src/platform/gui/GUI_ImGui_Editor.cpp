@@ -13,19 +13,19 @@ namespace MX
   static bool no_titlebar = 1;
   static bool no_scrollbar = 0;
   static bool no_menu = 0;
-  static bool no_move = 0;
+  static bool no_move = 1;
   static bool no_resize = 1;
-  static bool no_collapse = 0;
+  static bool no_collapse = 1;
   static bool no_close = 1;
   static bool no_nav = 0;
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
-  static bool p_open = 1;
+  static bool p_open = 0;
 
   void GUI_ImGui::renderEditorWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGuiWindowFlags window_flags = 0;
+    static ImGuiWindowFlags window_flags = 0;
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -83,8 +83,8 @@ namespace MX
     ImGui::Combo("##all_scenes_to_select", &item_current_scenes, all_current_scenes.data(), all_current_scenes.size());
 
     ImGui::SameLine();
-
-    if (ImGui::Button("load"))
+    
+    if (ImGui::Button("load", ImVec2(50.0f, 20.0f)))
     {
       World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
       item_current_scenes = 0;

@@ -27,7 +27,7 @@ namespace MX
   MX_API extern std::string input_window_message;
 
   const float middle_offset_x = 250.0f;
-  const float middle_offset_y = 150.0f;
+  const float middle_offset_y = 100.0f;
 
   MX_API void set_show_event_window(bool flag);
   MX_API void set_show_input_window(bool flag);
