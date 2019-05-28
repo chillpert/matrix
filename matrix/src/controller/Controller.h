@@ -8,7 +8,7 @@ namespace MX
   class MX_API Controller 
   {
   public:
-    inline static Controller &get() 
+    static Controller &get() 
     {
       static Controller instance;
       return instance;

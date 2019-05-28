@@ -270,7 +270,6 @@ namespace MX
   void Controller::handleMouseMoved(int x, int y)
   {
     if (m_FirstMouse) {
-      MX_WARN("first mouse");
       m_X = x;
       m_Y = y;
       m_FirstMouse = false;

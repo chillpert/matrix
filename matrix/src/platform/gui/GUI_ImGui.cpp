@@ -29,43 +29,88 @@ namespace MX
 {
   void GUI_ImGui::initialize()
   {
-    #ifdef MX_IMGUI_ACTIVE
-      IMGUI_CHECKVERSION();
-      ImGui::CreateContext();
-      ImGuiIO& io = ImGui::GetIO(); (void)io;
-      ImGui::StyleColorsDark();
-      MX_IMGUI_INIT;
-      ImGui_ImplOpenGL3_Init("#version 330");
-    #endif
+  #ifdef MX_IMGUI_ACTIVE
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+    ImGui::StyleColorsDark();
+    ImGuiStyle& style = ImGui::GetStyle();
+
+    style.WindowBorderSize = 0.0f;
+    style.WindowRounding = 0.0f;
+    style.FrameRounding = 4.0f;
+    style.GrabRounding = 4.0f;
+    style.PopupRounding = 4.0f;
+    style.ScrollbarRounding = 4.0f;
+
+    ImVec4* colors = ImGui::GetStyle().Colors;
+    colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    colors[ImGuiCol_WindowBg]               = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+    colors[ImGuiCol_ChildBg]                = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+    colors[ImGuiCol_PopupBg]                = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
+    colors[ImGuiCol_Border]                 = ImVec4(0.43f, 0.43f, 0.50f, 0.33f);
+    colors[ImGuiCol_FrameBg]                = ImVec4(0.17f, 0.17f, 0.17f, 0.45f);
+    colors[ImGuiCol_FrameBgHovered]         = ImVec4(0.18f, 0.18f, 0.18f, 0.33f);
+    colors[ImGuiCol_FrameBgActive]          = ImVec4(0.68f, 0.68f, 0.68f, 0.31f);
+    colors[ImGuiCol_TitleBgActive]          = ImVec4(0.11f, 0.37f, 0.00f, 1.00f);
+    colors[ImGuiCol_CheckMark]              = ImVec4(0.15f, 0.51f, 0.00f, 1.00f);
+    colors[ImGuiCol_SliderGrab]             = ImVec4(0.15f, 0.52f, 0.00f, 1.00f);
+    colors[ImGuiCol_SliderGrabActive]       = ImVec4(0.01f, 0.83f, 0.00f, 1.00f);
+    colors[ImGuiCol_Button]                 = ImVec4(0.04f, 0.52f, 0.00f, 0.40f);
+    colors[ImGuiCol_ButtonHovered]          = ImVec4(0.13f, 0.72f, 0.01f, 1.00f);
+    colors[ImGuiCol_ButtonActive]           = ImVec4(0.01f, 0.67f, 0.07f, 1.00f);
+    colors[ImGuiCol_Header]                 = ImVec4(0.00f, 0.49f, 0.06f, 0.31f);
+    colors[ImGuiCol_HeaderHovered]          = ImVec4(0.05f, 0.61f, 0.00f, 0.80f);
+    colors[ImGuiCol_HeaderActive]           = ImVec4(0.00f, 0.77f, 0.07f, 1.00f);
+    colors[ImGuiCol_SeparatorHovered]       = ImVec4(0.14f, 0.44f, 0.00f, 0.78f);
+    colors[ImGuiCol_SeparatorActive]        = ImVec4(0.01f, 0.49f, 0.00f, 1.00f);
+    colors[ImGuiCol_ResizeGrip]             = ImVec4(0.00f, 0.51f, 0.03f, 0.25f);
+    colors[ImGuiCol_ResizeGripHovered]      = ImVec4(0.12f, 0.69f, 0.00f, 0.67f);
+    colors[ImGuiCol_ResizeGripActive]       = ImVec4(0.00f, 0.75f, 0.12f, 0.95f);
+    
+    MX_IMGUI_INIT
+
+    ImGui_ImplOpenGL3_Init("#version 330");
+  #endif
   }
 
   void GUI_ImGui::update()
   {
-    #ifdef MX_IMGUI_ACTIVE
-      ImGui_ImplOpenGL3_NewFrame();
-      MX_IMGUI_NEW_FRAME;
-      ImGui::NewFrame();
-    #endif
+  #ifdef MX_IMGUI_ACTIVE
+    ImGui_ImplOpenGL3_NewFrame();
+    MX_IMGUI_NEW_FRAME
+    ImGui::NewFrame();
+  #endif
   }
 
   void GUI_ImGui::render()
   {
-    #ifdef MX_IMGUI_ACTIVE
-      
-      if (1)
-        renderEditor();
+  #ifdef MX_IMGUI_ACTIVE
 
-      ImGui::Render();
-      MX_IMGUI_API_RENDER;
-    #endif
+    if (get_show_event_window())
+      renderEventWindow();
+    else if (get_show_input_window())
+      renderInputWindow();
+    else
+    {
+      renderMenuBar();
+      renderEditorWindow();
+      renderHierarchyWindow();
+    }  
+
+    ImGui::Render();
+    MX_IMGUI_API_RENDER
+  #endif
   }
 
   void GUI_ImGui::clean()
   {
-    #ifdef MX_IMGUI_ACTIVE
-      MX_IMGUI_API_CLOSE;
-      MX_IMGUI_CLEAN;
-      ImGui::DestroyContext();
-    #endif
+  #ifdef MX_IMGUI_ACTIVE
+    MX_IMGUI_API_CLOSE
+    MX_IMGUI_CLEAN
+    ImGui::DestroyContext();
+  #endif
   }
 }

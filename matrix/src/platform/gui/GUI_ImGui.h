@@ -2,6 +2,7 @@
 #define GUI_IMGUI_H
 
 #include "matrix/src/platform/gui/GUI.h"
+#include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
 
 #include <IMGUI/imgui.h>
 #include "matrix/src/layers/World.h"
@@ -15,8 +16,6 @@
 
 namespace MX
 {
-  void renderEditor();
-
   class GUI_ImGui: public GUI
   {
   public: 
@@ -27,6 +26,22 @@ namespace MX
     MX_API void update() override;
     MX_API void render() override;
     MX_API void clean() override;
+  
+  private:
+    // GUI_ImGui_Events.cpp
+    MX_API static void renderInputWindow();
+    MX_API static void renderEventWindow();
+
+    // GUI_ImGui_Editor.cpp
+    MX_API static void renderEditorWindow();
+
+    // GUI_ImGui_Hierarchy.cpp
+    MX_API static void renderHierarchyWindow();
+
+    // GUI_ImGui_MenuBar.cpp
+    MX_API static void renderMenuBar();
+
+
   };
 }
 

@@ -5,6 +5,11 @@
 #include "matrix/src/controller/Controller.h"
 #include "matrix/src/layers/World.h"
 
+#ifdef MX_IMGUI_ACTIVE
+  #include <IMGUI/imgui.h>
+  #include <IMGUI/imgui_impl_sdl.h>
+#endif 
+
 #ifdef MX_SDL2_ACTIVE
 
 namespace MX
@@ -87,6 +92,9 @@ namespace MX
     SDL_Event SDLevent;
     while (SDL_PollEvent(&SDLevent) != 0)
     {
+    #ifdef MX_IMGUI_ACTIVE
+      ImGui_ImplSDL2_ProcessEvent(&SDLevent);
+    #endif
       if (SDLevent.type == SDL_KEYDOWN)
       {
         KeyboardButtonPressed event(SDLevent.key.keysym.sym);
