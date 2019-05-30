@@ -16,6 +16,9 @@ namespace MX
   MX_API extern std::vector<char*> all_available_models;
 
   MX_API extern int item_objects_to_spawn;
+  MX_API extern int item_objects_to_select;
+
+  MX_API extern std::vector<std::string> active_objects_s;
 
   MX_API extern InputTypes currentInputType;
 

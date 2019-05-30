@@ -51,7 +51,35 @@ namespace MX
           break;
         }
       }
+
       delete it;
+    }
+  }
+
+  void SceneGraph::iterative_delete(const std::string &name)
+  {
+    std::vector<std::string> all_kids;
+    recursive_search(name, m_Root);
+    
+    getAllObjects(&all_kids, search_holder);
+    
+    std::reverse(all_kids.begin(), all_kids.end());
+
+    for (const auto &it : all_kids)
+    {
+      recursive_search(it, m_Root);
+
+      Node *parent = search_holder->getParent();
+
+      for (std::list<Node*>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
+      {
+        if ((*iter)->m_Name == search_holder->m_Name)
+        {
+          parent->getChildren().erase(iter);
+          break;
+        }
+      }
+      delete search_holder;
     }
   }
 

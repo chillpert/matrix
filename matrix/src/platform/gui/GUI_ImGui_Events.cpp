@@ -95,7 +95,7 @@ namespace MX
           }
           if (!strlen(input) == 0 && !get_show_event_window())
           {
-            World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"));
+            World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), active_objects_s.at(item_objects_to_select));
             item_objects_to_spawn = 0;
             set_show_input_window(0);
             memset(&input[0], 0, sizeof(input));

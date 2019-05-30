@@ -34,7 +34,7 @@ namespace MX
     // return 1 if name is unique, searches the entire scene's scenegraph
     MX_API bool addItemEntry(const std::string &name);
     
-    MX_API void push(const std::string &object_name, const std::string &file_name);
+    MX_API void push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to);
     MX_API void pop(const std::string &name);
 
     MX_API void setShader(const std::string &name);

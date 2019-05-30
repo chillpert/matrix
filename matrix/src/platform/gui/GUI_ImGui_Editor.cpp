@@ -10,13 +10,13 @@ namespace MX
   static float ySlider = 0.0f;
   static float zSlider = 0.0f;
 
-  static bool no_titlebar = 1;
+  static bool no_titlebar = 0;
   static bool no_scrollbar = 0;
   static bool no_menu = 0;
   static bool no_move = 1;
   static bool no_resize = 1;
   static bool no_collapse = 1;
-  static bool no_close = 1;
+  static bool no_close = 0;
   static bool no_nav = 0;
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
@@ -84,23 +84,22 @@ namespace MX
 
     ImGui::SameLine();
     
-    if (ImGui::Button("load", ImVec2(50.0f, 20.0f)))
+    if (ImGui::Button("load", ImVec2(60.0f, 20.0f)))
     {
       World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
       item_current_scenes = 0;
     }
 
     // display all active objects
-    std::vector<std::string> active_objects_s;
     World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
     
-    ImGui::Text("select object:");
+    ImGui::Text("select model:");
     ImGui::Combo("##all_objects_to_spawn", &item_objects_to_spawn, all_available_models.data(), IM_ARRAYSIZE(all_available_models.data()) * all_available_models.size());
     
     ImGui::SameLine();
 
     // spawn selected object
-    if (ImGui::Button("spawn") && item_objects_to_spawn != 0)
+    if (ImGui::Button("spawn", ImVec2(60.0f, 20.0f)) && item_objects_to_spawn != 0)
     {
       input_window_title = "Info";
       input_window_message = "Please enter a new name";
@@ -114,14 +113,14 @@ namespace MX
     for (unsigned int i = 0; i < active_objects_s.size(); ++i)
       all_active_objects[i] = active_objects_s[i].c_str();
 
-    ImGui::Text("select model:");
-    static int item_objects_to_select = 0;
+    ImGui::Text("select object:");
+    
     ImGui::Combo("##all_objects_to_delete", &item_objects_to_select, all_active_objects.data(), all_active_objects.size());
 
     ImGui::SameLine();
 
     // delete
-    if (ImGui::Button("delete") && item_objects_to_select != 0)
+    if (ImGui::Button("delete", ImVec2(60.0f, 20.0f)) && item_objects_to_select != 0)
     {
       World::get().m_ActiveScene->pop(active_objects_s.at(item_objects_to_select));
       item_objects_to_select = 0;

@@ -20,7 +20,7 @@ namespace MX
   }
 
   // adds object to scene graph
-  void Scene::push(const std::string &object_name, const std::string &file_name)
+  void Scene::push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to)
   {
     bool objectExists = 0;
 
@@ -32,13 +32,14 @@ namespace MX
 
         objectExists = 1;
         Node *temp_node = new Node(object_name, file_name);
-        m_Sg.m_Root->addChild(temp_node);
+        m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
+        search_holder->addChild(temp_node);
 
         #ifdef MX_DEBUG
           std::ostringstream address; 
           address << temp_node;
           std::string address_s =  address.str(); 
-          MX_INFO_LOG("MX: Scene: Push: " + object_name + ": Address: " + address_s);
+          MX_INFO_LOG("MX: Scene: " + m_Name + ": Push: " + object_name + ": Address: " + address_s);
         #endif
         break;
       }
@@ -52,13 +53,14 @@ namespace MX
       m_Sg.m_Models.push_back(temp);
 
       Node *temp_node = new Node(object_name, file_name);
-      m_Sg.m_Root->addChild(temp_node);
+      m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
+      search_holder->addChild(temp_node);
       
       #ifdef MX_DEBUG
         std::ostringstream address; 
         address << temp_node;
         std::string address_s =  address.str(); 
-        MX_INFO_LOG("MX: Scene: Push: " + object_name + ": Address: " + address_s);
+        MX_INFO_LOG("MX: Scene: " + m_Name + ": Push: " + object_name + ": Address: " + address_s);
       #endif
     }
 
@@ -68,16 +70,23 @@ namespace MX
   // delete object from scene graph
   void Scene::pop(const std::string &name)
   {
-    MX_INFO_LOG("MX: Scene: Pop: " + name);
+  #ifdef MX_DEBUG
     m_Sg.recursive_search(name, m_Sg.m_Root);
-    m_Sg.recursive_delete(search_holder);
-    MX_SUCCESS_LOG("MX: Scene: Pop: " + name);
+
+    std::ostringstream address; 
+    address << search_holder;
+    std::string address_s =  address.str();
+    MX_INFO_LOG("MX: Scene: " + m_Name + ": Pop: Trying to pop: " + search_holder->m_Name + ": Adress: " + address_s);
+  #endif              
+    m_Sg.iterative_delete(name);
+
+    MX_SUCCESS_LOG("MX: Scene: " + m_Name + ": Pop: " + name);
   }
 
   void Scene::setShader(const std::string &name)
   {
-    MX_INFO_LOG("MX: Scene: Shader: " + m_Name);
+    MX_INFO_LOG("MX: Scene: " + m_Name + ": Shader: " + m_Name);
     m_Sg.m_Shader = MX_SHADER(name, 1);
-    MX_SUCCESS_LOG("MX: Scene: Shader: " + m_Name);
+    MX_SUCCESS_LOG("MX: Scene: " + m_Name + ": Shader: " + m_Name);
   }
 }

@@ -15,8 +15,10 @@ namespace MX
   bool show_input_window = 0;
 
   std::vector<char*> all_available_models = {"", "monkey", "cube", "rock", "sphere"};
+  std::vector<std::string> active_objects_s;
 
   int item_objects_to_spawn = 0;
+  int item_objects_to_select = 0;
 
   void set_show_event_window(bool flag)
   {
