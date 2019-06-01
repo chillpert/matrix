@@ -40,14 +40,11 @@ namespace MX
 
     if (ImGui::BeginMenuBar())
     {
-      if (ImGui::MenuItem("Scene Graph"))
-      {
+      if (ImGui::MenuItem("Scene Graph", "", true, !draw_scene_graph))
         draw_scene_graph = 1;
-      }
-      if (ImGui::MenuItem("Outline"))
-      {
+
+      if (ImGui::MenuItem("Outline", "", true, draw_scene_graph))
         draw_scene_graph = 0;
-      }
       
       ImGui::EndMenuBar();
     }

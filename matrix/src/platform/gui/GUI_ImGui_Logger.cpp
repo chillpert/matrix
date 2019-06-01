@@ -18,6 +18,64 @@ namespace MX
   // will display all messages by default
   static logger_message_type message_type = mx_all;
 
+  static bool all_flag = 0;
+  static bool info_flag = 1;
+  static bool warn_flag = 1;
+  static bool fatal_flag = 1;
+  static bool success_flag = 1;
+
+  void toggle_flags()
+  {
+    switch (message_type)
+    {
+      case mx_all:
+      {
+        all_flag = 0;
+        info_flag = 1;
+        warn_flag = 1;
+        fatal_flag = 1;
+        success_flag = 1;
+        break;
+      }
+      case mx_info:
+      {
+        all_flag = 1;
+        info_flag = 0;
+        warn_flag = 1;
+        fatal_flag = 1;
+        success_flag = 1;
+        break;
+      }
+      case mx_warn:
+      {
+        all_flag = 1;
+        info_flag = 1;
+        warn_flag = 0;
+        fatal_flag = 1;
+        success_flag = 1;
+        break;
+      }
+      case mx_fatal:
+      {
+        all_flag = 1;
+        info_flag = 1;
+        warn_flag = 1;
+        fatal_flag = 0;
+        success_flag = 1;
+        break;
+      }
+      case mx_success:
+      {
+        all_flag = 1;
+        info_flag = 1;
+        warn_flag = 1;
+        fatal_flag = 1;
+        success_flag = 0;
+        break;
+      }
+    }
+  }
+
   void GUI_ImGui::renderLoggerWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
@@ -36,20 +94,25 @@ namespace MX
 
     if (ImGui::BeginMenuBar())
     {
-      if (ImGui::Button("All"))
+      if (ImGui::MenuItem("All", "", true, all_flag))
         message_type = mx_all;
 
-      if (ImGui::Button("Info"))
+      if (ImGui::MenuItem("Info", "", true, info_flag))
         message_type = mx_info;
 
-      if (ImGui::Button("Warn"))
+      if (ImGui::MenuItem("Warn", "", true, warn_flag))
         message_type = mx_warn;
 
-      if (ImGui::Button("Success"))
+      if (ImGui::MenuItem("Fatal", "", true, fatal_flag))
+        message_type = mx_fatal;
+
+      if (ImGui::MenuItem("Success", "", true, success_flag))
         message_type = mx_success;
-      
+
       ImGui::EndMenuBar();
     }
+
+    toggle_flags();
 
     switch (message_type)
     {
