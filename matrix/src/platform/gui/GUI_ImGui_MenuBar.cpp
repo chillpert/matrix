@@ -46,22 +46,57 @@ namespace MX
         {
           input_window_title = "Info";
           input_window_message = "Please enter a resolution";
-          set_show_input_window(1);
+          input_window_enabled = 1;
           currentInputType = mx_resolution;
         }
+        ImGui::EndMenu();
+      }
+      if (ImGui::BeginMenu("Window"))
+      {
+        if (!editor_window_enabled)
+        {
+          if (ImGui::MenuItem("show editor"))
+          {
+            editor_window_enabled = 1;
+            p_open_editor = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide editor"))
+          {
+            editor_window_enabled = 0;
+            p_open_editor = 0;
+          }
+        }
+
+        if (!hierarchy_window_enabled)
+        {
+          if (ImGui::MenuItem("show hierarchy"))
+          {
+            hierarchy_window_enabled = 1;
+            p_open_hierarchy = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide hierarchy"))
+          {
+            hierarchy_window_enabled = 0;
+            p_open_hierarchy = 0;
+          }
+        }
+
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("Help"))
       {
         if (ImGui::MenuItem("About"))
         {
-          if (ImGui::MenuItem("about"))
-          {
-            event_window_title = "About";
-            event_window_message = "Waehlt die Partei,\ndenn sie ist sehr gut!";
-            event_window_button = "Yes";
-            set_show_event_window(1);
-          }
+          event_window_title = "About";
+          event_window_message = "Waehlt die Partei,\ndenn sie ist sehr gut!";
+          event_window_button = "Yes";
+          event_window_enabled = 1;
         }
         ImGui::EndMenu();
       }

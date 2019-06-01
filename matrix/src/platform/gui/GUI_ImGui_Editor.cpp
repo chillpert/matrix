@@ -20,7 +20,6 @@ namespace MX
   static bool no_nav = 0;
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
-  static bool p_open = 0;
 
   void GUI_ImGui::renderEditorWindow()
   {
@@ -37,11 +36,23 @@ namespace MX
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
     std::string editor_window_title = "World Editor - " + World::get().m_ActiveScene->m_Name;
-    ImGui::Begin(editor_window_title.c_str(), &p_open, window_flags);
+    ImGui::Begin(editor_window_title.c_str(), &p_open_editor, window_flags);
 
-    ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
-    ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f));
+    if (!p_open_editor)
+      editor_window_enabled = 0;
 
+    if (hierarchy_window_enabled)
+    {
+      ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
+      ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f));
+    }
+    else
+    {
+      ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
+      ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
+    }
+    
+    
     if (ImGui::BeginMenuBar())
     {
       if (ImGui::BeginMenu("scenes##manage scenes"))
@@ -50,7 +61,8 @@ namespace MX
         {
           input_window_title = "Info";
           input_window_message = "Give the scene a new name";
-          set_show_input_window(1, mx_scene);
+          input_window_enabled = 1;
+          currentSelectionType = mx_scene;
           currentInputType = mx_name;
         }
         if (ImGui::MenuItem("load##load existing scene"))
@@ -58,7 +70,7 @@ namespace MX
           selection_window_title = "Info";
           selection_window_message = "Select a scene to load";
           selection_window_button = "Load";
-          set_show_selection_window(1);
+          selection_window_enabled = 1;
         }
         ImGui::EndMenu();
       }
@@ -78,7 +90,8 @@ namespace MX
     {
       input_window_title = "Info";
       input_window_message = "Please enter a new name";
-      set_show_input_window(1, mx_object);
+      input_window_enabled = 1;
+      currentSelectionType = mx_object;
       currentInputType = mx_name;
     }
 

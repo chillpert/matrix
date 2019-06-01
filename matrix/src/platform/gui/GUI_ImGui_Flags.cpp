@@ -1,8 +1,12 @@
 #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
 
+#include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
+
 namespace MX
 {
   InputTypes currentInputType = mx_name;
+  SelectionTypes currentSelectionType = mx_null;
 
   const std::string default_window_title = "undefined window title";
   const std::string default_window_message = "undefined window message";
@@ -19,14 +23,18 @@ namespace MX
   std::string selection_window_message = default_window_message;
   std::string selection_window_button = default_button_label;
 
-  bool show_event_window = 0;
-  bool show_input_window = 0;
-  bool show_selection_window = 0;
+  bool event_window_enabled = 0;
+  bool input_window_enabled = 0;
+  bool selection_window_enabled = 0;
 
-  bool create_object_enabled = 0;
-  bool create_scene_enabled = 0;
+  bool menubar_enabled = 1;
+  bool editor_window_enabled = 1;
+  bool hierarchy_window_enabled = 1;
 
-  std::vector<char*> all_available_models = {"", "monkey", "cube", "rock", "sphere"};
+  bool p_open_editor = 1;
+  bool p_open_hierarchy = 1;
+
+  std::vector<char*> all_available_models = {""};
   std::vector<const char*> all_current_scenes;
   std::vector<std::string> active_objects_s;
 
@@ -45,53 +53,30 @@ namespace MX
     selection_window_button = default_button_label;
   }
 
-  void set_show_event_window(bool flag)
+  void check_folder_for_objects()
   {
-    show_event_window = flag;
-  }
+    std::string model_path = MX_MODEL_PATH;
+    boost::filesystem::path p(MX_MODEL_PATH);
 
-  void set_show_input_window(bool flag, SpawnTypes t)
-  {
-    switch (t)
+    std::vector<boost::filesystem::directory_entry> all_available_models_d;
+
+    if (boost::filesystem::is_directory(p))
     {
-      case mx_object:
+      std::copy(boost::filesystem::directory_iterator(p), boost::filesystem::directory_iterator(), std::back_inserter(all_available_models_d));
+
+      for (std::vector<boost::filesystem::directory_entry>::const_iterator it = all_available_models_d.begin(); it != all_available_models_d.end(); ++it)
       {
-        create_object_enabled = 1;
-        break;
-      }
-      case mx_scene:
-      {
-        create_scene_enabled = 1;
-        break;
-      }
-      case mx_null:
-      default:
-      {
-        create_object_enabled = 0;
-        create_scene_enabled = 0;
-        break;
-      }
+        std::string temp = (*it).path().string();
+        std::size_t found_slash = temp.find_last_of("/");
+        std::size_t found_point = temp.find_last_of(".");
+        temp = temp.substr(found_slash + 1, found_point - found_slash - 1);
+        
+        char *file_name = new char[temp.size()  + 1];
+        std::copy(temp.begin(), temp.end(), file_name);
+        file_name[temp.size()] = '\0';
+
+        all_available_models.push_back(file_name);
+      } 
     }
-    show_input_window = flag;
-  }
-
-  void set_show_selection_window(bool flag)
-  {
-    show_selection_window = flag;
-  }
-
-  bool get_show_event_window()
-  {
-    return show_event_window;
-  }
-
-  bool get_show_input_window()
-  {
-    return show_input_window;
-  }
-
-  bool get_show_selection_window()
-  {
-    return show_selection_window;
   }
 }

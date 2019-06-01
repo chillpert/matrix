@@ -14,7 +14,6 @@ namespace MX
   static bool no_nav = 0;
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
-  static bool p_open = 0;
 
   static bool draw_scene_graph = 1;
 
@@ -34,27 +33,41 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin("Hierarchy", &p_open, window_flags);
+    ImGui::Begin("Hierarchy", &p_open_hierarchy, window_flags);
+
+    if (!p_open_hierarchy)
+      hierarchy_window_enabled = 0;
 
     if (ImGui::BeginMenuBar())
     {
       if (ImGui::MenuItem("Scene Graph"))
       {
-        draw_scene_graph = !draw_scene_graph;
+        draw_scene_graph = 1;
       }
       if (ImGui::MenuItem("Outline"))
       {
-
+        draw_scene_graph = 0;
       }
       
       ImGui::EndMenuBar();
     }
 
-    if (drawSceneGraph)
-      drawSceneGraph(*World::get().m_ActiveScene->m_Sg.m_Root);    
+    if (draw_scene_graph)
+      drawSceneGraph(*World::get().m_ActiveScene->m_Sg.m_Root);  
 
-    ImGui::SetWindowPos(ImVec2(0.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f + 21.0f));
-    ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
+    if (editor_window_enabled)
+    {
+      ImGui::SetWindowPos(ImVec2(0.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f + 21.0f));
+      ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
+    }
+    else
+    {
+      ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
+      ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
+    }
+     
+
+    
 
     ImGui::End();
   #endif

@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.0.0)
 
+# boost
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+
+find_package(Boost REQUIRED COMPONENTS filesystem) 
+
+IF (Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS}) 
+ENDIF ()
+
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(external/include)
 link_directories(external/libs)
@@ -180,6 +191,7 @@ ENDIF ()
 target_link_libraries(MatrixLib
   ${API_LIB}
   ${WINDOW_LIB}
+  ${Boost_LIBRARIES}
 )
 
 set_source_files_properties(matrix/pch/stdafx.cpp

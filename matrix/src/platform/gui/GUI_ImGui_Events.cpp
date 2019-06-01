@@ -38,7 +38,7 @@ namespace MX
 
     std::string buttonLabel = event_window_button + "##button labeling for event window";
     if (ImGui::Button(buttonLabel.c_str()))
-      set_show_event_window(0);
+      event_window_enabled = 0;
 
     ImGui::SetWindowPos(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 2.0f - middle_offset_x / 2.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f - middle_offset_y / 2.0f));
     ImGui::SetWindowSize(ImVec2(middle_offset_x, middle_offset_y));
@@ -80,7 +80,7 @@ namespace MX
 
         if (ImGui::Button("confirm##confirm naming"))
         {
-          if (create_object_enabled)
+          if (currentSelectionType == mx_object)
           {
             std::vector<std::string> active_objects_s;
             World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
@@ -91,19 +91,19 @@ namespace MX
                 event_window_title = "Warning";
                 event_window_message = "This name is already being used";
                 event_window_button = "Confirm";
-                set_show_event_window(1);
+                event_window_enabled = 1;
                 break;
               }
             }
-            if (!strlen(input) == 0 && !get_show_event_window())
+            if (!strlen(input) == 0 && !event_window_enabled)
             {
               World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), active_objects_s.at(item_objects_to_select));
               item_objects_to_spawn = 0;
-              set_show_input_window(0);
+              input_window_enabled = 0;
               memset(&input[0], 0, sizeof(input));
             }
           }
-          else if (create_scene_enabled)
+          else if (currentSelectionType == mx_scene)
           {
             for (Scene *it : World::get().m_ExistingScenes)
             {
@@ -112,16 +112,15 @@ namespace MX
                 event_window_title = "Warning";
                 event_window_message = "This name is already being used";
                 event_window_button = "Confirm";
-                set_show_event_window(1);
+                event_window_enabled = 1;
                 break;
               }
             }
-            if (!strlen(input) == 0 && !get_show_event_window())
+            if (!strlen(input) == 0 && !event_window_enabled)
             {
-              MX_FATAL("nice");
               Scene *temp = new Scene(input);
               World::get().push(temp);
-              set_show_input_window(0);
+              input_window_enabled = 0;
               memset(&input[0], 0, sizeof(input));
             }
           }
@@ -150,7 +149,7 @@ namespace MX
           {
             event_window_title = "Warning";
             event_window_message = "Invalid resolution";
-            set_show_event_window(1);
+            event_window_enabled = 1;
           }
           else
           {
@@ -161,14 +160,14 @@ namespace MX
             if (input[0] == 1920 && input[1] == 1080)
               Application::get().m_Window->m_Props.m_FullScreen = 1;
     
-            set_show_input_window(0);
+            input_window_enabled = 0;
           }      
         }
 
         ImGui::SameLine();
 
         if (ImGui::Button("cancel"))
-          set_show_input_window(0);
+          input_window_enabled = 0;
 
         break;
       }
@@ -204,7 +203,7 @@ namespace MX
     {
       World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
       item_current_scenes = 0;
-      set_show_selection_window(0);
+      selection_window_enabled = 0;
     }
 
     all_current_scenes.clear();

@@ -73,6 +73,8 @@ namespace MX
     MX_IMGUI_INIT
 
     ImGui_ImplOpenGL3_Init("#version 330");
+
+    check_folder_for_objects();
   #endif
   }
 
@@ -89,18 +91,21 @@ namespace MX
   {
   #ifdef MX_IMGUI_ACTIVE
 
-    if (get_show_event_window())
+    if (event_window_enabled)
       renderEventWindow();
-    else if (get_show_input_window())
+    else if (input_window_enabled)
       renderInputWindow();
-    else if (get_show_selection_window())
+    else if (selection_window_enabled)
       renderSelectionWindow();
     else
     {
-      renderMenuBar();
-      renderEditorWindow();
-      renderHierarchyWindow();
-    }  
+      if (menubar_enabled)
+        renderMenuBar();
+      if (editor_window_enabled)
+        renderEditorWindow();
+      if (hierarchy_window_enabled)
+        renderHierarchyWindow();
+    }
 
     ImGui::Render();
     MX_IMGUI_API_RENDER
@@ -113,6 +118,11 @@ namespace MX
     MX_IMGUI_API_CLOSE
     MX_IMGUI_CLEAN
     ImGui::DestroyContext();
+
+    // delete allocated chars
+    for (std::vector<char*>::iterator iter = all_available_models.begin() + 1; iter != all_available_models.end(); ++iter)
+      delete *iter;
+
   #endif
   }
 }
