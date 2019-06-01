@@ -60,8 +60,8 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin(input_window_title.c_str(), &p_open, window_flags);
-    ImGui::Text(input_window_message.c_str());
+    ImGui::Begin(event_window_title.c_str(), &p_open, window_flags);
+    ImGui::Text(event_window_message.c_str());
 
     switch (currentInputType)
     {
@@ -185,7 +185,7 @@ namespace MX
   void GUI_ImGui::renderSelectionWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGui::Begin(selection_window_title.c_str(), &p_open, window_flags);
+    ImGui::Begin(event_window_title.c_str(), &p_open, window_flags);
     // display all scenes
     all_current_scenes.resize(World::get().m_ExistingScenes.size() + 1);
     all_current_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();
@@ -194,12 +194,12 @@ namespace MX
       all_current_scenes[i+1] = World::get().m_ExistingScenes[i]->m_Name.c_str();
 
     static int item_current_scenes = 0;
-    ImGui::Text(selection_window_message.c_str());
+    ImGui::Text(event_window_message.c_str());
     ImGui::Combo("##all_scenes_to_select", &item_current_scenes, all_current_scenes.data(), all_current_scenes.size());
 
     ImGui::SameLine();
     
-    if (ImGui::Button(selection_window_button.c_str(), ImVec2(60.0f, 20.0f)))
+    if (ImGui::Button(event_window_button.c_str(), ImVec2(60.0f, 20.0f)))
     {
       World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
       item_current_scenes = 0;

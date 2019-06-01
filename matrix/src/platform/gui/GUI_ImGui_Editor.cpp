@@ -59,17 +59,17 @@ namespace MX
       {
         if (ImGui::MenuItem("new##create new scene"))
         {
-          input_window_title = "Info";
-          input_window_message = "Give the scene a new name";
+          event_window_title = "Info";
+          event_window_message = "Give the scene a new name";
           input_window_enabled = 1;
           currentSelectionType = mx_scene;
           currentInputType = mx_name;
         }
         if (ImGui::MenuItem("load##load existing scene"))
         {
-          selection_window_title = "Info";
-          selection_window_message = "Select a scene to load";
-          selection_window_button = "Load";
+          event_window_title = "Info";
+          event_window_message = "Select a scene to load";
+          event_window_button = "Load";
           selection_window_enabled = 1;
         }
         ImGui::EndMenu();
@@ -88,8 +88,8 @@ namespace MX
     // spawn selected object
     if (ImGui::Button("spawn", ImVec2(60.0f, 20.0f)) && item_objects_to_spawn != 0)
     {
-      input_window_title = "Info";
-      input_window_message = "Please enter a new name";
+      event_window_title = "Info";
+      event_window_message = "Please enter a new name";
       input_window_enabled = 1;
       currentSelectionType = mx_object;
       currentInputType = mx_name;

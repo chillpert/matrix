@@ -11,6 +11,11 @@ namespace MX
     {     
       if (ImGui::BeginMenu("File"))
       {
+        if (ImGui::MenuItem("New")) {}
+        if (ImGui::MenuItem("Load")) {}
+        if (ImGui::MenuItem("Save")) {}
+        if (ImGui::MenuItem("Save as")) {}
+
         ImGui::EndMenu();
       }
       if (ImGui::BeginMenu("Edit"))
@@ -44,8 +49,8 @@ namespace MX
         }
         if (ImGui::MenuItem("set resolution"))
         {
-          input_window_title = "Info";
-          input_window_message = "Please enter a resolution";
+          event_window_title = "Info";
+          event_window_message = "Please enter a resolution";
           input_window_enabled = 1;
           currentInputType = mx_resolution;
         }
@@ -94,8 +99,8 @@ namespace MX
         if (ImGui::MenuItem("About"))
         {
           event_window_title = "About";
-          event_window_message = "Waehlt die Partei,\ndenn sie ist sehr gut!";
-          event_window_button = "Yes";
+          event_window_message = "I do not know what to say\nAnyway ... how are you doing?";
+          event_window_button = "I WANT TO DIE";
           event_window_enabled = 1;
         }
         ImGui::EndMenu();

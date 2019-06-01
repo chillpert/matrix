@@ -5,12 +5,14 @@
 
 namespace MX
 {
+  // needs to be set before calling an input event window
   enum InputTypes
   {
     mx_name,      // string input
     mx_resolution // two integer input
   };
 
+  // global flag for input type
   MX_API extern InputTypes currentInputType;
 
   // needs to be set before calling a selection event window
@@ -21,6 +23,7 @@ namespace MX
     mx_null       // create nothing
   };
 
+  // global flag for selection type
   MX_API extern SelectionTypes currentSelectionType;
 
   // all object files in model directory
@@ -32,19 +35,14 @@ namespace MX
   // all already spawned objects
   MX_API extern std::vector<std::string> active_objects_s;
 
+  // imgui combo flags
   MX_API extern int item_objects_to_spawn;
   MX_API extern int item_objects_to_select;
 
+  // event window naming
   MX_API extern std::string event_window_title;
   MX_API extern std::string event_window_message;
   MX_API extern std::string event_window_button;
-
-  MX_API extern std::string input_window_title;
-  MX_API extern std::string input_window_message;
-
-  MX_API extern std::string selection_window_title;
-  MX_API extern std::string selection_window_message;
-  MX_API extern std::string selection_window_button;
 
   // flags for handling close window events
   MX_API extern bool p_open_editor;
@@ -54,7 +52,6 @@ namespace MX
   MX_API extern bool event_window_enabled;
   MX_API extern bool input_window_enabled;
   MX_API extern bool selection_window_enabled;
-
   MX_API extern bool menubar_enabled;
   MX_API extern bool editor_window_enabled;
   MX_API extern bool hierarchy_window_enabled;

@@ -16,13 +16,6 @@ namespace MX
   std::string event_window_message = default_window_message;
   std::string event_window_button = default_button_label;
 
-  std::string input_window_title = default_window_title;
-  std::string input_window_message = default_window_message;
-
-  std::string selection_window_title = default_window_title;
-  std::string selection_window_message = default_window_message;
-  std::string selection_window_button = default_button_label;
-
   bool event_window_enabled = 0;
   bool input_window_enabled = 0;
   bool selection_window_enabled = 0;
@@ -46,11 +39,6 @@ namespace MX
     event_window_title = default_window_title;
     event_window_message = default_window_message;
     event_window_button = default_button_label;
-    input_window_title = default_window_title;
-    input_window_message = default_window_message;
-    selection_window_title = default_window_title;
-    selection_window_message = default_window_message;
-    selection_window_button = default_button_label;
   }
 
   void check_folder_for_objects()
