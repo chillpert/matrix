@@ -7,8 +7,8 @@ namespace MX
   static bool no_titlebar = 0;
   static bool no_scrollbar = 0;
   static bool no_menu = 0;
-  static bool no_move = 0;
-  static bool no_resize = 0;
+  static bool no_move = 1;
+  static bool no_resize = 1;
   static bool no_collapse = 1;
   static bool no_close = 0;
   static bool no_nav = 0;
@@ -115,7 +115,7 @@ namespace MX
                float (Application::get().m_Window->m_Props.m_Height) - float (Application::get().m_Window->m_Props.m_Height) / 4.0f)
       );
       ImGui::SetWindowSize(
-        ImVec2(float (Application::get().m_Window->m_Props.m_Width) - (float (Application::get().m_Window->m_Props.m_Height) / 5.0f) * 2,
+        ImVec2(float (Application::get().m_Window->m_Props.m_Width) - float (Application::get().m_Window->m_Props.m_Width) / 5.0f,
                float (Application::get().m_Window->m_Props.m_Height) / 4.0f)
       );
     }

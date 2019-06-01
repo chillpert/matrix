@@ -14,7 +14,6 @@ namespace MX
   static bool no_nav = 0;
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
-  static bool p_open = 1;
 
   static ImGuiWindowFlags window_flags = 0;
 
@@ -31,7 +30,14 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin(event_window_title.c_str(), &p_open, window_flags);
+    ImGui::Begin(event_window_title.c_str(), &p_open_event, window_flags);
+
+    if (!p_open_event)
+    {
+      event_window_enabled = 0;
+      p_open_event = 1;
+    }
+
     ImGui::Text(event_window_message.c_str());
 
     ImGui::NewLine();
@@ -60,7 +66,14 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin(event_window_title.c_str(), &p_open, window_flags);
+    ImGui::Begin(event_window_title.c_str(), &p_open_event, window_flags);
+
+    if (!p_open_event)
+    {
+      input_window_enabled = 0;
+      p_open_event = 1;
+    }
+
     ImGui::Text(event_window_message.c_str());
 
     switch (currentInputType)
@@ -84,6 +97,7 @@ namespace MX
           {
             std::vector<std::string> active_objects_s;
             World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
+            bool input_accepted = 0;
             for (const std::string &it : active_objects_s)
             {
               if (it == input)
@@ -91,11 +105,11 @@ namespace MX
                 event_window_title = "Warning";
                 event_window_message = "This name is already being used";
                 event_window_button = "Confirm";
-                event_window_enabled = 1;
+                input_accepted = 1;
                 break;
               }
             }
-            if (!strlen(input) == 0 && !event_window_enabled)
+            if (!strlen(input) == 0 && !input_accepted)
             {
               World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), active_objects_s.at(item_objects_to_select));
               item_objects_to_spawn = 0;
@@ -105,6 +119,7 @@ namespace MX
           }
           else if (currentSelectionType == mx_scene)
           {
+            bool input_accepted = 0;
             for (Scene *it : World::get().m_ExistingScenes)
             {
               if (it->m_Name == input)
@@ -112,11 +127,11 @@ namespace MX
                 event_window_title = "Warning";
                 event_window_message = "This name is already being used";
                 event_window_button = "Confirm";
-                event_window_enabled = 1;
+                input_accepted = 1;
                 break;
               }
             }
-            if (!strlen(input) == 0 && !event_window_enabled)
+            if (!strlen(input) == 0 && !input_accepted)
             {
               Scene *temp = new Scene(input);
               World::get().push(temp);
@@ -185,7 +200,14 @@ namespace MX
   void GUI_ImGui::renderSelectionWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGui::Begin(event_window_title.c_str(), &p_open, window_flags);
+    ImGui::Begin(event_window_title.c_str(), &p_open_event, window_flags);
+
+    if (!p_open_event)
+    {
+      selection_window_enabled = 0;
+      p_open_event = 1;
+    }
+
     // display all scenes
     all_current_scenes.resize(World::get().m_ExistingScenes.size() + 1);
     all_current_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();

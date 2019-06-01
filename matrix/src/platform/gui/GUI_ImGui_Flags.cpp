@@ -29,6 +29,7 @@ namespace MX
   bool p_open_editor = 1;
   bool p_open_hierarchy = 1;
   bool p_open_logger = 1;
+  bool p_open_event = 1;
 
   std::vector<char*> all_available_models = {""};
   std::vector<const char*> all_current_scenes;

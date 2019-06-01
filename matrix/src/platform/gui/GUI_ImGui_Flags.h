@@ -53,6 +53,7 @@ namespace MX
   MX_API extern bool p_open_editor;
   MX_API extern bool p_open_hierarchy;
   MX_API extern bool p_open_logger;
+  MX_API extern bool p_open_event;
 
   // flags for toggling window visibility
   MX_API extern bool event_window_enabled;
