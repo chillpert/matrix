@@ -80,27 +80,55 @@ namespace MX
 
         if (ImGui::Button("confirm##confirm naming"))
         {
-          std::vector<std::string> active_objects_s;
-          World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
-          for (const std::string &it : active_objects_s)
+          if (create_object_enabled)
           {
-            if (it == input)
+            std::vector<std::string> active_objects_s;
+            World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
+            for (const std::string &it : active_objects_s)
             {
-              event_window_title = "Warning";
-              event_window_message = "This name is already being used";
-              event_window_button = "Confirm";
-              set_show_event_window(1);
-              break;
+              if (it == input)
+              {
+                event_window_title = "Warning";
+                event_window_message = "This name is already being used";
+                event_window_button = "Confirm";
+                set_show_event_window(1);
+                break;
+              }
+            }
+            if (!strlen(input) == 0 && !get_show_event_window())
+            {
+              World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), active_objects_s.at(item_objects_to_select));
+              item_objects_to_spawn = 0;
+              set_show_input_window(0);
+              memset(&input[0], 0, sizeof(input));
             }
           }
-          if (!strlen(input) == 0 && !get_show_event_window())
+          else if (create_scene_enabled)
           {
-            World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), active_objects_s.at(item_objects_to_select));
-            item_objects_to_spawn = 0;
-            set_show_input_window(0);
-            memset(&input[0], 0, sizeof(input));
+            for (Scene *it : World::get().m_ExistingScenes)
+            {
+              if (it->m_Name == input)
+              {
+                event_window_title = "Warning";
+                event_window_message = "This name is already being used";
+                event_window_button = "Confirm";
+                set_show_event_window(1);
+                break;
+              }
+            }
+            if (!strlen(input) == 0 && !get_show_event_window())
+            {
+              MX_FATAL("nice");
+              Scene *temp = new Scene(input);
+              World::get().push(temp);
+              set_show_input_window(0);
+              memset(&input[0], 0, sizeof(input));
+            }
           }
+          else
+            MX_WARN("MX: Gui: ImGui: No flag set for input event window");          
         }
+          
         break;
       }
       // two integer
@@ -151,6 +179,35 @@ namespace MX
     ImGui::SetWindowPos(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 2.0f - middle_offset_x / 2.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f - middle_offset_y / 2.0f));
     ImGui::SetWindowSize(ImVec2(middle_offset_x, middle_offset_y));
 
+    ImGui::End();
+  #endif
+  }
+
+  void GUI_ImGui::renderSelectionWindow()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    ImGui::Begin(selection_window_title.c_str(), &p_open, window_flags);
+    // display all scenes
+    all_current_scenes.resize(World::get().m_ExistingScenes.size() + 1);
+    all_current_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();
+ 
+    for (unsigned int i = 0; i < World::get().m_ExistingScenes.size(); ++i)
+      all_current_scenes[i+1] = World::get().m_ExistingScenes[i]->m_Name.c_str();
+
+    static int item_current_scenes = 0;
+    ImGui::Text(selection_window_message.c_str());
+    ImGui::Combo("##all_scenes_to_select", &item_current_scenes, all_current_scenes.data(), all_current_scenes.size());
+
+    ImGui::SameLine();
+    
+    if (ImGui::Button(selection_window_button.c_str(), ImVec2(60.0f, 20.0f)))
+    {
+      World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
+      item_current_scenes = 0;
+      set_show_selection_window(0);
+    }
+
+    all_current_scenes.clear();
     ImGui::End();
   #endif
   }

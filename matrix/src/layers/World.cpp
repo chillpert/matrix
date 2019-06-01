@@ -8,6 +8,18 @@ namespace MX
     return instance;
   }
 
+  World::~World()
+  {
+    for (Scene *it : m_ExistingScenes)
+    {
+      MX_INFO_LOG("World: Deleted Scene: " + it->m_Name);
+      delete it;
+      it = nullptr;
+    }
+
+    m_ExistingScenes.clear();
+  }
+
   void World::initialize()
   {
     for (auto &it : m_ExistingScenes)
@@ -28,6 +40,7 @@ namespace MX
   {
     m_ExistingScenes.push_back(scene);
     m_ActiveScene = scene;
+    scene->initialize();
     MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
   }
 
@@ -38,6 +51,7 @@ namespace MX
       if (m_ExistingScenes.at(i)->m_Name == name)
       {
         delete m_ExistingScenes.at(i);
+        m_ExistingScenes.at(i) = nullptr;
         try 
         {
           m_ExistingScenes.erase(m_ExistingScenes.begin() + i);

@@ -31,6 +31,7 @@ namespace MX
     // GUI_ImGui_Events.cpp
     MX_API static void renderInputWindow();
     MX_API static void renderEventWindow();
+    MX_API static void renderSelectionWindow();
 
     // GUI_ImGui_Editor.cpp
     MX_API static void renderEditorWindow();

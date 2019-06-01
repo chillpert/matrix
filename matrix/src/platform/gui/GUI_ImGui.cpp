@@ -93,6 +93,8 @@ namespace MX
       renderEventWindow();
     else if (get_show_input_window())
       renderInputWindow();
+    else if (get_show_selection_window())
+      renderSelectionWindow();
     else
     {
       renderMenuBar();

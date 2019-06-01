@@ -10,7 +10,7 @@ namespace MX
   {
   public:
     MX_API static World &get();
-    MX_API ~World() {}
+    MX_API ~World();
 
     MX_API void initialize();
     MX_API void update();

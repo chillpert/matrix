@@ -36,7 +36,8 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin("World Editor", &p_open, window_flags);
+    std::string editor_window_title = "World Editor - " + World::get().m_ActiveScene->m_Name;
+    ImGui::Begin(editor_window_title.c_str(), &p_open, window_flags);
 
     ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
     ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f));
@@ -47,47 +48,21 @@ namespace MX
       {
         if (ImGui::MenuItem("new##create new scene"))
         {
-
+          input_window_title = "Info";
+          input_window_message = "Give the scene a new name";
+          set_show_input_window(1, mx_scene);
+          currentInputType = mx_name;
         }
         if (ImGui::MenuItem("load##load existing scene"))
         {
-
-        }
-        if (ImGui::MenuItem("open##opens scene from file"))
-        {
-
-        }
-        if (ImGui::MenuItem("save"))
-        {
-          
-        }
-        if (ImGui::MenuItem("save as"))
-        {
-
+          selection_window_title = "Info";
+          selection_window_message = "Select a scene to load";
+          selection_window_button = "Load";
+          set_show_selection_window(1);
         }
         ImGui::EndMenu();
       }
       ImGui::EndMenuBar();
-    }
-
-    // display all scenes
-    std::vector<const char*> all_current_scenes;
-    all_current_scenes.resize(World::get().m_ExistingScenes.size() + 1);
-    all_current_scenes[0] = World::get().m_ActiveScene->m_Name.c_str();
- 
-    for (unsigned int i = 0; i < World::get().m_ExistingScenes.size(); ++i)
-      all_current_scenes[i+1] = World::get().m_ExistingScenes[i]->m_Name.c_str();
-
-    static int item_current_scenes = 0;
-    ImGui::Text("select scene:");
-    ImGui::Combo("##all_scenes_to_select", &item_current_scenes, all_current_scenes.data(), all_current_scenes.size());
-
-    ImGui::SameLine();
-    
-    if (ImGui::Button("load", ImVec2(60.0f, 20.0f)))
-    {
-      World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes - 1];
-      item_current_scenes = 0;
     }
 
     // display all active objects
@@ -103,7 +78,7 @@ namespace MX
     {
       input_window_title = "Info";
       input_window_message = "Please enter a new name";
-      set_show_input_window(1);
+      set_show_input_window(1, mx_object);
       currentInputType = mx_name;
     }
 
@@ -180,6 +155,8 @@ namespace MX
         movedSlider = 0;
       }
     }
+
+    active_objects_s.clear();
 
     ImGui::End();
   #endif

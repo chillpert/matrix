@@ -37,6 +37,7 @@ namespace MX
       {
         recursive_delete(itChild);
         delete itChild;
+        itChild = nullptr;
       }
     }
     else
@@ -53,6 +54,7 @@ namespace MX
       }
 
       delete it;
+      it = nullptr;
     }
   }
 
@@ -80,6 +82,7 @@ namespace MX
         }
       }
       delete search_holder;
+      search_holder = nullptr;
     }
   }
 
