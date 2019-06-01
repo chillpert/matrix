@@ -42,7 +42,8 @@ namespace MX
     // GUI_ImGui_MenuBar.cpp
     MX_API static void renderMenuBar();
 
-
+    // GUI_ImGui_Logger.cpp
+    MX_API static void renderLoggerWindow();
   };
 }
 

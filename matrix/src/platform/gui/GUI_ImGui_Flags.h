@@ -3,6 +3,8 @@
 
 #include "matrix/src/pch/stdafx.h"
 
+#include <IMGUI/imgui.h>
+
 namespace MX
 {
   // needs to be set before calling an input event window
@@ -44,9 +46,13 @@ namespace MX
   MX_API extern std::string event_window_message;
   MX_API extern std::string event_window_button;
 
+  // all mx-logger messages are being stored in here
+  MX_API extern std::vector<std::pair<std::string, ImVec4>> logger_messages_for_gui;
+
   // flags for handling close window events
   MX_API extern bool p_open_editor;
   MX_API extern bool p_open_hierarchy;
+  MX_API extern bool p_open_logger;
 
   // flags for toggling window visibility
   MX_API extern bool event_window_enabled;
@@ -55,6 +61,7 @@ namespace MX
   MX_API extern bool menubar_enabled;
   MX_API extern bool editor_window_enabled;
   MX_API extern bool hierarchy_window_enabled;
+  MX_API extern bool logger_window_enabled;
 
   // resets title, message and buttons of all windows
   MX_API void reset_window_naming();

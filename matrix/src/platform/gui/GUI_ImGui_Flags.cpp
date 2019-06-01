@@ -16,16 +16,19 @@ namespace MX
   std::string event_window_message = default_window_message;
   std::string event_window_button = default_button_label;
 
+  std::vector<std::pair<std::string, ImVec4>> logger_messages_for_gui;
+
   bool event_window_enabled = 0;
   bool input_window_enabled = 0;
   bool selection_window_enabled = 0;
-
   bool menubar_enabled = 1;
   bool editor_window_enabled = 1;
   bool hierarchy_window_enabled = 1;
+  bool logger_window_enabled = 1;
 
   bool p_open_editor = 1;
   bool p_open_hierarchy = 1;
+  bool p_open_logger = 1;
 
   std::vector<char*> all_available_models = {""};
   std::vector<const char*> all_current_scenes;

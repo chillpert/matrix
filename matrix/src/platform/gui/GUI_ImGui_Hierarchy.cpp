@@ -66,9 +66,6 @@ namespace MX
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
      
-
-    
-
     ImGui::End();
   #endif
   }

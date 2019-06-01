@@ -33,7 +33,10 @@ namespace MX
   struct MX_API Logger
   {
     static std::string getTime();
+
     static void writeToFile(const std::string &message);
+    static void writeToGUI(const std::string &message, const logger_message_type &t);
+
     static void p_Fatal(const std::string &message);
     static void p_Warn(const std::string &message);
     static void p_Info(const std::string &message);  

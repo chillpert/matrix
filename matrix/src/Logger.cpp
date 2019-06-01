@@ -1,4 +1,5 @@
 #ifdef MX_DEBUG
+  // global macros for debugging
   #define MX_LOG_FATAL   "FATAL  [" + t + "]: " + message + "\n"
   #define MX_LOG_WARN    "WARNING[" + t + "]: " + message + "\n"
   #define MX_LOG_INFO    "INFO   [" + t + "]: " + message + "\n"
@@ -37,10 +38,17 @@
 
 #include "matrix/src/pch/stdafx.h"
 
+#ifdef MX_IMGUI_ACTIVE
+  #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
+#endif
+
+#include <chrono>
+
 namespace MX
 {
-
   MX_CONSOLE_HANDLE;
+
+  auto start_time = std::chrono::high_resolution_clock::now();
 
   static bool clearFlag = 1;
 
@@ -57,14 +65,46 @@ namespace MX
     logFile.close();
   }
 
+  void Logger::writeToGUI(const std::string &message, const logger_message_type &t)
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    ImVec4 color(1.0f, 1.0f, 1.0f, 1.0f);
+
+    switch (t)
+    {
+      case mx_warn:
+      {
+        color = {1.0f, 1.0f, 0.0f, 1.0f};
+        break;
+      }
+      case mx_fatal:
+      {
+        color = {1.0f, 0.0f, 0.0f, 1.0f};
+        break;
+      }
+      case mx_success:
+      {
+        color = {0.0f, 1.0f, 0.0f, 1.0f};
+        break;
+      }
+      case mx_info:
+      default:
+      {
+        break;
+      }
+    }
+
+    logger_messages_for_gui.push_back(std::make_pair(message, color));
+  #endif
+  }
+
   std::string Logger::getTime()
   {
-    time_t now = time(0);
-    tm *ltm = localtime(&now);
-    std::string h = std::to_string(ltm->tm_hour);
-    std::string m = std::to_string(ltm->tm_min);
-    std::string s = std::to_string(ltm->tm_sec);
-    return h + ":" + m + ":" + s;
+    auto current_time = std::chrono::high_resolution_clock::now();
+
+    return std::to_string(std::chrono::duration_cast<std::chrono::hours>(current_time - start_time).count()) + ":" + 
+           std::to_string(std::chrono::duration_cast<std::chrono::minutes>(current_time - start_time).count()) + ":" + 
+           std::to_string(std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count());
   }
 
   void Logger::p_Fatal(const std::string &message)
@@ -74,6 +114,7 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_FATAL);
+    writeToGUI(MX_LOG_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn(const std::string &message)
@@ -83,6 +124,7 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_WARN);
+    writeToGUI(MX_LOG_WARN, mx_warn);
   }
 
   void Logger::p_Info(const std::string &message)
@@ -92,6 +134,7 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_INFO);
+    writeToGUI(MX_LOG_INFO, mx_info);
   }
 
   void Logger::p_Success(const std::string &message)
@@ -101,29 +144,34 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_SUCCESS);
+    writeToGUI(MX_LOG_SUCCESS, mx_success);
   }
 
   void Logger::p_Fatal_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_FATAL);
+    writeToGUI(MX_LOG_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_WARN);
+    writeToGUI(MX_LOG_WARN, mx_warn);
   }
 
   void Logger::p_Info_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_INFO);
+    writeToGUI(MX_LOG_INFO, mx_info);
   }
 
   void Logger::p_Success_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_SUCCESS);
+    writeToGUI(MX_LOG_SUCCESS, mx_success);
   }
 }

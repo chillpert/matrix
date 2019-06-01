@@ -13,6 +13,7 @@ namespace MX
       {
         if (ImGui::MenuItem("New")) {}
         if (ImGui::MenuItem("Load")) {}
+        ImGui::Separator();
         if (ImGui::MenuItem("Save")) {}
         if (ImGui::MenuItem("Save as")) {}
 
@@ -28,6 +29,90 @@ namespace MX
         if (ImGui::MenuItem("Paste", "CTRL+V")) {}
         ImGui::EndMenu();
       }
+
+      if (ImGui::BeginMenu("Window"))
+      {
+        if (!editor_window_enabled)
+        {
+          if (ImGui::MenuItem("show editor", "CTRL+E"))
+          {
+            editor_window_enabled = 1;
+            p_open_editor = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide editor", "CTRL+E"))
+          {
+            editor_window_enabled = 0;
+            p_open_editor = 0;
+          }
+        }
+
+        if (!hierarchy_window_enabled)
+        {
+          if (ImGui::MenuItem("show hierarchy", "CTRL+H"))
+          {
+            hierarchy_window_enabled = 1;
+            p_open_hierarchy = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide hierarchy", "CTRL+H"))
+          {
+            hierarchy_window_enabled = 0;
+            p_open_hierarchy = 0;
+          }
+        }
+
+        if (!logger_window_enabled)
+        {
+          if (ImGui::MenuItem("show logger", "CTRL+L"))
+          {
+            logger_window_enabled = 1;
+            p_open_logger = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide logger", "CTRL+L"))
+          {
+            logger_window_enabled = 0;
+            p_open_logger = 0;
+          }
+        }
+
+        ImGui::Separator();
+
+        if (logger_window_enabled || hierarchy_window_enabled || editor_window_enabled)
+        {
+          if (ImGui::MenuItem("hide all", "CTRL+G"))
+          {
+            logger_window_enabled = 0;
+            p_open_logger = 0;
+            hierarchy_window_enabled = 0;
+            p_open_hierarchy = 0;
+            editor_window_enabled = 0;
+            p_open_editor = 0;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("show all", "CTRL+G"))
+          {
+            logger_window_enabled = 1;
+            p_open_logger = 1;
+            hierarchy_window_enabled = 1;
+            p_open_hierarchy = 1;
+            editor_window_enabled = 1;
+            p_open_editor = 1;
+          }
+        }
+
+        ImGui::EndMenu();
+      }
+
       if (ImGui::BeginMenu("Settings"))
       {
         if (ImGui::MenuItem("toggle fullscreen", "CTRL+F"))
@@ -56,44 +141,7 @@ namespace MX
         }
         ImGui::EndMenu();
       }
-      if (ImGui::BeginMenu("Window"))
-      {
-        if (!editor_window_enabled)
-        {
-          if (ImGui::MenuItem("show editor"))
-          {
-            editor_window_enabled = 1;
-            p_open_editor = 1;
-          }
-        }
-        else
-        {
-          if (ImGui::MenuItem("hide editor"))
-          {
-            editor_window_enabled = 0;
-            p_open_editor = 0;
-          }
-        }
 
-        if (!hierarchy_window_enabled)
-        {
-          if (ImGui::MenuItem("show hierarchy"))
-          {
-            hierarchy_window_enabled = 1;
-            p_open_hierarchy = 1;
-          }
-        }
-        else
-        {
-          if (ImGui::MenuItem("hide hierarchy"))
-          {
-            hierarchy_window_enabled = 0;
-            p_open_hierarchy = 0;
-          }
-        }
-
-        ImGui::EndMenu();
-      }
       if (ImGui::BeginMenu("Help"))
       {
         if (ImGui::MenuItem("About"))

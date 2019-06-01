@@ -16,6 +16,8 @@ namespace MX
   extern bool key_d;
   extern bool key_c;
   extern bool key_space;
+
+  void disable_all_keys();
   
   // keyboard (pressed)
   #define MX_Q_PRESSED
@@ -146,7 +148,8 @@ namespace MX
   // mouse (pressed)
   #define MX_LEFT_PRESSED          
   #define MX_RIGHT_PRESSED  Controller::get().m_MouseHidden = !Controller::get().m_MouseHidden;\
-                            Controller::get().m_FirstMouse = 1;
+                            Controller::get().m_FirstMouse = 1;\
+                            disable_all_keys();
   #define MX_MIDDLE_PRESSED
   #define MX_SCROLL_UP
 

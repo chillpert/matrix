@@ -10,4 +10,16 @@ namespace MX
   bool key_d = 0;
   bool key_c = 0;
   bool key_space = 0;
+
+  void disable_all_keys()
+  {
+    speed = 2.0f;
+
+    key_w = 0;
+    key_a = 0;
+    key_s = 0;
+    key_d = 0;
+    key_c = 0;
+    key_space = 0;
+  }
 }

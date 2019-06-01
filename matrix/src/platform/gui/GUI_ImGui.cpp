@@ -72,9 +72,12 @@ namespace MX
     
     MX_IMGUI_INIT
 
-    ImGui_ImplOpenGL3_Init("#version 330");
+    ImGui_ImplOpenGL3_Init(glsl_version.c_str());
 
     check_folder_for_objects();
+
+    // reserve memory for incoming mx-logger messages
+    logger_messages_for_gui.reserve(5000);
   #endif
   }
 
@@ -105,6 +108,8 @@ namespace MX
         renderEditorWindow();
       if (hierarchy_window_enabled)
         renderHierarchyWindow();
+      if (logger_window_enabled)
+        renderLoggerWindow();
     }
 
     ImGui::Render();
