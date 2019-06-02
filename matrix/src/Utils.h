@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <chrono>
 
 namespace MX
 {
@@ -22,6 +23,8 @@ namespace MX
   const int initial_window_height = 600;
 
   const std::string glsl_version = "#version 330";
+
+  extern std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::nanoseconds> current_time;
 }
 
 #endif // UTILS_H

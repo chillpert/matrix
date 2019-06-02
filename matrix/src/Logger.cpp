@@ -42,8 +42,6 @@
   #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
 #endif
 
-#include <chrono>
-
 namespace MX
 {
   MX_CONSOLE_HANDLE;
@@ -100,11 +98,15 @@ namespace MX
 
   std::string Logger::getTime()
   {
-    auto current_time = std::chrono::high_resolution_clock::now();
+    current_time = std::chrono::high_resolution_clock::now();
 
-    return std::to_string(std::chrono::duration_cast<std::chrono::hours>(current_time - start_time).count()) + ":" + 
-           std::to_string(std::chrono::duration_cast<std::chrono::minutes>(current_time - start_time).count()) + ":" + 
-           std::to_string(std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count());
+    int64_t h = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time).count();
+    int64_t m = std::chrono::duration_cast<std::chrono::minutes>(current_time - start_time).count() % 60;
+    int64_t s = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count() % 60;
+    
+    return std::to_string(h) + ":" + 
+           std::to_string(m) + ":" + 
+           std::to_string(s);
   }
 
   void Logger::p_Fatal(const std::string &message)

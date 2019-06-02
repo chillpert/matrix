@@ -6,6 +6,8 @@
 
 namespace MX
 {
+	std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::nanoseconds> current_time;
+
   std::string parseFile(const std::string& path)
   {
     std::ifstream stream(path);

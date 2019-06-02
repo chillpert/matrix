@@ -109,6 +109,8 @@ namespace MX
       if (ImGui::MenuItem("Success", "", true, success_flag))
         message_type = mx_success;
 
+      if (ImGui::MenuItem(Logger::getTime().c_str(), "", false, false)) {};
+
       ImGui::EndMenuBar();
     }
 
