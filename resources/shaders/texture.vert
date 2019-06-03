@@ -16,6 +16,5 @@ void main()
   pass_fragPos = vec3(model * vec4(aPos, 1.0));
   pass_texCoord = aTexCoord;
   pass_normal = normalize(aNormal);
-
   gl_Position = projection * view * model * vec4(aPos, 1.0);
 }
