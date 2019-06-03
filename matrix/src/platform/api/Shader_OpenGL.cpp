@@ -31,7 +31,7 @@ namespace MX
 
   void Shader_OpenGL::initialize()
   {
-    setName("trivial");
+    //setName("trivial");
 
     m_ID = glCreateProgram();
 

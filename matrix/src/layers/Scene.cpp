@@ -1,17 +1,17 @@
 #include "matrix/src/layers/Scene.h"
+#include "matrix/src/layers/World.h"
 #include "matrix/src/Application.h"
 
 namespace MX
 {
   void Scene::initialize()
   {
-    m_Sg.m_Shader.initialize();
+
   }
 
   void Scene::update()
   {
     m_Cam.update();
-    m_Sg.m_Shader.update();
   }
 
   void Scene::render()
@@ -24,7 +24,7 @@ namespace MX
   {
     bool objectExists = 0;
 
-    for (auto &it : m_Sg.m_Models)
+    for (auto &it : World::get().m_Models)
     {
       if (it.getName() == file_name)
       {
@@ -36,7 +36,7 @@ namespace MX
         search_holder->addChild(temp_node);
 
         #ifdef MX_DEBUG
-          std::ostringstream address; 
+          std::ostringstream address;
           address << temp_node;
           std::string address_s =  address.str(); 
           MX_INFO_LOG("MX: Scene: " + m_Name + ": Push: " + object_name + ": Address: " + address_s);
@@ -50,7 +50,7 @@ namespace MX
       MX_INFO_LOG("MX: Model Handler: Object does not exist: Continue with parsing");
 
       MX_MODEL temp(file_name, 1);
-      m_Sg.m_Models.push_back(temp);
+      World::get().m_Models.push_back(temp);
 
       Node *temp_node = new Node(object_name, file_name);
       m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
@@ -81,12 +81,5 @@ namespace MX
     m_Sg.iterative_delete(name);
 
     MX_SUCCESS_LOG("MX: Scene: " + m_Name + ": Pop: " + name);
-  }
-
-  void Scene::setShader(const std::string &name)
-  {
-    MX_INFO_LOG("MX: Scene: " + m_Name + ": Shader: " + m_Name);
-    m_Sg.m_Shader = MX_SHADER(name, 1);
-    MX_SUCCESS_LOG("MX: Scene: " + m_Name + ": Shader: " + m_Name);
   }
 }

@@ -25,11 +25,11 @@ namespace MX
 
     MX_API virtual void update() {}
 
-    MX_API inline std::string &getName() { return m_Name; }
-    MX_API inline std::string &getVsPath() { return m_VsPath; }
-    MX_API inline std::string &getFsPath() { return m_FsPath; }
-    MX_API inline std::string &getVsSource() { return m_VsSource; }
-    MX_API inline std::string &getFsSource() { return m_FsSource; }
+    MX_API inline const std::string &getName() const { return m_Name; }
+    MX_API inline const std::string &getVsPath() const { return m_VsPath; }
+    MX_API inline const std::string &getFsPath() const { return m_FsPath; }
+    MX_API inline const std::string &getVsSource() const { return m_VsSource; }
+    MX_API inline const std::string &getFsSource() const { return m_FsSource; }
     
   protected:
     std::string m_Name;

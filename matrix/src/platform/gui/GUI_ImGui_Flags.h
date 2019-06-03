@@ -34,12 +34,16 @@ namespace MX
   // all scenes available
   MX_API extern std::vector<const char*> all_current_scenes;
 
+  // all shaders files in directory
+  MX_API extern std::vector<const char*> all_available_shaders;
+
   // all already spawned objects
   MX_API extern std::vector<std::string> active_objects_s;
 
   // imgui combo flags
   MX_API extern int item_objects_to_spawn;
   MX_API extern int item_objects_to_select;
+  MX_API extern int item_shaders_to_select;
 
   // event window naming
   MX_API extern std::string event_window_title;
@@ -69,6 +73,7 @@ namespace MX
 
   // checks for all available object files
   MX_API void check_folder_for_objects();
+  MX_API void check_folder_for_shaders();
 
   // for centering event windows in the middle of the screen
   const float middle_offset_x = 250.0f;

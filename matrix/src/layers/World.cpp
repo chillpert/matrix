@@ -22,8 +22,11 @@ namespace MX
 
   void World::initialize()
   {
-    for (auto &it : m_ExistingScenes)
-      it->initialize();
+    //for (auto &it : m_ExistingScenes)
+    //  it->initialize();
+
+    MX_SHADER temp("trivial");
+    m_Shaders.push_back(temp);
   }
 
   void World::update()

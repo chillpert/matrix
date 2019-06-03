@@ -33,10 +33,10 @@ namespace MX
     // set up API
     m_Running = m_API->initialize();
     
+    initialize_func();
+
     // set up GUI
     m_GUI->initialize();
-
-    initialize_func();
 
     if (m_Running)
       MX_SUCCESS("MX: Application: Initialization");

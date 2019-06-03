@@ -1,4 +1,5 @@
 #include "matrix/src/layers/SceneGraph.h"
+#include "matrix/src/layers/World.h"
 
 namespace MX
 {
@@ -7,6 +8,21 @@ namespace MX
   point to the item that has been search the last time
 */
   Node *search_holder = NULL;
+
+  SceneGraph::SceneGraph()
+  {
+
+  }
+
+  SceneGraph::~SceneGraph()
+  {
+
+  }
+
+  void SceneGraph::update()
+  {
+    
+  }
 
   void SceneGraph::render()
   {
@@ -100,12 +116,20 @@ namespace MX
   void SceneGraph::recursive_render(Node &it, glm::fmat4 mat)
   {  
     it.setWorldTransform(mat);
-    
-    for (auto &model : m_Models)
+
+    for (auto &model : World::get().m_Models)
     {
       if (model.getName() == it.m_ModelName)
       {
-        m_Shader.setfMat4("model", it.getWorldTransform());
+        for (auto &shader : World::get().m_Shaders)
+        {
+          if (shader.getName() == it.m_ShaderName)
+          {
+            shader.update();
+            shader.setfMat4("model", it.getWorldTransform());
+          }
+        }
+
         model.draw();
       }
     }

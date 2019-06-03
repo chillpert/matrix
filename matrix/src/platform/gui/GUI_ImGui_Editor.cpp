@@ -74,13 +74,21 @@ namespace MX
         }
         ImGui::EndMenu();
       }
+
+      if (ImGui::BeginMenu("add##spawn object"))
+      {
+        if (ImGui::MenuItem("object#spawn object from editor window"))
+        {
+          // todo
+        }
+      }
       ImGui::EndMenuBar();
     }
 
     // display all active objects
     World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
     
-    ImGui::Text("select model:");
+    ImGui::Text("models:");
     ImGui::Combo("##all_objects_to_spawn", &item_objects_to_spawn, all_available_models.data(), IM_ARRAYSIZE(all_available_models.data()) * all_available_models.size());
     
     ImGui::SameLine();
@@ -101,8 +109,9 @@ namespace MX
     for (unsigned int i = 0; i < active_objects_s.size(); ++i)
       all_active_objects[i] = active_objects_s[i].c_str();
 
-    ImGui::Text("select object:");
-    
+    ImGui::Separator();
+
+    ImGui::Text("objects:");
     ImGui::Combo("##all_objects_to_delete", &item_objects_to_select, all_active_objects.data(), all_active_objects.size());
 
     ImGui::SameLine();
@@ -112,6 +121,18 @@ namespace MX
     {
       World::get().m_ActiveScene->pop(active_objects_s.at(item_objects_to_select));
       item_objects_to_select = 0;
+    }
+
+    ImGui::Text("shaders:");
+    ImGui::Combo("##all_shaders_to_select", &item_shaders_to_select, all_available_shaders.data(), IM_ARRAYSIZE(all_available_shaders.data()) * all_available_shaders.size());
+    ImGui::SameLine();
+
+    // select shader
+    if (ImGui::Button("load##select shader", ImVec2(60.0f, 20.0f)) && item_shaders_to_select != 0)
+    {
+      World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+      search_holder->m_ShaderName = all_available_shaders.at(item_shaders_to_select);
+      item_shaders_to_select = 0;
     }
 
     ImGui::NewLine();

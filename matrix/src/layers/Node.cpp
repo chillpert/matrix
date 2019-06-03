@@ -6,18 +6,12 @@ namespace MX
   {
     node->setParent(this);
     m_Children.emplace_back(node);
-    // m_Children.push_back(node);
+    MX_INFO_LOG("MX: Node: " + node->m_Name + " added to parent: " + this->m_Name);
   }
 
   void Node::setParent(Node* node)
   {
     m_Parent = node;
-    //std::clog << node->getName() << " <-- " << name << std::endl;
-  }
-
-  void Node::rotate(const glm::fvec3 &vec, float speed)
-  {
-    m_WorldTransform = glm::rotate(m_WorldTransform, speed, vec);
   }
 
   Node* &Node::getChild(const std::string &name)

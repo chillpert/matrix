@@ -8,7 +8,7 @@ void initialize()
   MX::World::get().push(debug_scene2);
   MX::World::get().push(debug_scene);
 
-  //MX::World::get().initialize();
+  MX::World::get().initialize();
 }
 
 void update()

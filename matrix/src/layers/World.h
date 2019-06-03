@@ -4,6 +4,16 @@
 #include "matrix/src/pch/stdafx.h"
 #include "matrix/src/layers/Scene.h"
 
+#include "matrix/src/platform/api/Shader.h"
+#include "matrix/src/platform/api/Model.h"
+#ifdef MX_OPENGL_ACTIVE
+  #include "matrix/src/platform/api/Model_OpenGL.h"
+  #include "matrix/src/platform/api/Shader_OpenGL.h"
+#elif MX_DIRECTX_ACTIVE
+  #include "matrix/src/platform/api/Model_DirectX.h"
+  #include "matrix/src/platform/api/Shader_DirectX.h"
+#endif
+
 namespace MX 
 {
   class World
@@ -25,6 +35,9 @@ namespace MX
   public:
     Scene *m_ActiveScene;
     std::vector<Scene*> m_ExistingScenes;
+
+    std::vector<MX_MODEL> m_Models;
+    std::vector<MX_SHADER> m_Shaders;
   };
 }
 
