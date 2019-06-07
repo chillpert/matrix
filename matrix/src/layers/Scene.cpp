@@ -24,14 +24,14 @@ namespace MX
   {
     bool objectExists = 0;
 
-    for (auto &it : World::get().m_Models)
+    for (auto *it : World::get().m_Models)
     {
-      if (it.getName() == file_name)
+      if (it->getName() == file_name)
       {
         MX_INFO_LOG("MX: Model Handler: Object already exists: Continue without parsing");
 
         objectExists = 1;
-        Node *temp_node = new Node(object_name, file_name);
+        Node *temp_node = new Node(object_name, it, World::get().m_Shaders.at(0));
         m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
         search_holder->addChild(temp_node);
 
@@ -49,17 +49,17 @@ namespace MX
     {
       MX_INFO_LOG("MX: Model Handler: Object does not exist: Continue with parsing");
 
-      MX_MODEL temp(file_name, 1);
-      World::get().m_Models.push_back(temp);
+      MX_MODEL *temp_model = new MX_MODEL(file_name, 1);
+      World::get().m_Models.push_back(temp_model);
 
-      Node *temp_node = new Node(object_name, file_name);
+      Node *temp_node = new Node(object_name, temp_model, World::get().m_Shaders.at(0));
       m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
       search_holder->addChild(temp_node);
       
       #ifdef MX_DEBUG
-        std::ostringstream address; 
+        std::ostringstream address;
         address << temp_node;
-        std::string address_s =  address.str(); 
+        std::string address_s =  address.str();
         MX_INFO_LOG("MX: Scene: " + m_Name + ": Push: " + object_name + ": Address: " + address_s);
       #endif
     }

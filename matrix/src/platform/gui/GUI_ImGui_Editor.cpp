@@ -77,10 +77,11 @@ namespace MX
 
       if (ImGui::BeginMenu("add##spawn object"))
       {
-        if (ImGui::MenuItem("object#spawn object from editor window"))
+        if (ImGui::MenuItem("object##spawn object from editor window"))
         {
           // todo
         }
+        ImGui::EndMenu();
       }
       ImGui::EndMenuBar();
     }
@@ -131,7 +132,14 @@ namespace MX
     if (ImGui::Button("load##select shader", ImVec2(60.0f, 20.0f)) && item_shaders_to_select != 0)
     {
       World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
-      search_holder->m_ShaderName = all_available_shaders.at(item_shaders_to_select);
+      //search_holder->m_ShaderName = all_available_shaders.at(item_shaders_to_select);
+
+      for (auto *it : World::get().m_Shaders)
+      {
+        if (it->getName() == all_available_shaders.at(item_shaders_to_select))
+          search_holder->m_Shader = it;
+      }
+
       item_shaders_to_select = 0;
     }
 

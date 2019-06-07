@@ -16,9 +16,9 @@ namespace MX
   class Node 
   {
   public:
-    Node(const std::string &node_name, const std::string &model_name = "", const std::string &shader_name = "trivial")
-      : m_Name(node_name), m_ShaderName(shader_name), m_ModelName(model_name) {}
-    ~Node() {}
+    Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader);
+    Node(const std::string &node_name);
+    ~Node();
     
     void addChild(Node* node); 
     Node* &getChild(const std::string &name);
@@ -44,8 +44,8 @@ namespace MX
 
   public:
     std::string m_Name;
-    std::string m_ModelName;
-    std::string m_ShaderName;
+    MX_MODEL *m_Model;
+    MX_SHADER *m_Shader;
   };
 }
 

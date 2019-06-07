@@ -117,22 +117,14 @@ namespace MX
   {  
     it.setWorldTransform(mat);
 
-    for (auto &model : World::get().m_Models)
+    if (it.m_Shader != nullptr)
     {
-      if (model.getName() == it.m_ModelName)
-      {
-        for (auto &shader : World::get().m_Shaders)
-        {
-          if (shader.getName() == it.m_ShaderName)
-          {
-            shader.update();
-            shader.setfMat4("model", it.getWorldTransform());
-          }
-        }
-
-        model.draw();
-      }
+      it.m_Shader->update();
+      it.m_Shader->setfMat4("model", it.getWorldTransform());
     }
+    
+    if (it.m_Model != nullptr)
+      it.m_Model->draw();
 
     if (!it.getChildren().empty())
     {

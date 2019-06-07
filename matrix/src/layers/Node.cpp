@@ -2,6 +2,21 @@
 
 namespace MX
 {
+  Node::Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader)
+    : m_Name(node_name), m_Shader(shader), m_Model(model) { }
+
+  Node::Node(const std::string &node_name)
+    : m_Name(node_name)
+  {
+    m_Shader = nullptr;
+    m_Model = nullptr;
+  }
+
+  Node::~Node()
+  {
+    m_Model = nullptr;
+  }
+
   void Node::addChild(Node* node)
   {
     node->setParent(this);
@@ -14,6 +29,7 @@ namespace MX
     m_Parent = node;
   }
 
+  // always catch this function
   Node* &Node::getChild(const std::string &name)
   {
     for (auto &it : m_Children)
@@ -22,7 +38,7 @@ namespace MX
         return it;
     }
 
-    std::cerr << name + " is not a child of " + m_Name << std::endl;
+    MX_FATAL("MX: Node: Get Child: " + name + " is not a child of " + m_Name);
     throw std::exception();
   }
 

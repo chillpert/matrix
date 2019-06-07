@@ -1,9 +1,6 @@
 #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
 #include "matrix/src/layers/World.h"
 
-#include <boost/filesystem.hpp>
-#include <boost/range/iterator_range.hpp>
-
 namespace MX
 {
   InputTypes currentInputType = mx_name;
@@ -46,81 +43,5 @@ namespace MX
     event_window_title = default_window_title;
     event_window_message = default_window_message;
     event_window_button = default_button_label;
-  }
-
-  void check_folder_for_objects()
-  {
-    boost::filesystem::path p(MX_MODEL_PATH);
-
-    std::vector<boost::filesystem::directory_entry> all_available_models_d;
-
-    if (boost::filesystem::is_directory(p))
-    {
-      std::copy(boost::filesystem::directory_iterator(p), boost::filesystem::directory_iterator(), std::back_inserter(all_available_models_d));
-
-      for (std::vector<boost::filesystem::directory_entry>::const_iterator it = all_available_models_d.begin(); it != all_available_models_d.end(); ++it)
-      {
-        std::string temp = (*it).path().string();
-        std::size_t found_slash = temp.find_last_of("/");
-        std::size_t found_point = temp.find_last_of(".");
-        temp = temp.substr(found_slash + 1, found_point - found_slash - 1);
-        
-        char *file_name = new char[temp.size()  + 1];
-        std::copy(temp.begin(), temp.end(), file_name);
-        file_name[temp.size()] = '\0';
-
-        all_available_models.push_back(file_name);
-      }
-    }
-
-    MX_INFO_LOG("MX: Model: " + std::to_string(all_available_models.size()) + " files found");
-  }
-
-  void check_folder_for_shaders()
-  {
-    boost::filesystem::path p(MX_SHADER_PATH);
-
-    std::vector<boost::filesystem::directory_entry> all_available_shaders_d;
-
-    if (boost::filesystem::is_directory(p))
-    {
-      std::copy(boost::filesystem::directory_iterator(p), boost::filesystem::directory_iterator(), std::back_inserter(all_available_shaders_d));
-
-      for (std::vector<boost::filesystem::directory_entry>::const_iterator it = all_available_shaders_d.begin(); it != all_available_shaders_d.end(); ++it)
-      {
-        std::string temp = (*it).path().string();
-        std::size_t found_slash = temp.find_last_of("/");
-        std::size_t found_point = temp.find_last_of(".");
-        temp = temp.substr(found_slash + 1, found_point - found_slash - 1);
-        
-        char *file_name = new char[temp.size()  + 1];
-        std::copy(temp.begin(), temp.end(), file_name);
-        file_name[temp.size()] = '\0';
-
-        bool shader_file_exists_already = 0;
-
-        for (const auto &it : World::get().m_Shaders)
-        {
-          if (it.getName() == file_name)
-            shader_file_exists_already = 1;
-        }
-
-        if (!shader_file_exists_already)
-        {
-          MX_SHADER temp(file_name);
-          World::get().m_Shaders.push_back(temp);         
-        }
-      }
-      
-      MX_INFO_LOG("MX: Shader: " + std::to_string(World::get().m_Shaders.size()) + " files found");
-
-      for (auto &it : World::get().m_Shaders)
-      {
-        all_available_shaders.push_back(it.getName().c_str());
-        it.initialize();
-      }
-
-      std::cout << all_available_shaders.size() << std::endl;
-    }    
   }
 }

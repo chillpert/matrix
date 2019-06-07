@@ -2,13 +2,13 @@
 
 void initialize()
 {
-  MX::Scene *debug_scene = new MX::Scene("The Void");
-  MX::Scene *debug_scene2 = new MX::Scene("Main Menu");
-
-  MX::World::get().push(debug_scene2);
-  MX::World::get().push(debug_scene);
+  MX::World::get().push(new MX::Scene("debug"));
 
   MX::World::get().initialize();
+
+#ifndef MX_IMGUI_ACTIVE
+  MX::World::get().m_ActiveScene->push("debug node", "sphere.obj", "root");
+#endif
 }
 
 void update()

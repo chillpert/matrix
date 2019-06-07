@@ -69,6 +69,7 @@ namespace MX
 
   void drawSceneGraph(Node &it)
   {
+  #ifdef MX_IMGUI_ACTIVE
     if (ImGui::TreeNode(it.m_Name.c_str()))
     {
 
@@ -80,5 +81,6 @@ namespace MX
           drawSceneGraph(*itChild);
       }
     }
+  #endif
   }
 }

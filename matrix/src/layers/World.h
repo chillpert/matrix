@@ -34,10 +34,10 @@ namespace MX
 
   public:
     Scene *m_ActiveScene;
+    
     std::vector<Scene*> m_ExistingScenes;
-
-    std::vector<MX_MODEL> m_Models;
-    std::vector<MX_SHADER> m_Shaders;
+    std::vector<MX_MODEL*> m_Models;
+    std::vector<MX_SHADER*> m_Shaders;
   };
 }
 

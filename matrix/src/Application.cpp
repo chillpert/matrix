@@ -5,7 +5,7 @@ namespace MX
 {
   Application::Application()
   {
-    MX_INFO("MX: Application: Created");
+    MX_INFO_LOG("MX: Application: Constructor");
   }
 
   Application::~Application()
@@ -29,14 +29,18 @@ namespace MX
   {
     // set up window 
     m_Running = m_Window->initialize();
+    MX_SUCCESS("MX: Application: Initialization: Window");
     
     // set up API
     m_Running = m_API->initialize();
+    MX_SUCCESS("MX: Application: Initialization: API");
     
     initialize_func();
+    MX_SUCCESS_LOG("MX: Application: Initialization: Func");
 
     // set up GUI
     m_GUI->initialize();
+    MX_SUCCESS("MX: Application: Initialization: GUI");
 
     if (m_Running)
       MX_SUCCESS("MX: Application: Initialization");

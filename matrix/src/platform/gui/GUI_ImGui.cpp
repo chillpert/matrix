@@ -74,9 +74,6 @@ namespace MX
 
     ImGui_ImplOpenGL3_Init(glsl_version.c_str());
 
-    check_folder_for_objects();
-    check_folder_for_shaders();
-
     // reserve memory for incoming mx-logger messages
     logger_messages_for_gui.reserve(5000);
   #endif
