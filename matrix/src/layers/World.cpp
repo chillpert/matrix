@@ -3,8 +3,15 @@
   #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
 #endif
 
-#include <boost/filesystem.hpp>
-#include <boost/range/iterator_range.hpp>
+#ifdef MX_PLATFORM_UNIX_X64
+  #include <boost/filesystem.hpp>
+  #include <boost/range/iterator_range.hpp>
+#elif MX_PLATFORM_WINDOWS_X64
+  // files are stored in externals for better portabilitys
+  #include <BOOST/filesystem.hpp>
+  #include <BOOST/range/iterator_range.hpp>
+#endif
+
 
 namespace MX
 {
@@ -61,8 +68,6 @@ namespace MX
     // initialize all shaders
     for (auto *it : m_Shaders)
       it->initialize();
-
-    
       
     /*
       you could also load all models first here    
@@ -194,6 +199,10 @@ namespace MX
       for (auto *it : World::get().m_Shaders)
         all_available_shaders.push_back(it->getName().c_str());
     #endif
-    }    
+    }
+    else
+    {
+      MX_FATAL("MX: Shader: Path is not set up correctly");
+    }
   }
 }

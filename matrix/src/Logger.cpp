@@ -28,10 +28,10 @@
   #define MX_PRINT_SUCCESS    std::string finalMessage;
   #define MX_PRINT_RESET
 
-  #define MX_LOG_FATAL   std::string finalMessage;
-  #define MX_LOG_WARN    std::string finalMessage;
-  #define MX_LOG_INFO    std::string finalMessage;
-  #define MX_LOG_SUCCESS std::string finalMessage;
+  #define MX_LOG_FATAL   finalMessage
+  #define MX_LOG_WARN    finalMessage
+  #define MX_LOG_INFO    finalMessage
+  #define MX_LOG_SUCCESS finalMessage
 #endif
 
 #define _CRT_SECURE_NO_WARNINGS
@@ -98,14 +98,17 @@ namespace MX
 
   std::string Logger::getTime()
   {
+  #ifdef MX_PLATFORM_UNIX_X64
+    current_time = std::chrono::_V2::high_resolution_clock::now();
+  #elif MX_PLATFORM_WINDOWS_X64
     current_time = std::chrono::high_resolution_clock::now();
-
+  #endif
     int64_t h = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time).count();
     int64_t m = std::chrono::duration_cast<std::chrono::minutes>(current_time - start_time).count() % 60;
     int64_t s = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count() % 60;
     
-    return std::to_string(h) + ":" + 
-           std::to_string(m) + ":" + 
+    return std::to_string(h) + ":" +
+           std::to_string(m) + ":" +
            std::to_string(s);
   }
 
