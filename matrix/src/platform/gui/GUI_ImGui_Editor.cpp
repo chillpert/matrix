@@ -132,15 +132,38 @@ namespace MX
     if (ImGui::Button("load##select shader", ImVec2(60.0f, 20.0f)) && item_shaders_to_select != 0)
     {
       World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
-      //search_holder->m_ShaderName = all_available_shaders.at(item_shaders_to_select);
 
       for (auto *it : World::get().m_Shaders)
       {
         if (it->getName() == all_available_shaders.at(item_shaders_to_select))
+        {
           search_holder->m_Shader = it;
+          search_holder = nullptr;
+        }
       }
 
       item_shaders_to_select = 0;
+    }
+
+    ImGui::Text("textures:");
+    ImGui::Combo("##all_textures_to_select", &item_texture_to_select, all_available_textures.data(), IM_ARRAYSIZE(all_available_textures.data()) * all_available_textures.size());
+    ImGui::SameLine();
+
+    // select texture
+    if (ImGui::Button("load##select texture", ImVec2(60.0f, 20.0f)) && item_texture_to_select != 0)
+    {
+      World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+  
+      for (auto *it : World::get().m_Textures)
+      {
+        if (it->getName() == all_available_textures.at(item_texture_to_select))
+        {
+          search_holder->m_Texture = it;
+          search_holder = nullptr;
+        }
+      }
+
+      item_texture_to_select = 0;
     }
 
     ImGui::NewLine();

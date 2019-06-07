@@ -3,9 +3,12 @@
 
 namespace MX
 {
-  Texture_OpenGL::Texture_OpenGL(const std::string &file_name)
+  Texture_OpenGL::Texture_OpenGL(const std::string &file_name, bool instant_init)
   {
     m_FileName = file_name;
+
+    if (instant_init)
+      initialize();
   }
 
   Texture_OpenGL::~Texture_OpenGL()

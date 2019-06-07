@@ -29,14 +29,17 @@ namespace MX
   bool p_open_logger = 1;
   bool p_open_event = 1;
 
-  std::vector<char*> all_available_models = {""};
-  std::vector<const char*> all_current_scenes;
+  std::vector<const char*> all_available_models = {""};
+  std::vector<const char*> all_available_textures = {""};
   std::vector<const char*> all_available_shaders = {""};
+  std::vector<const char*> all_current_scenes;
   std::vector<std::string> active_objects_s;
 
   int item_objects_to_spawn = 0;
+  
   int item_objects_to_select = 0;
   int item_shaders_to_select = 0;
+  int item_texture_to_select = 0;
 
   void reset_window_naming()
   {

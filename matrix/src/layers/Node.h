@@ -2,13 +2,18 @@
 #define NODE_HPP
 
 #include "matrix/src/pch/stdafx.h"
+
 #include "matrix/src/platform/api/Shader.h"
+#include "matrix/src/platform/api/Model.h"
+#include "matrix/src/platform/api/Texture.h"
 #ifdef MX_OPENGL_ACTIVE
   #include "matrix/src/platform/api/Model_OpenGL.h"
   #include "matrix/src/platform/api/Shader_OpenGL.h"
+  #include "matrix/src/platform/api/Texture_OpenGL.h"
 #elif MX_DIRECTX_ACTIVE
   #include "matrix/src/platform/api/Model_DirectX.h"
   #include "matrix/src/platform/api/Shader_DirectX.h"
+  #include "matrix/src/platform/api/Texture_DirectX.h"
 #endif
 
 namespace MX
@@ -16,11 +21,11 @@ namespace MX
   class Node 
   {
   public:
-    Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader);
+    Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader, MX_TEXTURE *texture);
     Node(const std::string &node_name);
     ~Node();
     
-    void addChild(Node* node); 
+    void addChild(Node* node);
     Node* &getChild(const std::string &name);
     std::list<Node*> &getChildren() { return m_Children; }
 
@@ -46,6 +51,7 @@ namespace MX
     std::string m_Name;
     MX_MODEL *m_Model;
     MX_SHADER *m_Shader;
+    MX_TEXTURE *m_Texture;
   };
 }
 

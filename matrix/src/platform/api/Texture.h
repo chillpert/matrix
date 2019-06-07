@@ -3,6 +3,13 @@
 
 #include "matrix/src/pch/stdafx.h"
 
+#ifdef MX_OPENGL_ACTIVE
+  #define MX_TEXTURE MX::Texture_OpenGL
+#elif
+  #define MX_TEXTURE MX::Texture_DirectX
+#endif
+
+
 namespace MX
 {
   struct STB_Texture
@@ -19,10 +26,13 @@ namespace MX
     MX_API ~Texture();
 
     MX_API virtual void initialize() = 0;
+
+    MX_API const std::string &getName() const { return m_FileName; }
   
   private:
 
   protected:
+    std::string m_FileName;
     STB_Texture stb;
   };
 }

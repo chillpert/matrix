@@ -123,7 +123,7 @@ namespace MX
     ImGui::DestroyContext();
 
     // delete allocated chars
-    for (std::vector<char*>::iterator iter = all_available_models.begin() + 1; iter != all_available_models.end(); ++iter)
+    for (std::vector<const char*>::iterator iter = all_available_models.begin() + 1; iter != all_available_models.end(); ++iter)
       delete *iter;
 
   #endif

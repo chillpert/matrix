@@ -29,21 +29,26 @@ namespace MX
   MX_API extern SelectionTypes currentSelectionType;
 
   // all object files in model directory
-  MX_API extern std::vector<char*> all_available_models;
+  MX_API extern std::vector<const char*> all_available_models;
+
+  // all texture files in texture directory
+  MX_API extern std::vector<const char*> all_available_textures;
+
+  // all shaders files in shader directory
+  MX_API extern std::vector<const char*> all_available_shaders;
 
   // all scenes available
   MX_API extern std::vector<const char*> all_current_scenes;
-
-  // all shaders files in directory
-  MX_API extern std::vector<const char*> all_available_shaders;
 
   // all already spawned objects
   MX_API extern std::vector<std::string> active_objects_s;
 
   // imgui combo flags
   MX_API extern int item_objects_to_spawn;
+
   MX_API extern int item_objects_to_select;
   MX_API extern int item_shaders_to_select;
+  MX_API extern int item_texture_to_select;
 
   // event window naming
   MX_API extern std::string event_window_title;

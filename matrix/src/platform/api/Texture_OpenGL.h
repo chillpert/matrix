@@ -8,7 +8,7 @@ namespace MX
   class Texture_OpenGL : public Texture
   {
     public:
-      MX_API Texture_OpenGL(const std::string &file_name);
+      MX_API Texture_OpenGL(const std::string &file_name, bool instant_init = 0);
       MX_API ~Texture_OpenGL();
 
       MX_API void create_texture();
@@ -19,7 +19,7 @@ namespace MX
 
     private:
       GLuint m_ID;
-      std::string m_FileName;
+      
   };
 }
 

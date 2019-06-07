@@ -2,14 +2,15 @@
 
 namespace MX
 {
-  Node::Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader)
-    : m_Name(node_name), m_Shader(shader), m_Model(model) { }
+  Node::Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader, MX_TEXTURE *texture)
+    : m_Name(node_name), m_Shader(shader), m_Model(model), m_Texture(texture) { }
 
   Node::Node(const std::string &node_name)
     : m_Name(node_name)
   {
     m_Shader = nullptr;
     m_Model = nullptr;
+    m_Texture = nullptr;
   }
 
   Node::~Node()
