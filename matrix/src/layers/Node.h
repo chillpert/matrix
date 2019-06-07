@@ -1,7 +1,7 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include "matrix/src/pch/stdafx.h"
+#include "matrix/src/layers/Transform.h"
 
 #include "matrix/src/platform/api/Shader.h"
 #include "matrix/src/platform/api/Model.h"
@@ -46,6 +46,8 @@ namespace MX
 
     Node *m_Parent;
     std::list<Node*> m_Children;
+
+    Transform trans;
 
   public:
     std::string m_Name;

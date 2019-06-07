@@ -8,6 +8,7 @@
 #include "matrix/src/layers/World.h"
 #include "matrix/src/layers/Node.h"
 #include "matrix/src/layers/Scene.h"
+#include "matrix/src/layers/SceneGraph.h"
 
 // debugging
 #ifdef MX_DEBUG

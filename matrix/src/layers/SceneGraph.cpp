@@ -5,7 +5,8 @@ namespace MX
 {
 /*
   if recursive search is called then this pointer will
-  point to the item that has been search the last time
+  point to the item that has been searched for the last
+  time
 */
   Node *search_holder = NULL;
 
@@ -16,7 +17,11 @@ namespace MX
 
   SceneGraph::~SceneGraph()
   {
+    std::list<Node*> temp;
+    std::copy(m_Root->getChildren().begin(), m_Root->getChildren().end(), std::back_inserter(temp));
 
+    for (Node *it : temp)
+      iterative_delete(it->m_Name);
   }
 
   void SceneGraph::update()
@@ -29,7 +34,7 @@ namespace MX
     recursive_render(*m_Root);
   }
 
-  // set the global search_holder pointer to a hit if possible
+  // result equals global pointer: search_holder
   void SceneGraph::recursive_search(const std::string &name, Node *it)
   {
     if (it->m_Name != name)
@@ -52,10 +57,12 @@ namespace MX
       for (Node *itChild : it->getChildren())
       {
         recursive_delete(itChild);
+        MX_INFO_LOG("MX: SceneGraph: Recursive Delete: Deleting: " + itChild->m_Name);
         delete itChild;
         itChild = nullptr;
       }
     }
+    // leaf
     else
     {
       Node *parent = it->getParent();
@@ -69,6 +76,7 @@ namespace MX
         }
       }
 
+      MX_INFO_LOG("MX: SceneGraph: Recursive Delete (leaf): Deleting: " + it->m_Name);
       delete it;
       it = nullptr;
     }
@@ -97,6 +105,8 @@ namespace MX
           break;
         }
       }
+
+      MX_INFO_LOG("MX: SceneGraph: Iterative Delete: Node: " + search_holder->m_Name);
       delete search_holder;
       search_holder = nullptr;
     }
@@ -122,6 +132,9 @@ namespace MX
       it.m_Shader->update();
       it.m_Shader->setfMat4("model", it.getWorldTransform());
     }
+
+    if (it.m_Texture != nullptr)
+      it.m_Texture->use();
     
     if (it.m_Model != nullptr)
       it.m_Model->draw();

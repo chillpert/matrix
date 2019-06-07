@@ -41,7 +41,11 @@ namespace MX
 
     MX_API void push(Scene *scene);
     MX_API void pop(const std::string &name);
-  
+
+    MX_API MX_MODEL *getModel(const std::string &name, bool instant_init = 0);
+    MX_API MX_SHADER *getShader(const std::string &name, bool instant_init = 0);
+    MX_API MX_TEXTURE *getTexture(const std::string &name, bool instant_init = 0);
+
   private:
     MX_API World() {}
 

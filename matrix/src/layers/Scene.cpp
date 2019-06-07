@@ -98,6 +98,9 @@ namespace MX
       World::get().m_Shaders.push_back(temp_shader);
     }
 */
+    // create node
+    temp_node = new Node(object_name, temp_model, World::get().m_Shaders.at(0), nullptr);
+    
   #ifdef MX_DEBUG
     // get memory address
     std::ostringstream address;
@@ -106,8 +109,6 @@ namespace MX
     MX_INFO_LOG("MX: Scene: " + m_Name + ": Push: " + object_name + ": Address: " + address_s);
   #endif
 
-    // create node
-    temp_node = new Node(object_name, temp_model, World::get().m_Shaders.at(0), nullptr);
     // find node to attach new node to
     m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
     // attach new nede
@@ -122,11 +123,11 @@ namespace MX
   #ifdef MX_DEBUG
     m_Sg.recursive_search(name, m_Sg.m_Root);
 
-    std::ostringstream address; 
+    std::ostringstream address;
     address << search_holder;
     std::string address_s =  address.str();
     MX_INFO_LOG("MX: Scene: " + m_Name + ": Pop: Trying to pop: " + search_holder->m_Name + ": Adress: " + address_s);
-  #endif              
+  #endif
     m_Sg.iterative_delete(name);
 
     MX_SUCCESS_LOG("MX: Scene: " + m_Name + ": Pop: " + name);

@@ -138,6 +138,7 @@ namespace MX
         if (it->getName() == all_available_shaders.at(item_shaders_to_select))
         {
           search_holder->m_Shader = it;
+          MX_INFO("MX: Node: " + search_holder->m_Name + ": Set Shader: " + it->getName());
           search_holder = nullptr;
         }
       }
@@ -156,9 +157,17 @@ namespace MX
   
       for (auto *it : World::get().m_Textures)
       {
-        if (it->getName() == all_available_textures.at(item_texture_to_select))
+        // remove file format ending
+        std::string temp = it->getName();
+        temp = temp.substr(0, temp.find_last_of("."));
+
+        if (temp == all_available_textures.at(item_texture_to_select))
         {
+        #ifdef MX_INSTANT_SHADER_INIT
+          it->initialize();
+        #endif
           search_holder->m_Texture = it;
+          MX_INFO("MX: Node: " + search_holder->m_Name + ": Set texture: " + it->getName());
           search_holder = nullptr;
         }
       }

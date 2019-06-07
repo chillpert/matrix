@@ -57,6 +57,51 @@ namespace MX
     m_Shaders.clear();
   }
 
+  MX_MODEL *World::getModel(const std::string &name, bool instant_init)
+  {
+    for (auto *it : m_Models)
+    {
+      if (it->getName() == name)
+      {
+        if (instant_init)
+          it->initialize();
+        return it;
+      }
+    }
+
+    throw std::exception();
+  }
+
+  MX_SHADER *World::getShader(const std::string &name, bool instant_init)
+  {
+    for (auto *it : m_Shaders)
+    {
+      if (it->getName() == name)
+      {
+        if (instant_init)
+          it->initialize();
+        return it;
+      }
+    }
+
+    throw std::exception();
+  }
+
+  MX_TEXTURE *World::getTexture(const std::string &name, bool instant_init)
+  {
+    for (auto *it : m_Textures)
+    {
+      if (it->getName() == name)
+      {
+        if (instant_init)
+          it->initialize();
+        return it;
+      }
+    }
+
+    throw std::exception();
+  }
+
   void World::initialize()
   {
     // push trivial shader first so that it is the default one
