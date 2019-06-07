@@ -124,7 +124,11 @@ namespace MX
       for (std::vector<boost::filesystem::directory_entry>::const_iterator it = all_available_models_d.begin(); it != all_available_models_d.end(); ++it)
       {
         std::string temp = (*it).path().string();
+      #ifdef MX_PLATFORM_WINDOWS_X64
+        std::size_t found_slash = temp.find_last_of("\\");
+      #elif MX_PLATFORM_UNIX_X64
         std::size_t found_slash = temp.find_last_of("/");
+      #endif
         std::size_t found_point = temp.find_last_of(".");
         temp = temp.substr(found_slash + 1, found_point - found_slash - 1);
         
@@ -157,7 +161,11 @@ namespace MX
       for (std::vector<boost::filesystem::directory_entry>::const_iterator it = all_available_shaders_d.begin(); it != all_available_shaders_d.end(); ++it)
       {
         std::string temp = (*it).path().string();
+      #ifdef MX_PLATFORM_WINDOWS_X64
+        std::size_t found_slash = temp.find_last_of("\\");
+      #elif MX_PLATFORM_UNIX_X64
         std::size_t found_slash = temp.find_last_of("/");
+      #endif
         std::size_t found_point = temp.find_last_of(".");
         temp = temp.substr(found_slash + 1, found_point - found_slash - 1);
         

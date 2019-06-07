@@ -6,7 +6,7 @@
 
 namespace MX
 {
-	std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::nanoseconds> current_time;
+	std::chrono::time_point<std::chrono::steady_clock> current_time;
 
   std::string parseFile(const std::string& path)
   {
@@ -23,7 +23,7 @@ namespace MX
 
 	std::string tokenizeLine(const std::string &delimiter)
 	{
-		
+		return "";
 	}
 }
 

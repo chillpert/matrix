@@ -24,7 +24,7 @@ namespace MX
 
   const std::string glsl_version = "#version 330";
 
-  extern std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::nanoseconds> current_time;
+  extern std::chrono::time_point<std::chrono::steady_clock> current_time;
 }
 
 #endif // UTILS_H

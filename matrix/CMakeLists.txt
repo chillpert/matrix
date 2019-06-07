@@ -5,12 +5,21 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
 
-find_package(Boost REQUIRED COMPONENTS filesystem) 
+IF (WIN32)
+  IF (CMAKE_CL_64)
+    set(BOOST_LIB ${Boost_LIBRARIES}
+      "libboost_filesystem-vc141-mt-gd-x64-1_70"
+    )
+  ENDIF ()
+ELSEIF (UNIX)
+  find_package(Boost REQUIRED COMPONENTS filesystem) 
 
-IF (Boost_FOUND)
-  include_directories(${Boost_INCLUDE_DIRS}) 
+  IF (Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS}) 
+  ENDIF ()
 ENDIF ()
 
+# include and link directories
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(external/include)
 link_directories(external/libs)
