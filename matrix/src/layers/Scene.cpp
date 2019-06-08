@@ -108,11 +108,19 @@ namespace MX
     std::string address_s =  address.str(); 
     MX_INFO_LOG("MX: Scene: " + m_Name + ": Push: " + object_name + ": Address: " + address_s);
   #endif
-
-    // find node to attach new node to
-    m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
+    
+    try
+    {
+      // find node to attach new node to
+      m_Sg.recursive_search(node_to_attach_to, m_Sg.m_Root);
+    }
+    catch (const std::exception &e)
+    {
+      return;
+    }
     // attach new nede
     search_holder->addChild(temp_node);
+    search_holder = nullptr;
 
     MX_SUCCESS_LOG("MX: Scene: Push: " + object_name);
   }
@@ -121,12 +129,20 @@ namespace MX
   void Scene::pop(const std::string &name)
   {
   #ifdef MX_DEBUG
-    m_Sg.recursive_search(name, m_Sg.m_Root);
-
-    std::ostringstream address;
-    address << search_holder;
-    std::string address_s =  address.str();
-    MX_INFO_LOG("MX: Scene: " + m_Name + ": Pop: Trying to pop: " + search_holder->m_Name + ": Adress: " + address_s);
+    try 
+    {
+      m_Sg.recursive_search(name, m_Sg.m_Root);
+      std::ostringstream address;
+      address << search_holder;
+      std::string address_s =  address.str();
+      MX_INFO_LOG("MX: Scene: " + m_Name + ": Pop: Trying to pop: " + search_holder->m_Name + ": Adress: " + address_s);
+      search_holder = nullptr;
+    }
+    catch (const std::exception &e)
+    {
+      return;
+    }
+    
   #endif
     m_Sg.iterative_delete(name);
 

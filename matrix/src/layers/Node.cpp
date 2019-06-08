@@ -52,4 +52,24 @@ namespace MX
   {
     m_Trans.m_World = mat * m_Trans.update();
   }
+
+  void Node::setTransform(const Trans &t, float factor, bool isAnimated)
+  {
+    m_Trans.push(t, factor, isAnimated);
+  }
+
+  void Node::setModel(MX_MODEL *model)
+  {
+    m_Model = model;
+  }
+
+  void Node::setShader(MX_SHADER *shader)
+  {
+    m_Shader = shader;
+  }
+
+  void Node::setTexture(MX_TEXTURE *texture)
+  {
+    m_Texture = texture;
+  }
 }

@@ -1,7 +1,6 @@
 #ifndef SCENEGRAPH_HPP
 #define SCENEGRAPH_HPP
 
-#include "matrix/src/platform/api/Model.h"
 #include "matrix/src/layers/Node.h"
 
 namespace MX
@@ -17,6 +16,7 @@ namespace MX
     MX_API void render();
     
     MX_API void recursive_search(const std::string &name, Node *it);
+    MX_API Node *search(const std::string &name, Node *it);
     MX_API void recursive_delete(Node *it);
     MX_API void iterative_delete(const std::string &name);
     MX_API void getAllObjects(std::vector<std::string> *vec, Node *it);

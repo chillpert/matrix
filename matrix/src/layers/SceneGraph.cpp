@@ -34,9 +34,20 @@ namespace MX
     recursive_render(*m_Root);
   }
 
+  static std::string first_node;
+  static bool first_iteration = 1;
+  static bool found_node = 0;
+
   // result equals global pointer: search_holder
   void SceneGraph::recursive_search(const std::string &name, Node *it)
   {
+    if (first_iteration)
+    {
+      first_node = it->m_Name;
+      found_node = 0;
+      first_iteration = 0;
+    }
+
     if (it->m_Name != name)
     {
       if (!it->getChildren().empty())
@@ -46,7 +57,63 @@ namespace MX
       }
     }
     else
+    {
       search_holder = it;
+      found_node = 1;
+    }
+    
+    if (first_node == it->m_Name && !found_node)
+    {
+      MX_FATAL("MX: SceneGraph: Recursive Search: " + first_node);
+      first_iteration = 1;
+      found_node = 0;
+      throw new std::exception();
+    }
+    else if (first_node == it->m_Name && found_node)
+    {
+      first_iteration = 1;
+      found_node = 0;
+    }
+  }
+
+  Node *hidden_search_holder = nullptr;
+
+  Node *SceneGraph::search(const std::string &name, Node *it)
+  {
+    if (first_iteration)
+    {
+      first_node = it->m_Name;
+      found_node = 0;
+      first_iteration = 0;
+    }
+
+    if (it->m_Name != name)
+    {
+      if (!it->getChildren().empty())
+      {
+        for (Node *itChild : it->getChildren())
+          search(name, itChild);
+      }
+    }
+    else
+    {
+      hidden_search_holder = it;
+      found_node = 1;
+    }
+    
+    if (first_node == it->m_Name && !found_node)
+    {
+      MX_FATAL("MX: SceneGraph: Recursive Search: " + first_node);
+      first_iteration = 1;
+      found_node = 0;
+      throw new std::exception();
+    }
+    else if (first_node == it->m_Name && found_node)
+    {
+      first_iteration = 1;
+      found_node = 0;
+      return hidden_search_holder;
+    }
   }
 
   // deletes all children recursively from a given node
@@ -85,7 +152,15 @@ namespace MX
   void SceneGraph::iterative_delete(const std::string &name)
   {
     std::vector<std::string> all_kids;
-    recursive_search(name, m_Root);
+
+    try
+    {
+      recursive_search(name, m_Root);
+    }
+    catch (const std::exception &e)
+    {
+      return;
+    }
     
     getAllObjects(&all_kids, search_holder);
     
