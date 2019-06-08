@@ -98,4 +98,9 @@ namespace MX
   {
     m_Transforms.push_back(Transform_Props{t, factor, 0});
   }
+
+  void Transform::push(Trans t, float factor, bool isAnimated)
+  {
+    m_Container.push_back(Transform_Props{t, factor, isAnimated});
+  }
 }
