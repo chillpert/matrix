@@ -1,6 +1,16 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#define MX_WORLD MX::World::get()
+#define MX_SCENEGRAPH MX::World::get().m_ActiveScene->m_Sg
+#define MX_CAMERA MX::World::get().m_ActiveScene->m_Cam
+#define MX_SCENE MX::World::get().m_ActiveScene
+#define MX_ROOT MX::World::get().m_ActiveScene->m_Sg.m_Root
+
+#define MX_GET_SHADER(name) MX::World::get().getShader(name)
+#define MX_GET_MODEL(name, num) MX::World::get().getModel(name, num)
+#define MX_GET_TEXTURE(name, num) MX::World::get().getTexture(name, num)
+
 /*
 disabled for faster start up
 

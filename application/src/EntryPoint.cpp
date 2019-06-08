@@ -10,27 +10,27 @@ void initialize()
   MX::World::get().m_ActiveScene->push("debug node", "sphere.obj", "root");
 #endif
 
-// default setup
-  MX::World::get().m_ActiveScene->push("Jupiter", "sphere.obj", "root");
-  MX::World::get().m_ActiveScene->push("Saturn", "sphere.obj", "Jupiter");
-  MX::World::get().m_ActiveScene->push("Rock", "rock.obj", "root");
+  // default setup
+  MX_SCENE->push("Jupiter", "sphere.obj", "root");
+  MX_SCENE->push("Saturn", "sphere.obj", "Jupiter");
+  MX_SCENE->push("Rock", "rock.obj", "root");
 
-  MX::World::get().m_ActiveScene->m_Sg.recursive_search("Jupiter", MX::World::get().m_ActiveScene->m_Sg.m_Root);
-  MX::search_holder->m_Trans.push(MX::Y, 0.1f, 1);
-  MX::search_holder->m_Shader = MX::World::get().getShader("texture");
-  MX::search_holder->m_Texture = MX::World::get().getTexture("2k_jupiter.jpg", 1);
+  MX::Node *jupiter = MX_SCENEGRAPH.search("Jupiter", MX_ROOT);
+  jupiter->setTransform(MX::Y, 0.1f, 1);
+  jupiter->setShader(MX_GET_SHADER("texture"));
+  jupiter->setTexture(MX_GET_TEXTURE("2k_jupiter.jpg", 1));
 
-  MX::World::get().m_ActiveScene->m_Sg.recursive_search("Saturn", MX::World::get().m_ActiveScene->m_Sg.m_Root);
-  MX::search_holder->setLocalTransform(glm::scale(glm::fmat4(1.0f), glm::vec3(0.5, 0.5, 0.5)));
-  MX::search_holder->setLocalTransform(glm::translate(glm::fmat4(1.0f), glm::vec3(3.0, 0.0, 0.0)));
-  MX::search_holder->m_Shader = MX::World::get().getShader("texture");
-  MX::search_holder->m_Texture = MX::World::get().getTexture("2k_saturn.jpg", 1);
+  MX::Node *saturn = MX_SCENEGRAPH.search("Saturn", MX_ROOT);
+  saturn->setTransform(MX::SCALE, 0.4f, 0);
+  saturn->setTransform(MX::RIGHT, 5.0f, 0);
+  saturn->setShader(MX_GET_SHADER("texture"));
+  saturn->setTexture(MX_GET_TEXTURE("2k_saturn.jpg", 1));
 
-  MX::World::get().m_ActiveScene->m_Sg.recursive_search("Rock", MX::World::get().m_ActiveScene->m_Sg.m_Root);
-  MX::search_holder->m_Trans.push(MX::FORWARDS, 5.0f, 0);
-  MX::search_holder->m_Trans.push(MX::LEFT, 3.0f, 0);
-  MX::search_holder->m_Shader = MX::World::get().getShader("texture");
-  MX::search_holder->m_Texture = MX::World::get().getTexture("rock.jpg", 1);
+  MX::Node *rock = MX_SCENEGRAPH.search("Rock", MX_ROOT);
+  rock->setTransform(MX::FORWARDS, 5.0f, 0);
+  rock->setTransform(MX::LEFT, 3.0f, 0);
+  rock->setShader(MX_GET_SHADER("texture"));
+  rock->setTexture(MX_GET_TEXTURE("rock.jpg", 1));
 }
 
 void update()
