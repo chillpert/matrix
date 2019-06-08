@@ -106,10 +106,27 @@ namespace MX
     int64_t h = std::chrono::duration_cast<std::chrono::hours>(current_time - start_time).count();
     int64_t m = std::chrono::duration_cast<std::chrono::minutes>(current_time - start_time).count() % 60;
     int64_t s = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count() % 60;
+
+    std::string sec;
+    std::string min;
+    std::string hour;
+
+    if (s < 10)
+      sec = "0" + std::to_string(s);
+    else
+      sec = std::to_string(s);
+
+    if (m < 10)
+      min = "0" + std::to_string(m);
+    else
+      min = std::to_string(m);
+
+    if (h < 10)
+      hour = "0" + std::to_string(h); 
+    else
+      hour = std::to_string(h);
     
-    return std::to_string(h) + ":" +
-           std::to_string(m) + ":" +
-           std::to_string(s);
+    return hour + ":" + min + ":" + sec;
   }
 
   void Logger::p_Fatal(const std::string &message)

@@ -48,6 +48,7 @@
 #include <iterator>
 #include <regex>
 #include <utility>
+#include <exception>
 
 // project files
 #include "matrix/src/Utils.h"

@@ -66,6 +66,9 @@ namespace MX
 
   void Shader_OpenGL::update()
   {
+    /*
+      this function is actually supposed to find the correct shader profile and set the uniforms automatically
+     */
     use();
     setfMat4("view", World::get().m_ActiveScene->m_Cam.getViewMatrix());
     setfMat4("projection", World::get().m_ActiveScene->m_Cam.getProjectionMatrix());
