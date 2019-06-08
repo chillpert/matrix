@@ -11,12 +11,9 @@
 #define MX_GET_MODEL(name, num) MX::World::get().getModel(name, num)
 #define MX_GET_TEXTURE(name, num) MX::World::get().getTexture(name, num)
 
-/*
-disabled for faster start up
-
-  #define MX_INSTANT_TEXTURE_INIT
-  #define MX_INSTANT_MODEL_INIT
-*/
+// disabled for faster start up
+//#define MX_INSTANT_TEXTURE_INIT
+//#define MX_INSTANT_MODEL_INIT
 
 #define MX_INSTANT_SHADER_INIT
 #define MX_INSTANT_SCENE_INIT

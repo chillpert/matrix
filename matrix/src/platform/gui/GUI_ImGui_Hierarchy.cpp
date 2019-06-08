@@ -96,34 +96,27 @@ namespace MX
 
   static void draw_outline_menu()
   {
-  #ifdef MX_IMGUI_ACTIVE    
+  #ifdef MX_IMGUI_ACTIVE 
     for (auto it : all_active_objects)
     {
-      if (ImGui::TreeNode(it))
+      const std::string node_name = std::string(it);
+
+      if (node_name != "root")
       {
-        static bool node_exists = 1;
-
-        try
+        if (ImGui::TreeNode((node_name + "##outline tree").c_str()))
         {
-          MX::World::get().m_ActiveScene->m_Sg.recursive_search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
-          //Node *temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
-          //MX_FATAL("YEET: " + temp->m_Name);
-        }
-        catch (const std::exception &e)
-        {
-          node_exists = 0;
-        }
+          try
+          {
+            Node *temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
+            ImGui::Text(("Shader: " + temp->m_Shader->getName()).c_str());
+            ImGui::Text(("Texture: " + temp->m_Texture->getName()).c_str());
+            ImGui::Text(("Model: " + temp->m_Model->getName()).c_str());
+          }
+          catch (const std::exception &e) { }
 
-        if (node_exists)
-        {
-          MX_FATAL(search_holder->m_Name);
-          std::string shader_props = "Shader: " + search_holder->m_Shader->getName();
-          ImGui::Text(shader_props.c_str());
+          ImGui::TreePop();
         }
-
-        ImGui::TreePop();
       }
-
     }
   #endif
   }
