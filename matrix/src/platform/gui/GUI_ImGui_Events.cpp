@@ -15,11 +15,11 @@ namespace MX
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
 
-  static ImGuiWindowFlags window_flags = 0;
-
   void GUI_ImGui::renderEventWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
+    static ImGuiWindowFlags window_flags = 0;      
+  
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -56,6 +56,8 @@ namespace MX
   void GUI_ImGui::renderInputWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
+    static ImGuiWindowFlags window_flags = 0;
+
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -192,7 +194,7 @@ namespace MX
 
     ImGui::SetWindowPos(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 2.0f - middle_offset_x / 2.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f - middle_offset_y / 2.0f));
     ImGui::SetWindowSize(ImVec2(middle_offset_x, middle_offset_y));
-
+    
     ImGui::End();
   #endif
   }
@@ -200,6 +202,18 @@ namespace MX
   void GUI_ImGui::renderSelectionWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
+    static ImGuiWindowFlags window_flags = 0;
+
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
     ImGui::Begin(event_window_title.c_str(), &p_open_event, window_flags);
 
     if (!p_open_event)

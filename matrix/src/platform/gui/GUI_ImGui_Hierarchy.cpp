@@ -4,25 +4,27 @@
 
 namespace MX
 {
-  static bool no_titlebar = 0;
-  static bool no_scrollbar = 0;
-  static bool no_menu = 0;
-  static bool no_move = 1;
-  static bool no_resize = 1;
-  static bool no_collapse = 1;
-  static bool no_close = 0;
-  static bool no_nav = 0;
-  static bool no_background = 0;
-  static bool no_bring_to_front = 0;
-
   static bool draw_scene_graph = 1;
 
-  void drawSceneGraph(Node &it);
+  static void draw_scene_graph_menu(Node &it);
+  static void draw_outline_menu();
 
   void GUI_ImGui::renderHierarchyWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 0;
+    static bool no_move = 1;
+    static bool no_resize = 1;
+    static bool no_collapse = 1;
+    static bool no_close = 0;
+    static bool no_nav = 0;
+    static bool no_background = 0;
+    static bool no_bring_to_front = 0;
+
     static ImGuiWindowFlags window_flags = 0;
+
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -50,7 +52,9 @@ namespace MX
     }
 
     if (draw_scene_graph)
-      drawSceneGraph(*World::get().m_ActiveScene->m_Sg.m_Root);  
+      draw_scene_graph_menu(*World::get().m_ActiveScene->m_Sg.m_Root);
+    else  
+      draw_outline_menu();
 
     if (editor_window_enabled)
     {
@@ -67,19 +71,59 @@ namespace MX
   #endif
   }
 
-  void drawSceneGraph(Node &it)
+  static void draw_scene_graph_menu(Node &it)
   {
   #ifdef MX_IMGUI_ACTIVE
+    if (it.m_Name != "root")
+      ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+    
     if (ImGui::TreeNode(it.m_Name.c_str()))
     {
-
       ImGui::TreePop();
-    
+      
+
       if (!it.getChildren().empty())
       {
         for (Node *itChild : it.getChildren())
-          drawSceneGraph(*itChild);
+          draw_scene_graph_menu(*itChild);
       }
+    }
+
+    if (it.m_Name != "root")
+      ImGui::Unindent();
+  #endif
+  }
+
+  static void draw_outline_menu()
+  {
+  #ifdef MX_IMGUI_ACTIVE    
+    for (auto it : all_active_objects)
+    {
+      if (ImGui::TreeNode(it))
+      {
+        static bool node_exists = 1;
+
+        try
+        {
+          MX::World::get().m_ActiveScene->m_Sg.recursive_search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
+          //Node *temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
+          //MX_FATAL("YEET: " + temp->m_Name);
+        }
+        catch (const std::exception &e)
+        {
+          node_exists = 0;
+        }
+
+        if (node_exists)
+        {
+          MX_FATAL(search_holder->m_Name);
+          std::string shader_props = "Shader: " + search_holder->m_Shader->getName();
+          ImGui::Text(shader_props.c_str());
+        }
+
+        ImGui::TreePop();
+      }
+
     }
   #endif
   }

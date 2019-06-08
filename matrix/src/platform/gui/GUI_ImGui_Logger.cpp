@@ -4,17 +4,6 @@
 
 namespace MX
 {
-  static bool no_titlebar = 0;
-  static bool no_scrollbar = 0;
-  static bool no_menu = 0;
-  static bool no_move = 1;
-  static bool no_resize = 1;
-  static bool no_collapse = 1;
-  static bool no_close = 0;
-  static bool no_nav = 0;
-  static bool no_background = 0;
-  static bool no_bring_to_front = 0;
-
   // will display all messages by default
   static logger_message_type message_type = mx_all;
 
@@ -24,7 +13,10 @@ namespace MX
   static bool fatal_flag = 1;
   static bool success_flag = 1;
 
-  void toggle_flags()
+  static bool scroll_to_bottom_flag = 1;
+  static bool scroll_to_top_flag = 0;
+
+  static void toggle_flags()
   {
     switch (message_type)
     {
@@ -79,7 +71,19 @@ namespace MX
   void GUI_ImGui::renderLoggerWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 0;
+    static bool no_move = 1;
+    static bool no_resize = 1;
+    static bool no_collapse = 1;
+    static bool no_close = 0;
+    static bool no_nav = 0;
+    static bool no_background = 0;
+    static bool no_bring_to_front = 0;
+
     static ImGuiWindowFlags window_flags = 0;
+
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -95,21 +99,48 @@ namespace MX
     if (ImGui::BeginMenuBar())
     {
       if (ImGui::MenuItem("All", "", true, all_flag))
+      {
+        scroll_to_bottom_flag = 1;
         message_type = mx_all;
+      }
 
       if (ImGui::MenuItem("Info", "", true, info_flag))
+      {
+        scroll_to_bottom_flag = 1;
         message_type = mx_info;
+      }  
 
       if (ImGui::MenuItem("Warn", "", true, warn_flag))
+      {
+        scroll_to_bottom_flag = 1;
         message_type = mx_warn;
+      }
 
       if (ImGui::MenuItem("Fatal", "", true, fatal_flag))
+      {
+        scroll_to_bottom_flag = 1;
         message_type = mx_fatal;
+      } 
 
       if (ImGui::MenuItem("Success", "", true, success_flag))
+      {
+        scroll_to_bottom_flag = 1;
         message_type = mx_success;
+      }
 
       if (ImGui::MenuItem(Logger::getTime().c_str(), "", false, false)) {};
+
+      if (ImGui::MenuItem("Up"))
+      {
+        scroll_to_bottom_flag = 0;
+        scroll_to_top_flag = 1;
+      }
+
+      if (ImGui::MenuItem("Down"))
+      {
+        scroll_to_bottom_flag = 1;
+        scroll_to_top_flag = 0;
+      }  
 
       ImGui::EndMenuBar();
     }
@@ -168,6 +199,18 @@ namespace MX
         }
         break;
       }
+    }
+
+    if (scroll_to_top_flag)
+    {
+      ImGui::SetScrollY(0.0f);
+      scroll_to_top_flag = 0;
+    }
+
+    if (scroll_to_bottom_flag)
+    {
+      ImGui::SetScrollHereY(1.0f);
+      scroll_to_bottom_flag = 0;
     }
 
     if (!p_open_logger)

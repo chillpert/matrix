@@ -40,6 +40,9 @@ namespace MX
   // all scenes available
   MX_API extern std::vector<const char*> all_current_scenes;
 
+  // all objects in scene
+  MX_API extern std::vector<const char*> all_active_objects;
+
   // all already spawned objects
   MX_API extern std::vector<std::string> active_objects_s;
 
@@ -76,13 +79,13 @@ namespace MX
   // resets title, message and buttons of all windows
   MX_API void reset_window_naming();
 
-  // checks for all available object files
-  MX_API void check_folder_for_objects();
-  MX_API void check_folder_for_shaders();
-
   // for centering event windows in the middle of the screen
   const float middle_offset_x = 250.0f;
   const float middle_offset_y = 100.0f;
+
+  MX_API extern bool show_transform_menu;
+  MX_API extern bool show_scenes_menu;
+  MX_API extern bool show_assets_menu;
 }
 
 #endif // GUI_IMGUI_FLAGS_H

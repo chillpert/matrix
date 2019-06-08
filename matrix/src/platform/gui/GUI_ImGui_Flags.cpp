@@ -33,6 +33,7 @@ namespace MX
   std::vector<const char*> all_available_textures = {""};
   std::vector<const char*> all_available_shaders = {""};
   std::vector<const char*> all_current_scenes;
+  std::vector<const char*> all_active_objects;
   std::vector<std::string> active_objects_s;
 
   int item_objects_to_spawn = 0;
@@ -40,6 +41,10 @@ namespace MX
   int item_objects_to_select = 0;
   int item_shaders_to_select = 0;
   int item_texture_to_select = 0;
+
+  bool show_transform_menu = 0;
+  bool show_scenes_menu = 1;
+  bool show_assets_menu = 0;
 
   void reset_window_naming()
   {

@@ -6,25 +6,41 @@
 
 namespace MX
 {
+  static const float grab_speed = 0.001f;
+  static const float transform_factor = 100.0f;
+
+  static float x_drag = 0;
+  static float y_drag = 0;
+  static float z_drag = 0;
+
+  static float prev_x_drag = 0;
+  static float prev_y_drag = 0;
+  static float prev_z_drag = 0;
+
   static float xSlider = 0.0f;
   static float ySlider = 0.0f;
   static float zSlider = 0.0f;
 
-  static bool no_titlebar = 0;
-  static bool no_scrollbar = 0;
-  static bool no_menu = 0;
-  static bool no_move = 1;
-  static bool no_resize = 1;
-  static bool no_collapse = 1;
-  static bool no_close = 0;
-  static bool no_nav = 0;
-  static bool no_background = 0;
-  static bool no_bring_to_front = 0;
+  static void render_scenes_menu();
+  static void render_assets_menu();
+  static void render_transform_menu();
 
   void GUI_ImGui::renderEditorWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 0;
+    static bool no_move = 1;
+    static bool no_resize = 1;
+    static bool no_collapse = 1;
+    static bool no_close = 0;
+    static bool no_nav = 0;
+    static bool no_background = 0;
+    static bool no_bring_to_front = 0;
+
     static ImGuiWindowFlags window_flags = 0;
+
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
@@ -52,43 +68,55 @@ namespace MX
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
     
-    
     if (ImGui::BeginMenuBar())
     {
-      if (ImGui::BeginMenu("scenes##manage scenes"))
+      if (ImGui::MenuItem("Scenes##manage scenes", "", true, !show_scenes_menu))
       {
-        if (ImGui::MenuItem("new##create new scene"))
-        {
-          event_window_title = "Info";
-          event_window_message = "Give the scene a new name";
-          input_window_enabled = 1;
-          currentSelectionType = mx_scene;
-          currentInputType = mx_name;
-        }
-        if (ImGui::MenuItem("load##load existing scene"))
-        {
-          event_window_title = "Info";
-          event_window_message = "Select a scene to load";
-          event_window_button = "Load";
-          selection_window_enabled = 1;
-        }
-        ImGui::EndMenu();
+        show_scenes_menu = 1;
+        show_assets_menu = 0;
+        show_transform_menu = 0;
       }
 
-      if (ImGui::BeginMenu("add##spawn object"))
+      if (ImGui::MenuItem("Assets##spawn object", "", true, !show_assets_menu))
       {
-        if (ImGui::MenuItem("object##spawn object from editor window"))
-        {
-          // todo
-        }
-        ImGui::EndMenu();
+        show_scenes_menu = 0;
+        show_assets_menu = 1;
+        show_transform_menu = 0;
       }
+
+      if (ImGui::MenuItem("Transform##apply transforms", "", true, !show_transform_menu))
+      {
+        show_scenes_menu = 0;
+        show_assets_menu = 0;
+        show_transform_menu = 1;
+      }
+
       ImGui::EndMenuBar();
     }
 
     // display all active objects
     World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
+    all_active_objects.resize(active_objects_s.size());
+
+    for (unsigned int i = 0; i < active_objects_s.size(); ++i)
+      all_active_objects[i] = active_objects_s[i].c_str();
     
+    if (show_assets_menu && !show_scenes_menu && !show_transform_menu)
+      render_assets_menu();
+    else if (!show_assets_menu && show_scenes_menu && !show_transform_menu)
+      render_scenes_menu();
+    else if (!show_assets_menu && !show_scenes_menu && show_transform_menu)
+      render_transform_menu();
+
+    active_objects_s.clear();
+
+    ImGui::End();
+  #endif
+  }
+
+  static void render_assets_menu()
+  {
+  #ifdef MX_IMGUI_ACTIVE    
     ImGui::Text("models:");
     ImGui::Combo("##all_objects_to_spawn", &item_objects_to_spawn, all_available_models.data(), IM_ARRAYSIZE(all_available_models.data()) * all_available_models.size());
     
@@ -103,12 +131,6 @@ namespace MX
       currentSelectionType = mx_object;
       currentInputType = mx_name;
     }
-
-    std::vector<const char*> all_active_objects;
-    all_active_objects.resize(active_objects_s.size());
-
-    for (unsigned int i = 0; i < active_objects_s.size(); ++i)
-      all_active_objects[i] = active_objects_s[i].c_str();
 
     ImGui::Separator();
 
@@ -131,17 +153,22 @@ namespace MX
     // select shader
     if (ImGui::Button("load##select shader", ImVec2(60.0f, 20.0f)) && item_shaders_to_select != 0)
     {
-      World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
-
-      for (auto *it : World::get().m_Shaders)
+      try
       {
-        if (it->getName() == all_available_shaders.at(item_shaders_to_select))
+        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+      
+        for (auto *it : World::get().m_Shaders)
         {
-          search_holder->m_Shader = it;
-          MX_INFO("MX: Node: " + search_holder->m_Name + ": Set Shader: " + it->getName());
-          search_holder = nullptr;
+          if (it->getName() == all_available_shaders.at(item_shaders_to_select))
+          {
+            search_holder->m_Shader = it;
+            MX_INFO("MX: Node: " + search_holder->m_Name + ": Set Shader: " + it->getName());
+            search_holder = nullptr;
+          }
         }
       }
+
+      catch (const std::exception &e) { }
 
       item_shaders_to_select = 0;
     }
@@ -153,29 +180,93 @@ namespace MX
     // select texture
     if (ImGui::Button("load##select texture", ImVec2(60.0f, 20.0f)) && item_texture_to_select != 0)
     {
-      World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
-  
-      for (auto *it : World::get().m_Textures)
+      try
       {
-        // remove file format ending
-        std::string temp = it->getName();
-        temp = temp.substr(0, temp.find_last_of("."));
+        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
-        if (temp == all_available_textures.at(item_texture_to_select))
+        for (auto *it : World::get().m_Textures)
         {
-        #ifdef MX_INSTANT_SHADER_INIT
-          it->initialize();
-        #endif
-          search_holder->m_Texture = it;
-          MX_INFO("MX: Node: " + search_holder->m_Name + ": Set texture: " + it->getName());
-          search_holder = nullptr;
+          // remove file format ending
+          std::string temp = it->getName();
+          temp = temp.substr(0, temp.find_last_of("."));
+
+          if (temp == all_available_textures.at(item_texture_to_select))
+          {
+          #ifdef MX_INSTANT_SHADER_INIT
+            it->initialize();
+          #endif
+            search_holder->m_Texture = it;
+            MX_INFO("MX: Node: " + search_holder->m_Name + ": Set texture: " + it->getName());
+            search_holder = nullptr;
+          }
         }
       }
-
+      catch (const std::exception &e) { }
+  
       item_texture_to_select = 0;
     }
+    
+  #endif
+  }
 
-    ImGui::NewLine();
+  static void render_transform_menu()
+  {
+    prev_x_drag = x_drag;
+    
+    if (ImGui::DragFloat("x##x_slider", &x_drag, grab_speed))
+    {
+      try
+      {
+        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+
+        search_holder->setTransform(
+          (x_drag > 0) ? (x_drag > prev_x_drag) ? RIGHT : LEFT : (x_drag > prev_x_drag) ? LEFT : RIGHT, 
+          x_drag / transform_factor, 
+          0
+        );
+      }
+      catch (const std::exception &e) { } 
+      
+      search_holder = nullptr;
+    }
+
+    prev_y_drag = y_drag;
+    
+    if (ImGui::DragFloat("y##y_slider", &y_drag, grab_speed))
+    {
+      try
+      {
+        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+
+        search_holder->setTransform(
+          (y_drag > 0) ? (y_drag > prev_y_drag) ? UP : DOWN : (y_drag > prev_y_drag) ? DOWN : UP, 
+          y_drag / transform_factor, 
+          0
+        );
+      }
+      catch(const std::exception& e) { }
+
+      search_holder = nullptr;
+    }
+    
+    prev_z_drag = z_drag;
+    
+    if (ImGui::DragFloat("z##z_slider", &z_drag, grab_speed))
+    {
+      try
+      {
+        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+
+        search_holder->setTransform(
+          (z_drag > 0) ? (z_drag > prev_z_drag) ? FORWARDS : BACKWARDS : (z_drag > prev_z_drag) ? BACKWARDS : FORWARDS, 
+          z_drag / transform_factor, 
+          0
+        );
+      }
+      catch (const std::exception &e) { }
+      
+      search_holder = nullptr;
+    }
 
     if (ImGui::CollapsingHeader("Translate"))
     {
@@ -226,13 +317,31 @@ namespace MX
         glm::fmat4 model_matrix = glm::fmat4(1.0f);
         model_matrix = glm::translate(model_matrix, glm::vec3(xSlider, ySlider, zSlider));
         search_holder->setLocalTransform(model_matrix);
+        search_holder = nullptr;
         movedSlider = 0;
       }
     }
-
-    active_objects_s.clear();
-
-    ImGui::End();
-  #endif
   }
+
+  static void render_scenes_menu()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    if (ImGui::Button("new##create new scene"))
+    {
+      event_window_title = "Info";
+      event_window_message = "Give the scene a new name";
+      input_window_enabled = 1;
+      currentSelectionType = mx_scene;
+      currentInputType = mx_name;
+    }
+
+    if (ImGui::Button("load##load existing scene"))
+    {
+      event_window_title = "Info";
+      event_window_message = "Select a scene to load";
+      event_window_button = "Load";
+      selection_window_enabled = 1;
+    }
+  }
+  #endif
 }
