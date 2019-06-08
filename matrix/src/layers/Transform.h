@@ -27,7 +27,7 @@ namespace MX
 
     glm::fmat4 update();
 
-    void push(Trans t, float factor, bool isAnimated);
+    void push(const Trans &t, float factor, bool isAnimated);
 
     float get_time() const;
 
