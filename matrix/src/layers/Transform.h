@@ -5,14 +5,18 @@
 
 namespace MX
 {
-  enum Transform_Direction
+  enum Trans
   {
-    FORWARDS, LEFT, BACKWARDS, RIGHT, DOWN, UP
+    FORWARDS, LEFT, BACKWARDS, RIGHT, DOWN, UP, 
+    X, Y, Z, XYZ,
+    SCALE_GROW, SCALE_SHRINK
   };
 
-  enum Transform_Axis
+  struct Transform_Props
   {
-    X, Y, Z
+    Trans t;
+    float factor;
+    bool isAnimated = 0;
   };
 
   class Transform
@@ -21,20 +25,19 @@ namespace MX
     Transform();
     ~Transform();
 
+    void update_transform();
+    glm::fmat4 update();
+
+    void push_animation(Trans t, float factor);
+    void push_translation(Trans t, float factor);
+
     float getTime();
 
-    void scale(float factor);
-    void rotate(Transform_Axis axis, float factor);
-    void translate(Transform_Direction, float factor);
+    glm::fmat4 m_Local = glm::fmat4(1.0f);
+    glm::fmat4 m_World = glm::fmat4(1.0f);
 
-    void animate_direction(Transform_Direction dir, float factor, bool never_stop = 1);
-    void animate_rotation(Transform_Axis axis, float factor, bool never_stop = 1);
-
-    glm::fmat4 m_LocalTransform = glm::fmat4(1.0f);
-    glm::fmat4 m_WorldTransform = glm::fmat4(1.0f);
-
-    bool isAnimated = 0;
-    bool isTransformed = 0;
+    std::vector<Transform_Props> m_Animations;
+    std::vector<Transform_Props> m_Transforms;
   };
 }
 

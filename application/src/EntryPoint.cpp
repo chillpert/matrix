@@ -16,6 +16,7 @@ void initialize()
   MX::World::get().m_ActiveScene->push("Rock", "rock.obj", "root");
 
   MX::World::get().m_ActiveScene->m_Sg.recursive_search("Jupiter", MX::World::get().m_ActiveScene->m_Sg.m_Root);
+  MX::search_holder->m_Trans.push_animation(MX::Y, 0.1f);
   MX::search_holder->m_Shader = MX::World::get().getShader("texture");
   MX::search_holder->m_Texture = MX::World::get().getTexture("2k_jupiter.jpg", 1);
 
@@ -26,8 +27,7 @@ void initialize()
   MX::search_holder->m_Texture = MX::World::get().getTexture("2k_saturn.jpg", 1);
 
   MX::World::get().m_ActiveScene->m_Sg.recursive_search("Rock", MX::World::get().m_ActiveScene->m_Sg.m_Root);
-  MX::search_holder->setLocalTransform(glm::scale(glm::fmat4(1.0f), glm::vec3(0.3, 0.3, 0.3)));
-  MX::search_holder->setLocalTransform(glm::translate(glm::fmat4(1.0f), glm::vec3(2.0, 1.0, -2.0)));
+  MX::search_holder->m_Trans.push_translation(MX::FORWARDS, 5.0f);
   MX::search_holder->m_Shader = MX::World::get().getShader("texture");
   MX::search_holder->m_Texture = MX::World::get().getTexture("rock.jpg", 1);
 }

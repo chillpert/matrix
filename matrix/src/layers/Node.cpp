@@ -45,14 +45,11 @@ namespace MX
 
   void Node::setLocalTransform(const glm::fmat4& mat)
   {
-    m_LocalTransform = mat * m_LocalTransform;
+    m_Trans.m_Local = mat * m_Trans.m_Local;
   }
 
   void Node::setWorldTransform(const glm::fmat4& mat)
   {
-    glm::fmat4 trans = glm::fmat4(1.0f);
-    // apply transformation in here
-    m_WorldTransform = mat * m_LocalTransform * trans;
+    m_Trans.m_World = mat * m_Trans.update();
   }
-
 }
