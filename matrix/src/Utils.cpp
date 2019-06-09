@@ -27,5 +27,19 @@ namespace MX
 	{
 		return "";
 	}
+
+	std::string f_str(float num)
+	{
+		std::ostringstream buff;
+		buff << num;
+		return buff.str();
+	}
+
+	std::string f_str(float num, float num_decimals)
+	{
+		std::string temp = std::to_string(num);
+		size_t found = temp.find('.');
+		return temp.substr(0, found + num_decimals + 1);
+	}
 }
 
