@@ -99,7 +99,7 @@ namespace MX
     }
 */
     // create node
-    temp_node = new Node(object_name, temp_model, World::get().m_Shaders.at(0), nullptr);
+    temp_node = new Node(object_name, temp_model, World::get().getShader("blinn_phong"), nullptr);
     
   #ifdef MX_DEBUG
     // get memory address

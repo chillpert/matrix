@@ -105,11 +105,11 @@ namespace MX
   void World::initialize()
   {
     // push trivial shader first so that it is the default one
-    MX_SHADER *temp_shader = new MX_SHADER("trivial");
-    m_Shaders.push_back(temp_shader);
+    //MX_SHADER *temp_shader = new MX_SHADER("blinn_phong");
+    //m_Shaders.push_back(temp_shader);
 
   #ifdef MX_IMGUI_ACTIVE
-    all_available_shaders.push_back("trivial");
+    //all_available_shaders.push_back("blinn_phong");
   #endif
 
     set_resource_files(MX_SHADER_PATH);

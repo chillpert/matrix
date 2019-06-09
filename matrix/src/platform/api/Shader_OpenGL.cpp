@@ -75,7 +75,7 @@ namespace MX
 
     setfVec3("lightPosition", glm::vec3(5, -5, 1));
     setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    setfVec3("viewPos", World::get().m_ActiveScene->m_Cam.getPosition());
+    setfVec3("viewPosition", World::get().m_ActiveScene->m_Cam.getPosition());
   }
 
   GLuint compile(GLuint type, const std::string& source)

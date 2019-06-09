@@ -215,13 +215,24 @@ namespace MX
 
     if (it.m_Shader != nullptr)
     {
-      it.m_Shader->update();
+      it.m_Shader->use();
       it.m_Shader->setfMat4("model", it.getWorldTransform());
+      it.m_Shader->setfMat4("view", World::get().m_ActiveScene->m_Cam.getViewMatrix());
+      it.m_Shader->setfMat4("projection", World::get().m_ActiveScene->m_Cam.getProjectionMatrix());
+
+      it.m_Shader->setfVec3("lightPosition", glm::fvec3(5.0f, -5.0f, 1.0f));
+      it.m_Shader->setfVec3("lightColor", glm::fvec3(1.0f, 1.0f, 1.0f));
+      it.m_Shader->setfVec3("viewPosition", World::get().m_ActiveScene->m_Cam.getPosition());
+      it.m_Shader->setFloat("ambientStrength", 0.08f);
     }
 
     if (it.m_Texture != nullptr)
+    {
+      it.m_Shader->use();
       it.m_Texture->use();
-    
+      it.m_Shader->setInt("texture1", 0);
+    }
+
     if (it.m_Model != nullptr)
       it.m_Model->draw();
 

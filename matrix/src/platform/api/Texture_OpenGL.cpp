@@ -32,6 +32,7 @@ namespace MX
 
   void Texture_OpenGL::use()
   {
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_ID);
   }
 
