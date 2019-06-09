@@ -198,6 +198,17 @@ namespace MX
     }
   }
 
+  void SceneGraph::getAllObjects(std::vector<const char*> *vec, Node *it)
+  {
+    vec->push_back(it->m_Name.c_str());
+
+    if (!it->getChildren().empty())
+    {
+      for (Node *itChild : it->getChildren())
+        getAllObjects(vec, itChild);
+    }
+  }
+
   void SceneGraph::recursive_render(Node &it, glm::fmat4 mat)
   {  
     it.setWorldTransform(mat);

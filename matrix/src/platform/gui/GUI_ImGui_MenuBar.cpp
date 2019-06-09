@@ -166,13 +166,8 @@ namespace MX
           }
         }
         if (ImGui::MenuItem("set resolution"))
-        {
           show_set_resolution_popup = 1;
-          event_window_title = "Info";
-          event_window_message = "Please enter a resolution";
-          //input_window_enabled = 1;
-          //currentInputType = mx_resolution;
-        }
+
         ImGui::EndMenu();
       }
 

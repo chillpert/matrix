@@ -97,7 +97,7 @@ namespace MX
   static void draw_outline_menu()
   {
   #ifdef MX_IMGUI_ACTIVE 
-    for (auto it : all_active_objects)
+    for (auto it : all_current_objects)
     {
       const std::string node_name = std::string(it);
 

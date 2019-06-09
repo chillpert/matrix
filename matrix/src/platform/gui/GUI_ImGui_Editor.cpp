@@ -14,6 +14,10 @@ namespace MX
   static bool object_name_accepted = 1;
   static bool object_delete_accepted = 0;
 
+  static bool show_transform_menu = 0;
+  static bool show_scenes_menu = 1;
+  static bool show_assets_menu = 0;
+
   static float x_drag = 0;
   static float y_drag = 0;
   static float z_drag = 0;
@@ -76,6 +80,9 @@ namespace MX
     std::string editor_window_title = "World Editor - " + World::get().m_ActiveScene->m_Name;
     ImGui::Begin(editor_window_title.c_str(), &p_open_editor, window_flags);
 
+    // update container of existing objects in active scene
+    World::get().m_ActiveScene->m_Sg.getAllObjects(&all_current_objects, World::get().m_ActiveScene->m_Sg.m_Root);
+
     if (!p_open_editor)
       editor_window_enabled = 0;
 
@@ -115,13 +122,6 @@ namespace MX
 
       ImGui::EndMenuBar();
     }
-
-    // display all active objects
-    World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
-    all_active_objects.resize(active_objects_s.size());
-
-    for (unsigned int i = 0; i < active_objects_s.size(); ++i)
-      all_active_objects[i] = active_objects_s[i].c_str();
     
     if (show_assets_menu && !show_scenes_menu && !show_transform_menu)
       render_assets_menu();
@@ -130,7 +130,7 @@ namespace MX
     else if (!show_assets_menu && !show_scenes_menu && show_transform_menu)
       render_transform_menu();
 
-    active_objects_s.clear();
+    all_current_objects.clear();
 
     ImGui::End();
   #endif
@@ -153,14 +153,14 @@ namespace MX
     ImGui::Separator();
 
     ImGui::Text("objects:");
-    ImGui::Combo("##all_objects_to_delete", &item_objects_to_select, all_active_objects.data(), all_active_objects.size());
+    ImGui::Combo("##all_objects_to_delete", &item_objects_to_select, all_current_objects.data(), all_current_objects.size());
 
     ImGui::SameLine();
 
     // delete
     if (ImGui::Button("delete", ImVec2(60.0f, 20.0f)) && item_objects_to_select != 0)
     {
-      World::get().m_ActiveScene->pop(active_objects_s.at(item_objects_to_select));
+      World::get().m_ActiveScene->pop(all_current_objects.at(item_objects_to_select));
       item_objects_to_select = 0;
     }
 
@@ -173,7 +173,7 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
       
         for (auto *it : World::get().m_Shaders)
         {
@@ -185,7 +185,6 @@ namespace MX
           }
         }
       }
-
       catch (const std::exception &e) { }
 
       item_shaders_to_select = 0;
@@ -200,7 +199,7 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
         for (auto *it : World::get().m_Textures)
         {
@@ -236,7 +235,7 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
         search_holder->setTransform(
           (x_drag > 0) ? (x_drag > prev_x_drag) ? RIGHT : LEFT : (x_drag > prev_x_drag) ? LEFT : RIGHT, 
@@ -255,7 +254,7 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
         search_holder->setTransform(
           (y_drag > 0) ? (y_drag > prev_y_drag) ? UP : DOWN : (y_drag > prev_y_drag) ? DOWN : UP, 
@@ -274,7 +273,7 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
         search_holder->setTransform(
           (z_drag > 0) ? (z_drag > prev_z_drag) ? FORWARDS : BACKWARDS : (z_drag > prev_z_drag) ? BACKWARDS : FORWARDS, 
@@ -337,7 +336,7 @@ namespace MX
         render_delete_scene_popup(it);
 
         // scene properties
-        std::string number_objects = "Objects: " + std::to_string(all_active_objects.size());
+        std::string number_objects = "Objects: " + std::to_string(all_current_objects.size());
         ImGui::Text(number_objects.c_str());
 
         ImGui::TreePop();
@@ -467,7 +466,7 @@ namespace MX
         all_current_scenes[i] = World::get().m_ExistingScenes[i]->m_Name.c_str();
 
       static int item_current_scenes = 0;
-      ImGui::Text(event_window_message.c_str());
+      ImGui::Text("Select a scene to load:");
       ImGui::Combo("##all_scenes_to_select", &item_current_scenes, all_current_scenes.data(), all_current_scenes.size());
 
       ImGui::SameLine();
@@ -499,13 +498,10 @@ namespace MX
       else
         ImGui::Text("Name is already being used");
       
-      std::vector<std::string> active_objects_s;
-      World::get().m_ActiveScene->m_Sg.getAllObjects(&active_objects_s, World::get().m_ActiveScene->m_Sg.m_Root);
-
       static char input[128];
       ImGui::InputText("##type in name for object to spawn", input, IM_ARRAYSIZE(input));
 
-      for (const std::string &it : active_objects_s)
+      for (const std::string &it : all_current_objects)
       {
         if (it == input)
         {
@@ -516,7 +512,7 @@ namespace MX
       if (ImGui::Button("Confirm##confirm spawn object") && !strlen(input) == 0 && object_name_accepted)
       {
         object_name_accepted = 1;
-        World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), active_objects_s.at(item_objects_to_select));
+        World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), all_current_objects.at(item_objects_to_select));
         memset(&input[0], 0, sizeof(input));
         ImGui::CloseCurrentPopup();
       }
