@@ -88,12 +88,12 @@ namespace MX
 
     if (hierarchy_window_enabled)
     {
-      ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
+      ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f));
     }
     else
     {
-      ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
+      ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
     
@@ -129,8 +129,6 @@ namespace MX
       render_scenes_menu();
     else if (!show_assets_menu && !show_scenes_menu && show_transform_menu)
       render_transform_menu();
-
-    all_current_objects.clear();
 
     ImGui::End();
   #endif
@@ -365,6 +363,8 @@ namespace MX
           scene_name_accepted = 0;
           break;
         }
+        else
+          scene_name_accepted = 1;
       }
       
       if (ImGui::Button("Confirm##confirm create scene"))
@@ -382,7 +382,10 @@ namespace MX
 
       ImGui::SameLine();
       if (ImGui::Button("Cancel##cancel create scene"))
+      {
+        scene_name_accepted = 1;
         ImGui::CloseCurrentPopup();
+      }
 
       ImGui::EndPopup();
     }
@@ -508,10 +511,11 @@ namespace MX
           object_name_accepted = 0;
           break;
         }
+        else
+          object_name_accepted = 1;
       }
       if (ImGui::Button("Confirm##confirm spawn object") && !strlen(input) == 0 && object_name_accepted)
       {
-        object_name_accepted = 1;
         World::get().m_ActiveScene->push(input, all_available_models[item_objects_to_spawn] + std::string(".obj"), all_current_objects.at(item_objects_to_select));
         memset(&input[0], 0, sizeof(input));
         ImGui::CloseCurrentPopup();
@@ -520,7 +524,10 @@ namespace MX
       ImGui::SameLine();
 
       if (ImGui::Button("Cancel##cancle spawn object"))
+      {
+        object_name_accepted = 1;
         ImGui::CloseCurrentPopup();
+      }
 
       ImGui::EndPopup();
     }

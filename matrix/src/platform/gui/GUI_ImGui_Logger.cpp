@@ -223,7 +223,7 @@ namespace MX
       );
       ImGui::SetWindowSize(
         ImVec2(float (Application::get().m_Window->m_Props.m_Width) - float (Application::get().m_Window->m_Props.m_Width) / 5.0f,
-               float (Application::get().m_Window->m_Props.m_Height) / 4.0f)
+               float (Application::get().m_Window->m_Props.m_Height) / 4.0f + 1.0f)
       );
     }
     else if (!editor_window_enabled && !hierarchy_window_enabled)
@@ -234,7 +234,7 @@ namespace MX
       );
       ImGui::SetWindowSize(
         ImVec2(float (Application::get().m_Window->m_Props.m_Width),
-               float (Application::get().m_Window->m_Props.m_Height) / 4.0f)
+               float (Application::get().m_Window->m_Props.m_Height) / 4.0f + 1.0f)
       );
     }
         

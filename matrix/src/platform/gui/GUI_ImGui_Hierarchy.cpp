@@ -58,12 +58,12 @@ namespace MX
 
     if (editor_window_enabled)
     {
-      ImGui::SetWindowPos(ImVec2(0.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f + 21.0f));
+      ImGui::SetWindowPos(ImVec2(0.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f + 19.0f));
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
     else
     {
-      ImGui::SetWindowPos(ImVec2(0.0f, 20.0f));
+      ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
      
@@ -96,7 +96,7 @@ namespace MX
 
   static void draw_outline_menu()
   {
-  #ifdef MX_IMGUI_ACTIVE 
+  #ifdef MX_IMGUI_ACTIVE
     for (auto it : all_current_objects)
     {
       const std::string node_name = std::string(it);

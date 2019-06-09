@@ -99,6 +99,8 @@ namespace MX
       renderHierarchyWindow();
     if (logger_window_enabled)
       renderLoggerWindow();
+    
+    all_current_objects.clear();
 
     ImGui::Render();
     MX_IMGUI_API_RENDER
