@@ -17,9 +17,7 @@ namespace MX
   static float prev_y_drag = 0;
   static float prev_z_drag = 0;
 
-  static float xSlider = 0.0f;
-  static float ySlider = 0.0f;
-  static float zSlider = 0.0f;
+ 
 
   static void render_scenes_menu();
   static void render_assets_menu();
@@ -267,66 +265,12 @@ namespace MX
       
       search_holder = nullptr;
     }
-
-    if (ImGui::CollapsingHeader("Translate"))
-    {
-      static bool movedSlider = 0;
-
-      ImGui::Text("X - Axis");
-      if (ImGui::Button("+ ##x+"))
-      {
-        xSlider += 0.2f;
-        movedSlider = 1;
-      }
-      ImGui::SameLine();
-      if (ImGui::Button("- ##x-"))
-      {
-        xSlider -= 0.2f;
-        movedSlider = 1;
-      }
-      
-      ImGui::Text("Y - Axis");
-      if (ImGui::Button("+ ##y+"))
-      {
-        ySlider += 0.2f;
-        movedSlider = 1;
-      }
-      ImGui::SameLine();
-      if (ImGui::Button("- ##y-"))
-      {
-        ySlider -= 0.2f;
-        movedSlider = 1;
-      }
-      
-      ImGui::Text("Z - Axis");
-      if (ImGui::Button("+ ##z+"))
-      {
-        zSlider += 0.2f;
-        movedSlider = 1;
-      }
-      ImGui::SameLine();
-      if (ImGui::Button("- ##z-"))
-      {
-        zSlider -= 0.2f;
-        movedSlider = 1;
-      }
-
-      if (movedSlider)
-      {
-        World::get().m_ActiveScene->m_Sg.recursive_search(active_objects_s.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
-        glm::fmat4 model_matrix = glm::fmat4(1.0f);
-        model_matrix = glm::translate(model_matrix, glm::vec3(xSlider, ySlider, zSlider));
-        search_holder->setLocalTransform(model_matrix);
-        search_holder = nullptr;
-        movedSlider = 0;
-      }
-    }
   }
 
   static void render_scenes_menu()
   {
   #ifdef MX_IMGUI_ACTIVE
-    if (ImGui::Button("new##create new scene"))
+    if (ImGui::Button("new##create new scene", ImVec2(106.0f, 20.0f)))
     {
       event_window_title = "Info";
       event_window_message = "Give the scene a new name";
@@ -335,12 +279,80 @@ namespace MX
       currentInputType = mx_name;
     }
 
-    if (ImGui::Button("load##load existing scene"))
+    ImGui::SameLine();
+
+    if (ImGui::Button("load##load existing scene", ImVec2(106.0f, 20.0f)))
     {
       event_window_title = "Info";
       event_window_message = "Select a scene to load";
       event_window_button = "Load";
       selection_window_enabled = 1;
+    }
+
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 1;
+    static bool no_move = 1;
+    static bool no_resize = 1;
+    static bool no_collapse = 1;
+    static bool no_close = 0;
+    static bool no_nav = 0;
+    static bool no_background = 0;
+    static bool no_bring_to_front = 0;
+    static bool p_open = 1;
+
+    static ImGuiWindowFlags window_flags = 0;
+
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+    for (auto *it : World::get().m_ExistingScenes)
+    {
+      if (ImGui::TreeNode((it->m_Name + "##scenes tree").c_str()))
+      {
+        if (ImGui::Button("load##load scene"))
+        {
+          World::get().m_ActiveScene = it;
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("delete##delete scene"))
+          ImGui::OpenPopup("Delete?");
+
+        std::string number_objects = "Objects: " + std::to_string(all_active_objects.size());
+        ImGui::Text(number_objects.c_str());
+/*
+        auto cam = it->m_Cam.getPosition();
+        std::string camera_position = "Camera: " + f_str(cam.x, 2) + ", " + f_str(cam.y, 2) + ", " + f_str(cam.z, 2);
+        ImGui::Text(camera_position.c_str());
+*/
+        if (ImGui::BeginPopupModal("Delete?", &p_open, window_flags))
+        {
+          ImGui::Text("Do you really want to delete the scene?");
+          if (ImGui::Button("Confirm##confirm delete scene"))
+          {
+            ImGui::CloseCurrentPopup();
+          }
+
+          ImGui::SameLine();
+          if (ImGui::Button("Cancel##cancel delete scene"))
+          {
+            ImGui::CloseCurrentPopup();
+          }
+
+          ImGui::EndPopup();
+        }
+
+        ImGui::TreePop();
+      }
     }
   }
   #endif
