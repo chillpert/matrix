@@ -27,8 +27,9 @@ void initialize()
   saturn->setTexture(MX_GET_TEXTURE("2k_saturn.jpg", 1));
 
   MX::Node *rock = MX_SCENEGRAPH.search("Rock", MX_ROOT);
-  rock->setTransform(MX::FORWARDS, 5.0f, 0);
-  rock->setTransform(MX::LEFT, 3.0f, 0);
+  rock->setTransform(MX::SCALE, 0.05f, 0);
+  rock->setTransform(MX::BACKWARDS, 35.0f, 0);
+  rock->setTransform(MX::LEFT, 0.5f, 0);
   rock->setShader(MX_GET_SHADER("texture"));
   rock->setTexture(MX_GET_TEXTURE("rock.jpg", 1));
 }
