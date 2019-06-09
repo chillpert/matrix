@@ -4,9 +4,43 @@
 
 namespace MX
 {
+  static bool show_about_popup = 0;
+  static bool show_set_resolution_popup = 0;
+
+  static bool resolution_accepted = 1;
+
+  // pop_flags
+  static ImGuiWindowFlags popup_flags = 0;
+  static bool popup_no_titlebar = 0;
+  static bool popup_no_scrollbar = 0;
+  static bool popup_no_menu = 1;
+  static bool popup_no_move = 1;
+  static bool popup_no_resize = 1;
+  static bool popup_no_collapse = 1;
+  static bool popup_no_close = 0;
+  static bool popup_no_nav = 0;
+  static bool popup_no_background = 0;
+  static bool popup_no_bring_to_front = 0;
+  static bool popup_no_autoresize = 0;
+  static bool popup_p_open = 1;
+
+  static void render_about_popup();
+  static void render_set_resolution_popup();
+
   void GUI_ImGui::renderMenuBar()
   {
   #ifdef MX_IMGUI_ACTIVE
+    if (popup_no_titlebar)        popup_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (popup_no_scrollbar)       popup_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!popup_no_menu)           popup_flags |= ImGuiWindowFlags_MenuBar;
+    if (popup_no_move)            popup_flags |= ImGuiWindowFlags_NoMove;
+    if (popup_no_resize)          popup_flags |= ImGuiWindowFlags_NoResize;
+    if (popup_no_collapse)        popup_flags |= ImGuiWindowFlags_NoCollapse;
+    if (popup_no_nav)             popup_flags |= ImGuiWindowFlags_NoNav;
+    if (popup_no_background)      popup_flags |= ImGuiWindowFlags_NoBackground;
+    if (!popup_no_bring_to_front)  popup_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
+    if (popup_no_autoresize)      popup_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+
     if (ImGui::BeginMainMenuBar())
     {     
       if (ImGui::BeginMenu("File"))
@@ -109,7 +143,6 @@ namespace MX
             p_open_editor = 1;
           }
         }
-
         ImGui::EndMenu();
       }
 
@@ -134,10 +167,11 @@ namespace MX
         }
         if (ImGui::MenuItem("set resolution"))
         {
+          show_set_resolution_popup = 1;
           event_window_title = "Info";
           event_window_message = "Please enter a resolution";
-          input_window_enabled = 1;
-          currentInputType = mx_resolution;
+          //input_window_enabled = 1;
+          //currentInputType = mx_resolution;
         }
         ImGui::EndMenu();
       }
@@ -145,15 +179,85 @@ namespace MX
       if (ImGui::BeginMenu("Help"))
       {
         if (ImGui::MenuItem("About"))
-        {
-          event_window_title = "About";
-          event_window_message = "I do not know what to say\nAnyway ... how are you doing?";
-          event_window_button = "I WANT TO DIE";
-          event_window_enabled = 1;
-        }
+          show_about_popup = 1;
+
         ImGui::EndMenu();
       }
       ImGui::EndMainMenuBar();
+    }
+
+    if (show_about_popup)
+      ImGui::OpenPopup("About##shows information about the project");
+    
+    if (show_set_resolution_popup)
+      ImGui::OpenPopup("Resolution##set window resolution");
+
+    render_about_popup();
+    render_set_resolution_popup();
+    
+  #endif
+  }
+
+  static void render_about_popup()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    if (ImGui::BeginPopupModal("About##shows information about the project", NULL, popup_flags))
+    {
+      ImGui::Text("I do not know what to say\nAnyway ... how are you doing?");
+
+      if (ImGui::Button("I want to die"))
+      {
+        show_about_popup = 0;
+        ImGui::CloseCurrentPopup();
+      }
+
+      ImGui::EndPopup();
+    }
+  #endif
+  }
+
+  static void render_set_resolution_popup()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    if (ImGui::BeginPopupModal("Resolution##set window resolution", NULL, popup_flags))
+    {
+      if (resolution_accepted)
+        ImGui::Text("Set resolution:");
+      else
+        ImGui::Text("Invalid resolution");
+
+      static int input[2];
+      ImGui::InputInt2("##resolution input int2", input, IM_ARRAYSIZE(input));
+    
+      if (ImGui::Button("Confirm##confirm resolution"))
+      {
+        if (input[0] > 1920 || input[1] > 1080 || input[0] < 200 || input[1] < 200)
+          resolution_accepted = 0;
+        else
+        {
+          WindowResized event(input[0], input[1]);
+          event.handle();
+          LOGEVENT(event);
+    
+          if (input[0] == 1920 && input[1] == 1080)
+            Application::get().m_Window->m_Props.m_FullScreen = 1;
+    
+          resolution_accepted = 1;
+          show_set_resolution_popup = 0;
+          ImGui::CloseCurrentPopup();
+        }
+      }
+
+      ImGui::SameLine();
+
+      if (ImGui::Button("Cancel##cancel resolution input"))
+      {
+        resolution_accepted = 1;
+        show_set_resolution_popup = 0;
+        ImGui::CloseCurrentPopup();
+      }
+
+      ImGui::EndPopup();
     }
   #endif
   }

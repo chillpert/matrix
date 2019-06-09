@@ -16,6 +16,18 @@ namespace MX
   static bool scroll_to_bottom_flag = 1;
   static bool scroll_to_top_flag = 0;
 
+  static bool no_titlebar = 0;
+  static bool no_scrollbar = 0;
+  static bool no_menu = 0;
+  static bool no_move = 1;
+  static bool no_resize = 1;
+  static bool no_collapse = 1;
+  static bool no_close = 0;
+  static bool no_nav = 0;
+  static bool no_background = 0;
+  static bool no_bring_to_front = 0;
+  static ImGuiWindowFlags window_flags = 0;
+
   static void toggle_flags()
   {
     switch (message_type)
@@ -71,19 +83,6 @@ namespace MX
   void GUI_ImGui::renderLoggerWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
-    static bool no_titlebar = 0;
-    static bool no_scrollbar = 0;
-    static bool no_menu = 0;
-    static bool no_move = 1;
-    static bool no_resize = 1;
-    static bool no_collapse = 1;
-    static bool no_close = 0;
-    static bool no_nav = 0;
-    static bool no_background = 0;
-    static bool no_bring_to_front = 0;
-
-    static ImGuiWindowFlags window_flags = 0;
-
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
     if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;

@@ -54,6 +54,5 @@
 #include "matrix/src/Utils.h"
 #include "matrix/src/Logger.h"
 #include "matrix/src/platform/api/API_ErrorHandling.h"
-#include "matrix/src/Core.h"
 
 #endif // STDAFX_H

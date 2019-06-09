@@ -91,24 +91,14 @@ namespace MX
   void GUI_ImGui::render()
   {
   #ifdef MX_IMGUI_ACTIVE
-
-    if (event_window_enabled)
-      renderEventWindow();
-    else if (input_window_enabled)
-      renderInputWindow();
-    else if (selection_window_enabled)
-      renderSelectionWindow();
-    else
-    {
-      if (menubar_enabled)
-        renderMenuBar();
-      if (editor_window_enabled)
-        renderEditorWindow();
-      if (hierarchy_window_enabled)
-        renderHierarchyWindow();
-      if (logger_window_enabled)
-        renderLoggerWindow();
-    }
+    if (menubar_enabled)
+      renderMenuBar();
+    if (editor_window_enabled)
+      renderEditorWindow();
+    if (hierarchy_window_enabled)
+      renderHierarchyWindow();
+    if (logger_window_enabled)
+      renderLoggerWindow();
 
     ImGui::Render();
     MX_IMGUI_API_RENDER
