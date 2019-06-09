@@ -6,6 +6,10 @@ namespace MX
   Application::Application()
   {
     MX_INFO_LOG("MX: Application: Constructor");
+
+    #ifdef MX_PLATFORM_UNIX_X64
+      #pragma GCC diagnostic ignored "-Wformat-security"
+    #endif
   }
 
   Application::~Application()

@@ -20,6 +20,7 @@ namespace MX
   std::string tokenizeLine(const std::string &delimiter);
   std::string f_str(float num);
   std::string f_str(float num, float num_decimals);
+  const char* str_c(const std::string &str);
 
   const int initial_window_width = 1200;
   const int initial_window_height = 600;

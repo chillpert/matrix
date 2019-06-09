@@ -337,8 +337,8 @@ namespace MX
 
         // scene properties
         std::string number_objects = "Objects: " + std::to_string(all_current_objects.size());
-        ImGui::Text(number_objects.c_str());
 
+        ImGui::Text(number_objects.c_str());
         ImGui::TreePop();
       }
     }

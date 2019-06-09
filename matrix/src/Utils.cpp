@@ -41,5 +41,19 @@ namespace MX
 		size_t found = temp.find('.');
 		return temp.substr(0, found + num_decimals + 1);
 	}
+
+	const char* str_c(const std::string &str)
+	{
+		const char* temp;
+	#ifdef MX_PLATFORM_UNIX_X64
+		#pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wformat-security"
+		temp = str.c_str();
+		#pragma GCC diagnostic pop
+	#else
+		temp = str.c_str();
+	#endif
+		return temp;		
+	}
 }
 
