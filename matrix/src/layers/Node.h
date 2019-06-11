@@ -35,11 +35,11 @@ namespace MX
     void setLocalTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
     void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
 
-    void setModel(MX_MODEL *model);
-    void setShader(MX_SHADER *shader);
-    void setTexture(MX_TEXTURE *texture);
+    MX_API void setModel(MX_MODEL *model);
+    MX_API void setShader(MX_SHADER *shader);
+    MX_API void setTexture(MX_TEXTURE *texture);
 
-    void setTransform(const Trans &t, float factor, bool isAnimated);
+    MX_API void setTransform(const Trans &t, float factor, bool isAnimated);
 
     glm::fmat4 &getLocalTransform() { return m_Trans.m_Local; }
     glm::fmat4 &getWorldTransform() { return m_Trans.m_World; }
