@@ -210,7 +210,7 @@ namespace MX
   }
 
   void SceneGraph::recursive_render(Node &it, glm::fmat4 mat)
-  {  
+  {
     it.setWorldTransform(mat);
 
     if (it.m_Shader != nullptr)
@@ -222,7 +222,7 @@ namespace MX
 
       it.m_Shader->setfVec3("lightPosition", glm::fvec3(5.0f, -5.0f, 1.0f));
       it.m_Shader->setfVec3("lightColor", glm::fvec3(1.0f, 1.0f, 1.0f));
-      it.m_Shader->setfVec3("viewPosition", World::get().m_ActiveScene->m_Cam.getPosition());
+      it.m_Shader->setfVec3("viewPosition", World::get().m_ActiveScene->m_Cam.getPosition());    
       it.m_Shader->setFloat("ambientStrength", 0.08f);
     }
 
