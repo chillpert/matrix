@@ -6,10 +6,6 @@ void initialize()
 
   MX::World::get().push(new MX::Scene("debug"));
 
-#ifndef MX_IMGUI_ACTIVE
-  MX::World::get().m_ActiveScene->push("debug node", "sphere.obj", "root");
-#endif
-
   // default setup
   MX_SCENE->push("Jupiter", "sphere.obj", "root");
   MX_SCENE->push("Saturn", "sphere.obj", "Jupiter");

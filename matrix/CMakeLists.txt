@@ -213,16 +213,11 @@ set(IMGUI_FILES ${IMGUI_FILES}
   )
 
 # combine the above
-if(USE_IMGUI)
-  set(GUI_FILES ${GUI_FILES}
-    ${IMGUI_FILES}
-    ${IMGUI_API}
-    ${IMGUI_WINDOW}
+set(GUI_FILES ${GUI_FILES}
+  ${IMGUI_FILES}
+  ${IMGUI_API}
+  ${IMGUI_WINDOW}
   )
-
-else()
-  set(GUI_FILES ${GUI_FILES})
-endif()
 
 # files for library
 file(GLOB FILES_LIB
