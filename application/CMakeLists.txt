@@ -35,18 +35,3 @@ set_target_properties(MatrixLib Sandbox
   LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "lib/minsizerel"
   RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "bin/minsizerel"   
 )
-
-# copy dll to exe directory
-IF (USE_SDL2) 
-  message("Copying SDL2.dll to binary location")
-
-  IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/debug)
-
-  ELSEIF (CMAKE_BUILD_TYPE STREQUAL "Release")
-    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/release)
-
-  ENDIF ()
-ENDIF()

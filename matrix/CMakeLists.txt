@@ -207,3 +207,18 @@ set_source_files_properties(matrix/pch/stdafx.cpp
   PROPERTIES
   COMPILE_FLAGS "/Ycstdafx.h"
 )
+
+# copy dll to exe directory
+IF (USE_SDL2) 
+  message("Copying SDL2.dll to binary location")
+
+  IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/dlls/SDL2.dll
+      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/debug)
+
+  ELSEIF (CMAKE_BUILD_TYPE STREQUAL "Release")
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/dlls/SDL2.dll
+      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/release)
+
+  ENDIF ()
+ENDIF()
