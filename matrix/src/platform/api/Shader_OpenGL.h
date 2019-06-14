@@ -11,7 +11,7 @@ namespace MX
     MX_API Shader_OpenGL() {}
     MX_API Shader_OpenGL(const Shader_OpenGL &shader);
     MX_API Shader_OpenGL(const std::string &name, bool instantInitialization = 0);
-    MX_API ~Shader_OpenGL() {}
+    MX_API virtual ~Shader_OpenGL() {}
 
     MX_API void initialize();
     MX_API void update() override;

@@ -18,7 +18,7 @@ namespace MX
     static bool no_move = 1;
     static bool no_resize = 1;
     static bool no_collapse = 1;
-    static bool no_close = 0;
+    // static bool no_close = 0;
     static bool no_nav = 0;
     static bool no_background = 0;
     static bool no_bring_to_front = 0;

@@ -23,7 +23,7 @@ namespace MX
     MX_API Model_OpenGL();
     MX_API Model_OpenGL(const Model_OpenGL &model);
     MX_API Model_OpenGL(const std::string &name, bool instantInitialize = 0);
-    MX_API ~Model_OpenGL() {}
+    MX_API virtual ~Model_OpenGL() {}
     
     MX_API void initialize() override;
     MX_API void draw() override;

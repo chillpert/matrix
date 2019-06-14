@@ -29,7 +29,7 @@
   #include <glm/gtc/type_ptr.hpp>
 
   // texture loading
-  #include <STB_IMAGE/stb_image.h>
+  #include <stb_image.h>
 
 // libraries
 #ifdef MX_PLATFORM_WINDOWS_X64

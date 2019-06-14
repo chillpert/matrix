@@ -12,7 +12,7 @@ namespace MX
   static bool scene_name_accepted = 1;
   static bool scene_delete_accepted = 0;
   static bool object_name_accepted = 1;
-  static bool object_delete_accepted = 0;
+  // static bool object_delete_accepted = 0;
 
   static bool show_transform_menu = 0;
   static bool show_scenes_menu = 1;
@@ -34,11 +34,11 @@ namespace MX
   static bool popup_no_move = 1;
   static bool popup_no_resize = 1;
   static bool popup_no_collapse = 1;
-  static bool popup_no_close = 0;
+  // static bool popup_no_close = 0;
   static bool popup_no_nav = 0;
   static bool popup_no_background = 0;
   static bool popup_no_bring_to_front = 0;
-  static bool popup_p_open = 1;
+  // static bool popup_p_open = 1;
   static bool popup_no_autoresize = 0;
 
   static void render_scenes_menu();
@@ -60,7 +60,7 @@ namespace MX
     static bool no_move = 1;
     static bool no_resize = 1;
     static bool no_collapse = 1;
-    static bool no_close = 0;
+    // static bool no_close = 0;
     static bool no_nav = 0;
     static bool no_background = 0;
     static bool no_bring_to_front = 0;
@@ -75,7 +75,7 @@ namespace MX
     if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
     if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
-    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;    
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
     std::string editor_window_title = "World Editor - " + World::get().m_ActiveScene->m_Name;
     ImGui::Begin(editor_window_title.c_str(), &p_open_editor, window_flags);

@@ -154,14 +154,14 @@ namespace MX
           {
             WindowResized event(1920, 1080);
             event.handle();
-            LOGEVENT(event);
+            LOGEVENT;
             Application::get().m_Window->m_Props.m_FullScreen = 1;
           }
           else
           {
             WindowResized event(initial_window_width, initial_window_height);
             event.handle();
-            LOGEVENT(event);
+            LOGEVENT;
             Application::get().m_Window->m_Props.m_FullScreen = 0;
           }
         }

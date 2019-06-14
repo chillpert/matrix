@@ -23,13 +23,13 @@ namespace MX
   void Scene::push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to)
   {
     bool modelExists = 0;
-    bool shaderExists = 0;
-    bool textureExists = 0;
+    // bool shaderExists = 0;
+    // bool textureExists = 0;
 
     Node *temp_node;
     MX_MODEL *temp_model;
-    MX_SHADER *temp_shader;
-    MX_TEXTURE *temp_texture;
+    // MX_SHADER *temp_shader;
+    // MX_TEXTURE *temp_texture;
 
     /*############################
     check if element already exist

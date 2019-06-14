@@ -39,11 +39,7 @@ namespace MX
     m_FsSource = parseFile(m_FsPath);
     
 	  GLuint vs = compile(GL_VERTEX_SHADER, m_VsSource);
-    if (vs == -1)
-      glDeleteShader(vs);
 	  GLuint fs = compile(GL_FRAGMENT_SHADER, m_FsSource);
-    if (fs == -1)
-      glDeleteShader(fs);
 
 	  glAttachShader(m_ID, vs);
 	  glAttachShader(m_ID, fs);
