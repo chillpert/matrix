@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.14.4)
 set (PROJECT_NAME "Matrix Framework")
 project(${PROJECT_NAME} VERSION 0.2.1)
 
+message(${PROJECT_NAME})
+
 cmake_policy(SET CMP0072 OLD)
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -10,8 +12,6 @@ message("MX: Build type not set. Continuing with: ${CMAKE_BUILD_TYPE}")
       "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
-
-message(${PROJECT_NAME})
 
 ########### CHANGE THIS #############
 # needs clean reconfigure

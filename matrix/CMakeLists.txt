@@ -1,37 +1,38 @@
 cmake_minimum_required(VERSION 3.14.4)
-
-# resource directories
-add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")
-add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
-add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")
+message("MX: Configuring Framework")
 
 # glfw
-set(GLFW_DIRECTORY glfw)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
+if(USE_GLFW)
+  set(GLFW_DIRECTORY glfw)
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
+  
+  set(GLFW_INSTALL OFF CACHE STRING "" FORCE)
+  set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
+  set(GLFW_BUILD_TESTS OFF CACHE STRING "" FORCE)
+  
+  add_subdirectory(${PROJECT_SOURCE_DIR}/external/${GLFW_DIRECTORY})
+  include_directories(${PROJECT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
 
-set(GLFW_INSTALL OFF CACHE STRING "" FORCE)
-set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
-set(GLFW_BUILD_TESTS OFF CACHE STRING "" FORCE)
+endif(USE_GLFW)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
+if(USE_OPENGL)
+  # glew
+  set(glew-cmake_BUILD_STATIC OFF CACHE STRING "" FORCE)
+  set(glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE STRING "" FORCE)
 
-# include and link directories
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(external/include)
-link_directories(external/libs)
+  add_subdirectory(${PROJECT_SOURCE_DIR}/external/glew-cmake)
+  include_directories(${PROJECT_SOURCE_DIR}/external/glew-cmake/include)
+  link_directories(${PROJECT_SOURCE_DIR}/build/lib)
 
-# boost
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
+endif(USE_OPENGL)
+
 
 # operating system
 if(WIN32)
   if(CMAKE_CL_64)
     # declspec (windows)
-    add_compile_definitions(MX_PLATFORM_WINDOWS_X64)
     add_compile_definitions(MX_BUILD_DLL)
+    add_compile_definitions(MX_PLATFORM_WINDOWS_X64)
 
     # boost (windows)
     set(BOOST_LIB ${Boost_LIBRARIES}
@@ -40,8 +41,8 @@ if(WIN32)
   endif()
 elseif(UNIX)
     # declspec (unix)
-    add_compile_definitions(MX_PLATFORM_UNIX_X64)
     add_compile_definitions(MX_BUILD_DLL)
+    add_compile_definitions(MX_PLATFORM_UNIX_X64)
 
     # boost (unix)
     find_package(Boost REQUIRED COMPONENTS filesystem) 
@@ -73,10 +74,14 @@ elseif(USE_OPENGL)
 
   # prepare for static linking
   if(WIN32)
-    set(STATIC_GLEW ${STATIC_GLEW} glew32s)
+    set(STATIC_GLEW ${STATIC_GLEW}
+      glew32s
+    )
   
   elseif(UNIX)
-    set(STATIC_GLEW ${STATIC_GLEW} libGLEW.a)
+    set(STATIC_GLEW ${STATIC_GLEW} 
+      libglewd.so
+    )
   endif()
 
   find_package(OpenGL REQUIRED)
@@ -119,6 +124,16 @@ elseif(USE_GLFW)
     ${GLFW_LIBRARIES}
   )
 endif()
+
+# include and link directories
+include_directories(${CMAKE_SOURCE_DIR})
+include_directories(external/include)
+link_directories(external/libs)
+
+# boost
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 
 # logging
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -219,3 +234,8 @@ set_source_files_properties(matrix/pch/stdafx.cpp
   PROPERTIES
   COMPILE_FLAGS "/Ycstdafx.h"
   )
+
+# resource directories
+add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")
+add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
+add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")

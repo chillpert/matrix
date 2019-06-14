@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.14.4)
 
+message("MX: Configuring Application")
+
 # this file is used to configure your actual application
 # make sure the Matrix.dll file is in the same directory
 # as your executable
