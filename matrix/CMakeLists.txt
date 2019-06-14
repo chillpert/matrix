@@ -4,7 +4,6 @@ message("MX: Configuring Framework")
 # glfw
 if(USE_GLFW)
   set(GLFW_DIRECTORY glfw)
-  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
   
   set(GLFW_INSTALL OFF CACHE STRING "" FORCE)
   set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
@@ -15,8 +14,8 @@ if(USE_GLFW)
 
 endif(USE_GLFW)
 
+# glew
 if(USE_OPENGL)
-  # glew
   set(glew-cmake_BUILD_STATIC OFF CACHE STRING "" FORCE)
   set(glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE STRING "" FORCE)
 
@@ -26,6 +25,19 @@ if(USE_OPENGL)
 
 endif(USE_OPENGL)
 
+# boost
+include_directories(${PROJECT_SOURCE_DIR}/external/boost)
+
+# glm
+set(GLM_QUIET OFF CACHE STRING "" FORCE)
+set(BUILD_STATIC_LIBS OFF CACHE STRING "" FORCE)
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/external/glm)
+include_directories(${PROJECT_SOURCE_DIR}/external/glm)
+
+# imgui
+include_directories(${PROJECT_SOURCE_DIR}/imgui/examples)
+include_directories(${PROJECT_SOURCE_DIR}/imgui)
 
 # operating system
 if(WIN32)
