@@ -43,13 +43,13 @@ namespace MX
     glm::fvec3 m_Up;
     glm::fvec3 m_Right;
 
-    float m_ScreenWidth;
-    float m_ScreenHeight;
-
     float m_Yaw;
     float m_Pitch;
     float m_Sensitivity;
     float m_Fov;
+
+    float m_ScreenWidth;
+    float m_ScreenHeight;
 
     MX_API void updateVectors();
   };

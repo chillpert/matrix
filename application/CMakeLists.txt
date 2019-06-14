@@ -23,15 +23,33 @@ target_link_libraries(Sandbox
 # configure output directories
 set_target_properties(MatrixLib Sandbox
   PROPERTIES
-  ARCHIVE_OUTPUT_DIRECTORY_DEBUG "lib/debug"
-  LIBRARY_OUTPUT_DIRECTORY_DEBUG "lib/debug"
-  RUNTIME_OUTPUT_DIRECTORY_DEBUG "bin/debug"
+  ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${PROJECT_SOURCE_DIR}/build/lib/debug"
+  LIBRARY_OUTPUT_DIRECTORY_DEBUG "${PROJECT_SOURCE_DIR}/build/lib/debug"
+  RUNTIME_OUTPUT_DIRECTORY_DEBUG "${PROJECT_SOURCE_DIR}/build/bin/debug"
 
-  ARCHIVE_OUTPUT_DIRECTORY_RELEASE "lib/release"
-  LIBRARY_OUTPUT_DIRECTORY_RELEASE "lib/release"
-  RUNTIME_OUTPUT_DIRECTORY_RELEASE "bin/release"
+  ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${PROJECT_SOURCE_DIR}/build/lib/release"
+  LIBRARY_OUTPUT_DIRECTORY_RELEASE "${PROJECT_SOURCE_DIR}/build/lib/release"
+  RUNTIME_OUTPUT_DIRECTORY_RELEASE "${PROJECT_SOURCE_DIR}/build/bin/release"
 
-  ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "lib/minsizerel"
-  LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "lib/minsizerel"
-  RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "bin/minsizerel"   
+  ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "${PROJECT_SOURCE_DIR}/build/lib/minsizerel"
+  LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "${PROJECT_SOURCE_DIR}/build/lib/minsizerel"
+  RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${PROJECT_SOURCE_DIR}/build/bin/minsizerel"   
 )
+
+# copy dll to exe directory
+IF (USE_SDL2)
+  message("Copying SDL2.dll to binary location")
+
+  IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/debug)
+
+  ELSEIF (CMAKE_BUILD_TYPE STREQUAL "Release")
+    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/release)
+
+  ELSEIF (CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/minsizerel)
+  ENDIF ()
+ENDIF()

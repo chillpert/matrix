@@ -103,9 +103,9 @@ link_directories(external/libs)
   ENDIF ()
 
   # resource directories
-  add_compile_definitions(MX_TEXTURE_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/textures/")
-  add_compile_definitions(MX_MODEL_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/models/")
-  add_compile_definitions(MX_SHADER_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/shaders/")
+  add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")
+  add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
+  add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")
 
 # external cpp files
 
@@ -207,18 +207,3 @@ set_source_files_properties(matrix/pch/stdafx.cpp
   PROPERTIES
   COMPILE_FLAGS "/Ycstdafx.h"
 )
-
-# copy dll to exe directory
-IF (USE_SDL2) 
-  message("Copying SDL2.dll to binary location")
-
-  IF (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/debug)
-
-  ELSEIF (CMAKE_BUILD_TYPE STREQUAL "Release")
-    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/release)
-
-  ENDIF ()
-ENDIF()
