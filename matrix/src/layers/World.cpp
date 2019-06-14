@@ -198,15 +198,13 @@ namespace MX
 
     boost::filesystem::path p(path_to_folder);
 
-    std::vector<boost::filesystem::directory_entry> all_available_files_d;
-
     if (boost::filesystem::is_directory(p))
     {
-      std::copy(boost::filesystem::directory_iterator(p), boost::filesystem::directory_iterator(), std::back_inserter(all_available_files_d));
+      boost::filesystem::directory_iterator end_itr;
 
-      for (std::vector<boost::filesystem::directory_entry>::const_iterator it = all_available_files_d.begin(); it != all_available_files_d.end(); ++it)
+      for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
       {
-        std::string temp = (*it).path().string();
+        std::string temp = itr->path().string();
 			#ifdef MX_PLATFORM_WINDOWS_X64
         std::size_t found_slash = temp.find_last_of("\\");
       #elif MX_PLATFORM_UNIX_X64

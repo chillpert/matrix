@@ -340,8 +340,8 @@ namespace MX
         ImGui::TreePop();
       }
     }
-  }
   #endif
+  }
 
   static void render_new_scene_popup()
   {

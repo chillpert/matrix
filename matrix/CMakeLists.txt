@@ -26,6 +26,29 @@ if(USE_OPENGL)
 endif(USE_OPENGL)
 
 # boost
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
+
+# boost (windows)
+if(WIN32)
+  if(CMAKE_CL_64)
+    set(BOOST_LIB ${Boost_LIBRARIES}
+      "libboost_filesystem-vc141-mt-gd-x64-1_70"
+      )
+  
+  endif()
+endif()
+
+# boost (unix)
+if(UNIX)
+  find_package(Boost REQUIRED COMPONENTS filesystem) 
+  if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS}) 
+  endif()
+
+endif()
+
 include_directories(${PROJECT_SOURCE_DIR}/external/boost)
 
 # glm
@@ -45,22 +68,12 @@ if(WIN32)
     add_compile_definitions(MX_BUILD_DLL)
     add_compile_definitions(MX_PLATFORM_WINDOWS_X64)
 
-    # boost (windows)
-    set(BOOST_LIB ${Boost_LIBRARIES}
-      "libboost_filesystem-vc141-mt-gd-x64-1_70"
-      )
   endif()
 
 elseif(UNIX)
     # declspec (unix)
     add_compile_definitions(MX_BUILD_DLL)
     add_compile_definitions(MX_PLATFORM_UNIX_X64)
-
-    # boost (unix)
-    find_package(Boost REQUIRED COMPONENTS filesystem) 
-    if(Boost_FOUND)
-      include_directories(${Boost_INCLUDE_DIRS}) 
-    endif()
 
 endif()
 
@@ -142,11 +155,6 @@ include_directories(${CMAKE_SOURCE_DIR})
 #include_directories(external/include)
 link_directories(external/libs)
 
-# boost
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-
 # logging
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_compile_definitions(MX_DEBUG)
@@ -180,31 +188,28 @@ endif()
 # IMGUI
 if(USE_OPENGL)
   set(IMGUI_API ${IMGUI_API}
-    "external/include/IMGUI/imgui_impl_opengl3.cpp"
+    "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_opengl3.cpp"
   )
 
 elseif(USE_DIRECTX)
   set(IMGUI_API ${IMGUI_API}
-  
+    "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_dx12.cpp"
   )
 ENDIF() 
 
 if(USE_GLFW)
   set(IMGUI_WINDOW ${IMGUI_WINDOW}
-    "external/include/IMGUI/imgui_impl_glfw.cpp"
+    "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_glfw.cpp"
   )
 
 elseif(USE_SDL2)
   set(IMGUI_WINDOW ${IMGUI_WINDOW}
-    "external/include/IMGUI/imgui_impl_sdl.cpp"
+    "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_sdl.cpp"
   )
 ENDIF()
 
 set(IMGUI_FILES ${IMGUI_FILES}
-  "external/include/IMGUI/imgui.cpp"
-  "external/include/IMGUI/imgui_demo.cpp"
-  "external/include/IMGUI/imgui_draw.cpp"
-  "external/include/IMGUI/imgui_widgets.cpp"
+  "${PROJECT_SOURCE_DIR}/external/imgui/*.cpp"
   )
 
 # combine the above
@@ -221,14 +226,14 @@ endif()
 
 # files for library
 file(GLOB FILES_LIB
-  "matrix/src/controller/*.cpp"
-  "matrix/src/event/*.cpp"
-  "matrix/src/layers/*.cpp"
-  "matrix/src/pch/*.cpp"
-  "matrix/src/platform/api/*.cpp"
-  "matrix/src/platform/gui/*.cpp"
-  "matrix/src/platform/window/*.cpp"
-  "matrix/src/*.cpp"         
+  "${PROJECT_SOURCE_DIR}/matrix/src/controller/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/event/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/layers/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/pch/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/platform/api/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/platform/window/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/*.cpp"         
 
   ${GUI_FILES}
   )

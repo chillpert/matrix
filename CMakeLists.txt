@@ -6,6 +6,10 @@ message(${PROJECT_NAME})
 
 cmake_policy(SET CMP0072 OLD)
 
+if(("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang") OR ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU") OR (("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel") AND UNIX))
+  set(CMAKE_CXX_FLAGS "-std=c++17 -Wall")
+endif()
+
 if(NOT CMAKE_BUILD_TYPE)
 message("MX: Build type not set. Continuing with: ${CMAKE_BUILD_TYPE}")
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
