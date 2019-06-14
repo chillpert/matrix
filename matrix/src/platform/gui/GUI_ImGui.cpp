@@ -5,12 +5,12 @@
 #ifdef MX_IMGUI_ACTIVE
 
 #ifdef MX_GLFW_ACTIVE
-  #include <IMGUI/imgui_impl_glfw.h>
+  #include <imgui_impl_glfw.h>
   #define MX_IMGUI_INIT       ImGui_ImplGlfw_InitForOpenGL(Window_GLFW::get().getWindow(), true);
   #define MX_IMGUI_NEW_FRAME  ImGui_ImplGlfw_NewFrame();
   #define MX_IMGUI_CLEAN      ImGui_ImplGlfw_Shutdown();
 #elif MX_SDL2_ACTIVE
-  #include <IMGUI/imgui_impl_sdl.h>
+  #include <imgui_impl_sdl.h>
   #define MX_IMGUI_INIT       ImGui_ImplSDL2_InitForOpenGL(Window_SDL2::get().getWindow(), Window_SDL2::get().getContext());
   #define MX_IMGUI_NEW_FRAME  ImGui_ImplSDL2_NewFrame(Window_SDL2::get().getWindow());
   #define MX_IMGUI_CLEAN      ImGui_ImplSDL2_Shutdown();
@@ -21,7 +21,7 @@
 #elif MX_DIRECTX_ACTIVE
   #define MX_IMGUI_API
 #endif
-#include <IMGUI/imgui_impl_opengl3.h>
+#include <imgui_impl_opengl3.h>
 
 #endif
 

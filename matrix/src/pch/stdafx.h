@@ -23,10 +23,10 @@
 
   // maths
   #define GLM_ENABLE_EXPERIMENTAL 
-  #include <GLM/gtx/string_cast.hpp>
-  #include <GLM/glm.hpp>
-  #include <GLM/gtc/matrix_transform.hpp>
-  #include <GLM/gtc/type_ptr.hpp>
+  #include <glm/gtx/string_cast.hpp>
+  #include <glm/glm.hpp>
+  #include <glm/gtc/matrix_transform.hpp>
+  #include <glm/gtc/type_ptr.hpp>
 
   // texture loading
   #include <STB_IMAGE/stb_image.h>

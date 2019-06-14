@@ -4,7 +4,7 @@
 #include "matrix/src/platform/gui/GUI.h"
 #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
 
-#include <IMGUI/imgui.h>
+#include <imgui.h>
 #include "matrix/src/layers/World.h"
 #include "matrix/src/layers/Scene.h"
 #include "matrix/src/platform/api/Model.h"

@@ -29,15 +29,14 @@ endif(USE_OPENGL)
 include_directories(${PROJECT_SOURCE_DIR}/external/boost)
 
 # glm
-set(GLM_QUIET OFF CACHE STRING "" FORCE)
-set(BUILD_STATIC_LIBS OFF CACHE STRING "" FORCE)
-
-add_subdirectory(${PROJECT_SOURCE_DIR}/external/glm)
 include_directories(${PROJECT_SOURCE_DIR}/external/glm)
 
 # imgui
-include_directories(${PROJECT_SOURCE_DIR}/imgui/examples)
-include_directories(${PROJECT_SOURCE_DIR}/imgui)
+include_directories(${PROJECT_SOURCE_DIR}/external/imgui/examples)
+include_directories(${PROJECT_SOURCE_DIR}/external/imgui)
+
+# stb_image
+include_directories(${PROJECT_SOURCE_DIR}/external/stb_image)
 
 # operating system
 if(WIN32)
@@ -51,6 +50,7 @@ if(WIN32)
       "libboost_filesystem-vc141-mt-gd-x64-1_70"
       )
   endif()
+
 elseif(UNIX)
     # declspec (unix)
     add_compile_definitions(MX_BUILD_DLL)
@@ -139,7 +139,7 @@ endif()
 
 # include and link directories
 include_directories(${CMAKE_SOURCE_DIR})
-include_directories(external/include)
+#include_directories(external/include)
 link_directories(external/libs)
 
 # boost

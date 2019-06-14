@@ -6,8 +6,8 @@
 #include "matrix/src/layers/World.h"
 
 #ifdef MX_IMGUI_ACTIVE
-  #include <IMGUI/imgui.h>
-  #include <IMGUI/imgui_impl_sdl.h>
+  #include <imgui.h>
+  #include <imgui_impl_sdl.h>
 #endif 
 
 #ifdef MX_SDL2_ACTIVE

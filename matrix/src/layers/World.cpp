@@ -8,8 +8,8 @@
   #include <boost/range/iterator_range.hpp>
 #elif MX_PLATFORM_WINDOWS_X64
   // files are stored in externals for better portabilitys
-  #include <BOOST/filesystem.hpp>
-  #include <BOOST/range/iterator_range.hpp>
+  #include <boost/filesystem.hpp>
+  #include <boost/range/iterator_range.hpp>
 #endif
 
 namespace MX

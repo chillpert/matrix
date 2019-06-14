@@ -3,7 +3,7 @@
 
 #include "matrix/src/pch/stdafx.h"
 
-#include <IMGUI/imgui.h>
+#include <imgui.h>
 
 namespace MX
 {
