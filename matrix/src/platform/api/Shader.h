@@ -37,6 +37,7 @@ namespace MX
     std::string m_FsPath;
     std::string m_VsSource;
     std::string m_FsSource;
+    std::string m_Profile;
   };
 }
 

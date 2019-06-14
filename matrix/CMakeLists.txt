@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 # boost
-set(Boost_USE_STATIC_LIBS OFF) 
-set(Boost_USE_MULTITHREADED ON)  
-set(Boost_USE_STATIC_RUNTIME OFF) 
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 
 IF (WIN32)
   IF (CMAKE_CL_64)
