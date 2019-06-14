@@ -5,6 +5,17 @@ add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/texture
 add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
 add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")
 
+# glfw
+set(GLFW_DIRECTORY glfw)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
+
+set(GLFW_INSTALL OFF CACHE STRING "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE STRING "" FORCE)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
+
 # include and link directories
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(external/include)
@@ -42,13 +53,13 @@ endif()
 
 # rendering api
 if(USE_OPENGL AND USE_DIRECTX)
-  message(FATAL_ERROR "You can not use OpenGL and DirectX simultaneously")
+  message(FATAL_ERROR "MX: ERROR: You can not use OpenGL and DirectX simultaneously")
 
 elseif(NOT USE_OPENGL AND NOT USE_DIRECTX)
-  message(FATAL_ERROR "You have to use either OpenGL or DirectX")
+  message(FATAL_ERROR "MX: ERROR: You have to use either OpenGL or DirectX")
 
 elseif(USE_DIRECTX)
-  message("Using DirectX")
+  message("MX: Using DirectX")
   add_compile_definitions(MX_DIRECTX_ACTIVE)
 
   # prepare for linking
@@ -57,7 +68,7 @@ elseif(USE_DIRECTX)
   )
 
 elseif(USE_OPENGL)
-  message("Using OpenGL")
+  message("MX: Using OpenGL")
   add_compile_definitions(MX_OPENGL_ACTIVE)
 
   # prepare for static linking
@@ -79,14 +90,14 @@ endif()
 
 # windowing
 if(USE_GLFW AND USE_SDL2)
-  message(FATAL_ERROR "You can not use GLFW and SDL2 simultaneously")
+  message(FATAL_ERROR "MX: ERROR: You can not use GLFW and SDL2 simultaneously")
 
 elseif(NOT USE_GLFW AND NOT USE_SDL2)
-  message(FATAL_ERROR "You have to use either SDL2 or GLFW")
+  message(FATAL_ERROR "MX: ERROR: You have to use either SDL2 or GLFW")
 
 elseif(USE_SDL2)
   add_compile_definitions(MX_SDL2_ACTIVE)
-  message("Using SDL2")
+  message("MX: Using SDL2")
 
   # set library for linking
   set(WINDOW_LIB ${WINDOW_LIB}   
@@ -99,12 +110,13 @@ elseif(USE_SDL2)
   endif()
 
 elseif(USE_GLFW)
-  message("Using GLFW")
+  message("MX: Using GLFW")
   add_compile_definitions(MX_GLFW_ACTIVE)
 
   # set library for linking
   set(WINDOW_LIB ${WINDOW_LIB}
     glfw3
+    ${GLFW_LIBRARIES}
   )
 endif()
 
@@ -115,7 +127,7 @@ endif()
 
 # log window events
 if(LOG_WINDOW_EVENTS)
-  message("Logging events enabled")
+  message("MX: Logging events enabled")
   add_compile_definitions(MX_LOG_EVENTS)
 endif()
 
@@ -124,18 +136,18 @@ add_compile_definitions(MX_DEFAULT_CONTROLLER)
 
 # gui
 if(USE_IMGUI)
-  message("Using ImGui")
+  message("MX: Using ImGui")
   add_compile_definitions(MX_IMGUI_ACTIVE)
 
 else()
-  message("GUI disabled")
+  message("MX: GUI disabled")
 endif()
 
 # precompiled header
 if(MSCV)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Yustdafx.h /FIstdafx.h")
 else()
-  message("No PCH available for current compiler")
+  message("MX: WARN: No PCH available for current compiler")
 endif()
 
 # IMGUI

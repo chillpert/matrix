@@ -4,9 +4,8 @@ project(${PROJECT_NAME} VERSION 0.2.1)
 
 cmake_policy(SET CMP0072 OLD)
 
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-
 if(NOT CMAKE_BUILD_TYPE)
+message("MX: Build type not set. Continuing with: ${CMAKE_BUILD_TYPE}")
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
       "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
@@ -16,8 +15,8 @@ message(${PROJECT_NAME})
 
 ########### CHANGE THIS #############
 # needs clean reconfigure
-option(USE_GLFW "use GLFW" OFF)
-option(USE_SDL2 "use SDL2" ON)
+option(USE_GLFW "use GLFW" ON)
+option(USE_SDL2 "use SDL2" OFF)
 
 option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)

@@ -1,6 +1,8 @@
 .vscode/
 .exe/
+
 build/
+
 log.txt
 changelog.txt
 imgui.ini
@@ -8,3 +10,6 @@ todo.txt
 About.txt
 vc140.pdb
 docs.txt
+
+external/imgui.ini
+external/log.txt
