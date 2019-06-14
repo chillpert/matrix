@@ -34,6 +34,10 @@ set_target_properties(MatrixLib Sandbox
   ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "${PROJECT_SOURCE_DIR}/build/lib/minsizerel"
   LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "${PROJECT_SOURCE_DIR}/build/lib/minsizerel"
   RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${PROJECT_SOURCE_DIR}/build/bin/minsizerel"   
+
+  ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/build/lib/relwithbebinfo"
+  LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/build/lib/relwithbebinfo"
+  RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo"
 )
 
 # copy dll to exe directory
@@ -47,6 +51,10 @@ IF (USE_SDL2)
   ELSEIF (CMAKE_BUILD_TYPE STREQUAL "Release")
     file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
       DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/release)
+    
+  ELSEIF (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo)
 
   ELSEIF (CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
     file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll

@@ -1,14 +1,16 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.14.4)
 set (PROJECT_NAME "Matrix Framework")
-project(${PROJECT_NAME} VERSION 0.1.0)
+project(${PROJECT_NAME} VERSION 0.2.1)
 
 cmake_policy(SET CMP0072 OLD)
 
-set(CMAKE_C_COMPILER "/usr/bin/gcc-7")
-set(CMAKE_CXX_COMPILER "/usr/bin/g++-7")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-#set(CMAKE_CXX_FLAGS "-Wno-dev")
-#add_definitions(${CMAKE_CXX_FLAGS})
+IF (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+      "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
+      FORCE)
+ENDIF (NOT CMAKE_BUILD_TYPE)
 
 message(${PROJECT_NAME})
 
