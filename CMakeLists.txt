@@ -6,11 +6,11 @@ cmake_policy(SET CMP0072 OLD)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-IF (NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
       "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
-ENDIF (NOT CMAKE_BUILD_TYPE)
+endif(NOT CMAKE_BUILD_TYPE)
 
 message(${PROJECT_NAME})
 
@@ -23,7 +23,7 @@ option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)
 
 option(USE_IMGUI "use ImGui" ON)
-option(LOG_EVENTS "log window related events" OFF)
+option(LOG_WINDOW_EVENTS "log window events" OFF)
 #####################################
 
 # config for Matrix Framework
