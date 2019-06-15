@@ -277,8 +277,8 @@ file(GLOB GUI_FILES_NON_PCH
   ${GUI_FILES}
 )
 
-# precompiled header
-if(MSVC)
+# precompiled header currently disabled for all platform
+if(NOT)
   set_source_files_properties(${PROJECT_SOURCE_DIR}/matrix/src/pch/stdafx.cpp
     PROPERTIES
     COMPILE_FLAGS "/Ycstdafx.h"
