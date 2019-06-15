@@ -22,4 +22,10 @@ namespace MX
 
     resizeWindow(width, height);
   }
+
+  void Window::WindowProps::updateViewport()
+  {
+    m_ViewportX = static_cast<int>(m_Width / 1.3f);
+    m_ViewportY = static_cast<int>(m_Height / 1.4f);
+  }
 }

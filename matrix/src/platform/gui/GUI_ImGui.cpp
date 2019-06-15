@@ -91,6 +91,8 @@ namespace MX
   void GUI_ImGui::render()
   {
   #ifdef MX_IMGUI_ACTIVE
+    ImGui::ShowDemoWindow();
+
     if (menubar_enabled)
       renderMenuBar();
     if (editor_window_enabled)

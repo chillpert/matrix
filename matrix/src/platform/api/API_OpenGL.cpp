@@ -33,7 +33,21 @@ namespace MX
 
   void API_OpenGL::clear() const
   {
-    glViewport(0, 0, Application::get().m_Window->m_Props.m_Width, Application::get().m_Window->m_Props.m_Height);
+    Application::get().m_Window->m_Props.updateViewport();
+
+    int viewport_x = Application::get().m_Window->m_Props.m_ViewportX;
+    int viewport_y = Application::get().m_Window->m_Props.m_ViewportY;
+
+    // int screen_x = Application::get().m_Window->m_Props.m_Width;
+    int screen_y = Application::get().m_Window->m_Props.m_Height;
+
+    World::get().m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
+
+    glViewport(0,
+               screen_y - viewport_y,
+               viewport_x,
+               viewport_y);
+
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }

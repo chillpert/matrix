@@ -41,6 +41,11 @@ namespace MX
       int m_Width = initial_window_width;
       int m_Height = initial_window_height;
 
+      int m_ViewportX = 1400;
+      int m_ViewportY = 700;
+
+      void updateViewport();
+
       bool m_FullScreen = 0;
 
       // timing
