@@ -17,7 +17,7 @@
   #ifdef MX_GLFW_ACTIVE
     #include <GLFW/glfw3.h>
   #elif MX_SDL2_ACTIVE
-    #include "SDL2/SDL.h"
+    #include <SDL.h>
     #undef main
   #endif
 

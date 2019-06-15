@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.14.0)
 message("MX: Configuring Framework")
 
+# include and link directories
+include_directories(${CMAKE_SOURCE_DIR})
+
 # glfw
 if(USE_GLFW)
   set(GLFW_DIRECTORY glfw)
@@ -20,7 +23,10 @@ if(USE_SDL2)
 
   add_subdirectory(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY})
   include_directories(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY}/include)
-  #link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
+
+  if(WIN32 AND CMAKE_CL_64)
+    link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
+  endif()
 
 endif(USE_SDL2)
 
@@ -43,6 +49,11 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 # boost (windows)
 if(WIN32)
   if(CMAKE_CL_64)
+    set(BOOST_DIRECTORY boost)
+
+    include_directories(${PROJECT_SOURCE_DIR}/external/${BOOST_DIRECTORY})
+    link_directories(${PROJECT_SOURCE_DIR}/external/${BOOST_DIRECTORY})
+
     set(BOOST_LIB ${Boost_LIBRARIES}
       "libboost_filesystem-vc141-mt-gd-x64-1_70"
       )
@@ -110,7 +121,7 @@ elseif(USE_OPENGL)
   # prepare for static linking
   if(WIN32)
     set(STATIC_GLEW ${STATIC_GLEW}
-      glew32s
+      libglew_sharedd
     )
   
   elseif(UNIX)
@@ -140,9 +151,18 @@ elseif(USE_SDL2)
   message("MX: Using SDL2")
 
   # set library for linking
-  set(WINDOW_LIB ${WINDOW_LIB}
-    SDL2
-  )
+  if(UNIX)
+    set(WINDOW_LIB ${WINDOW_LIB}
+      SDL2
+    )
+
+  elseif(WIN32 AND CMAKE_CL_64)
+    set(WINDOW_LIB ${WINDOW_LIB}
+      SDL2d
+      )
+  
+  endif()
+
 
 elseif(USE_GLFW)
   message("MX: Using GLFW")
@@ -154,11 +174,6 @@ elseif(USE_GLFW)
     ${GLFW_LIBRARIES}
   )
 endif()
-
-# include and link directories
-include_directories(${CMAKE_SOURCE_DIR})
-#include_directories(external/include)
-#link_directories(external/libs)
 
 # logging
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
