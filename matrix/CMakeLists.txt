@@ -15,6 +15,10 @@ if(USE_GLFW)
   add_subdirectory(${PROJECT_SOURCE_DIR}/external/${GLFW_DIRECTORY})
   include_directories(${PROJECT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
 
+  if(WIN32 AND CMAKE_CL_64)
+    link_directories(${PROJECT_SOURCE_DIR}/build/external/${GLFW_DIRECTORY}/src)
+  endif()
+
 endif(USE_GLFW)
 
 # sdl
