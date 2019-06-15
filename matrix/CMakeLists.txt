@@ -261,13 +261,6 @@ elseif(UNIX)
 
 endif()
 
-# precompiled header
-if(MSCV)
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Yustdafx.h /FIstdafx.h")
-else()
-  message("MX: WARN: No PCH available for current compiler")
-endif(MSCV)
-
 # files for library
 file(GLOB FILES_LIB
   "${PROJECT_SOURCE_DIR}/matrix/src/controller/*.cpp"
@@ -277,23 +270,40 @@ file(GLOB FILES_LIB
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/api/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/window/*.cpp"
-  "${PROJECT_SOURCE_DIR}/matrix/src/*.cpp"         
-
-  ${GUI_FILES}
+  "${PROJECT_SOURCE_DIR}/matrix/src/*.cpp" 
   )
 
+file(GLOB GUI_FILES_NON_PCH
+  ${GUI_FILES}
+)
+
+# precompiled header
+if(MSVC)
+  set_source_files_properties(${PROJECT_SOURCE_DIR}/matrix/src/pch/stdafx.cpp
+    PROPERTIES
+    COMPILE_FLAGS "/Ycstdafx.h"
+    )
+  foreach(src_file ${FILES_LIB})
+    set_source_files_properties(
+      ${src_file}
+      PROPERTIES
+      COMPILE_FLAGS "/Yustdafx.h"
+      )
+  endforeach(src_file ${FILES_LIB})
+  list(APPEND FILES_LIB ${PROJECT_SOURCE_DIR}/matrix/src/pch/stdafx.cpp)
+
+else()
+  message("MX: WARN: No PCH available for current compiler")
+
+endif()
+
 # library
-add_library(MatrixLib SHARED ${FILES_LIB})
+add_library(MatrixLib SHARED ${FILES_LIB} ${GUI_FILES_NON_PCH})
 
 target_link_libraries(MatrixLib
   ${API_LIB}
   ${WINDOW_LIB}
   ${Boost_LIBRARIES}
-  )
-
-set_source_files_properties(matrix/pch/stdafx.cpp
-  PROPERTIES
-  COMPILE_FLAGS "/Ycstdafx.h"
   )
 
 # controller profile
