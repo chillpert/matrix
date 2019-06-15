@@ -140,6 +140,8 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
+set(BOOST_DIRECTORY boost)
+
 # boost (windows)
 if(WIN32)
   if(CMAKE_CL_64)
@@ -148,23 +150,25 @@ if(WIN32)
     include_directories(${PROJECT_SOURCE_DIR}/external/${BOOST_DIRECTORY})
     link_directories(${PROJECT_SOURCE_DIR}/external/${BOOST_DIRECTORY})
 
-    set(BOOST_LIB ${Boost_LIBRARIES}
+    set(BOOST_LIB ${BOOST_LIB}
       "libboost_filesystem-vc141-mt-gd-x64-1_70"
       )
   
   endif()
-endif()
 
 # boost (unix)
-if(UNIX)
+elseif(UNIX)
   find_package(Boost REQUIRED COMPONENTS filesystem) 
   if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS}) 
+    include_directories(${Boost_INCLUDE_DIRS})
+    
+    set(BOOST_LIB ${Boost_LIBRARIES}
+      ${Boost_LIBRARIES}
+      )
+
   endif()
 
 endif()
-
-include_directories(${PROJECT_SOURCE_DIR}/external/boost)
 
 ####################################################################################################
 #############################           glm             ############################################
@@ -303,7 +307,7 @@ add_library(MatrixLib SHARED ${FILES_LIB} ${GUI_FILES_NON_PCH})
 target_link_libraries(MatrixLib
   ${API_LIB}
   ${WINDOW_LIB}
-  ${Boost_LIBRARIES}
+  ${BOOST_LIB}
   )
 
 # controller profile

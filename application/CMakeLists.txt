@@ -54,7 +54,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
 endif()
 
 # copy sdl2.dll to binary location in post build
-if(USE_SDL2)
+if(USE_SDL2 AND NOT UNIX)
   message("MX: Copying SDL2.dll to binary location")
 
   add_custom_command(
@@ -68,7 +68,7 @@ if(USE_SDL2)
 endif(USE_SDL2)
 
 # copy glewd.dll to binary location in post build
-if(USE_OPENGL)
+if(USE_OPENGL AND NOT UNIX)
   message("MX: Copying glewd.dll to binary location")
 
   add_custom_command(
