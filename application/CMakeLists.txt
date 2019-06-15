@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.14.0)
 
 message("MX: Configuring Application")
 
-# this file is used to configure your actual application
-# make sure the Matrix.dll file is in the same directory
-# as your executable
-
 # include headers
 include_directories(application/src)
 
@@ -42,50 +38,45 @@ set_target_properties(MatrixLib Sandbox
   RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo"
   )
 
-# copy sdl2.dll to binary location
+# set build paths
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(BUILD_PATH debug)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(BUILD_PATH release)
+  
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  set(BUILD_PATH relwithbebinfo)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+  set(BUILD_PATH minsizerel)
+
+endif()
+
+# copy sdl2.dll to binary location in post build
 if(USE_SDL2)
   message("MX: Copying SDL2.dll to binary location")
 
-  set(SDL2_DLL_PATH ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/SDL2d.dll)
-
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(COPY ${SDL2_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/debug)
-
-  elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    file(COPY ${SDL2_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/release)
-    
-  elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    file(COPY ${SDL2_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo)
-
-  elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    file(COPY ${SDL2_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/minsizerel)
-  endif()
+  add_custom_command(
+    TARGET Sandbox
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+            ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/SDL2d.dll
+            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/SDL2d.dll
+    COMMENT "Running PRE_LINK action"
+    )
 endif(USE_SDL2)
 
-# copy glewd.dll to binary location
+# copy glewd.dll to binary location in post build
 if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
   message("MX: Copying glewd.dll to binary location")
 
-  set(GLEWD_DLL_PATH ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll)
-
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(COPY ${GLEWD_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/debug)
-
-  elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    file(COPY ${GLEWD_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/release)
-    
-  elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    file(COPY ${GLEWD_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo)
-
-  elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    file(COPY ${GLEWD_DLL_PATH}
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/minsizerel)
-  endif()
-endif(USE_OPENGL)
+  add_custom_command(
+    TARGET Sandbox
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+            ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll
+            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/glewd.dll
+    COMMENT "Running PRE_LINK action"
+    )
+endif()
