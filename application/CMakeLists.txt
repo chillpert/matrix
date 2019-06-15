@@ -46,20 +46,20 @@ set_target_properties(MatrixLib Sandbox
 if(USE_SDL2)
   message("Copying SDL2.dll to binary location")
 
-  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/debug)
-
-  elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/release)
-    
-  elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo)
-
-  elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
-      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/minsizerel)
-  endif()
+#  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+#      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/debug)
+#
+#  if(CMAKE_BUILD_TYPE STREQUAL "Release")
+#    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+#      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/release)
+#    
+#  elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+#    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+#      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo)
+#
+#  elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+#    file(COPY ${PROJECT_SOURCE_DIR}/external/dlls/SDL2.dll
+#      DESTINATION ${PROJECT_SOURCE_DIR}/build/bin/minsizerel)
+#  endif()
 ENDIF()

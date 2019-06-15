@@ -14,6 +14,16 @@ if(USE_GLFW)
 
 endif(USE_GLFW)
 
+# sdl
+if(USE_SDL2)
+  set(SDL_DIRECTORY SDL-mirror)
+
+  add_subdirectory(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY})
+  include_directories(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY}/include)
+  #link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
+
+endif(USE_SDL2)
+
 # glew
 if(USE_OPENGL)
   set(glew-cmake_BUILD_STATIC OFF CACHE STRING "" FORCE)
@@ -130,14 +140,9 @@ elseif(USE_SDL2)
   message("MX: Using SDL2")
 
   # set library for linking
-  set(WINDOW_LIB ${WINDOW_LIB}   
+  set(WINDOW_LIB ${WINDOW_LIB}
     SDL2
   )
-
-  if(UNIX)
-    #find_package(SDL2_REQUIRED)
-    #include_directories(${SDL2_INCLUDE_DIRS})
-  endif()
 
 elseif(USE_GLFW)
   message("MX: Using GLFW")
@@ -153,7 +158,7 @@ endif()
 # include and link directories
 include_directories(${CMAKE_SOURCE_DIR})
 #include_directories(external/include)
-link_directories(external/libs)
+#link_directories(external/libs)
 
 # logging
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
