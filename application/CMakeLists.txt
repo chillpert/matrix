@@ -63,12 +63,12 @@ if(USE_SDL2)
     COMMAND ${CMAKE_COMMAND} -E copy
             ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/SDL2d.dll
             ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/SDL2d.dll
-    COMMENT "Running PRE_LINK action"
+    COMMENT "Running POST_BUILD action: Copying SDL2d.dll to binary location"
     )
 endif(USE_SDL2)
 
 # copy glewd.dll to binary location in post build
-if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
+if(USE_OPENGL)
   message("MX: Copying glewd.dll to binary location")
 
   add_custom_command(
@@ -77,6 +77,6 @@ if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
     COMMAND ${CMAKE_COMMAND} -E copy
             ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll
             ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/glewd.dll
-    COMMENT "Running PRE_LINK action"
+    COMMENT "Running POST_BUILD action: Copying glewd.dll to binary location"
     )
 endif()
