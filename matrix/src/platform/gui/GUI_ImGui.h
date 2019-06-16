@@ -19,31 +19,33 @@ namespace MX
   class GUI_ImGui: public GUI
   {
   public: 
-    MX_API GUI_ImGui() {}
-    MX_API ~GUI_ImGui() {}
+    MX_API GUI_ImGui() = default;
+    MX_API ~GUI_ImGui() = default;
+
+    MX_API GUI_ImGui(const GUI_ImGui&) = default;
+    MX_API GUI_ImGui &operator=(const GUI_ImGui&) = default;
 
     MX_API void initialize() override;
     MX_API void update() override;
     MX_API void render() override;
     MX_API void clean() override;
-  
-  private:
-    // GUI_ImGui_Editor.cpp
-    MX_API static void renderEditorWindow();
-
-    // GUI_ImGui_Hierarchy.cpp
-    MX_API static void renderHierarchyWindow();
-
-    // GUI_ImGui_MenuBar.cpp
-    MX_API static void renderMenuBar();
-
-    // GUI_ImGui.cpp
-    MX_API static void renderViewport();
-    MX_API static void renderDockSpace();
-
-    // GUI_ImGui_Logger.cpp
-    MX_API static void renderLoggerWindow();
   };
+
+  // GUI_ImGui_Editor.cpp
+  MX_API void renderEditorWindow();
+
+  // GUI_ImGui_Hierarchy.cpp
+  MX_API void renderHierarchyWindow();
+
+  // GUI_ImGui_MenuBar.cpp
+  MX_API void renderMenuBar();
+
+  // GUI_ImGui.cpp
+  MX_API void renderViewport();
+  MX_API void renderDockSpace();
+
+  // GUI_ImGui_Logger.cpp
+  MX_API void renderLoggerWindow();
 }
 
 #endif // GUI_IMGUI_H

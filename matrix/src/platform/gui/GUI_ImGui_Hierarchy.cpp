@@ -9,7 +9,7 @@ namespace MX
   static void draw_scene_graph_menu(Node &it);
   static void draw_outline_menu();
 
-  void GUI_ImGui::renderHierarchyWindow()
+  void renderHierarchyWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;

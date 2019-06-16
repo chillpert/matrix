@@ -25,7 +25,7 @@ namespace MX
   static void render_about_popup();
   static void render_set_resolution_popup();
 
-  void GUI_ImGui::renderMenuBar()
+  void renderMenuBar()
   {
   #ifdef MX_IMGUI_ACTIVE
     if (popup_no_titlebar)        popup_flags |= ImGuiWindowFlags_NoTitleBar;

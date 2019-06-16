@@ -49,7 +49,7 @@ namespace MX
   static void render_delete_scene_popup(Scene *scene);
   static void render_load_scene_popup(Scene *scene);
 
-  void GUI_ImGui::renderEditorWindow()
+  void renderEditorWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;

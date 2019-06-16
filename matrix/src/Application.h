@@ -13,26 +13,30 @@
 
 namespace MX
 {
-  class MX_API Application
+  class Application
   {     
   public:
-    static Application &get();
+    MX_API static Application &get();
   
-    void initialize(void (*initialize_func)());
-    void render(void (*render_func)());
-    void update(void (*update_func)());
-    void stop();
-    void clean();
-     
-    API* m_API = MX_API_TYPE;
-    GUI* m_GUI = MX_GUI_TYPE;
+    MX_API void initialize(void (*initialize_func)());
+    MX_API void render(void (*render_func)());
+    MX_API void update(void (*update_func)());
+    MX_API void stop();
+    MX_API void clean();
+
+    std::unique_ptr<API> m_API;
+    std::unique_ptr<GUI> m_GUI;
     std::unique_ptr<Window> m_Window;
     std::unique_ptr<LayerStack> m_LayerStack;
+
     bool m_Running;
   
   private:
-    Application();
-    ~Application();
+    MX_API Application();
+    MX_API ~Application();
+
+    MX_API Application(const Application&) = delete;
+    MX_API Application &operator=(const Application&) = delete;
   };  
 }
 

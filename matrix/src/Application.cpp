@@ -7,6 +7,8 @@ namespace MX
   {
     MX_INFO_LOG("MX: Application: Constructor");
 
+    m_API = std::make_unique<MX_API_TYPE>();
+    m_GUI = std::make_unique<MX_GUI_TYPE>();
     m_Window =  std::make_unique<MX_WINDOW_TYPE>();
     m_LayerStack = std::make_unique<LayerStack>();
 
@@ -17,12 +19,7 @@ namespace MX
 
   Application::~Application()
   {
-    delete m_API;
-    m_API = nullptr;
-    delete m_GUI;
-    m_GUI = nullptr;
-
-    MX_INFO("MX: Application: Destroyed");
+    MX_INFO_LOG("MX: Application: Destroyed");
   }
 
   Application &Application::get()
@@ -35,18 +32,18 @@ namespace MX
   {
     // set up window 
     m_Running = m_Window->initialize();
-    MX_SUCCESS("MX: Application: Initialization: Window");
+    MX_SUCCESS_LOG("MX: Application: Initialization: Window");
     
     // set up API
     m_Running = m_API->initialize();
-    MX_SUCCESS("MX: Application: Initialization: API");
+    MX_SUCCESS_LOG("MX: Application: Initialization: API");
     
     initialize_func();
     MX_SUCCESS_LOG("MX: Application: Initialization: Func");
 
     // set up GUI
     m_GUI->initialize();
-    MX_SUCCESS("MX: Application: Initialization: GUI");
+    MX_SUCCESS_LOG("MX: Application: Initialization: GUI");
 
     if (m_Running)
       MX_SUCCESS("MX: Application: Initialization");
@@ -86,6 +83,6 @@ namespace MX
 
     m_Window->close();
 
-    MX_SUCCESS("MX: Application: Closed");
+    MX_SUCCESS_LOG("MX: Application: Closed");
   }
 }

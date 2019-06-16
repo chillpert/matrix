@@ -177,7 +177,7 @@ namespace MX
   #endif
   }
 
-  void GUI_ImGui::renderDockSpace()
+  void renderDockSpace()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool opt_fullscreen_persistant = true;
@@ -219,7 +219,7 @@ namespace MX
   #endif
   }
 
-  void GUI_ImGui::renderViewport()
+  void renderViewport()
   {
   #ifdef MX_IMGUI_ACTIVE
     static ImGuiWindowFlags window_flags = 0;
