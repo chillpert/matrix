@@ -28,11 +28,6 @@ namespace MX
     MX_API void clean() override;
   
   private:
-    // GUI_ImGui_Events.cpp
-    MX_API static void renderInputWindow();
-    MX_API static void renderEventWindow();
-    MX_API static void renderSelectionWindow();
-
     // GUI_ImGui_Editor.cpp
     MX_API static void renderEditorWindow();
 
@@ -41,6 +36,8 @@ namespace MX
 
     // GUI_ImGui_MenuBar.cpp
     MX_API static void renderMenuBar();
+
+    // GUI_ImGui.cpp
     MX_API static void renderViewport();
     MX_API static void renderDockSpace();
 

@@ -26,7 +26,7 @@ namespace MX
     void handleResizeWindow(int width, int height);
     
     // toggle mouse hidden
-    bool m_MouseHidden = 1;
+    bool m_MouseHidden = 0;
 
     bool m_FirstMouse = 1;
 

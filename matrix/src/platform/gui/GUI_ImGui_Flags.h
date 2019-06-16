@@ -7,9 +7,6 @@
 
 namespace MX
 {
-  // font
-  MX_API extern ImFont* font_global;
-
   // all object files in model directory
   MX_API extern std::vector<const char*> all_available_models;
   // all texture files in texture directory

@@ -34,11 +34,9 @@ namespace MX
   static bool popup_no_move = 1;
   static bool popup_no_resize = 1;
   static bool popup_no_collapse = 1;
-  // static bool popup_no_close = 0;
   static bool popup_no_nav = 0;
   static bool popup_no_background = 0;
   static bool popup_no_bring_to_front = 0;
-  // static bool popup_p_open = 1;
   static bool popup_no_autoresize = 0;
 
   static void render_scenes_menu();
@@ -60,7 +58,6 @@ namespace MX
     static bool no_move = 0;
     static bool no_resize = 0;
     static bool no_collapse = 1;
-    // static bool no_close = 0;
     static bool no_nav = 0;
     static bool no_background = 0;
     static bool no_bring_to_front = 0;
@@ -84,18 +81,7 @@ namespace MX
 
     if (!p_open_editor)
       editor_window_enabled = 0;
-/*
-    if (hierarchy_window_enabled)
-    {
-      ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
-      ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f));
-    }
-    else
-    {
-      ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
-      ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
-    }
-*/
+
     if (ImGui::BeginMenuBar())
     {
       if (ImGui::MenuItem("Scenes##manage scenes", "", true, !show_scenes_menu))
@@ -226,23 +212,23 @@ namespace MX
   static void render_transform_menu()
   {
   #ifdef MX_IMGUI_ACTIVE
+    SceneGraph *app_sg = &World::get().m_ActiveScene->m_Sg;
+
     prev_x_drag = x_drag;
     
     if (ImGui::DragFloat("x##x_slider", &x_drag, grab_speed))
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        Node *temp = app_sg->search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
-        search_holder->setTransform(
+        temp->setTransform(
           (x_drag > 0) ? (x_drag > prev_x_drag) ? RIGHT : LEFT : (x_drag > prev_x_drag) ? LEFT : RIGHT, 
           x_drag / transform_factor, 
           0
         );
       }
       catch (const std::exception &e) { } 
-      
-      search_holder = nullptr;
     }
 
     prev_y_drag = y_drag;
@@ -251,17 +237,15 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        Node *temp = app_sg->search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
-        search_holder->setTransform(
+        temp->setTransform(
           (y_drag > 0) ? (y_drag > prev_y_drag) ? UP : DOWN : (y_drag > prev_y_drag) ? DOWN : UP, 
-          y_drag / transform_factor, 
+          y_drag / transform_factor,
           0
         );
       }
       catch(const std::exception& e) { }
-
-      search_holder = nullptr;
     }
     
     prev_z_drag = z_drag;
@@ -270,17 +254,15 @@ namespace MX
     {
       try
       {
-        World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
+        Node *temp = app_sg->search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
 
-        search_holder->setTransform(
+        temp->setTransform(
           (z_drag > 0) ? (z_drag > prev_z_drag) ? FORWARDS : BACKWARDS : (z_drag > prev_z_drag) ? BACKWARDS : FORWARDS, 
           z_drag / transform_factor, 
           0
         );
       }
       catch (const std::exception &e) { }
-      
-      search_holder = nullptr;
     }
   #endif
   }

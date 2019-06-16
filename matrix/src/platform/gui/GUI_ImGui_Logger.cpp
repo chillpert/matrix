@@ -214,30 +214,7 @@ namespace MX
 
     if (!p_open_logger)
       logger_window_enabled = 0;
-/*
-    if (editor_window_enabled || hierarchy_window_enabled)
-    {
-      ImGui::SetWindowPos(
-        ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, 
-               float (Application::get().m_Window->m_Props.m_Height) - float (Application::get().m_Window->m_Props.m_Height) / 4.0f)
-      );
-      ImGui::SetWindowSize(
-        ImVec2(float (Application::get().m_Window->m_Props.m_Width) - float (Application::get().m_Window->m_Props.m_Width) / 5.0f,
-               float (Application::get().m_Window->m_Props.m_Height) / 4.0f + 1.0f)
-      );
-    }
-    else if (!editor_window_enabled && !hierarchy_window_enabled)
-    {
-      ImGui::SetWindowPos(
-        ImVec2(0.0f,
-               float (Application::get().m_Window->m_Props.m_Height) - float (Application::get().m_Window->m_Props.m_Height) / 4.0f)
-      );
-      ImGui::SetWindowSize(
-        ImVec2(float (Application::get().m_Window->m_Props.m_Width),
-               float (Application::get().m_Window->m_Props.m_Height) / 4.0f + 1.0f)
-      );
-    }
-*/     
+   
     ImGui::End();
   #endif
   }

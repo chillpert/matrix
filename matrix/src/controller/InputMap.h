@@ -146,16 +146,18 @@ namespace MX
   #define MX_F12_RELEASED 
 
   // mouse (pressed)
-  #define MX_LEFT_PRESSED          
-  #define MX_RIGHT_PRESSED  Controller::get().m_MouseHidden = !Controller::get().m_MouseHidden;\
-                            Controller::get().m_FirstMouse = 1;\
-                            disable_all_keys();
-  #define MX_MIDDLE_PRESSED
+  #define MX_LEFT_PRESSED     
+  #define MX_RIGHT_PRESSED Controller::get().m_MouseHidden = 1;\
+                           Controller::get().m_FirstMouse = 1;\
+                           disable_all_keys();
+  #define MX_MIDDLE_PRESSED 
   #define MX_SCROLL_UP
 
   // mouse (released)
   #define MX_LEFT_RELEASED        
-  #define MX_RIGHT_RELEASED
+  #define MX_RIGHT_RELEASED Controller::get().m_MouseHidden = 0;\
+                            Controller::get().m_FirstMouse = 1;\
+                            disable_all_keys();
   #define MX_MIDDLE_RELEASED
   #define MX_SCROLL_DOWN
 

@@ -1,6 +1,7 @@
 #include "matrix/src/platform/gui/GUI_ImGui.h"
 #include "matrix/src/platform/window/Window_SDL2.h"
 #include "matrix/src/platform/window/Window_GLFW.h"
+#include "matrix/src/Application.h"
 
 #ifdef MX_IMGUI_ACTIVE
 
@@ -27,6 +28,11 @@
 
 namespace MX
 {
+  static bool first_run = 1;
+  static bool dockspace_p_open = 1;
+
+  ImFont* font_global;
+
   void GUI_ImGui::initialize()
   {
   #ifdef MX_IMGUI_ACTIVE
@@ -112,6 +118,9 @@ namespace MX
   void GUI_ImGui::update()
   {
   #ifdef MX_IMGUI_ACTIVE
+    // update application viewport
+    
+
     ImGui_ImplOpenGL3_NewFrame();
     MX_IMGUI_NEW_FRAME
     ImGui::NewFrame();
@@ -125,14 +134,11 @@ namespace MX
     ImGui::PushFont(font_global);
     ImGui::PopFont();
 
-    renderDockSpace();    
-
-    if (viewport_enabled)
-      renderViewport();
+    renderDockSpace();  
+    renderViewport();
     
     if (demo_window_enabled)
       ImGui::ShowDemoWindow();
-    
     if (menubar_enabled)
       renderMenuBar();
     if (editor_window_enabled)
@@ -160,6 +166,105 @@ namespace MX
     for (std::vector<const char*>::iterator iter = all_available_models.begin() + 1; iter != all_available_models.end(); ++iter)
       delete *iter;
 
+  #endif
+  }
+
+  void GUI_ImGui::renderDockSpace()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    static bool opt_fullscreen_persistant = true;
+    bool opt_fullscreen = opt_fullscreen_persistant;
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    if (opt_fullscreen)
+    {
+      ImGuiViewport* viewport = ImGui::GetMainViewport();
+      ImGui::SetNextWindowPos(viewport->Pos);
+      ImGui::SetNextWindowSize(viewport->Size);
+      ImGui::SetNextWindowViewport(viewport->ID);
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+      window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+      window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    }
+
+    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+      window_flags |= ImGuiWindowFlags_NoBackground;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::Begin("DockSpace Demo", &dockspace_p_open, window_flags);
+    ImGui::PopStyleVar();
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    {
+      ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+      ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+    }
+
+    if (opt_fullscreen)
+      ImGui::PopStyleVar(2);
+
+    ImGui::End();
+
+  #endif
+  }
+
+  void GUI_ImGui::renderViewport()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    static ImGuiWindowFlags window_flags = 0;
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 1;
+    static bool no_move = 0;
+    static bool no_resize = 0;
+    static bool no_collapse = 0;
+    static bool no_nav = 0;
+    static bool no_background = 1;
+    static bool no_bring_to_front = 0;
+    static bool no_autoresize = 0;
+    static bool p_open = 1;
+
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
+    if (no_autoresize)      window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+    
+    ImGui::Begin("ViewPort", &p_open, window_flags);
+
+    Window::WindowProps *app_window_props = &Application::get().m_Window->m_Props;
+
+    static int menubar_offset = 19;
+
+    if (!first_run)
+    {
+      ImGui::SetWindowPos(ImVec2(0, menubar_offset));
+      ImGui::SetWindowSize(ImVec2(
+        app_window_props->m_ViewportX,
+        app_window_props->m_ViewportY - menubar_offset
+      ));
+      first_run = 0;
+    }
+
+    // comments are values at start up with window resolution of 1200, 600
+    auto window_size = ImGui::GetWindowSize(); // 853, 581
+    auto window_pos = ImGui::GetWindowPos(); // 0, 19
+
+    app_window_props->m_CornerX = window_pos.x; // 0
+    app_window_props->m_CornerY = window_size.y + window_pos.y; // 19
+
+    app_window_props->m_ViewportX = window_size.x; // 853
+    app_window_props->m_ViewportY = window_size.y; // 581
+    ImGui::End();
+    
   #endif
   }
 }
