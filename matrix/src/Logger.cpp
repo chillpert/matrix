@@ -5,6 +5,11 @@
   #define MX_LOG_INFO    "INFO   [" + t + "]: " + message + "\n"
   #define MX_LOG_SUCCESS "SUCCESS[" + t + "]: " + message + "\n"
 
+  #define MX_GUI_FATAL   "[" + t + "]: " + message + "\n"
+  #define MX_GUI_WARN    "[" + t + "]: " + message + "\n"
+  #define MX_GUI_INFO    "[" + t + "]: " + message + "\n"
+  #define MX_GUI_SUCCESS "[" + t + "]: " + message + "\n"
+
   #ifdef MX_PLATFORM_WINDOWS_X64
     #define MX_CONSOLE_HANDLE HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     #define MX_PRINT_FATAL    SetConsoleTextAttribute(hConsole, 12); std::string finalMessage = "FATAL  [" + t + "]: " + message + "\n";
@@ -136,7 +141,7 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_FATAL);
-    writeToGUI(MX_LOG_FATAL, mx_fatal);
+    writeToGUI(MX_GUI_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn(const std::string &message)
@@ -146,7 +151,7 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_WARN);
-    writeToGUI(MX_LOG_WARN, mx_warn);
+    writeToGUI(MX_GUI_WARN, mx_warn);
   }
 
   void Logger::p_Info(const std::string &message)
@@ -156,7 +161,7 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_INFO);
-    writeToGUI(MX_LOG_INFO, mx_info);
+    writeToGUI(MX_GUI_INFO, mx_info);
   }
 
   void Logger::p_Success(const std::string &message)
@@ -166,34 +171,34 @@ namespace MX
     std::cerr << finalMessage;
     MX_PRINT_RESET;
     writeToFile(MX_LOG_SUCCESS);
-    writeToGUI(MX_LOG_SUCCESS, mx_success);
+    writeToGUI(MX_GUI_SUCCESS, mx_success);
   }
 
   void Logger::p_Fatal_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_FATAL);
-    writeToGUI(MX_LOG_FATAL, mx_fatal);
+    writeToGUI(MX_GUI_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_WARN);
-    writeToGUI(MX_LOG_WARN, mx_warn);
+    writeToGUI(MX_GUI_WARN, mx_warn);
   }
 
   void Logger::p_Info_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_INFO);
-    writeToGUI(MX_LOG_INFO, mx_info);
+    writeToGUI(MX_GUI_INFO, mx_info);
   }
 
   void Logger::p_Success_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_SUCCESS);
-    writeToGUI(MX_LOG_SUCCESS, mx_success);
+    writeToGUI(MX_GUI_SUCCESS, mx_success);
   }
 }

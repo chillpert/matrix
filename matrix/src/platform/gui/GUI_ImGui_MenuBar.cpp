@@ -17,17 +17,60 @@ namespace MX
   static bool popup_no_move = 1;
   static bool popup_no_resize = 1;
   static bool popup_no_collapse = 1;
-  static bool popup_no_close = 0;
+  // static bool popup_no_close = 0;
   static bool popup_no_nav = 0;
   static bool popup_no_background = 0;
-  static bool popup_no_bring_to_front = 0;
+  static bool popup_no_bring_to_front = 1;
   static bool popup_no_autoresize = 0;
-  static bool popup_p_open = 1;
+  // static bool popup_p_open = 1;
 
   static bool first_run = 1;
+  static bool dockspace_p_open = 1;
 
   static void render_about_popup();
   static void render_set_resolution_popup();
+
+  void GUI_ImGui::renderDockSpace()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    static bool opt_fullscreen_persistant = true;
+    bool opt_fullscreen = opt_fullscreen_persistant;
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    if (opt_fullscreen)
+    {
+      ImGuiViewport* viewport = ImGui::GetMainViewport();
+      ImGui::SetNextWindowPos(viewport->Pos);
+      ImGui::SetNextWindowSize(viewport->Size);
+      ImGui::SetNextWindowViewport(viewport->ID);
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+      ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+      window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+      window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    }
+
+    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+      window_flags |= ImGuiWindowFlags_NoBackground;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::Begin("DockSpace Demo", &dockspace_p_open, window_flags);
+    ImGui::PopStyleVar();
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    {
+      ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+      ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+    }
+
+    if (opt_fullscreen)
+      ImGui::PopStyleVar(2);
+
+    ImGui::End();
+
+  #endif
+  }
 
   void GUI_ImGui::renderViewport()
   {
@@ -36,10 +79,10 @@ namespace MX
     static bool no_titlebar = 0;
     static bool no_scrollbar = 0;
     static bool no_menu = 1;
-    static bool no_move = 1;
+    static bool no_move = 0;
     static bool no_resize = 0;
     static bool no_collapse = 0;
-    static bool no_close = 0;
+    // static bool no_close = 0;
     static bool no_nav = 0;
     static bool no_background = 1;
     static bool no_bring_to_front = 0;
@@ -57,19 +100,8 @@ namespace MX
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
     if (no_autoresize)      window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
     
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-    //dockspace_flags |= ImGuiDockNodeFlags_NoSplit;
-    dockspace_flags |= ImGuiDockNodeFlags_NoResize;
-    //dockspace_flags |= ImGuiDockNodeFlags_AutoHideTabBar;
-    dockspace_flags |= ImGuiDockNodeFlags_NoDockingInCentralNode;
-    dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
-    //dockspace_flags |= ImGuiDockNodeFlags_AutoHideTabBar;
+    ImGui::Begin("ViewPort", &p_open_viewport, window_flags);
 
-    ImGui::Begin("ViewPort", &p_open, window_flags);
-
-    //ImGuiID dockspace_id = ImGui::GetWindowDockID();
-    //ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-    
     if (first_run)
     {
       ImGui::SetWindowPos(ImVec2(0, 19));
@@ -79,8 +111,6 @@ namespace MX
       ));
       first_run = 0;
     }
-
-    ImGui::Text("hallo");
 
     auto window_size = ImGui::GetWindowSize(); // 853, 581
     auto window_pos = ImGui::GetWindowPos(); // 0, 19
@@ -106,7 +136,7 @@ namespace MX
     if (popup_no_collapse)        popup_flags |= ImGuiWindowFlags_NoCollapse;
     if (popup_no_nav)             popup_flags |= ImGuiWindowFlags_NoNav;
     if (popup_no_background)      popup_flags |= ImGuiWindowFlags_NoBackground;
-    if (!popup_no_bring_to_front)  popup_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
+    if (!popup_no_bring_to_front) popup_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
     if (popup_no_autoresize)      popup_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 
     if (ImGui::BeginMainMenuBar())
@@ -184,10 +214,44 @@ namespace MX
             p_open_logger = 0;
           }
         }
+/*
+        if (!viewport_enabled)
+        {
+          if (ImGui::MenuItem("show viewport", "CTRL+P"))
+          {
+            viewport_enabled = 1;
+            p_open_viewport = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide viewport", "CTRL+P"))
+          {
+            viewport_enabled = 0;
+            p_open_viewport = 0;
+          }
+        }
+*/      
+        if (!demo_window_enabled)
+        {
+          if (ImGui::MenuItem("show demo", "CTRL+D"))
+          {
+            demo_window_enabled = 1;
+            p_open_demo = 1;
+          }
+        }
+        else
+        {
+          if (ImGui::MenuItem("hide demo", "CTRL+D"))
+          {
+            demo_window_enabled = 0;
+            p_open_demo = 0;
+          }
+        }
 
         ImGui::Separator();
 
-        if (logger_window_enabled || hierarchy_window_enabled || editor_window_enabled)
+        if (logger_window_enabled || hierarchy_window_enabled || editor_window_enabled || demo_window_enabled)
         {
           if (ImGui::MenuItem("hide all", "CTRL+G"))
           {
@@ -197,6 +261,8 @@ namespace MX
             p_open_hierarchy = 0;
             editor_window_enabled = 0;
             p_open_editor = 0;
+            demo_window_enabled = 0;
+            p_open_demo = 0;
           }
         }
         else
@@ -209,6 +275,8 @@ namespace MX
             p_open_hierarchy = 1;
             editor_window_enabled = 1;
             p_open_editor = 1;
+            demo_window_enabled = 1;
+            p_open_demo = 1;
           }
         }
         ImGui::EndMenu();

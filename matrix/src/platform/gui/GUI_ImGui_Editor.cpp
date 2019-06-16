@@ -77,8 +77,7 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    std::string editor_window_title = "World Editor - " + World::get().m_ActiveScene->m_Name;
-    ImGui::Begin(editor_window_title.c_str(), &p_open_editor, window_flags);
+    ImGui::Begin("World Editor", &p_open_editor, window_flags);
 
     // update container of existing objects in active scene
     World::get().m_ActiveScene->m_Sg.getAllObjects(&all_current_objects, World::get().m_ActiveScene->m_Sg.m_Root);
@@ -334,7 +333,7 @@ namespace MX
         render_delete_scene_popup(it);
 
         // scene properties
-        std::string number_objects = "Objects: " + std::to_string(all_current_objects.size());
+        std::string number_objects = "Objects: " + std::to_string(all_current_objects.size()); // needs to be fixed
 
         ImGui::Text(number_objects.c_str());
         ImGui::TreePop();

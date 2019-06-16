@@ -3,17 +3,22 @@
 
 namespace MX
 {
+  ImFont* font_global;
+
   std::vector<std::pair<std::string, ImVec4>> logger_messages_for_gui;
 
-  bool viewport_enabled = 1;
   bool menubar_enabled = 1;
+  bool viewport_enabled = 1;
   bool editor_window_enabled = 1;
   bool hierarchy_window_enabled = 1;
   bool logger_window_enabled = 1;
+  bool demo_window_enabled = 1;
 
   bool p_open_editor = 1;
   bool p_open_hierarchy = 1;
   bool p_open_logger = 1;
+  bool p_open_viewport = 1;
+  bool p_open_demo = 1;
 
   std::vector<const char*> all_available_models = {""};
   std::vector<const char*> all_available_textures = {""};

@@ -42,6 +42,7 @@ namespace MX
     // GUI_ImGui_MenuBar.cpp
     MX_API static void renderMenuBar();
     MX_API static void renderViewport();
+    MX_API static void renderDockSpace();
 
     // GUI_ImGui_Logger.cpp
     MX_API static void renderLoggerWindow();
