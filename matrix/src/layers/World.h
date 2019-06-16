@@ -49,8 +49,8 @@ namespace MX
     MX_API void push(Scene *scene);
     MX_API void pop(const std::string &name);
 
-    MX_API MX_MODEL *getModel(const std::string &name, bool instant_init = 0);
-    MX_API MX_SHADER *getShader(const std::string &name, bool instant_init = 0);
+    MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name, bool instant_init = 0);
+    MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name, bool instant_init = 0);
     MX_API MX_TEXTURE *getTexture(const std::string &name, bool instant_init = 0);
 
   private:
@@ -60,8 +60,8 @@ namespace MX
     Scene *m_ActiveScene;
     std::vector<Scene*> m_ExistingScenes;
   
-    std::vector<MX_MODEL*> m_Models;
-    std::vector<MX_SHADER*> m_Shaders;
+    std::vector<std::shared_ptr<Model>> m_Models;
+    std::vector<std::shared_ptr<Shader>> m_Shaders;
     std::vector<MX_TEXTURE*> m_Textures;
   };
 }

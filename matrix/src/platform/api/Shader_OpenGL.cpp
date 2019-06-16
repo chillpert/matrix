@@ -3,26 +3,8 @@
 
 namespace MX
 {
-  Shader_OpenGL::Shader_OpenGL(const std::string &name, bool instantInitialization)
-  {
-    m_Name = name;
-    m_VsPath.append(name + ".vert");
-    m_FsPath.append(name + ".frag");
-
-    if (instantInitialization)
-      initialize();
-  }
-
-  Shader_OpenGL::Shader_OpenGL(const Shader_OpenGL &shader)
-  {
-    m_ID = shader.m_ID;
-
-    m_Name = shader.m_Name;
-    m_VsPath = shader.m_VsPath;
-    m_FsPath = shader.m_FsPath;
-    m_VsSource = shader.m_VsSource;
-    m_FsSource = shader.m_FsSource;
-  }
+  Shader_OpenGL::Shader_OpenGL(const std::string &name)
+    : Shader(name) { }
 
   void Shader_OpenGL::use() const
   {
@@ -31,8 +13,6 @@ namespace MX
 
   void Shader_OpenGL::initialize()
   {
-    //setName("trivial");
-
     m_ID = glCreateProgram();
 
     m_VsSource = parseFile(m_VsPath);
@@ -46,7 +26,7 @@ namespace MX
 	  glLinkProgram(m_ID);
 	  glValidateProgram(m_ID);
     
-    if (!errorCheck(m_ID, GL_LINK_STATUS))
+    if (!errorCheck(GL_LINK_STATUS))
     {
       glDeleteProgram(m_ID);
       glDeleteShader(vs);
@@ -62,9 +42,6 @@ namespace MX
 
   void Shader_OpenGL::update()
   {
-    /*
-      this function is actually supposed to find the correct shader profile and set the uniforms automatically
-     */
     use();
     setfMat4("view", World::get().m_ActiveScene->m_Cam.getViewMatrix());
     setfMat4("projection", World::get().m_ActiveScene->m_Cam.getProjectionMatrix());
@@ -74,14 +51,15 @@ namespace MX
     setfVec3("viewPosition", World::get().m_ActiveScene->m_Cam.getPosition());
   }
 
-  GLuint compile(GLuint type, const std::string& source)
+
+  u_int32_t Shader_OpenGL::compile(u_int32_t type, const std::string& source)
   {
-    GLuint ID = glCreateShader(type);
+    u_int32_t ID = glCreateShader(type);
 	  const char* src = source.c_str();
 	  glShaderSource(ID, 1, &src, nullptr);
 	  glCompileShader(ID);
 
-    if (!errorCheck(ID, GL_COMPILE_STATUS))
+    if (!errorCheck(GL_COMPILE_STATUS))
     {
       MX_FATAL_LOG("MX: Shader: OpenGL: Compiling Failed: Deleting Shader");
       return -1;
@@ -90,29 +68,36 @@ namespace MX
 	  return ID;
   }
 
-  bool errorCheck(const GLuint &ID, GLint type)
+  bool Shader_OpenGL::errorCheck(int type) const
   {
     GLint success;
     std::vector<char> infoLog;
-	  glGetProgramiv(ID, type, &success);
+	  glGetProgramiv(m_ID, type, &success);
 
     if (!success)
     {
       GLint maxLength = 0;
+
       switch (type)
       {
         case GL_LINK_STATUS:
-          glGetProgramiv(ID, GL_INFO_LOG_LENGTH, &maxLength);
+        {
+          glGetProgramiv(m_ID, GL_INFO_LOG_LENGTH, &maxLength);
           infoLog.resize(maxLength);
-          glGetProgramInfoLog(ID, maxLength, &maxLength, infoLog.data());
+          glGetProgramInfoLog(m_ID, maxLength, &maxLength, infoLog.data());
           break;
+        }
         case GL_COMPILE_STATUS:
-          glGetShaderiv(ID, GL_INFO_LOG_LENGTH, &maxLength);
-          glGetShaderInfoLog(ID, maxLength, &maxLength, infoLog.data());
+        {
+          glGetShaderiv(m_ID, GL_INFO_LOG_LENGTH, &maxLength);
+          glGetShaderInfoLog(m_ID, maxLength, &maxLength, infoLog.data());
           break;
+        }
         default:
+        {
           MX_FATAL("MX: Shader: OpenGL: Unkown Error Occured");
           break;
+        }
       }
 
       std::string errorMessage;
@@ -171,10 +156,5 @@ namespace MX
   void Shader_OpenGL::setfMat4(const std::string &name, const glm::fmat4 &mat) const
   {
     glUniformMatrix4fv(glGetUniformLocation(m_ID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
-  }
-
-  void use(Shader_OpenGL &shader)
-  {
-    glUseProgram(shader.getID());
   }
 }

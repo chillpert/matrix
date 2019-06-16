@@ -24,63 +24,35 @@ namespace MX
 
   World::~World()
   {
-    for (auto *it : m_ExistingScenes)
-    {
-      MX_INFO_LOG("MX: World: Deleting Scene: " + it->m_Name);
-      delete it;
-      it = nullptr;
-    }
-
-    for (auto *it : m_Models)
-    {
-      MX_INFO_LOG("MX: World: Deleting Model: " + it->getName());
-      delete it;
-      it = nullptr;
-    }
-
-    for (auto *it : m_Shaders)
-    {
-      MX_INFO_LOG("MX: World: Deleting Shader: " + it->getName());
-      delete it;
-      it = nullptr;
-    }
-
-    for (auto *it : m_Textures)
-    {
-      MX_INFO_LOG("MX: World: Deleting Texture: " + it->getName());
-      delete it;
-      it = nullptr;
-    }
-
     m_ExistingScenes.clear();
     m_Models.clear();
     m_Shaders.clear();
   }
 
-  MX_MODEL *World::getModel(const std::string &name, bool instant_init)
+  std::shared_ptr<MX_MODEL> World::getModel(const std::string &name, bool instant_init)
   {
-    for (auto *it : m_Models)
+    for (auto it : m_Models)
     {
       if (it->getName() == name)
       {
         if (instant_init)
           it->initialize();
-        return it;
+        return std::static_pointer_cast<MX_MODEL>(it);
       }
     }
 
     throw std::exception();
   }
 
-  MX_SHADER *World::getShader(const std::string &name, bool instant_init)
+  std::shared_ptr<MX_SHADER> World::getShader(const std::string &name, bool instant_init)
   {
-    for (auto *it : m_Shaders)
+    for (auto it : m_Shaders)
     {
-      if (it->getName() == name)
+      if (it->m_Name == name)
       {
         if (instant_init)
           it->initialize();
-        return it;
+        return std::static_pointer_cast<MX_SHADER>(it);
       }
     }
 
@@ -122,7 +94,7 @@ namespace MX
   #endif
 
   #ifdef MX_INSTANT_SHADER_INIT
-    for (auto *it : m_Shaders)
+    for (auto it : m_Shaders)
       it->initialize();
   #endif
 
@@ -230,7 +202,7 @@ namespace MX
       	{
       	  bool model_file_exists_already = 0;
 				
-      	  for (const auto *it : World::get().m_Models)
+      	  for (const auto it : World::get().m_Models)
       	  {
       	    if (it->getName() == file_name)
       	      model_file_exists_already = 1;
@@ -256,15 +228,15 @@ namespace MX
       	{
       	  bool shader_file_exists_already = 0;
 				
-      	  for (const auto *it : World::get().m_Shaders)
+      	  for (const auto it : World::get().m_Shaders)
       	  {
-      	    if (it->getName() == file_name)
+      	    if (it->m_Name == file_name)
       	      shader_file_exists_already = 1;
       	  }
 
       	  if (!shader_file_exists_already)
       	  {
-      	    MX_SHADER *temp_shader = new MX_SHADER(file_name);
+      	    std::shared_ptr<Shader> temp_shader(new MX_SHADER(file_name));
       	    World::get().m_Shaders.push_back(temp_shader);
 					#ifdef MX_IMGUI_ACTIVE
       	    all_available_shaders.push_back(file_name); 

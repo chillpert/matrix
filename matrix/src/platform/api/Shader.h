@@ -14,31 +14,42 @@ namespace MX
   class Shader
   {
   public:
-    MX_API Shader()
-        : m_VsPath(MX_SHADER_PATH), m_FsPath(MX_SHADER_PATH) {}
-    MX_API ~Shader() {}
+    MX_API Shader() = default;
+    MX_API Shader(const std::string &name);
+    MX_API virtual ~Shader() = default;
 
-    MX_API void setPaths(const std::string &vsPath, const std::string &fsPath);
-    MX_API void setVsPath(const std::string &vsPath);
-    MX_API void setFsPath(const std::string &fsPath);
-    MX_API void setName(const std::string &name);
+    MX_API Shader(const Shader&) = default;
+    MX_API Shader &operator=(const Shader&) = default;
 
-    MX_API virtual void update() {}
+    MX_API virtual void initialize() = 0;
+    MX_API virtual void update() = 0;
+    MX_API virtual void use() const = 0;
 
-    MX_API inline const std::string &getName() const { return m_Name; }
-    MX_API inline const std::string &getVsPath() const { return m_VsPath; }
-    MX_API inline const std::string &getFsPath() const { return m_FsPath; }
-    MX_API inline const std::string &getVsSource() const { return m_VsSource; }
-    MX_API inline const std::string &getFsSource() const { return m_FsSource; }
-    
-  protected:
+    MX_API virtual u_int32_t getID() const = 0;
+    MX_API virtual u_int32_t compile(u_int32_t type, const std::string &source) = 0;
+    MX_API virtual bool errorCheck(int type) const = 0;
+
+    MX_API virtual void setBool(const std::string &name, const bool &value) const = 0;
+    MX_API virtual void setInt(const std::string &name, const int &value) const = 0;
+    MX_API virtual void setFloat(const std::string &name, const float &value) const = 0;
+    MX_API virtual void setfVec2(const std::string &name, const glm::fvec2 &value) const = 0;
+    MX_API virtual void setfVec3(const std::string &name, const glm::fvec3 &value) const = 0;
+    MX_API virtual void setfVec4(const std::string &name, const glm::fvec4 &value) const = 0;
+    MX_API virtual void setfMat2(const std::string &name, const glm::fmat2 &mat) const = 0;
+    MX_API virtual void setfMat3(const std::string &name, const glm::fmat3 &mat) const = 0;
+    MX_API virtual void setfMat4(const std::string &name, const glm::fmat4 &mat) const = 0;
+
+    MX_API void setPath(const std::string &name);
+
     std::string m_Name;
-    std::string m_VsPath;
-    std::string m_FsPath;
+    std::string m_VsPath = MX_SHADER_PATH;
+    std::string m_FsPath = MX_SHADER_PATH;
     std::string m_VsSource;
     std::string m_FsSource;
     std::string m_Profile;
   };
+
+  MX_API void use(Shader &shader);
 }
 
 #endif // SHADER_H

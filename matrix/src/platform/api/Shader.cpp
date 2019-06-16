@@ -2,26 +2,20 @@
 
 namespace MX {
 
-  void Shader::setPaths(const std::string &vsPath, const std::string &fsPath)
+  Shader::Shader(const std::string &name)
   {
-    m_VsPath = vsPath;
-    m_FsPath = fsPath;
+    setPath(name);
   }
 
-  void Shader::setVsPath(const std::string &vsPath)
-  {
-    m_VsPath = vsPath;
-  }
-
-  void Shader::setFsPath(const std::string &fsPath)
-  {
-    m_FsPath = fsPath;
-  }
-
-  void Shader::setName(const std::string &name)
+  void Shader::setPath(const std::string &name)
   {
     m_Name = name;
     m_VsPath.append(name + ".vert");
     m_FsPath.append(name + ".frag");
+  }
+
+  void use(Shader &shader)
+  {
+   shader.use();
   }
 }

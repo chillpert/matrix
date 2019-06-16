@@ -158,12 +158,12 @@ namespace MX
       {
         World::get().m_ActiveScene->m_Sg.recursive_search(all_current_objects.at(item_objects_to_select), World::get().m_ActiveScene->m_Sg.m_Root);
       
-        for (auto *it : World::get().m_Shaders)
+        for (auto it : World::get().m_Shaders)
         {
-          if (it->getName() == all_available_shaders.at(item_shaders_to_select))
+          if (it->m_Name == all_available_shaders.at(item_shaders_to_select))
           {
             search_holder->m_Shader = it;
-            MX_INFO("MX: Node: " + search_holder->m_Name + ": Set Shader: " + it->getName());
+            MX_INFO("MX: Node: " + search_holder->m_Name + ": Set Shader: " + it->m_Name);
             search_holder = nullptr;
           }
         }

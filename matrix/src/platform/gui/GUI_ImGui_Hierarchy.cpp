@@ -96,7 +96,7 @@ namespace MX
           try
           {
             Node *temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
-            ImGui::Text(("Shader: " + temp->m_Shader->getName()).c_str());
+            ImGui::Text(("Shader: " + temp->m_Shader->m_Name).c_str());
             ImGui::Text(("Texture: " + temp->m_Texture->getName()).c_str());
             ImGui::Text(("Model: " + temp->m_Model->getName()).c_str());
           }

@@ -2,8 +2,12 @@
 
 namespace MX
 {
-  Node::Node(const std::string &node_name, MX_MODEL *model, MX_SHADER *shader, MX_TEXTURE *texture)
-    : m_Name(node_name), m_Model(model), m_Shader(shader), m_Texture(texture) { }
+  Node::Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model, std::shared_ptr<MX_SHADER> shader, MX_TEXTURE *texture)
+    : m_Name(node_name), m_Texture(texture)
+  {
+    m_Model = model;
+    m_Shader = shader;
+  }
 
   Node::Node(const std::string &node_name)
     : m_Name(node_name)
@@ -30,7 +34,6 @@ namespace MX
     m_Parent = node;
   }
 
-  // always catch this function
   Node* &Node::getChild(const std::string &name)
   {
     for (auto &it : m_Children)
@@ -58,12 +61,12 @@ namespace MX
     m_Trans.push(t, factor, isAnimated);
   }
 
-  void Node::setModel(MX_MODEL *model)
+  void Node::setModel(std::shared_ptr<MX_MODEL> model)
   {
     m_Model = model;
   }
 
-  void Node::setShader(MX_SHADER *shader)
+  void Node::setShader(std::shared_ptr<MX_SHADER> shader)
   {
     m_Shader = shader;
   }

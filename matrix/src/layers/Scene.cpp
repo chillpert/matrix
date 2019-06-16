@@ -27,7 +27,7 @@ namespace MX
     // bool textureExists = 0;
 
     Node *temp_node;
-    MX_MODEL *temp_model;
+    std::shared_ptr<MX_MODEL> model;
     // MX_SHADER *temp_shader;
     // MX_TEXTURE *temp_texture;
 
@@ -37,13 +37,13 @@ namespace MX
 
     // model
   #ifndef MX_INSTANT_MODEL_INIT
-    for (auto *it : World::get().m_Models)
+    for (auto it : World::get().m_Models)
     {
       if (it->getName() == file_name)
       {
         MX_INFO_LOG("MX: Model Handler: Object already exists: Continue without parsing");
         modelExists = 1;
-        temp_model = it;
+        model = std::static_pointer_cast<MX_MODEL>(it);
         break;
       }
     }
@@ -51,8 +51,10 @@ namespace MX
     if (!modelExists)
     {
       MX_INFO_LOG("MX: Model Handler: Object does not exist: Continue with parsing");
-      temp_model = new MX_MODEL(file_name, 1);
-      World::get().m_Models.push_back(temp_model);
+      std::shared_ptr<MX_MODEL> temp(new MX_MODEL(file_name));
+      temp->initialize();
+      model = temp;
+      World::get().m_Models.push_back(model);
     }
 
 /*
@@ -99,7 +101,7 @@ namespace MX
     }
 */
     // create node
-    temp_node = new Node(object_name, temp_model, World::get().getShader("blinn_phong"), nullptr);
+    temp_node = new Node(object_name, model, World::get().getShader("blinn_phong"), nullptr);
     
   #ifdef MX_DEBUG
     // get memory address
