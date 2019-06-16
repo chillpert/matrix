@@ -26,8 +26,8 @@ namespace MX
      
     API* m_API = MX_API_TYPE;
     GUI* m_GUI = MX_GUI_TYPE;
-    Window* m_Window = MX_WINDOW_TYPE;
-    LayerStack* m_LayerStack = new LayerStack;
+    std::unique_ptr<Window> m_Window;
+    std::unique_ptr<LayerStack> m_LayerStack;
     bool m_Running;
   
   private:

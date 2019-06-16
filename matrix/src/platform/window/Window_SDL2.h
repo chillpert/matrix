@@ -10,30 +10,26 @@ namespace MX
   class Window_SDL2 : public Window
   {
   public:
-  	MX_API static Window_SDL2 &get()
-    {
-      static Window_SDL2 instance;
-      return instance;
-    }
+  	MX_API Window_SDL2() = default;
+    MX_API ~Window_SDL2() = default;
 
-    MX_API void update() override; 
-    MX_API void render() const override; 
+    MX_API Window_SDL2(const Window_SDL2&) = default;
+    MX_API Window_SDL2 &operator=(const Window_SDL2&) = default;
+
+    MX_API void update() override;
+    MX_API void render() override;
     MX_API bool initialize() override;
 
-    MX_API void close() const override;
-    MX_API void controllerCallback() override;
+    MX_API void close() override;
+    MX_API void controllerCallback() const override;
 
-    MX_API void setTitle() override;
-    MX_API void resizeWindow(int width, int height) override;
+    MX_API void setTitle(const std::string &title) override;
+    MX_API void resize(int width, int height) override;
     
-    MX_API inline SDL_Window* getWindow() { return m_Window; } 
-    MX_API inline SDL_GLContext& getContext() { return m_Context; }
-  private:
-    MX_API Window_SDL2() {}
-    MX_API ~Window_SDL2() {}
-
-    SDL_Window* m_Window = NULL;
+    MX_API Window_SDL2 *getWindow() override { return this; }
+  
     SDL_GLContext m_Context;
+    SDL_Window *m_Window = NULL;
   };
 }
 

@@ -8,7 +8,7 @@
 #ifdef MX_IMGUI_ACTIVE
   #include <imgui.h>
   #include <imgui_impl_sdl.h>
-#endif 
+#endif
 
 #ifdef MX_SDL2_ACTIVE
 
@@ -34,6 +34,7 @@ namespace MX
 
       m_Window = SDL_CreateWindow(m_Props.m_Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
                                   m_Props.m_Width, m_Props.m_Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
       if (m_Window == NULL)
       {
         SDL_ErrorMessage = SDL_GetError();
@@ -46,6 +47,7 @@ namespace MX
         MX_SUCCESS("MX: Window: SDL2");
 
         m_Context = SDL_GL_CreateContext(m_Window);
+
         if (m_Context == NULL)
         {
           SDL_ErrorMessage = SDL_GetError();
@@ -64,30 +66,29 @@ namespace MX
   void Window_SDL2::update() 
   {
     m_Props.m_Time = (float) (SDL_GetTicks()) / 1000.0f;
-    updateTime();
+    m_Props.update_time();
 
     // update mouse visibility
     if (Controller::get().m_MouseHidden)
       SDL_SetRelativeMouseMode(SDL_TRUE);
     else
       SDL_SetRelativeMouseMode(SDL_FALSE);
-
   }
 
-  void Window_SDL2::render() const
+  void Window_SDL2::render()
   {
     SDL_SetWindowTitle(m_Window, m_Props.m_Title.c_str());
     SDL_GL_SwapWindow(m_Window);
   }
 
-  void Window_SDL2::close() const
+  void Window_SDL2::close()
   {
     SDL_GL_DeleteContext(m_Context);
     SDL_DestroyWindow(m_Window);
     SDL_Quit();
   }
 
-  void Window_SDL2::controllerCallback()
+  void Window_SDL2::controllerCallback() const
   {
     SDL_Event SDLevent;
     while (SDL_PollEvent(&SDLevent) != 0)
@@ -153,18 +154,23 @@ namespace MX
           }
         }
       }
-    }   
+    }
   }
 
-  void Window_SDL2::setTitle()
-  {
-    SDL_SetWindowTitle(m_Window, m_Props.m_Title.c_str());
-  }
-
-  void Window_SDL2::resizeWindow(int width, int height)
+  void Window_SDL2::resize(int width, int height)
   {
     World::get().m_ActiveScene->m_Cam.setScreenDimensions(width, height);
     SDL_SetWindowSize(m_Window, width, height);
+
+    m_Props.m_Width = width;
+    m_Props.m_Height = height;
+  }
+
+  void Window_SDL2::setTitle(const std::string &title)
+  {
+    SDL_SetWindowTitle(m_Window, title.c_str());
+
+    m_Props.m_Title = title;
   }
 }
 

@@ -5,7 +5,6 @@
 
   // API
   #ifdef MX_OPENGL_ACTIVE
-    //#define GLEW_STATIC
     #include <GL/glew.h>
   #elif MX_DIRECTX_ACTIVE
 

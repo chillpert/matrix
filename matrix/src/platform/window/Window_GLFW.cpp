@@ -150,7 +150,7 @@ namespace MX
   void Window_GLFW::update()
   { 
     m_Props.m_Time = (float) glfwGetTime();
-    updateTime();
+    m_Props.update_time();
 
     // update mouse visibility
     if (Controller::get().m_MouseHidden)
@@ -159,27 +159,37 @@ namespace MX
       glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
   }
 
-  void Window_GLFW::render() const
+  void Window_GLFW::render()
   {
     glfwSwapBuffers(m_Window);
     glfwPollEvents();
   }
 
-  void Window_GLFW::close() const
+  void Window_GLFW::close()
   {
     glfwDestroyWindow(m_Window);
     glfwTerminate();
   }
 
-  void Window_GLFW::resizeWindow(int width, int height)
+  void Window_GLFW::controllerCallback() const
+  {
+    // glfw event handling is set in Window_GLFW::initialize()
+  }
+
+  void Window_GLFW::resize(int width, int height)
   {
     World::get().m_ActiveScene->m_Cam.setScreenDimensions(width, height);
     glfwSetWindowSize(m_Window, width, height);
+
+    m_Props.m_Width = width;
+    m_Props.m_Height = height;
   }
 
-  void Window_GLFW::setTitle()
+  void Window_GLFW::setTitle(const std::string &title)
   {
-    glfwSetWindowTitle(m_Window, m_Props.m_Title.c_str());
+    glfwSetWindowTitle(m_Window, title.c_str());    
+    
+    m_Props.m_Title = title;
   }
 }
 

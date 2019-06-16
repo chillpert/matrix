@@ -33,15 +33,14 @@ namespace MX
 
   void API_OpenGL::clear() const
   {
-    // Application::get().m_Window->m_Props.updateViewport();
+    Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
 
-    int viewport_x = Application::get().m_Window->m_Props.m_ViewportX;
-    int viewport_y = Application::get().m_Window->m_Props.m_ViewportY;
+    int viewport_x = app_viewport->m_Viewport_max_x;
+    int viewport_y = app_viewport->m_Viewport_max_y;
 
-    int corner_x = Application::get().m_Window->m_Props.m_CornerX;
-    int corner_y = Application::get().m_Window->m_Props.m_CornerY;
+    int corner_x = app_viewport->m_Viewport_min_x;
+    int corner_y = app_viewport->m_Viewport_min_y;
 
-    int screen_x = Application::get().m_Window->m_Props.m_Width;
     int screen_y = Application::get().m_Window->m_Props.m_Height;
 
     World::get().m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);

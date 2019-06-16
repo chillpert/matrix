@@ -2,15 +2,15 @@
 #define WINDOW_H
 
 #ifdef MX_GLFW_ACTIVE
-  #define MX_WINDOW_TYPE &MX::Window_GLFW::get();
+  #define MX_WINDOW_TYPE Window_GLFW
 #elif MX_SDL2_ACTIVE
-  #define MX_WINDOW_TYPE &MX::Window_SDL2::get();
+  #define MX_WINDOW_TYPE Window_SDL2
 #else 
   #error "Matrix Framework only supports GLFW and SDL2"
 #endif
 
 #ifdef MX_DEBUG
-  #define LOGEVENT event.printEventType();
+  #define LOGEVENT event.printEventType()
 #else
   #define LOGEVENT
 #endif
@@ -22,32 +22,31 @@ namespace MX
   class Window
   {
   public:
-    MX_API Window() {}
-    MX_API virtual ~Window() {}
-    
-    MX_API virtual void update() {}
-    MX_API void updateTime();
-    MX_API virtual void render() const {}
-    MX_API virtual bool initialize() { return false; }
+    MX_API Window() = default;
+    MX_API virtual ~Window() {};
 
-    MX_API virtual void close() const {}
-    MX_API virtual void controllerCallback() {}
+    MX_API Window(const Window&) = default;
+    MX_API Window &operator=(const Window&) = default;
 
-    MX_API void setTitle(std::string title);
-    MX_API void resize(int width, int height);
+    MX_API virtual void update() = 0;
+    MX_API virtual void render() = 0;
+    MX_API virtual bool initialize() = 0;
+
+    MX_API virtual void close() = 0;
+    MX_API virtual void controllerCallback() const = 0;
+
+    // this function is needed to get to derived class members
+    MX_API virtual Window *getWindow() = 0;
+
+    MX_API virtual void setTitle(const std::string &title) = 0;
+    MX_API virtual void resize(int width, int height) = 0;
 
     struct WindowProps
     {
+      void update_time();
+
       int m_Width = initial_window_width;
       int m_Height = initial_window_height;
-
-      int m_CornerX = 0;
-      int m_CornerY = 0;
-
-      int m_ViewportX = initial_window_width;
-      int m_ViewportY = initial_window_height;
-
-      void updateViewport();
 
       bool m_FullScreen = 0;
 
@@ -56,13 +55,21 @@ namespace MX
       float m_LastFrame = 0.0f;
       float m_Time = 0.0;
       
-      std::string m_Title = "My Project | unsaved";
+      std::string m_Title = "Matrix-Framework";
+
+      struct ViewPort
+      {
+        int m_Viewport_min_x = 0;
+        int m_Viewport_min_y = 0;
+
+        int m_Viewport_max_x = initial_window_width;
+        int m_Viewport_max_y = initial_window_height;
+      };
+
+      ViewPort m_Viewport;
     };
  
-    WindowProps m_Props; 
-  protected:
-    MX_API virtual void setTitle() {}
-    MX_API virtual void resizeWindow(int width, int height) {}
+    WindowProps m_Props;
   };
 }
 

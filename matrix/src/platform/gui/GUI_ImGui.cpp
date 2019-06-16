@@ -1,4 +1,5 @@
 #include "matrix/src/platform/gui/GUI_ImGui.h"
+#include "matrix/src/platform/window/Window.h"
 #include "matrix/src/platform/window/Window_SDL2.h"
 #include "matrix/src/platform/window/Window_GLFW.h"
 #include "matrix/src/Application.h"
@@ -7,13 +8,19 @@
 
 #ifdef MX_GLFW_ACTIVE
   #include <imgui_impl_glfw.h>
-  #define MX_IMGUI_INIT       ImGui_ImplGlfw_InitForOpenGL(Window_GLFW::get().getWindow(), true);
+  #define MX_IMGUI_INIT       ImGui_ImplGlfw_InitForOpenGL(\
+                                static_cast<Window_GLFW*>(Application::get().m_Window->getWindow())->m_Window,\
+                                true\
+                              );
   #define MX_IMGUI_NEW_FRAME  ImGui_ImplGlfw_NewFrame();
   #define MX_IMGUI_CLEAN      ImGui_ImplGlfw_Shutdown();
 #elif MX_SDL2_ACTIVE
   #include <imgui_impl_sdl.h>
-  #define MX_IMGUI_INIT       ImGui_ImplSDL2_InitForOpenGL(Window_SDL2::get().getWindow(), Window_SDL2::get().getContext());
-  #define MX_IMGUI_NEW_FRAME  ImGui_ImplSDL2_NewFrame(Window_SDL2::get().getWindow());
+  #define MX_IMGUI_INIT       ImGui_ImplSDL2_InitForOpenGL(\
+                                static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Window,\
+                                static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Context\
+                              );
+  #define MX_IMGUI_NEW_FRAME  ImGui_ImplSDL2_NewFrame(static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Window);
   #define MX_IMGUI_CLEAN      ImGui_ImplSDL2_Shutdown();
 #endif
 #ifdef MX_OPENGL_ACTIVE
@@ -36,6 +43,7 @@ namespace MX
   void GUI_ImGui::initialize()
   {
   #ifdef MX_IMGUI_ACTIVE
+  
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -240,7 +248,7 @@ namespace MX
     
     ImGui::Begin("ViewPort", &p_open, window_flags);
 
-    Window::WindowProps *app_window_props = &Application::get().m_Window->m_Props;
+    Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
 
     static int menubar_offset = 19;
 
@@ -248,8 +256,8 @@ namespace MX
     {
       ImGui::SetWindowPos(ImVec2(0, menubar_offset));
       ImGui::SetWindowSize(ImVec2(
-        app_window_props->m_ViewportX,
-        app_window_props->m_ViewportY - menubar_offset
+        app_viewport->m_Viewport_max_x,
+        app_viewport->m_Viewport_max_y - menubar_offset
       ));
       first_run = 0;
     }
@@ -258,11 +266,11 @@ namespace MX
     auto window_size = ImGui::GetWindowSize(); // 853, 581
     auto window_pos = ImGui::GetWindowPos(); // 0, 19
 
-    app_window_props->m_CornerX = window_pos.x; // 0
-    app_window_props->m_CornerY = window_size.y + window_pos.y; // 19
+    app_viewport->m_Viewport_min_x = window_pos.x; // 0
+    app_viewport->m_Viewport_min_y = window_size.y + window_pos.y; // 19
 
-    app_window_props->m_ViewportX = window_size.x; // 853
-    app_window_props->m_ViewportY = window_size.y; // 581
+    app_viewport->m_Viewport_max_x = window_size.x; // 853
+    app_viewport->m_Viewport_max_y = window_size.y; // 581
     ImGui::End();
     
   #endif

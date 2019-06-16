@@ -7,6 +7,9 @@ namespace MX
   {
     MX_INFO_LOG("MX: Application: Constructor");
 
+    m_Window =  std::make_unique<MX_WINDOW_TYPE>();
+    m_LayerStack = std::make_unique<LayerStack>();
+
     #ifdef MX_PLATFORM_UNIX_X64
       #pragma GCC diagnostic ignored "-Wformat-security"
     #endif
@@ -18,8 +21,7 @@ namespace MX
     m_API = nullptr;
     delete m_GUI;
     m_GUI = nullptr;
-    delete m_LayerStack;
-    m_LayerStack = nullptr; 
+
     MX_INFO("MX: Application: Destroyed");
   }
 

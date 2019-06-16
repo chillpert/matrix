@@ -10,32 +10,28 @@ namespace MX
   class Window_GLFW : public Window
   {
   public:    
-    MX_API static Window_GLFW& get()
-    {
-      static Window_GLFW instance;
-      return instance;
-    }
+    MX_API Window_GLFW() = default;
+    MX_API ~Window_GLFW() = default;
 
-    MX_API void update() override; 
-    MX_API void render() const override;
+    MX_API Window_GLFW(const Window_GLFW&) = default;
+    MX_API Window_GLFW &operator=(const Window_GLFW&) = default;
+
+    MX_API void update() override;
+    MX_API void render() override;
     MX_API bool initialize() override;
     
-    MX_API void close() const override; 
-    MX_API void controllerCallback() override {}
+    MX_API void close() override; 
+    MX_API void controllerCallback() const override;
 
-    MX_API void setTitle() override;
-    MX_API void resizeWindow(int width, int height) override;        
+    MX_API void setTitle(const std::string &title) override;
+    MX_API void resize(int width, int height) override;        
 
-    MX_API inline auto getWindow() { return m_Window; }
+    MX_API Window_GLFW *getWindow() { return this; }
     
-  private:
-    MX_API Window_GLFW() {}
-    MX_API ~Window_GLFW() {}
-
     GLFWwindow* m_Window;
   };
 }
 
-#endif 
+#endif
 
 #endif // Window_GLFW_H
