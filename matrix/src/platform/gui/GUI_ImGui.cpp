@@ -33,6 +33,7 @@ namespace MX
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     ImGui::StyleColorsDark();
@@ -47,7 +48,7 @@ namespace MX
 
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text]                   = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-    colors[ImGuiCol_WindowBg]               = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
+    colors[ImGuiCol_WindowBg]               = ImVec4(0.08f, 0.08f, 0.08f, 0.00f);
     colors[ImGuiCol_ChildBg]                = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
     colors[ImGuiCol_PopupBg]                = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_Border]                 = ImVec4(0.43f, 0.43f, 0.50f, 0.33f);
@@ -69,7 +70,8 @@ namespace MX
     colors[ImGuiCol_ResizeGrip]             = ImVec4(0.00f, 0.51f, 0.03f, 0.25f);
     colors[ImGuiCol_ResizeGripHovered]      = ImVec4(0.12f, 0.69f, 0.00f, 0.67f);
     colors[ImGuiCol_ResizeGripActive]       = ImVec4(0.00f, 0.75f, 0.12f, 0.95f);
-    
+    colors[ImGuiCol_DockingEmptyBg]         = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+
     MX_IMGUI_INIT
 
     ImGui_ImplOpenGL3_Init(glsl_version.c_str());
@@ -91,8 +93,12 @@ namespace MX
   void GUI_ImGui::render()
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImGui::ShowDemoWindow();
 
+    if(true)
+      renderViewport();
+    
+    ImGui::ShowDemoWindow();
+    
     if (menubar_enabled)
       renderMenuBar();
     if (editor_window_enabled)
@@ -101,7 +107,7 @@ namespace MX
       renderHierarchyWindow();
     if (logger_window_enabled)
       renderLoggerWindow();
-    
+
     all_current_objects.clear();
 
     ImGui::Render();

@@ -5,6 +5,7 @@ namespace MX
 {
   std::vector<std::pair<std::string, ImVec4>> logger_messages_for_gui;
 
+  bool viewport_enabled = 1;
   bool menubar_enabled = 1;
   bool editor_window_enabled = 1;
   bool hierarchy_window_enabled = 1;

@@ -41,8 +41,11 @@ namespace MX
       int m_Width = initial_window_width;
       int m_Height = initial_window_height;
 
-      int m_ViewportX = 1400;
-      int m_ViewportY = 700;
+      int m_CornerX = 0;
+      int m_CornerY = 0;
+
+      int m_ViewportX = initial_window_width;
+      int m_ViewportY = initial_window_height;
 
       void updateViewport();
 

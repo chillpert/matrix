@@ -24,8 +24,76 @@ namespace MX
   static bool popup_no_autoresize = 0;
   static bool popup_p_open = 1;
 
+  static bool first_run = 1;
+
   static void render_about_popup();
   static void render_set_resolution_popup();
+
+  void GUI_ImGui::renderViewport()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    static ImGuiWindowFlags window_flags = 0;
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 1;
+    static bool no_move = 1;
+    static bool no_resize = 0;
+    static bool no_collapse = 0;
+    static bool no_close = 0;
+    static bool no_nav = 0;
+    static bool no_background = 1;
+    static bool no_bring_to_front = 0;
+    static bool no_autoresize = 0;
+    static bool p_open = 1;
+
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
+    if (no_autoresize)      window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+    
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+    //dockspace_flags |= ImGuiDockNodeFlags_NoSplit;
+    dockspace_flags |= ImGuiDockNodeFlags_NoResize;
+    //dockspace_flags |= ImGuiDockNodeFlags_AutoHideTabBar;
+    dockspace_flags |= ImGuiDockNodeFlags_NoDockingInCentralNode;
+    dockspace_flags |= ImGuiDockNodeFlags_PassthruCentralNode;
+    //dockspace_flags |= ImGuiDockNodeFlags_AutoHideTabBar;
+
+    ImGui::Begin("ViewPort", &p_open, window_flags);
+
+    //ImGuiID dockspace_id = ImGui::GetWindowDockID();
+    //ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+    
+    if (first_run)
+    {
+      ImGui::SetWindowPos(ImVec2(0, 19));
+      ImGui::SetWindowSize(ImVec2(
+        Application::get().m_Window->m_Props.m_ViewportX,
+        Application::get().m_Window->m_Props.m_ViewportY - 19
+      ));
+      first_run = 0;
+    }
+
+    ImGui::Text("hallo");
+
+    auto window_size = ImGui::GetWindowSize(); // 853, 581
+    auto window_pos = ImGui::GetWindowPos(); // 0, 19
+
+    Application::get().m_Window->m_Props.m_CornerX = window_pos.x; // 0
+    Application::get().m_Window->m_Props.m_CornerY = window_size.y + window_pos.y; // 19
+
+    Application::get().m_Window->m_Props.m_ViewportX = window_size.x; // 853
+    Application::get().m_Window->m_Props.m_ViewportY = window_size.y; // 581
+    
+    ImGui::End();
+  #endif
+  }
 
   void GUI_ImGui::renderMenuBar()
   {

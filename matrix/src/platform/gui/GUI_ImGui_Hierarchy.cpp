@@ -15,8 +15,8 @@ namespace MX
     static bool no_titlebar = 0;
     static bool no_scrollbar = 0;
     static bool no_menu = 0;
-    static bool no_move = 1;
-    static bool no_resize = 1;
+    static bool no_move = 0;
+    static bool no_resize = 0;
     static bool no_collapse = 1;
     // static bool no_close = 0;
     static bool no_nav = 0;
@@ -55,7 +55,7 @@ namespace MX
       draw_scene_graph_menu(*World::get().m_ActiveScene->m_Sg.m_Root);
     else  
       draw_outline_menu();
-
+/*
     if (editor_window_enabled)
     {
       ImGui::SetWindowPos(ImVec2(0.0f, float (Application::get().m_Window->m_Props.m_Height) / 2.0f + 19.0f));
@@ -66,7 +66,7 @@ namespace MX
       ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
-     
+*/   
     ImGui::End();
   #endif
   }

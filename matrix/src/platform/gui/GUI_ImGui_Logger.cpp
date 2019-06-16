@@ -19,8 +19,8 @@ namespace MX
   static bool no_titlebar = 0;
   static bool no_scrollbar = 0;
   static bool no_menu = 0;
-  static bool no_move = 1;
-  static bool no_resize = 1;
+  static bool no_move = 0;
+  static bool no_resize = 0;
   static bool no_collapse = 1;
   static bool no_close = 0;
   static bool no_nav = 0;
@@ -214,7 +214,7 @@ namespace MX
 
     if (!p_open_logger)
       logger_window_enabled = 0;
-
+/*
     if (editor_window_enabled || hierarchy_window_enabled)
     {
       ImGui::SetWindowPos(
@@ -237,7 +237,7 @@ namespace MX
                float (Application::get().m_Window->m_Props.m_Height) / 4.0f + 1.0f)
       );
     }
-        
+*/     
     ImGui::End();
   #endif
   }

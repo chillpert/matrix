@@ -28,23 +28,26 @@ namespace MX
 
   void API_OpenGL::render() const
   {
-      
+  
   }
 
   void API_OpenGL::clear() const
   {
-    Application::get().m_Window->m_Props.updateViewport();
+    // Application::get().m_Window->m_Props.updateViewport();
 
     int viewport_x = Application::get().m_Window->m_Props.m_ViewportX;
     int viewport_y = Application::get().m_Window->m_Props.m_ViewportY;
 
-    // int screen_x = Application::get().m_Window->m_Props.m_Width;
+    int corner_x = Application::get().m_Window->m_Props.m_CornerX;
+    int corner_y = Application::get().m_Window->m_Props.m_CornerY;
+
+    int screen_x = Application::get().m_Window->m_Props.m_Width;
     int screen_y = Application::get().m_Window->m_Props.m_Height;
 
     World::get().m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
 
-    glViewport(0,
-               screen_y - viewport_y,
+    glViewport(corner_x,
+               screen_y - corner_y,
                viewport_x,
                viewport_y);
 

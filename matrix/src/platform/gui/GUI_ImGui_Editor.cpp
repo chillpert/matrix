@@ -57,8 +57,8 @@ namespace MX
     static bool no_titlebar = 0;
     static bool no_scrollbar = 0;
     static bool no_menu = 0;
-    static bool no_move = 1;
-    static bool no_resize = 1;
+    static bool no_move = 0;
+    static bool no_resize = 0;
     static bool no_collapse = 1;
     // static bool no_close = 0;
     static bool no_nav = 0;
@@ -85,7 +85,7 @@ namespace MX
 
     if (!p_open_editor)
       editor_window_enabled = 0;
-
+/*
     if (hierarchy_window_enabled)
     {
       ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
@@ -96,7 +96,7 @@ namespace MX
       ImGui::SetWindowPos(ImVec2(0.0f, 19.0f));
       ImGui::SetWindowSize(ImVec2(float (Application::get().m_Window->m_Props.m_Width) / 5.0f, float (Application::get().m_Window->m_Props.m_Height)));
     }
-    
+*/
     if (ImGui::BeginMenuBar())
     {
       if (ImGui::MenuItem("Scenes##manage scenes", "", true, !show_scenes_menu))

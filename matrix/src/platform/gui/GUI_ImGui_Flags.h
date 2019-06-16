@@ -35,6 +35,7 @@ namespace MX
   MX_API extern bool p_open_logger;
 
   // flags for toggling window visibility
+  MX_API extern bool viewport_enabled;
   MX_API extern bool menubar_enabled;
   MX_API extern bool editor_window_enabled;
   MX_API extern bool hierarchy_window_enabled;
