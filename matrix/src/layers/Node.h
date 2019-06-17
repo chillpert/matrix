@@ -21,9 +21,11 @@ namespace MX
   class Node 
   {
   public:
-    Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model, std::shared_ptr<MX_SHADER> shader, MX_TEXTURE *texture);
-    Node(const std::string &node_name);
-    ~Node();
+    Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model = nullptr, std::shared_ptr<MX_SHADER> shader = nullptr, std::shared_ptr<MX_TEXTURE> texture = nullptr);
+    ~Node() = default;
+
+    Node(const Node&) = default;
+    Node &operator=(const Node&) = default;
     
     void addChild(Node* node);
     Node* &getChild(const std::string &name);
@@ -37,7 +39,7 @@ namespace MX
 
     MX_API void setModel(std::shared_ptr<MX_MODEL> model);
     MX_API void setShader(std::shared_ptr<MX_SHADER> shader);
-    MX_API void setTexture(MX_TEXTURE *texture);
+    MX_API void setTexture(std::shared_ptr<MX_TEXTURE> texture);
 
     MX_API void setTransform(const Trans &t, float factor, bool isAnimated);
 
@@ -56,7 +58,7 @@ namespace MX
     std::string m_Name;
     std::shared_ptr<Model> m_Model;
     std::shared_ptr<Shader> m_Shader;
-    MX_TEXTURE *m_Texture;
+    std::shared_ptr<Texture> m_Texture;
   };
 }
 

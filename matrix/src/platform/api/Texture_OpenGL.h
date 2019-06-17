@@ -8,18 +8,20 @@ namespace MX
   class Texture_OpenGL : public Texture
   {
     public:
-      MX_API Texture_OpenGL(const std::string &file_name, bool instant_init = 0);
+      MX_API Texture_OpenGL(const std::string &file_name);
       MX_API virtual ~Texture_OpenGL();
 
-      MX_API void create_texture();
-      MX_API void load_texture();
-      MX_API void use();
-
+      MX_API Texture_OpenGL(const Texture_OpenGL&) = default;
+      MX_API Texture_OpenGL &operator=(const Texture_OpenGL&) = default;
+      
       MX_API void initialize() override;
+      MX_API void use() const override;
 
     private:
+      MX_API void create() override;
+      MX_API void load() override;
+
       GLuint m_ID;
-      
   };
 }
 

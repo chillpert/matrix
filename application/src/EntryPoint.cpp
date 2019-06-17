@@ -14,14 +14,14 @@ void initialize()
   MX::Node *jupiter = MX_SCENEGRAPH.search("Jupiter", MX_ROOT);
   jupiter->setTransform(MX::Y, 0.3f, 1);
   jupiter->setShader(MX_GET_SHADER("blinn_phong"));
-  jupiter->setTexture(MX_GET_TEXTURE("2k_jupiter.jpg", 1));
+  jupiter->setTexture(MX_GET_TEXTURE("2k_jupiter.jpg"));
 
   MX::Node *saturn = MX_SCENEGRAPH.search("Saturn", MX_ROOT);
   saturn->setTransform(MX::SCALE, 0.4f, 0);
   saturn->setTransform(MX::Y, 0.8f, 1);
   saturn->setTransform(MX::RIGHT, 5.0f, 0);
   saturn->setShader(MX_GET_SHADER("blinn_phong"));
-  saturn->setTexture(MX_GET_TEXTURE("2k_saturn.jpg", 1));
+  saturn->setTexture(MX_GET_TEXTURE("2k_saturn.jpg"));
 
   MX::Node *rock = MX_SCENEGRAPH.search("Rock", MX_ROOT);
   rock->setTransform(MX::SCALE, 0.05f, 0);
@@ -30,7 +30,7 @@ void initialize()
   rock->setTransform(MX::Y, 0.8f, 1);
   rock->setTransform(MX::X, 0.5f, 1);
   rock->setShader(MX_GET_SHADER("phong"));
-  rock->setTexture(MX_GET_TEXTURE("rock.jpg", 1));
+  rock->setTexture(MX_GET_TEXTURE("rock.jpg"));
 }
 
 void update()

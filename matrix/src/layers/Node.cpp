@@ -2,20 +2,8 @@
 
 namespace MX
 {
-  Node::Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model, std::shared_ptr<MX_SHADER> shader, MX_TEXTURE *texture)
-    : m_Name(node_name), m_Texture(texture)
-  {
-    m_Model = model;
-    m_Shader = shader;
-  }
-
-  Node::Node(const std::string &node_name)
-    : m_Name(node_name)
-  {
-    m_Shader = nullptr;
-    m_Model = nullptr;
-    m_Texture = nullptr;
-  }
+  Node::Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model, std::shared_ptr<MX_SHADER> shader, std::shared_ptr<MX_TEXTURE> texture)
+    : m_Name(node_name), m_Model(model), m_Shader(shader), m_Texture(texture) { }
 
   Node::~Node()
   {
@@ -71,7 +59,7 @@ namespace MX
     m_Shader = shader;
   }
 
-  void Node::setTexture(MX_TEXTURE *texture)
+  void Node::setTexture(std::shared_ptr<MX_TEXTURE> texture)
   {
     m_Texture = texture;
   }

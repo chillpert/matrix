@@ -9,7 +9,7 @@
 
 #define MX_GET_SHADER(name) MX::World::get().getShader(name)
 #define MX_GET_MODEL(name, num) MX::World::get().getModel(name, num)
-#define MX_GET_TEXTURE(name, num) MX::World::get().getTexture(name, num)
+#define MX_GET_TEXTURE(name) MX::World::get().getTexture(name)
 
 // disabled for faster start up
 //#define MX_INSTANT_TEXTURE_INIT
@@ -51,7 +51,7 @@ namespace MX
 
     MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name, bool instant_init = 0);
     MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name, bool instant_init = 0);
-    MX_API MX_TEXTURE *getTexture(const std::string &name, bool instant_init = 0);
+    MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name);
 
   private:
     MX_API World() {}
@@ -62,7 +62,7 @@ namespace MX
   
     std::vector<std::shared_ptr<Model>> m_Models;
     std::vector<std::shared_ptr<Shader>> m_Shaders;
-    std::vector<MX_TEXTURE*> m_Textures;
+    std::vector<std::shared_ptr<Texture>> m_Textures;
   };
 }
 

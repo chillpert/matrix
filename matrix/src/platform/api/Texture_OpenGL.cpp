@@ -3,12 +3,10 @@
 
 namespace MX
 {
-  Texture_OpenGL::Texture_OpenGL(const std::string &file_name, bool instant_init)
+  Texture_OpenGL::Texture_OpenGL(const std::string &file_name)
+    : Texture(file_name)
   {
-    m_FileName = file_name;
-
-    if (instant_init)
-      initialize();
+    initialize();
   }
 
   Texture_OpenGL::~Texture_OpenGL()
@@ -16,7 +14,7 @@ namespace MX
     
   }
 
-  void Texture_OpenGL::create_texture()
+  void Texture_OpenGL::create()
   {
     glGenTextures(1, &m_ID);
     glBindTexture(GL_TEXTURE_2D, m_ID);
@@ -30,7 +28,7 @@ namespace MX
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   }
 
-  void Texture_OpenGL::use()
+  void Texture_OpenGL::use() const
   {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_ID);
@@ -38,17 +36,17 @@ namespace MX
 
   void Texture_OpenGL::initialize()
   {
-    create_texture();
-    load_texture();
+    create();
+    load();
   }
 
-  void Texture_OpenGL::load_texture()
+  void Texture_OpenGL::load()
   {
-    unsigned char *data = stbi_load((MX_TEXTURE_PATH + m_FileName).c_str(), &stb.width, &stb.height, &stb.channels, 0);
+    unsigned char *data = stbi_load((MX_TEXTURE_PATH + m_FileName).c_str(), &m_Stb.width, &m_Stb.height, &m_Stb.channels, 0);
     
     if (data)
     {
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, stb.width, stb.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Stb.width, m_Stb.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
       glGenerateMipmap(GL_TEXTURE_2D);
     }
     else

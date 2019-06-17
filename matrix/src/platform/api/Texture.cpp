@@ -2,13 +2,8 @@
 
 namespace MX
 {
-  Texture::Texture()
+  Texture::Texture(const std::string &file_name)
   {
-
-  }
-
-  Texture::~Texture()
-  {
-    
+    m_FileName = file_name;
   }
 }

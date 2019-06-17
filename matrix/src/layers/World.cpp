@@ -59,15 +59,14 @@ namespace MX
     throw std::exception();
   }
 
-  MX_TEXTURE *World::getTexture(const std::string &name, bool instant_init)
+  std::shared_ptr<MX_TEXTURE> World::getTexture(const std::string &name)
   {
-    for (auto *it : m_Textures)
+    for (auto it : m_Textures)
     {
       if (it->getName() == name)
       {
-        if (instant_init)
-          it->initialize();
-        return it;
+        // it->initialize();
+        return std::static_pointer_cast<MX_TEXTURE>(it);
       }
     }
 
@@ -251,7 +250,7 @@ namespace MX
       	{
       	  bool texture_file_exists_already = 0;
 
-      	  for (const auto *it : World::get().m_Textures)
+      	  for (auto it : World::get().m_Textures)
       	  {
       	    if (it->getName() == file_name)
       	      texture_file_exists_already = 1;
@@ -259,7 +258,7 @@ namespace MX
 
       	  if (!texture_file_exists_already)
       	  {
-      	    MX_TEXTURE *temp_texture = new MX_TEXTURE(file_name_with_ending);
+            std::shared_ptr<MX_TEXTURE> temp_texture(new MX_TEXTURE(file_name_with_ending));
       	    World::get().m_Textures.push_back(temp_texture);
 					#ifdef MX_IMGUI_ACTIVE
       	    all_available_textures.push_back(file_name);
