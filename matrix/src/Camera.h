@@ -22,7 +22,10 @@ namespace MX
       updateVectors();
     }
 
-    MX_API ~Camera() {}
+    MX_API ~Camera() = default;
+
+    MX_API Camera(const Camera&) = default;
+    MX_API Camera &operator=(const Camera&) = default;
   
     MX_API void processKeyboard(); 
     MX_API void processMouse(float xoffset, float yoffset);

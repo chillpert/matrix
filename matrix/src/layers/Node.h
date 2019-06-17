@@ -18,7 +18,7 @@
 
 namespace MX
 {
-  class Node 
+  class Node
   {
   public:
     Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model = nullptr, std::shared_ptr<MX_SHADER> shader = nullptr, std::shared_ptr<MX_TEXTURE> texture = nullptr);
