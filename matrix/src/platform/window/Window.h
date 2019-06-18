@@ -52,8 +52,9 @@ namespace MX
 
       // timing
       float m_DeltaTime = 0.0f;
-      float m_LastFrame = 0.0f;
+      float m_PreviousTime = 0.0f;
       float m_Time = 0.0;
+      int m_Frames = 0;
       
       std::string m_Title = "Matrix-Framework";
 

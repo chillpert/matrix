@@ -240,6 +240,7 @@ namespace MX
     static bool no_bring_to_front = 0;
     static bool no_autoresize = 0;
     static bool p_open = 1;
+    static bool p_open_performance_monitor = 1;
 
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
     if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -251,32 +252,64 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
     if (no_autoresize)      window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+    static int current_frame = 0;
+    current_frame = Application::get().m_Window->m_Props.m_Frames;
     
-    ImGui::Begin("ViewPort", &p_open, window_flags);
-
-    Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
-
-    static int menubar_offset = 19;
-
-    if (!first_run)
+    if (ImGui::Begin("View Port", &p_open, window_flags))
     {
-      ImGui::SetWindowPos(ImVec2(0, menubar_offset));
-      ImGui::SetWindowSize(ImVec2(
-        app_viewport->m_Viewport_max_x,
-        app_viewport->m_Viewport_max_y - menubar_offset
-      ));
-      first_run = 0;
+      Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
+      
+      std::string fps_message = std::to_string(current_frame) + " FPS";
+      ImGui::Text(fps_message.c_str());
+
+      static int menubar_offset = 19;
+
+      if (!first_run)
+      {
+        ImGui::SetWindowPos(ImVec2(0, menubar_offset));
+        ImGui::SetWindowSize(ImVec2(
+          app_viewport->m_Viewport_max_x,
+          app_viewport->m_Viewport_max_y - menubar_offset
+        ));
+        first_run = 0;
+      }
+
+      // comments are values at start up with window resolution of 1200, 600
+      auto window_size = ImGui::GetWindowSize(); // 853, 581
+      auto window_pos = ImGui::GetWindowPos(); // 0, 19
+
+      app_viewport->m_Viewport_min_x = window_pos.x; // 0
+      app_viewport->m_Viewport_min_y = window_size.y + window_pos.y; // 19
+
+      app_viewport->m_Viewport_max_x = window_size.x; // 853
+      app_viewport->m_Viewport_max_y = window_size.y; // 581
     }
+    ImGui::End();
 
-    // comments are values at start up with window resolution of 1200, 600
-    auto window_size = ImGui::GetWindowSize(); // 853, 581
-    auto window_pos = ImGui::GetWindowPos(); // 0, 19
+    if (ImGui::Begin("Performance Monitor", &p_open_performance_monitor))
+    {
+      static float fps_avg;
+      static int max_fps = 0;
+      static std::vector<float> frames;
 
-    app_viewport->m_Viewport_min_x = window_pos.x; // 0
-    app_viewport->m_Viewport_min_y = window_size.y + window_pos.y; // 19
+      frames.push_back(static_cast<float>(current_frame));
 
-    app_viewport->m_Viewport_max_x = window_size.x; // 853
-    app_viewport->m_Viewport_max_y = window_size.y; // 581
+      if (current_frame > max_fps)
+        max_fps = current_frame;
+
+      for (float it : frames)
+        fps_avg += it;
+
+      fps_avg /= frames.size();
+
+      std::string fps_avg_message = "avg " + std::to_string(fps_avg);
+
+      ImGui::PlotLines("Frame Time", frames.data(), frames.size(), 0, fps_avg_message.c_str(), 0.0f, static_cast<int>(max_fps) * 1.5f, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 37.0f)); // 37.0f so that no scroll bar will appear
+
+      if (frames.size() > 20000)
+        frames.clear();
+    }
     ImGui::End();
     
   #endif

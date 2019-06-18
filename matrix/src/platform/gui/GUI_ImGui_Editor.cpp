@@ -226,19 +226,20 @@ namespace MX
       static int item_prev_normal_map = item_normal_map;
       static int item_prev_bump_map = item_bump_map;
 
+      ImGui::BeginChild("Model and Shader Group", ImVec2(0, 130), true);
       ImGui::BulletText("Model");
       ImGui::Combo("##model", &item_models, all_models.data(), IM_ARRAYSIZE(all_models.data()) * all_models.size());
       
-      ImGui::NewLine();
-      ImGui::Separator();
       ImGui::NewLine();
 
       ImGui::BulletText("Shader");
       ImGui::Combo("##shader", &item_shaders, all_shaders.data(), IM_ARRAYSIZE(all_shaders.data()) * all_shaders.size());
 
+      ImGui::EndChild();
+
       ImGui::NewLine();
-      ImGui::Separator();
-      ImGui::NewLine();
+
+      ImGui::BeginChild("Map Group", ImVec2(0, 160), true);
 
       ImGui::BulletText("Diffuse Map");
       ImGui::Combo("##diffuse map", &item_diffuse_map, all_diffuse_maps.data(), IM_ARRAYSIZE(all_diffuse_maps.data()) * all_diffuse_maps.size());
@@ -255,6 +256,7 @@ namespace MX
       ImGui::BulletText("Bump Map");
       ImGui::Combo("##bump map", &item_bump_map, all_bump_maps.data(), IM_ARRAYSIZE(all_bump_maps.data()) * all_bump_maps.size());
 
+      ImGui::EndChild();
   
       if (item_prev_models != item_models)
       {
