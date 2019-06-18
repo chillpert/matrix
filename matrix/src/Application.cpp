@@ -60,7 +60,7 @@ namespace MX
     m_GUI->update();
 
     m_API->update();
-    
+
     update_func();
   }
 
@@ -72,7 +72,7 @@ namespace MX
 
     render_func();
 
-    m_GUI->render();   
+    m_GUI->render();
 
     m_Window->render();
   }

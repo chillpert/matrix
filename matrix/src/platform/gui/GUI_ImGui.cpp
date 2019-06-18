@@ -133,7 +133,9 @@ namespace MX
     current_scenegraph = &World::get().m_ActiveScene->m_Sg;
     current_root = World::get().m_ActiveScene->m_Sg.m_Root;
     all_scenes = &World::get().m_ExistingScenes;
-    current_scene->m_Sg.getAllObjects(&all_objects, current_scene->m_Sg.m_Root);
+
+    all_objects.clear();
+    current_scene->m_Sg.getAllObjects(all_objects, current_scene->m_Sg.m_Root);
 
     ImGui_ImplOpenGL3_NewFrame();
     MX_IMGUI_NEW_FRAME
@@ -148,7 +150,7 @@ namespace MX
     ImGui::PushFont(font_global);
     ImGui::PopFont();
 
-    renderDockSpace();  
+    renderDockSpace();
     renderViewport();
     
     if (demo_window_enabled)
@@ -157,13 +159,11 @@ namespace MX
       renderMenuBar();
     if (editor_window_enabled)
       renderEditorWindow();
-    if (hierarchy_window_enabled)
-      renderHierarchyWindow();
+    //if (hierarchy_window_enabled)
+      //renderHierarchyWindow();
     if (logger_window_enabled)
       renderLoggerWindow();
 
-    all_objects.clear();
-    
     ImGui::Render();
     MX_IMGUI_API_RENDER
   #endif

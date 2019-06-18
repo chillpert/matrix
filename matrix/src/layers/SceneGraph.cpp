@@ -11,7 +11,7 @@ namespace MX
   SceneGraph::~SceneGraph()
   {
     std::list<std::shared_ptr<Node>> temp;
-    std::copy(m_Root->getChildren().begin(), m_Root->getChildren().end(), std::back_inserter(temp));
+    std::copy(m_Root->m_Children.begin(), m_Root->m_Children.end(), std::back_inserter(temp));
 
     for (auto it : temp)
       iterative_delete(it->m_Name);
@@ -37,9 +37,9 @@ namespace MX
       hidden_search_holder = it;
     }
 
-    if (!it->getChildren().empty())
+    if (!it->m_Children.empty())
     {
-      for (auto it : it->getChildren())
+      for (auto it : it->m_Children)
         search(name, it);
     }
 
@@ -49,9 +49,9 @@ namespace MX
   // deletes all children recursively from a given node
   void SceneGraph::recursive_delete(std::shared_ptr<Node> it)
   {
-    if (!it->getChildren().empty())
+    if (!it->m_Children.empty())
     {
-      for (auto itChild : it->getChildren())
+      for (auto itChild : it->m_Children)
       {
         recursive_delete(std::shared_ptr<Node>(itChild));
         MX_INFO_LOG("MX: SceneGraph: Recursive Delete: Deleting: " + itChild->m_Name);
@@ -62,13 +62,13 @@ namespace MX
     // leaf
     else
     {
-      std::shared_ptr<Node> parent = it->getParent();
+      std::shared_ptr<Node> parent = it->m_Parent;
 
-      for (std::list<std::shared_ptr<Node>>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
+      for (std::list<std::shared_ptr<Node>>::iterator iter = parent->m_Children.begin(); iter != parent->m_Children.end(); ++iter)
       {
         if ((*iter)->m_Name == it->m_Name)
         {
-          parent->getChildren().erase(iter);
+          parent->m_Children.erase(iter);
           break;
         }
       }
@@ -99,13 +99,13 @@ namespace MX
     {
       temp = search(it, m_Root);
 
-      std::shared_ptr<Node> parent = temp->getParent();
+      std::shared_ptr<Node> parent = temp->m_Parent;
 
-      for (std::list<std::shared_ptr<Node>>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
+      for (std::list<std::shared_ptr<Node>>::iterator iter = parent->m_Children.begin(); iter != parent->m_Children.end(); ++iter)
       {
         if ((*iter)->m_Name == temp->m_Name)
         {
-          parent->getChildren().erase(iter);
+          parent->m_Children.erase(iter);
           break;
         }
       }
@@ -118,20 +118,20 @@ namespace MX
   {
     vec->push_back(it->m_Name);
 
-    if (!it->getChildren().empty())
+    if (!it->m_Children.empty())
     {
-      for (auto itChild : it->getChildren())
+      for (auto itChild : it->m_Children)
         getAllObjects(vec, std::shared_ptr<Node>(itChild));
     }
   }
 
-  void SceneGraph::getAllObjects(std::vector<const char*> *vec, std::shared_ptr<Node> it)
+  void SceneGraph::getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it)
   {
-    vec->push_back(it->m_Name.c_str());
+    vec.push_back(it->m_Name.c_str());
 
-    if (!it->getChildren().empty())
+    if (!it->m_Children.empty())
     {
-      for (auto itChild : it->getChildren())
+      for (auto itChild : it->m_Children)
         getAllObjects(vec, std::shared_ptr<Node>(itChild));
     }
   }
@@ -163,9 +163,9 @@ namespace MX
     if (it.m_Model != nullptr)
       it.m_Model->draw();
 
-    if (!it.getChildren().empty())
+    if (!it.m_Children.empty())
     {
-      for (auto itChild : it.getChildren())
+      for (auto itChild : it.m_Children)
       {
         recursive_render(*std::shared_ptr<Node>(itChild), it.getWorldTransform());
       }

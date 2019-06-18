@@ -92,128 +92,128 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin("Logger", &p_open_logger, window_flags);
-
-    if (ImGui::BeginMenuBar())
+    if (ImGui::Begin("Logger", &p_open_logger, window_flags))
     {
-      if (ImGui::MenuItem("All", "", true, all_flag))
+      if (ImGui::BeginMenuBar())
       {
-        scroll_to_bottom_flag = 1;
-        message_type = mx_all;
+        if (ImGui::MenuItem("All", "", true, all_flag))
+        {
+          scroll_to_bottom_flag = 1;
+          message_type = mx_all;
+        }
+
+        if (ImGui::MenuItem("Info", "", true, info_flag))
+        {
+          scroll_to_bottom_flag = 1;
+          message_type = mx_info;
+        }  
+
+        if (ImGui::MenuItem("Warn", "", true, warn_flag))
+        {
+          scroll_to_bottom_flag = 1;
+          message_type = mx_warn;
+        }
+
+        if (ImGui::MenuItem("Fatal", "", true, fatal_flag))
+        {
+          scroll_to_bottom_flag = 1;
+          message_type = mx_fatal;
+        } 
+
+        if (ImGui::MenuItem("Success", "", true, success_flag))
+        {
+          scroll_to_bottom_flag = 1;
+          message_type = mx_success;
+        }
+
+        if (ImGui::MenuItem(Logger::getTime().c_str(), "", false, false)) {};
+
+        if (ImGui::MenuItem("Up"))
+        {
+          scroll_to_bottom_flag = 0;
+          scroll_to_top_flag = 1;
+        }
+
+        if (ImGui::MenuItem("Down"))
+        {
+          scroll_to_bottom_flag = 1;
+          scroll_to_top_flag = 0;
+        }  
+
+        ImGui::EndMenuBar();
       }
 
-      if (ImGui::MenuItem("Info", "", true, info_flag))
-      {
-        scroll_to_bottom_flag = 1;
-        message_type = mx_info;
-      }  
+      toggle_flags();
 
-      if (ImGui::MenuItem("Warn", "", true, warn_flag))
+      switch (message_type)
       {
-        scroll_to_bottom_flag = 1;
-        message_type = mx_warn;
+        case mx_all:
+        {
+          for (auto &it : logger_messages_for_gui)
+            ImGui::TextColored(it.second, it.first.c_str());
+          break;
+        }
+        case mx_info:
+        {
+          for (auto &it : logger_messages_for_gui)
+          {
+            if (it.second.x == 1.0f && it.second.y == 1.0f && it.second.z == 1.0f)
+              ImGui::TextColored(it.second, it.first.c_str());
+            else
+              continue;
+          }
+          break;
+        }
+        case mx_warn:
+        {
+          for (auto &it : logger_messages_for_gui)
+          {
+            if (it.second.x == 1.0f && it.second.y == 1.0f && it.second.z == 0.0f)
+              ImGui::TextColored(it.second, it.first.c_str());
+            else
+              continue;
+          }
+          break;
+        }
+        case mx_fatal:
+        {
+          for (auto &it : logger_messages_for_gui)
+          {
+            if (it.second.x == 1.0f && it.second.y == 0.0f && it.second.z == 0.0f)
+              ImGui::TextColored(it.second, it.first.c_str());
+            else
+              continue;
+          }
+          break;
+        }
+        case mx_success:
+        {
+          for (auto &it : logger_messages_for_gui)
+          {
+            if (it.second.x == 0.0f && it.second.y == 1.0f && it.second.z == 0.0f)
+              ImGui::TextColored(it.second, it.first.c_str());
+            else
+              continue;
+          }
+          break;
+        }
       }
 
-      if (ImGui::MenuItem("Fatal", "", true, fatal_flag))
+      if (scroll_to_top_flag)
       {
-        scroll_to_bottom_flag = 1;
-        message_type = mx_fatal;
-      } 
-
-      if (ImGui::MenuItem("Success", "", true, success_flag))
-      {
-        scroll_to_bottom_flag = 1;
-        message_type = mx_success;
-      }
-
-      if (ImGui::MenuItem(Logger::getTime().c_str(), "", false, false)) {};
-
-      if (ImGui::MenuItem("Up"))
-      {
-        scroll_to_bottom_flag = 0;
-        scroll_to_top_flag = 1;
-      }
-
-      if (ImGui::MenuItem("Down"))
-      {
-        scroll_to_bottom_flag = 1;
+        ImGui::SetScrollY(0.0f);
         scroll_to_top_flag = 0;
-      }  
-
-      ImGui::EndMenuBar();
-    }
-
-    toggle_flags();
-
-    switch (message_type)
-    {
-      case mx_all:
-      {
-        for (auto &it : logger_messages_for_gui)
-          ImGui::TextColored(it.second, it.first.c_str());
-        break;
       }
-      case mx_info:
-      {
-        for (auto &it : logger_messages_for_gui)
-        {
-          if (it.second.x == 1.0f && it.second.y == 1.0f && it.second.z == 1.0f)
-            ImGui::TextColored(it.second, it.first.c_str());
-          else
-            continue;
-        }
-        break;
-      }
-      case mx_warn:
-      {
-        for (auto &it : logger_messages_for_gui)
-        {
-          if (it.second.x == 1.0f && it.second.y == 1.0f && it.second.z == 0.0f)
-            ImGui::TextColored(it.second, it.first.c_str());
-          else
-            continue;
-        }
-        break;
-      }
-      case mx_fatal:
-      {
-        for (auto &it : logger_messages_for_gui)
-        {
-          if (it.second.x == 1.0f && it.second.y == 0.0f && it.second.z == 0.0f)
-            ImGui::TextColored(it.second, it.first.c_str());
-          else
-            continue;
-        }
-        break;
-      }
-      case mx_success:
-      {
-        for (auto &it : logger_messages_for_gui)
-        {
-          if (it.second.x == 0.0f && it.second.y == 1.0f && it.second.z == 0.0f)
-            ImGui::TextColored(it.second, it.first.c_str());
-          else
-            continue;
-        }
-        break;
-      }
-    }
 
-    if (scroll_to_top_flag)
-    {
-      ImGui::SetScrollY(0.0f);
-      scroll_to_top_flag = 0;
-    }
+      if (scroll_to_bottom_flag)
+      {
+        ImGui::SetScrollHereY(1.0f);
+        scroll_to_bottom_flag = 0;
+      }
 
-    if (scroll_to_bottom_flag)
-    {
-      ImGui::SetScrollHereY(1.0f);
-      scroll_to_bottom_flag = 0;
-    }
-
-    if (!p_open_logger)
-      logger_window_enabled = 0;
-   
+      if (!p_open_logger)
+        logger_window_enabled = 0;
+      }
     ImGui::End();
   #endif
   }

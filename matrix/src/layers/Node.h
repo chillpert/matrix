@@ -28,11 +28,9 @@ namespace MX
     Node &operator=(const Node&) = default;
     
     void addChild(std::shared_ptr<Node> node);
-    std::shared_ptr<Node> &getChild(const std::string &name);
-    std::list<std::shared_ptr<Node>> &getChildren() { return m_Children; }
+    std::shared_ptr<Node> getChild(const std::string &name);
 
     void setParent(std::shared_ptr<Node> node);
-    std::shared_ptr<Node> &getParent() { return m_Parent; }
 
     void setLocalTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
     void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
@@ -48,10 +46,10 @@ namespace MX
 
     void toString();
 
-  private:
     std::shared_ptr<Node> m_Parent;
     std::list<std::shared_ptr<Node>> m_Children;
 
+  private:
     Transform m_Trans;
 
   public:

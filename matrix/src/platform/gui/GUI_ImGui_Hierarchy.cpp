@@ -34,27 +34,27 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    ImGui::Begin("Hierarchy", &p_open_hierarchy, window_flags);
-
-    if (!p_open_hierarchy)
-      hierarchy_window_enabled = 0;
-
-    if (ImGui::BeginMenuBar())
+    if (ImGui::Begin("Hierarchy", &p_open_hierarchy, window_flags))
     {
-      if (ImGui::MenuItem("Scene Graph", "", true, !draw_scene_graph))
-        draw_scene_graph = 1;
+      if (!p_open_hierarchy)
+        hierarchy_window_enabled = 0;
 
-      if (ImGui::MenuItem("Outline", "", true, draw_scene_graph))
-        draw_scene_graph = 0;
-      
-      ImGui::EndMenuBar();
+      if (ImGui::BeginMenuBar())
+      {
+        if (ImGui::MenuItem("Scene Graph", "", true, !draw_scene_graph))
+          draw_scene_graph = 1;
+
+        if (ImGui::MenuItem("Outline", "", true, draw_scene_graph))
+          draw_scene_graph = 0;
+        
+        ImGui::EndMenuBar();
+      }
+
+      if (draw_scene_graph)
+        draw_scene_graph_menu(*World::get().m_ActiveScene->m_Sg.m_Root);
+      else  
+        draw_outline_menu();
     }
-
-    if (draw_scene_graph)
-      draw_scene_graph_menu(*World::get().m_ActiveScene->m_Sg.m_Root);
-    else  
-      draw_outline_menu();
-  
     ImGui::End();
   #endif
   }
@@ -64,16 +64,17 @@ namespace MX
   #ifdef MX_IMGUI_ACTIVE
     if (it.m_Name != "Root")
       ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+
+    ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     
     if (ImGui::TreeNode(it.m_Name.c_str()))
     {
       ImGui::TreePop();
       
-
-      if (!it.getChildren().empty())
+      if (!it.m_Children.empty())
       {
-        for (auto itChild : it.getChildren())
-          draw_scene_graph_menu(*std::shared_ptr<Node>(itChild));
+        for (auto itChild : it.m_Children)
+          draw_scene_graph_menu(*itChild);
       }
     }
 
@@ -93,14 +94,10 @@ namespace MX
       {
         if (ImGui::TreeNode((node_name + "##outline tree").c_str()))
         {
-          try
-          {
-            std::shared_ptr<Node> temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
-            ImGui::Text(("Shader: " + temp->m_Shader->m_Name).c_str());
-            ImGui::Text(("Texture: " + temp->m_Texture->getName()).c_str());
-            ImGui::Text(("Model: " + temp->m_Model->getName()).c_str());
-          }
-          catch (const std::exception &e) { }
+          std::shared_ptr<Node> temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
+          ImGui::Text(("Shader: " + temp->m_Shader->m_Name).c_str());
+          ImGui::Text(("Texture: " + temp->m_Texture->getName()).c_str());
+          ImGui::Text(("Model: " + temp->m_Model->getName()).c_str());
 
           ImGui::TreePop();
         }

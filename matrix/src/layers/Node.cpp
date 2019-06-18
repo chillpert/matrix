@@ -14,10 +14,27 @@ namespace MX
 
   void Node::setParent(std::shared_ptr<Node> node)
   {
-    m_Parent = node;
+    if (m_Parent == nullptr)
+      m_Parent = node;
+    else
+    {
+      std::list<std::shared_ptr<Node>>::iterator iter;
+      std::shared_ptr<Node> old_parent = m_Parent;
+      for (iter = old_parent->m_Children.begin(); iter != old_parent->m_Children.end(); ++iter)
+      {
+        if ((*iter)->m_Name == this->m_Name)
+        {
+          old_parent->m_Children.erase(iter);
+          break;
+        }
+      }
+
+      node->m_Children.push_back(std::shared_ptr<Node>(this));
+      m_Parent = node;
+    }
   }
 
-  std::shared_ptr<Node> &Node::getChild(const std::string &name)
+  std::shared_ptr<Node> Node::getChild(const std::string &name)
   {
     for (auto &it : m_Children)
     {
