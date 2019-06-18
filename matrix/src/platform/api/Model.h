@@ -31,21 +31,18 @@ namespace MX
   class Model
   {
   public:
-    MX_API Model() {}
-    MX_API ~Model() {}
+    MX_API Model() = default;
+    MX_API ~Model() = default;
+
+    MX_API Model(const Model&) = default;
+    MX_API Model &operator=(const Model&) = default;
 
     MX_API virtual void initialize() = 0;
     MX_API virtual void draw() = 0;
-    MX_API virtual void setGeometry(unsigned int draw_mode) = 0;
+    MX_API virtual void setGeometry(u_int64_t draw_mode) = 0;
     
     MX_API std::string getName() const { return m_Name; }
-    MX_API std::string getPath() const { return m_Path; }
 
-    MX_API const std::vector<Material*> &getMaterialList() { return m_MaterialList; }
-    MX_API std::vector<glm::vec3> &getV() { return m_V; }
-    MX_API std::vector<glm::vec2> &getVt() { return m_Vt; }
-    MX_API std::vector<glm::vec3> &getVn() { return m_Vn; }
-  protected:
     std::string m_Name;
     std::string m_Path;
 

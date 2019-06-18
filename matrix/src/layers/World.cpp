@@ -29,14 +29,12 @@ namespace MX
     m_Shaders.clear();
   }
 
-  std::shared_ptr<MX_MODEL> World::getModel(const std::string &name, bool instant_init)
+  std::shared_ptr<MX_MODEL> World::getModel(const std::string &name)
   {
     for (auto it : m_Models)
     {
       if (it->getName() == name)
       {
-        if (instant_init)
-          it->initialize();
         return std::static_pointer_cast<MX_MODEL>(it);
       }
     }
@@ -44,14 +42,12 @@ namespace MX
     throw std::exception();
   }
 
-  std::shared_ptr<MX_SHADER> World::getShader(const std::string &name, bool instant_init)
+  std::shared_ptr<MX_SHADER> World::getShader(const std::string &name)
   {
     for (auto it : m_Shaders)
     {
       if (it->m_Name == name)
       {
-        if (instant_init)
-          it->initialize();
         return std::static_pointer_cast<MX_SHADER>(it);
       }
     }
@@ -65,7 +61,6 @@ namespace MX
     {
       if (it->getName() == name)
       {
-        // it->initialize();
         return std::static_pointer_cast<MX_TEXTURE>(it);
       }
     }
@@ -75,37 +70,21 @@ namespace MX
 
   void World::initialize()
   {
-    // push trivial shader first so that it is the default one
-    //MX_SHADER *temp_shader = new MX_SHADER("blinn_phong");
-    //m_Shaders.push_back(temp_shader);
-
-  #ifdef MX_IMGUI_ACTIVE
-    //all_available_shaders.push_back("blinn_phong");
-  #endif
-
     set_resource_files(MX_SHADER_PATH);
     set_resource_files(MX_MODEL_PATH);
     set_resource_files(MX_TEXTURE_PATH);
 
-  #ifdef MX_INSTANT_SCENE_INIT
-    for (auto *it : m_ExistingScenes)
+    for (auto it : m_ExistingScenes)
       it->initialize();
-  #endif
 
-  #ifdef MX_INSTANT_SHADER_INIT
+    for (auto it : m_Models)
+      it->initialize();
+
     for (auto it : m_Shaders)
       it->initialize();
-  #endif
 
-  #ifdef MX_INSTANT_TEXTURE_INIT
-    for (auto *it : m_Textures)
+    for (auto it : m_Textures)
       it->initialize();
-  #endif
-
-  #ifdef MX_INSTANT_MODEL_INIT
-    for (auto *it : m_Models)
-      it->initialize();
-  #endif
   }
 
   void World::update()
@@ -118,7 +97,7 @@ namespace MX
     m_ActiveScene->render();
   }
 
-  void World::push(Scene *scene)
+  void World::push(std::shared_ptr<Scene> scene)
   {
     m_ExistingScenes.push_back(scene);
     m_ActiveScene = scene;
@@ -132,7 +111,6 @@ namespace MX
     {
       if (m_ExistingScenes.at(i)->m_Name == name)
       {
-        delete m_ExistingScenes.at(i);
         m_ExistingScenes.at(i) = nullptr;
 
         try 
@@ -209,13 +187,11 @@ namespace MX
 
       	  if (!model_file_exists_already)
       	  {
-          #ifdef MX_INSTANT_MODEL_INIT
-      	    MX_MODEL *temp_model = new MX_MODEL(file_name_with_ending);
+      	    std::shared_ptr<Model> temp_model(new MX_MODEL(file_name_with_ending));
       	    World::get().m_Models.push_back(temp_model);
-					#endif
 
           #ifdef MX_IMGUI_ACTIVE
-						all_available_models.push_back(file_name);
+						all_models.push_back(file_name);
 					#endif 
       	  }
       	}
@@ -238,7 +214,7 @@ namespace MX
       	    std::shared_ptr<Shader> temp_shader(new MX_SHADER(file_name));
       	    World::get().m_Shaders.push_back(temp_shader);
 					#ifdef MX_IMGUI_ACTIVE
-      	    all_available_shaders.push_back(file_name); 
+      	    all_shaders.push_back(file_name); 
       		#endif
 					}
       	}
@@ -261,7 +237,7 @@ namespace MX
             std::shared_ptr<MX_TEXTURE> temp_texture(new MX_TEXTURE(file_name_with_ending));
       	    World::get().m_Textures.push_back(temp_texture);
 					#ifdef MX_IMGUI_ACTIVE
-      	    all_available_textures.push_back(file_name);
+      	    all_diffuse_maps.push_back(file_name);
       		#endif
 					}	
       	}

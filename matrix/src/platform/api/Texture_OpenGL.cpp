@@ -3,10 +3,11 @@
 
 namespace MX
 {
-  Texture_OpenGL::Texture_OpenGL(const std::string &file_name)
-    : Texture(file_name)
+  Texture_OpenGL::Texture_OpenGL(const std::string &name, bool instant_init)
+    : Texture(name)
   {
-    initialize();
+    if (instant_init)
+      initialize();
   }
 
   Texture_OpenGL::~Texture_OpenGL()
@@ -42,7 +43,7 @@ namespace MX
 
   void Texture_OpenGL::load()
   {
-    unsigned char *data = stbi_load((MX_TEXTURE_PATH + m_FileName).c_str(), &m_Stb.width, &m_Stb.height, &m_Stb.channels, 0);
+    unsigned char *data = stbi_load((MX_TEXTURE_PATH + m_Name).c_str(), &m_Stb.width, &m_Stb.height, &m_Stb.channels, 0);
     
     if (data)
     {

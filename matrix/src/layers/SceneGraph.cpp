@@ -3,24 +3,17 @@
 
 namespace MX
 {
-/*
-  if recursive search is called then this pointer will
-  point to the item that has been searched for the last
-  time
-*/
-  Node *search_holder = NULL;
-
   SceneGraph::SceneGraph()
   {
-
+    m_Root = std::shared_ptr<Node>(new Node("Root"));
   }
 
   SceneGraph::~SceneGraph()
   {
-    std::list<Node*> temp;
+    std::list<std::shared_ptr<Node>> temp;
     std::copy(m_Root->getChildren().begin(), m_Root->getChildren().end(), std::back_inserter(temp));
 
-    for (Node *it : temp)
+    for (auto it : temp)
       iterative_delete(it->m_Name);
   }
 
@@ -34,107 +27,44 @@ namespace MX
     recursive_render(*m_Root);
   }
 
-  static std::string first_node;
-  static bool first_iteration = 1;
-  static bool found_node = 0;
+  std::shared_ptr<Node> hidden_search_holder = nullptr;
 
-  // result equals global pointer: search_holder
-  void SceneGraph::recursive_search(const std::string &name, Node *it)
+  std::shared_ptr<Node> SceneGraph::search(const std::string &name, std::shared_ptr<Node> it)
   {
-    if (first_iteration)
+    if (it->m_Name == name)
     {
-      first_node = it->m_Name;
-      found_node = 0;
-      first_iteration = 0;
-    }
-
-    if (it->m_Name != name)
-    {
-      if (!it->getChildren().empty())
-      {
-        for (Node *itChild : it->getChildren())
-          recursive_search(name, itChild);
-      }
-    }
-    else
-    {
-      search_holder = it;
-      found_node = 1;
-    }
-    
-    if (first_node == it->m_Name && !found_node)
-    {
-      MX_FATAL("MX: SceneGraph: Recursive Search: " + first_node);
-      first_iteration = 1;
-      found_node = 0;
-      throw new std::exception();
-    }
-    else if (first_node == it->m_Name && found_node)
-    {
-      first_iteration = 1;
-      found_node = 0;
-    }
-  }
-
-  Node *hidden_search_holder = nullptr;
-
-  Node *SceneGraph::search(const std::string &name, Node *it)
-  {
-    if (first_iteration)
-    {
-      first_node = it->m_Name;
-      found_node = 0;
-      first_iteration = 0;
-    }
-
-    if (it->m_Name != name)
-    {
-      if (!it->getChildren().empty())
-      {
-        for (Node *itChild : it->getChildren())
-          search(name, itChild);
-      }
-    }
-    else
-    {
+      MX_SUCCESS("MX: SceneGraph: Found: " + it->m_Name);
       hidden_search_holder = it;
-      found_node = 1;
     }
-    
-    if (first_node == it->m_Name && !found_node)
+
+    if (!it->getChildren().empty())
     {
-      MX_FATAL("MX: SceneGraph: Recursive Search: " + first_node);
-      first_iteration = 1;
-      found_node = 0;
-      throw new std::exception();
+      for (auto it : it->getChildren())
+        search(name, it);
     }
-    else if (first_node == it->m_Name && found_node)
-    {
-      first_iteration = 1;
-      found_node = 0;
-      return hidden_search_holder;
-    }
+
+    return hidden_search_holder;
   }
 
   // deletes all children recursively from a given node
-  void SceneGraph::recursive_delete(Node *it)
+  void SceneGraph::recursive_delete(std::shared_ptr<Node> it)
   {
     if (!it->getChildren().empty())
     {
-      for (Node *itChild : it->getChildren())
+      for (auto itChild : it->getChildren())
       {
-        recursive_delete(itChild);
+        recursive_delete(std::shared_ptr<Node>(itChild));
         MX_INFO_LOG("MX: SceneGraph: Recursive Delete: Deleting: " + itChild->m_Name);
-        delete itChild;
-        itChild = nullptr;
+        // delete itChild;
+        // itChild = nullptr;
       }
     }
     // leaf
     else
     {
-      Node *parent = it->getParent();
+      std::shared_ptr<Node> parent = it->getParent();
 
-      for (std::list<Node*>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
+      for (std::list<std::shared_ptr<Node>>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
       {
         if ((*iter)->m_Name == it->m_Name)
         {
@@ -144,68 +74,65 @@ namespace MX
       }
 
       MX_INFO_LOG("MX: SceneGraph: Recursive Delete (leaf): Deleting: " + it->m_Name);
-      delete it;
-      it = nullptr;
     }
   }
 
   void SceneGraph::iterative_delete(const std::string &name)
   {
     std::vector<std::string> all_kids;
+    std::shared_ptr<Node> temp;
 
     try
     {
-      recursive_search(name, m_Root);
+      temp = search(name, m_Root);
     }
     catch (const std::exception &e)
     {
       return;
     }
     
-    getAllObjects(&all_kids, search_holder);
+    getAllObjects(&all_kids, std::shared_ptr<Node>(temp));
     
     std::reverse(all_kids.begin(), all_kids.end());
 
     for (const auto &it : all_kids)
     {
-      recursive_search(it, m_Root);
+      temp = search(it, m_Root);
 
-      Node *parent = search_holder->getParent();
+      std::shared_ptr<Node> parent = temp->getParent();
 
-      for (std::list<Node*>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
+      for (std::list<std::shared_ptr<Node>>::iterator iter = parent->getChildren().begin(); iter != parent->getChildren().end(); ++iter)
       {
-        if ((*iter)->m_Name == search_holder->m_Name)
+        if ((*iter)->m_Name == temp->m_Name)
         {
           parent->getChildren().erase(iter);
           break;
         }
       }
 
-      MX_INFO_LOG("MX: SceneGraph: Iterative Delete: Node: " + search_holder->m_Name);
-      delete search_holder;
-      search_holder = nullptr;
+      MX_INFO_LOG("MX: SceneGraph: Iterative Delete: Node: " + temp->m_Name);
     }
   }
 
-  void SceneGraph::getAllObjects(std::vector<std::string> *vec, Node *it)
+  void SceneGraph::getAllObjects(std::vector<std::string> *vec, std::shared_ptr<Node> it)
   {
     vec->push_back(it->m_Name);
 
     if (!it->getChildren().empty())
     {
-      for (Node *itChild : it->getChildren())
-        getAllObjects(vec, itChild);
+      for (auto itChild : it->getChildren())
+        getAllObjects(vec, std::shared_ptr<Node>(itChild));
     }
   }
 
-  void SceneGraph::getAllObjects(std::vector<const char*> *vec, Node *it)
+  void SceneGraph::getAllObjects(std::vector<const char*> *vec, std::shared_ptr<Node> it)
   {
     vec->push_back(it->m_Name.c_str());
 
     if (!it->getChildren().empty())
     {
-      for (Node *itChild : it->getChildren())
-        getAllObjects(vec, itChild);
+      for (auto itChild : it->getChildren())
+        getAllObjects(vec, std::shared_ptr<Node>(itChild));
     }
   }
 
@@ -238,10 +165,9 @@ namespace MX
 
     if (!it.getChildren().empty())
     {
-      for (Node* itChild : it.getChildren())
+      for (auto itChild : it.getChildren())
       {
-        Node ptr = *itChild;
-        recursive_render(*itChild, it.getWorldTransform());
+        recursive_render(*std::shared_ptr<Node>(itChild), it.getWorldTransform());
       }
     }
   }

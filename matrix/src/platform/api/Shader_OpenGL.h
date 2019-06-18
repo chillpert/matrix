@@ -9,7 +9,7 @@ namespace MX
   {
   public:
     MX_API Shader_OpenGL() = default;
-    MX_API Shader_OpenGL(const std::string &name);
+    MX_API Shader_OpenGL(const std::string &name, bool instant_init = 0);
     MX_API ~Shader_OpenGL() = default;
 
     MX_API Shader_OpenGL(const Shader_OpenGL&) = default;

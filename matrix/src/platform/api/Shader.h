@@ -40,6 +40,7 @@ namespace MX
     MX_API virtual void setfMat4(const std::string &name, const glm::fmat4 &mat) const = 0;
 
     MX_API void setPath(const std::string &name);
+    MX_API std::string getName() { return m_Name; }
 
     std::string m_Name;
     std::string m_VsPath = MX_SHADER_PATH;

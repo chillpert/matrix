@@ -3,8 +3,12 @@
 
 namespace MX
 {
-  Shader_OpenGL::Shader_OpenGL(const std::string &name)
-    : Shader(name) { }
+  Shader_OpenGL::Shader_OpenGL(const std::string &name, bool instant_init)
+    : Shader(name)
+  {
+    if (instant_init)
+      initialize(); 
+  }
 
   void Shader_OpenGL::use() const
   {

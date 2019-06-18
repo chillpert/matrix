@@ -24,13 +24,20 @@ namespace MX
     // return 1 if name is unique, searches the entire scene's scenegraph
     MX_API bool addItemEntry(const std::string &name);
     
-    MX_API void push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to);
-    MX_API void pop(const std::string &name);
+    MX_API bool push(const std::string &name);
+    MX_API bool push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to);
+    MX_API bool push(std::shared_ptr<Node> node, std::shared_ptr<Node> node_to_attach_to);
+    MX_API bool pop(const std::string &name);
+  
+  private:
+    MX_API bool object_already_exists(const std::string &name);
 
   public:
     Camera m_Cam;
     SceneGraph m_Sg;
     std::string m_Name;
+    
+    std::vector<std::string> m_ExistingObjects;
   };
 }
 

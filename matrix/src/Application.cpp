@@ -40,7 +40,7 @@ namespace MX
     
     initialize_func();
     MX_SUCCESS_LOG("MX: Application: Initialization: Func");
-
+  
     // set up GUI
     m_GUI->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: GUI");

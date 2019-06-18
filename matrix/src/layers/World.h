@@ -8,7 +8,7 @@
 #define MX_ROOT MX::World::get().m_ActiveScene->m_Sg.m_Root
 
 #define MX_GET_SHADER(name) MX::World::get().getShader(name)
-#define MX_GET_MODEL(name, num) MX::World::get().getModel(name, num)
+#define MX_GET_MODEL(name) MX::World::get().getModel(name)
 #define MX_GET_TEXTURE(name) MX::World::get().getTexture(name)
 
 // disabled for faster start up
@@ -46,19 +46,19 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    MX_API void push(Scene *scene);
+    MX_API void push(std::shared_ptr<Scene> scene);
     MX_API void pop(const std::string &name);
 
-    MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name, bool instant_init = 0);
-    MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name, bool instant_init = 0);
+    MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name);
+    MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name);
     MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name);
 
   private:
     MX_API World() {}
 
   public:
-    Scene *m_ActiveScene;
-    std::vector<Scene*> m_ExistingScenes;
+    std::shared_ptr<Scene> m_ActiveScene;
+    std::vector<std::shared_ptr<Scene>> m_ExistingScenes;
   
     std::vector<std::shared_ptr<Model>> m_Models;
     std::vector<std::shared_ptr<Shader>> m_Shaders;

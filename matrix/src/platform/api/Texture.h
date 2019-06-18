@@ -22,7 +22,7 @@ namespace MX
   class Texture
   {
   public:
-    MX_API Texture(const std::string &file_name);
+    MX_API Texture(const std::string &name);
     MX_API virtual ~Texture() = default;
 
     MX_API Texture(const Texture&) = default;
@@ -31,14 +31,16 @@ namespace MX
     MX_API virtual void initialize() = 0;
     MX_API virtual void use() const = 0;
 
-    MX_API const std::string &getName() const { return m_FileName; }
+    MX_API const std::string &getName() const { return m_Name; }
+    MX_API virtual u_int64_t getID() = 0;
 
   protected:
     MX_API virtual void create() = 0;
     MX_API virtual void load() = 0;
 
-    std::string m_FileName;
+  public:
     STB_Texture m_Stb;
+    std::string m_Name;
   };
 }
 

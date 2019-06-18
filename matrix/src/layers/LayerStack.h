@@ -10,7 +10,7 @@ namespace MX
   {
   public:
     MX_API LayerStack() {}
-    MX_API ~LayerStack();
+    MX_API ~LayerStack() = default;
 
     MX_API void push(Layer* layer);
     MX_API void pop(Layer* layer);

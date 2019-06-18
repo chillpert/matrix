@@ -5,24 +5,19 @@ namespace MX
   Node::Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model, std::shared_ptr<MX_SHADER> shader, std::shared_ptr<MX_TEXTURE> texture)
     : m_Name(node_name), m_Model(model), m_Shader(shader), m_Texture(texture) { }
 
-  Node::~Node()
+  void Node::addChild(std::shared_ptr<Node> node)
   {
-    m_Model = nullptr;
-  }
-
-  void Node::addChild(Node* node)
-  {
-    node->setParent(this);
+    node->setParent(std::shared_ptr<Node>(this));
     m_Children.emplace_back(node);
     MX_INFO_LOG("MX: Node: " + node->m_Name + " added to parent: " + this->m_Name);
   }
 
-  void Node::setParent(Node* node)
+  void Node::setParent(std::shared_ptr<Node> node)
   {
     m_Parent = node;
   }
 
-  Node* &Node::getChild(const std::string &name)
+  std::shared_ptr<Node> &Node::getChild(const std::string &name)
   {
     for (auto &it : m_Children)
     {
@@ -50,7 +45,7 @@ namespace MX
   }
 
   void Node::setModel(std::shared_ptr<MX_MODEL> model)
-  {
+  {    
     m_Model = model;
   }
 

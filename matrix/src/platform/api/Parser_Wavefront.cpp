@@ -15,7 +15,7 @@ namespace MX
     
     if (/*description != Error*/1)
     {
-      std::ifstream file(m_Model->getPath());
+      std::ifstream file(m_Model->m_Path);
       std::string line;
 
       while (std::getline(file, line)) {
@@ -72,9 +72,9 @@ namespace MX
         glm::vec2 texture = temp_Vt.at(textureIndex - 1);
         glm::vec3 normal = temp_Vn.at(normalIndex - 1);
 
-        m_Model->getV().push_back(vertex);
-        m_Model->getVt().push_back(texture);
-        m_Model->getVn().push_back(normal);
+        m_Model->m_V.push_back(vertex);
+        m_Model->m_Vt.push_back(texture);
+        m_Model->m_Vn.push_back(normal);
       }
 
     }
@@ -90,7 +90,7 @@ namespace MX
   std::string Wavefront_Parser::toString()
   {
     std::string message =
-      "\nMX: Model: Object at " + m_Model->getPath()        + "\n" +
+      "\nMX: Model: Object at " + m_Model->m_Path           + "\n" +
       "\ttemp_V: "      + std::to_string(temp_V.size())     + "\n" +
       "\ttemp_Vt: "     + std::to_string(temp_Vt.size())    + "\n" +  
       "\ttemp_Vn: "     + std::to_string(temp_Vn.size())    + "\n" +

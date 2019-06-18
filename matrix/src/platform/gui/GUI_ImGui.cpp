@@ -115,6 +115,9 @@ namespace MX
     colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
+    current_root = World::get().m_ActiveScene->m_Sg.m_Root;
+    current_node = current_root;
+
     MX_IMGUI_INIT
     ImGui_ImplOpenGL3_Init(glsl_version.c_str());
 
@@ -126,8 +129,11 @@ namespace MX
   void GUI_ImGui::update()
   {
   #ifdef MX_IMGUI_ACTIVE
-    // update application viewport
-    
+    current_scene = World::get().m_ActiveScene;
+    current_scenegraph = &World::get().m_ActiveScene->m_Sg;
+    current_root = World::get().m_ActiveScene->m_Sg.m_Root;
+    all_scenes = &World::get().m_ExistingScenes;
+    current_scene->m_Sg.getAllObjects(&all_objects, current_scene->m_Sg.m_Root);
 
     ImGui_ImplOpenGL3_NewFrame();
     MX_IMGUI_NEW_FRAME
@@ -156,8 +162,8 @@ namespace MX
     if (logger_window_enabled)
       renderLoggerWindow();
 
-    all_current_objects.clear();
-
+    all_objects.clear();
+    
     ImGui::Render();
     MX_IMGUI_API_RENDER
   #endif
@@ -171,7 +177,7 @@ namespace MX
     ImGui::DestroyContext();
 
     // delete allocated chars
-    for (std::vector<const char*>::iterator iter = all_available_models.begin() + 1; iter != all_available_models.end(); ++iter)
+    for (std::vector<const char*>::iterator iter = all_models.begin() + 1; iter != all_models.end(); ++iter)
       delete *iter;
 
   #endif

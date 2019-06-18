@@ -19,17 +19,16 @@ namespace MX
 
   class Model_OpenGL : public Model
   {
-  public:    
-    MX_API Model_OpenGL();
-    MX_API Model_OpenGL(const Model_OpenGL &model);
-    MX_API Model_OpenGL(const std::string &name, bool instantInitialize = 0);
-    MX_API virtual ~Model_OpenGL() {}
+  public:
+    MX_API Model_OpenGL(const std::string &name, bool instant_init = 0);
+    MX_API ~Model_OpenGL() = default;
+
+    MX_API Model_OpenGL(const Model_OpenGL&) = default;
+    MX_API Model_OpenGL &operator=(const Model_OpenGL&) = default;
     
     MX_API void initialize() override;
     MX_API void draw() override;
-    MX_API void setGeometry(unsigned int draw_mode) override;
-
-    MX_API void setName(const std::string &name);
+    MX_API void setGeometry(u_int64_t draw_mode) override;
 
   private:
     GL_ModelObjects m_ModelObject; 

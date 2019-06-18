@@ -2,15 +2,6 @@
 
 namespace MX
 {
-  LayerStack::~LayerStack()
-  {
-    for (auto it : m_Layers)
-    {
-      delete it;
-      it = nullptr;
-    }
-  }
-
   void LayerStack::push(Layer* layer)
   {
     m_Layers.emplace_back(layer);

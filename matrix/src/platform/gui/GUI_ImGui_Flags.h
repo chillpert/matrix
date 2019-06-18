@@ -2,29 +2,26 @@
 #define GUI_IMGUI_FLAGS_H
 
 #include "matrix/src/pch/stdafx.h"
+#include "matrix/src/layers/Scene.h"
 
 #include <imgui.h>
 
 namespace MX
 {
-  // all object files in model directory
-  MX_API extern std::vector<const char*> all_available_models;
-  // all texture files in texture directory
-  MX_API extern std::vector<const char*> all_available_textures;
-  // all shaders files in shader directory
-  MX_API extern std::vector<const char*> all_available_shaders;
+  MX_API extern std::shared_ptr<Node> current_node;
+  MX_API extern std::shared_ptr<Scene> current_scene;
+  MX_API extern SceneGraph *current_scenegraph;
+  MX_API extern std::shared_ptr<Node> current_root;
+  MX_API extern std::vector<std::shared_ptr<Scene>> *all_scenes;
 
-  // all existing scenes
+  MX_API extern std::vector<const char*> all_models;
+  MX_API extern std::vector<const char*> all_shaders;
+  MX_API extern std::vector<const char*> all_diffuse_maps;
+  MX_API extern std::vector<const char*> all_normal_maps;
+  MX_API extern std::vector<const char*> all_bump_maps;
+
   MX_API extern std::vector<const char*> all_current_scenes;
-  // all existing objects in scene
-  MX_API extern std::vector<const char*> all_current_objects;
-
-  // imgui combo flags
-  MX_API extern int item_objects_to_spawn;
-
-  MX_API extern int item_objects_to_select;
-  MX_API extern int item_shaders_to_select;
-  MX_API extern int item_texture_to_select;
+  MX_API extern std::vector<const char*> all_objects;
 
   // all mx-logger messages are being stored in here
   MX_API extern std::vector<std::pair<std::string, ImVec4>> logger_messages_for_gui;

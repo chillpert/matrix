@@ -3,33 +3,15 @@
 
 namespace MX
 {
-  Model_OpenGL::Model_OpenGL(const Model_OpenGL &model)
-  {
-    m_Name = model.m_Name;
-    m_Path = model.m_Path;
-
-    m_MaterialList = model.m_MaterialList;
-    m_V = model.m_V;
-    m_Vt = model.m_Vt;
-    m_Vn = model.m_Vn;
-    
-    m_ModelObject = GL_ModelObjects(model.m_ModelObject);
-  }
-  
-  Model_OpenGL::Model_OpenGL(const std::string &name, bool instantInitialize)
+  Model_OpenGL::Model_OpenGL(const std::string &name, bool instant_init)
   {
     m_Name = name;
     m_Path = MX_MODEL_PATH + name;
     
-    if (instantInitialize)
+    if (instant_init)
       initialize();
   }
 
-  void Model_OpenGL::setName(const std::string &name)
-  {
-    m_Name = name;
-    m_Path = MX_MODEL_PATH + name;
-  }
 
   void Model_OpenGL::initialize()
   {
@@ -45,7 +27,7 @@ namespace MX
     }
   }
 
-  void Model_OpenGL::setGeometry(unsigned int draw_mode)
+  void Model_OpenGL::setGeometry(u_int64_t draw_mode)
   {
     glGenVertexArrays(1, &m_ModelObject.VAO);
     glBindVertexArray(m_ModelObject.VAO);        

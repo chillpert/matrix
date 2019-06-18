@@ -27,12 +27,12 @@ namespace MX
     Node(const Node&) = default;
     Node &operator=(const Node&) = default;
     
-    void addChild(Node* node);
-    Node* &getChild(const std::string &name);
-    std::list<Node*> &getChildren() { return m_Children; }
+    void addChild(std::shared_ptr<Node> node);
+    std::shared_ptr<Node> &getChild(const std::string &name);
+    std::list<std::shared_ptr<Node>> &getChildren() { return m_Children; }
 
-    void setParent(Node* node);
-    Node* &getParent() { return m_Parent; }
+    void setParent(std::shared_ptr<Node> node);
+    std::shared_ptr<Node> &getParent() { return m_Parent; }
 
     void setLocalTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
     void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
@@ -40,7 +40,7 @@ namespace MX
     MX_API void setModel(std::shared_ptr<MX_MODEL> model);
     MX_API void setShader(std::shared_ptr<MX_SHADER> shader);
     MX_API void setTexture(std::shared_ptr<MX_TEXTURE> texture);
-
+  
     MX_API void setTransform(const Trans &t, float factor, bool isAnimated);
 
     glm::fmat4 &getLocalTransform() { return m_Trans.m_Local; }
@@ -49,8 +49,8 @@ namespace MX
     void toString();
 
   private:
-    Node *m_Parent;
-    std::list<Node*> m_Children;
+    std::shared_ptr<Node> m_Parent;
+    std::list<std::shared_ptr<Node>> m_Children;
 
     Transform m_Trans;
 

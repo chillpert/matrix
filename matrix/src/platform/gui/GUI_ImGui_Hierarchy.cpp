@@ -62,7 +62,7 @@ namespace MX
   static void draw_scene_graph_menu(Node &it)
   {
   #ifdef MX_IMGUI_ACTIVE
-    if (it.m_Name != "root")
+    if (it.m_Name != "Root")
       ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
     
     if (ImGui::TreeNode(it.m_Name.c_str()))
@@ -72,12 +72,12 @@ namespace MX
 
       if (!it.getChildren().empty())
       {
-        for (Node *itChild : it.getChildren())
-          draw_scene_graph_menu(*itChild);
+        for (auto itChild : it.getChildren())
+          draw_scene_graph_menu(*std::shared_ptr<Node>(itChild));
       }
     }
 
-    if (it.m_Name != "root")
+    if (it.m_Name != "Root")
       ImGui::Unindent();
   #endif
   }
@@ -85,17 +85,17 @@ namespace MX
   static void draw_outline_menu()
   {
   #ifdef MX_IMGUI_ACTIVE
-    for (auto it : all_current_objects)
+    for (auto it : all_objects)
     {
       const std::string node_name = std::string(it);
 
-      if (node_name != "root")
+      if (node_name != "Root")
       {
         if (ImGui::TreeNode((node_name + "##outline tree").c_str()))
         {
           try
           {
-            Node *temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
+            std::shared_ptr<Node> temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
             ImGui::Text(("Shader: " + temp->m_Shader->m_Name).c_str());
             ImGui::Text(("Texture: " + temp->m_Texture->getName()).c_str());
             ImGui::Text(("Model: " + temp->m_Model->getName()).c_str());
