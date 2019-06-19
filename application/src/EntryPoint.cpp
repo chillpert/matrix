@@ -33,29 +33,50 @@ void load_debug_scene()
 
 void initialize()
 {
-  MX::MX_WORLD.initialize();
-  MX::MX_WORLD.push(std::shared_ptr<MX::Scene>(new MX::Scene("debug")));
+  using namespace MX;
+
+  MX_WORLD.initialize();
+  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("debug")));
 
 #ifdef MX_DEBUG
-  load_debug_scene();
+  //load_debug_scene();
 #endif
 }
 
 void update()
 {
-  MX::MX_WORLD.update();
+  using namespace MX;
+  MX_WORLD.update();
 }
 
 void render()
 {
-  MX::MX_WORLD.render();
+  using namespace MX;
+  MX_WORLD.render();
+
+  static MX_SHADER assimp_shader("assimp_blinn_phong", 1);
+  static Assimp_Model nano_suit(MX_MODEL_PATH + std::string("nanosuit/nanosuit.obj"));
+
+  assimp_shader.use();
+  glm::mat4 projection = MX_CAMERA.getProjectionMatrix();
+  glm::mat4 view = MX_CAMERA.getViewMatrix();
+  assimp_shader.setfMat4("projection", projection);
+  assimp_shader.setfMat4("view", view);
+  assimp_shader.setfVec3("lightPosition", glm::fvec3(0.0f, 5.0f, 5.0f));
+  assimp_shader.setfVec3("lightColor", glm::fvec3(1.0f, 1.0f, 1.0f));
+  assimp_shader.setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());    
+  assimp_shader.setFloat("ambientStrength", 0.08f);
+
+  glm::mat4 model = glm::mat4(1.0f);
+  model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
+  assimp_shader.setfMat4("model", model);
+  nano_suit.render(assimp_shader);
 }
 
 int main()
 {
   // application testing
   MX::Application::get().initialize(initialize);
-  MX::Application::get().m_Window->setTitle("My Application");
 
   // rendering loop
   while (MX::Application::get().m_Running)

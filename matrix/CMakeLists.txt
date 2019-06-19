@@ -67,7 +67,10 @@ set(BUILD_DOCS OFF CACHE STRING "" FORCE)
 set(IGNORE_GIT_HASH OFF CACHE STRING "" FORCE)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/external/${ASSIMP_DIRECTORY})
-include_directories(${PROJECT_SOURCE_DIR}/external/${ASSIMP_DIRECTORY}/include)
+include_directories(
+  ${PROJECT_SOURCE_DIR}/external/${ASSIMP_DIRECTORY}/include 
+  ${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/include
+  )
 
 link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code)
 

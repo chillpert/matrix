@@ -39,6 +39,7 @@
 #include <iterator>
 #include <regex>
 #include <utility>
+#include <map>
 #include <exception>
 
 // project files

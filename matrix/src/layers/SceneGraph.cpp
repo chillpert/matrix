@@ -7,7 +7,6 @@ namespace MX
   SceneGraph::SceneGraph()
   {
     m_Root = std::shared_ptr<Node>(new Node("Root"));
-    MX_INFO_LOG("MX: SceneGraph: Constructor");
   }
 
   SceneGraph::~SceneGraph()

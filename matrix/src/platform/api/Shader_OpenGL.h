@@ -33,7 +33,7 @@ namespace MX
     MX_API void setfMat3(const std::string &name, const glm::fmat3 &mat) const override;
     MX_API void setfMat4(const std::string &name, const glm::fmat4 &mat) const override;
 
-  private:
+  public:
     GLuint m_ID;
   };
 }

@@ -17,6 +17,8 @@
 
 // model
 #include <Model.h>
+#include <Assimp_Model.h>
+#include <Mesh.h>
 
 // layers
 #include <Layer.h>
