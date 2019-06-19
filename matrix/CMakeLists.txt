@@ -45,6 +45,37 @@ elseif(WIN32 AND CMAKE_CL_64)
 endif()
 
 ####################################################################################################
+#############################      model loading        ############################################
+####################################################################################################
+
+# assimp
+set(ASSIMP_DIRECTORY assimp)
+
+set(BUILD_FRAMEWORK OFF CACHE STRING "" FORCE)
+set(ASSIMP_DOUBLE_PRECISION OFF CACHE STRING "" FORCE)
+set(ASSIMP_OPT_BUILD_PACKAGES OFF CACHE STRING "" FORCE)
+set(ASSIMP_ANDROID_JNIIOSYSTEM OFF CACHE STRING "" FORCE)
+set(ASSIMP_NO_EXPORT OFF CACHE STRING "" FORCE)
+set(ASSIMP_BUILD_ZLIB OFF CACHE STRING "" FORCE)
+set(ASSIMP_BUILD_SAMPLES OFF CACHE STRING "" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE STRING "" FORCE)
+set(ASSIMP_COVERALLS OFF CACHE STRING "" FORCE)
+set(ASSIMP_ASAN OFF CACHE STRING "" FORCE)
+set(ASSIMP_UBSAN OFF CACHE STRING "" FORCE)
+set(SYSTEM_IRRXML OFF CACHE STRING "" FORCE)
+set(BUILD_DOCS OFF CACHE STRING "" FORCE)
+set(IGNORE_GIT_HASH OFF CACHE STRING "" FORCE)
+
+add_subdirectory(${PROJECT_SOURCE_DIR}/external/${ASSIMP_DIRECTORY})
+include_directories(${PROJECT_SOURCE_DIR}/external/${ASSIMP_DIRECTORY}/include)
+
+link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code)
+
+set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
+    libassimpd.so
+  )
+
+####################################################################################################
 #############################      rendering API        ############################################
 ####################################################################################################
 
@@ -268,6 +299,7 @@ target_link_libraries(MatrixLib
   ${API_LIB}
   ${WINDOW_LIB}
   ${BOOST_LIB}
+  ${MODEL_LOADING_LIB}
   )
 
 # controller profile
