@@ -33,6 +33,7 @@ namespace MX
 
   // GUI_ImGui_Editor.cpp
   MX_API void renderEditorWindow();
+  MX_API void renderFileInspectorWindow();
 
   // GUI_ImGui_Hierarchy.cpp
   MX_API void renderHierarchyWindow();

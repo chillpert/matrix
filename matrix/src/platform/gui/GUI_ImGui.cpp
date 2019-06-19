@@ -1,20 +1,9 @@
 #include "matrix/src/platform/gui/GUI_ImGui.h"
 #include "matrix/src/platform/window/Window.h"
 #include "matrix/src/platform/window/Window_SDL2.h"
-#include "matrix/src/platform/window/Window_GLFW.h"
 #include "matrix/src/Application.h"
 
 #ifdef MX_IMGUI_ACTIVE
-
-#ifdef MX_GLFW_ACTIVE
-  #include <imgui_impl_glfw.h>
-  #define MX_IMGUI_INIT       ImGui_ImplGlfw_InitForOpenGL(\
-                                static_cast<Window_GLFW*>(Application::get().m_Window->getWindow())->m_Window,\
-                                true\
-                              );
-  #define MX_IMGUI_NEW_FRAME  ImGui_ImplGlfw_NewFrame();
-  #define MX_IMGUI_CLEAN      ImGui_ImplGlfw_Shutdown();
-#elif MX_SDL2_ACTIVE
   #include <imgui_impl_sdl.h>
   #define MX_IMGUI_INIT       ImGui_ImplSDL2_InitForOpenGL(\
                                 static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Window,\
@@ -22,7 +11,7 @@
                               );
   #define MX_IMGUI_NEW_FRAME  ImGui_ImplSDL2_NewFrame(static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Window);
   #define MX_IMGUI_CLEAN      ImGui_ImplSDL2_Shutdown();
-#endif
+
 #ifdef MX_OPENGL_ACTIVE
   #define MX_IMGUI_API_RENDER ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   #define MX_IMGUI_API_CLOSE  ImGui_ImplOpenGL3_Shutdown();
@@ -37,6 +26,7 @@ namespace MX
 {
   static bool first_run = 1;
   static bool dockspace_p_open = 1;
+  MX_TEXTURE play_button("elon.jpg");
 
   ImFont* font_global;
 
@@ -115,8 +105,10 @@ namespace MX
     colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
-    current_root = World::get().m_ActiveScene->m_Sg.m_Root;
+    current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
     current_node = current_root;
+
+    play_button.initialize();
 
     MX_IMGUI_INIT
     ImGui_ImplOpenGL3_Init(glsl_version.c_str());
@@ -129,10 +121,10 @@ namespace MX
   void GUI_ImGui::update()
   {
   #ifdef MX_IMGUI_ACTIVE
-    current_scene = World::get().m_ActiveScene;
-    current_scenegraph = &World::get().m_ActiveScene->m_Sg;
-    current_root = World::get().m_ActiveScene->m_Sg.m_Root;
-    all_scenes = &World::get().m_ExistingScenes;
+    current_scene = MX_WORLD.m_ActiveScene;
+    current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
+    current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
+    all_scenes = &MX_WORLD.m_ExistingScenes;
 
     all_objects.clear();
     current_scene->m_Sg.getAllObjects(all_objects, current_scene->m_Sg.m_Root);
@@ -152,17 +144,19 @@ namespace MX
 
     renderDockSpace();
     renderViewport();
-    
+
     if (demo_window_enabled)
       ImGui::ShowDemoWindow();
     if (menubar_enabled)
       renderMenuBar();
     if (editor_window_enabled)
       renderEditorWindow();
-    //if (hierarchy_window_enabled)
-      //renderHierarchyWindow();
+    if (hierarchy_window_enabled)
+      renderHierarchyWindow();
     if (logger_window_enabled)
       renderLoggerWindow();
+    if (file_inspector_enabled)
+      renderFileInspectorWindow();
 
     ImGui::Render();
     MX_IMGUI_API_RENDER
@@ -254,6 +248,11 @@ namespace MX
     if (no_autoresize)      window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 
     static int current_frame = 0;
+    static int first_iteration = 1;
+    static ImTextureID my_tex_id;
+    static float my_tex_w;
+    static float my_tex_h;
+
     current_frame = Application::get().m_Window->m_Props.m_Frames;
     
     if (ImGui::Begin("View Port", &p_open, window_flags))
@@ -262,6 +261,19 @@ namespace MX
       
       std::string fps_message = std::to_string(current_frame) + " FPS";
       ImGui::Text(fps_message.c_str());
+
+      if (first_iteration)
+      {
+        my_tex_id = (void*)play_button.getID();
+        my_tex_w = play_button.m_Stb.width;
+        my_tex_h = play_button.m_Stb.height;
+        first_iteration = 0;
+      }
+
+      ImGui::SameLine();
+      if (ImGui::ImageButton(my_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / my_tex_w, 16.0f / my_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
+        current_scenegraph->is_paused = !current_scenegraph->is_paused;
+
 
       static int menubar_offset = 19;
 

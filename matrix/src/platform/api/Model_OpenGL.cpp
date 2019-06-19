@@ -25,6 +25,8 @@ namespace MX
     {
       MX_FATAL("MX: Model: File format not supported");
     }
+
+    m_initialized = 1;
   }
 
   void Model_OpenGL::setGeometry(u_int64_t draw_mode)

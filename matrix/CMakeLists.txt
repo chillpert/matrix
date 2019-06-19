@@ -14,67 +14,25 @@ add_compile_definitions(MX_FONTS_PATH="${PROJECT_SOURCE_DIR}/external/imgui/misc
 #############################         windowing         ############################################
 ####################################################################################################
 
-# glfw
-if(USE_GLFW)
-  set(GLFW_DIRECTORY glfw)
-  
-  set(GLFW_INSTALL OFF CACHE STRING "" FORCE)
-  set(GLFW_BUILD_EXAMPLES OFF CACHE STRING "" FORCE)
-  set(GLFW_BUILD_TESTS OFF CACHE STRING "" FORCE)
-
-  add_subdirectory(${PROJECT_SOURCE_DIR}/external/${GLFW_DIRECTORY})
-  include_directories(${PROJECT_SOURCE_DIR}/external/${GLFW_DIRECTORY}/include)
-
-  if(WIN32 AND CMAKE_CL_64)
-    link_directories(${PROJECT_SOURCE_DIR}/build/external/${GLFW_DIRECTORY}/src)
-  endif()
-
-endif(USE_GLFW)
-
 # sdl
-if(USE_SDL2)
-  set(SDL_DIRECTORY SDL-mirror)
+set(SDL_DIRECTORY SDL-mirror)
 
-  add_subdirectory(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY})
-  include_directories(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY}/include)
+add_subdirectory(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY})
+include_directories(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY}/include)
 
-  if(WIN32 AND CMAKE_CL_64)
-    link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
-  endif()
-
-endif(USE_SDL2)
+if(WIN32 AND CMAKE_CL_64)
+  link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
+endif()
 
 # linking
-if(USE_GLFW AND USE_SDL2)
-  message(FATAL_ERROR "MX: ERROR: You can not use GLFW and SDL2 simultaneously")
-
-elseif(NOT USE_GLFW AND NOT USE_SDL2)
-  message(FATAL_ERROR "MX: ERROR: You have to use either SDL2 or GLFW")
-
-elseif(USE_SDL2)
-  add_compile_definitions(MX_SDL2_ACTIVE)
-  message("MX: Using SDL2")
-
-  if(UNIX)
-    set(WINDOW_LIB ${WINDOW_LIB}
-      SDL2
-    )
-
-  elseif(WIN32 AND CMAKE_CL_64)
-    set(WINDOW_LIB ${WINDOW_LIB}
-      SDL2d
-      )
-  
-  endif()
-
-elseif(USE_GLFW)
-  message("MX: Using GLFW")
-  add_compile_definitions(MX_GLFW_ACTIVE)
-
-  # set library for linking
+if(UNIX)
   set(WINDOW_LIB ${WINDOW_LIB}
-    glfw3
-    ${GLFW_LIBRARIES}
+    SDL2
+  )
+
+elseif(WIN32 AND CMAKE_CL_64)
+  set(WINDOW_LIB ${WINDOW_LIB}
+    SDL2d
   )
 endif()
 
@@ -206,16 +164,9 @@ elseif(USE_DIRECTX)
   )
 ENDIF() 
 
-if(USE_GLFW)
-  set(IMGUI_WINDOW ${IMGUI_WINDOW}
-    "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_glfw.cpp"
-  )
-
-elseif(USE_SDL2)
-  set(IMGUI_WINDOW ${IMGUI_WINDOW}
-    "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_sdl.cpp"
-  )
-ENDIF()
+set(IMGUI_WINDOW ${IMGUI_WINDOW}
+  "${PROJECT_SOURCE_DIR}/external/imgui/examples/imgui_impl_sdl.cpp"
+)
 
 set(IMGUI_FILES ${IMGUI_FILES}
   "${PROJECT_SOURCE_DIR}/external/imgui/*.cpp"

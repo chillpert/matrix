@@ -16,25 +16,28 @@ namespace MX
   {
     Trans t;
     float factor;
-    bool isAnimated = 0;
+    bool is_animated = 0;
   };
 
   class Transform
   {
   public:
-    Transform();
-    ~Transform();
+    Transform() = default;
+    ~Transform() = default;
+
+    Transform(const Transform&) = default;
+    Transform &operator=(const Transform&) = default;
 
     glm::fmat4 update();
-
-    void push(const Trans &t, float factor, bool isAnimated);
-
+    void push(const Trans &t, float factor, bool is_animated);
     float get_time() const;
 
-    glm::fmat4 m_Local = glm::fmat4(1.0f);
-    glm::fmat4 m_World = glm::fmat4(1.0f);
+  public:
+    glm::fmat4 m_local = glm::fmat4(1.0f);
+    glm::fmat4 m_world = glm::fmat4(1.0f);
 
-    std::vector<Transform_Props> m_Transforms;
+    std::vector<Transform_Props> m_transforms;
+    bool m_moving = 1;
   };
 }
 

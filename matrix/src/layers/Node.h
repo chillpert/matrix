@@ -21,6 +21,7 @@ namespace MX
   class Node
   {
   public:
+    Node() = delete;
     Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model = nullptr, std::shared_ptr<MX_SHADER> shader = nullptr, std::shared_ptr<MX_TEXTURE> texture = nullptr);
     ~Node() = default;
 
@@ -39,24 +40,24 @@ namespace MX
     MX_API void setShader(std::shared_ptr<MX_SHADER> shader);
     MX_API void setTexture(std::shared_ptr<MX_TEXTURE> texture);
   
-    MX_API void setTransform(const Trans &t, float factor, bool isAnimated);
+    MX_API void setTransform(const Trans &t, float factor, bool is_animated);
 
-    glm::fmat4 &getLocalTransform() { return m_Trans.m_Local; }
-    glm::fmat4 &getWorldTransform() { return m_Trans.m_World; }
+    glm::fmat4 &getLocalTransform() { return m_Trans.m_local; }
+    glm::fmat4 &getWorldTransform() { return m_Trans.m_world; }
 
     void toString();
-
-    std::shared_ptr<Node> m_Parent;
-    std::list<std::shared_ptr<Node>> m_Children;
-
-  private:
-    Transform m_Trans;
 
   public:
     std::string m_Name;
     std::shared_ptr<Model> m_Model;
     std::shared_ptr<Shader> m_Shader;
     std::shared_ptr<Texture> m_Texture;
+
+    std::shared_ptr<Node> m_Parent;
+    std::list<std::shared_ptr<Node>> m_Children;
+
+    Transform m_Trans;
+    bool m_visible;
   };
 }
 

@@ -1,14 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#ifdef MX_GLFW_ACTIVE
-  #define MX_WINDOW_TYPE Window_GLFW
-#elif MX_SDL2_ACTIVE
-  #define MX_WINDOW_TYPE Window_SDL2
-#else 
-  #error "Matrix Framework only supports GLFW and SDL2"
-#endif
-
 #ifdef MX_DEBUG
   #define LOGEVENT event.printEventType()
 #else

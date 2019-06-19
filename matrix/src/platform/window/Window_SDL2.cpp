@@ -4,13 +4,12 @@
 #include "matrix/src/event/WindowEvent.h"
 #include "matrix/src/controller/Controller.h"
 #include "matrix/src/layers/World.h"
+#include "matrix/src/Application.h"
 
 #ifdef MX_IMGUI_ACTIVE
   #include <imgui.h>
   #include <imgui_impl_sdl.h>
 #endif
-
-#ifdef MX_SDL2_ACTIVE
 
 namespace MX
 {
@@ -159,7 +158,7 @@ namespace MX
 
   void Window_SDL2::resize(int width, int height)
   {
-    World::get().m_ActiveScene->m_Cam.setScreenDimensions(width, height);
+    MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(width, height);
     SDL_SetWindowSize(m_Window, width, height);
 
     m_Props.m_Width = width;
@@ -173,5 +172,3 @@ namespace MX
     m_Props.m_Title = title;
   }
 }
-
-#endif

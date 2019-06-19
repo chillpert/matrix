@@ -48,6 +48,8 @@ namespace MX
     std::string m_VsSource;
     std::string m_FsSource;
     std::string m_Profile;
+
+    bool m_initialized = 0;
   };
 
   MX_API void use(Shader &shader);

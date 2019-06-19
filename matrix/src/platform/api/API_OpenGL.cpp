@@ -43,7 +43,7 @@ namespace MX
 
     int screen_y = Application::get().m_Window->m_Props.m_Height;
 
-    World::get().m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
+    MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
 
     glViewport(corner_x,
                screen_y - corner_y,

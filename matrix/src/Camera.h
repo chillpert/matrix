@@ -11,7 +11,7 @@ namespace MX
     MX_API Camera()
       : m_Position(glm::vec3(0.0f, 0.0f, 3.0f)),
         m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-        m_WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)),
+        m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f)),
         m_Yaw(-90.0f),
         m_Pitch(0.0f),
         m_Sensitivity(0.06f),
@@ -32,7 +32,7 @@ namespace MX
 
     MX_API void update();
 
-    MX_API inline glm::mat4 getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_WorldUp); }
+    MX_API inline glm::mat4 getViewMatrix() { return glm::lookAt(m_Position, m_Position + m_Front, m_worldUp); }
     MX_API inline glm::mat4 getProjectionMatrix() { return glm::perspective(glm::radians(m_Fov), m_ScreenWidth / m_ScreenHeight, 0.1f, 100.0f); }
 
     MX_API inline glm::fvec3 getPosition() { return m_Position; }
@@ -42,7 +42,7 @@ namespace MX
   private:
     glm::fvec3 m_Position;
     glm::fvec3 m_Front;
-    glm::fvec3 m_WorldUp;
+    glm::fvec3 m_worldUp;
     glm::fvec3 m_Up;
     glm::fvec3 m_Right;
 

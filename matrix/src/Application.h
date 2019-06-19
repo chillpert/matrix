@@ -1,15 +1,21 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#define MX_WORLD Application::get().m_World
+#define MX_SCENEGRAPH Application::get().m_World.m_ActiveScene->m_Sg
+#define MX_CAMERA Application::get().m_World.m_ActiveScene->m_Cam
+#define MX_SCENE Application::get().m_World.m_ActiveScene
+#define MX_ROOT Application::get().m_World.m_ActiveScene->m_Sg.m_Root
+
 #include "matrix/src/pch/stdafx.h"
 #include "matrix/src/platform/window/Window.h"
-#include "matrix/src/platform/window/Window_GLFW.h"
 #include "matrix/src/platform/window/Window_SDL2.h"
 #include "matrix/src/platform/api/API.h"
 #include "matrix/src/platform/api/API_OpenGL.h"
 #include "matrix/src/platform/gui/GUI.h"
 #include "matrix/src/platform/gui/GUI_ImGui.h"
 #include "matrix/src/layers/LayerStack.h"
+#include "matrix/src/layers/World.h"
 
 namespace MX
 {
@@ -21,13 +27,14 @@ namespace MX
     MX_API void initialize(void (*initialize_func)());
     MX_API void render(void (*render_func)());
     MX_API void update(void (*update_func)());
-    MX_API void stop();
     MX_API void clean();
 
     std::unique_ptr<API> m_API;
     std::unique_ptr<GUI> m_GUI;
     std::unique_ptr<Window> m_Window;
     std::unique_ptr<LayerStack> m_LayerStack;
+
+    World m_World;
 
     bool m_Running;
   

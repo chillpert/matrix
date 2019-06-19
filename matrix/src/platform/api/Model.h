@@ -50,6 +50,8 @@ namespace MX
     std::vector<glm::vec3> m_V;
     std::vector<glm::vec2> m_Vt;
     std::vector<glm::vec3> m_Vn;
+
+    bool m_initialized = 0;
   };
 }
 

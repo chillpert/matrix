@@ -1,5 +1,6 @@
 #include "matrix/src/platform/api/Shader_OpenGL.h"
 #include "matrix/src/layers/World.h"
+#include "matrix/src/Application.h"
 
 namespace MX
 {
@@ -40,19 +41,20 @@ namespace MX
 
     glDetachShader(m_ID, vs);
     glDetachShader(m_ID, fs);
-      
+
+    m_initialized = 1;
     MX_SUCCESS("MX: API: OpenGL: Shader: " + m_Name);
   }
 
   void Shader_OpenGL::update()
   {
     use();
-    setfMat4("view", World::get().m_ActiveScene->m_Cam.getViewMatrix());
-    setfMat4("projection", World::get().m_ActiveScene->m_Cam.getProjectionMatrix());
+    setfMat4("view", MX_WORLD.m_ActiveScene->m_Cam.getViewMatrix());
+    setfMat4("projection", MX_WORLD.m_ActiveScene->m_Cam.getProjectionMatrix());
 
     setfVec3("lightPosition", glm::vec3(5, -5, 1));
     setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    setfVec3("viewPosition", World::get().m_ActiveScene->m_Cam.getPosition());
+    setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());
   }
 
 

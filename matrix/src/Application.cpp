@@ -9,7 +9,8 @@ namespace MX
 
     m_API = std::make_unique<MX_API_TYPE>();
     m_GUI = std::make_unique<MX_GUI_TYPE>();
-    m_Window =  std::make_unique<MX_WINDOW_TYPE>();
+
+    m_Window =  std::make_unique<Window_SDL2>();
     m_LayerStack = std::make_unique<LayerStack>();
 
     #ifdef MX_PLATFORM_UNIX_X64

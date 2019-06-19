@@ -41,6 +41,8 @@ namespace MX
   public:
     STB_Texture m_Stb;
     std::string m_Name;
+
+    bool m_initialized = 0;
   };
 }
 

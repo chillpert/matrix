@@ -124,11 +124,27 @@ namespace MX
   #endif
   }
 
+  void renderFileInspectorWindow()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    if (ImGui::Begin("File Inspector", &file_inspector_enabled))
+    {
+      ImGui::Text(file_inspector_name.c_str());
+      ImGui::Image(
+        file_inspector_id,
+        ImVec2(
+          file_inspector_width / (file_inspector_width / ImGui::GetWindowWidth()), 
+          file_inspector_height / (file_inspector_height / ImGui::GetWindowHeight())
+        )
+      );
+    }
+    ImGui::End();
+  #endif
+  }
+
   static void render_node_menu()
   {
   #ifdef MX_IMGUI_ACTIVE
-    static bool needs_refresh = 1;
-
     static char object_name[128];
     ImGui::InputText("##give object an unique name", object_name, IM_ARRAYSIZE(object_name));
     ImGui::SameLine();
@@ -140,19 +156,6 @@ namespace MX
         current_node = current_scenegraph->search(object_name, current_root);
         needs_refresh = 1;
       }
-    }
-
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::Spacing();
-
-    ImGui::Combo("##objects to select", &item_objects, all_objects.data(), all_objects.size());
-    ImGui::SameLine();
-
-    if (ImGui::Button("load##object", ImVec2(60.0f, 20.0f)))
-    {
-      current_node = current_scenegraph->search(all_objects.at(item_objects), current_root);
-      needs_refresh = 1;
     }
 
     ImGui::Spacing();
@@ -243,7 +246,7 @@ namespace MX
 
     if (current_node != current_root)
     {
-      static bool render_file_inspector = 0;
+      ImGui::Text(current_node->m_Name.c_str());
 
       static int item_prev_models = item_models;
       static int item_prev_shaders = item_shaders;
@@ -270,7 +273,7 @@ namespace MX
       if (ImGui::Button("confirm##set new parent"))
       {
         current_node->setParent(current_scenegraph->search(all_objects.at(item_parent), current_root));
-        MX_WARN("lol");
+        needs_refresh = 1;
       }
 
       ImGui::EndChild();
@@ -296,7 +299,13 @@ namespace MX
 
       if (current_node->m_Texture != nullptr)
         if (ImGui::ImageButton(my_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / my_tex_w, 16.0f / my_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
-          render_file_inspector = 1;
+        {
+          file_inspector_id = my_tex_id;
+          file_inspector_width = my_tex_w;
+          file_inspector_height = my_tex_h;
+          file_inspector_name = current_node->m_Texture->m_Name;
+          file_inspector_enabled = 1;
+        }
 
       ImGui::Spacing();
       ImGui::BulletText("Normal Map");
@@ -310,42 +319,32 @@ namespace MX
   
       if (item_prev_models != item_models)
       {
-        current_node->setModel(std::static_pointer_cast<MX_MODEL>(World::get().m_Models[item_models]));
+        current_node->setModel(std::static_pointer_cast<MX_MODEL>(MX_WORLD.m_Models[item_models]));
         item_prev_models = item_models;
       }
 
       if (item_prev_shaders != item_shaders)
       {
-        current_node->setShader(std::static_pointer_cast<MX_SHADER>(World::get().m_Shaders[item_shaders]));
+        current_node->setShader(std::static_pointer_cast<MX_SHADER>(MX_WORLD.m_Shaders[item_shaders]));
         item_prev_shaders = item_shaders;
       }
 
       if (item_prev_diffuse_map != item_diffuse_map)
       {
-        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(World::get().m_Textures[item_diffuse_map]));
+        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_diffuse_map]));
         item_prev_diffuse_map = item_diffuse_map;
       }
 
       if (item_prev_normal_map != item_normal_map)
       {
-        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(World::get().m_Textures[item_normal_map]));
+        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_normal_map]));
         item_prev_normal_map = item_normal_map;
       }
 
       if (item_prev_bump_map != item_bump_map)
       {
-        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(World::get().m_Textures[item_bump_map]));
+        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_bump_map]));
         item_prev_bump_map = item_bump_map;
-      }
-
-      if (render_file_inspector)
-      {
-        if (ImGui::Begin("File Inspector", &render_file_inspector))
-        {
-          ImGui::Text(current_node->m_Texture->m_Name.c_str());
-          ImGui::Image((void*)current_node->m_Texture->getID(), ImVec2(my_tex_w / (my_tex_w / ImGui::GetWindowWidth()), my_tex_h / (my_tex_h / ImGui::GetWindowHeight())));
-        }
-        ImGui::End();
       }
     }
   #endif
@@ -354,57 +353,41 @@ namespace MX
   static void render_transform_menu()
   {
   #ifdef MX_IMGUI_ACTIVE
-    SceneGraph *app_sg = &World::get().m_ActiveScene->m_Sg;
 
-    prev_x_drag = x_drag;
-    
-    if (ImGui::DragFloat("x##x_slider", &x_drag, grab_speed))
+    if (current_node != nullptr)
     {
-      try
+      prev_x_drag = x_drag;
+      
+      if (ImGui::DragFloat("x##x_slider", &x_drag, grab_speed))
       {
-        std::shared_ptr<Node> temp = app_sg->search(all_objects.at(item_objects), std::shared_ptr<Node>(World::get().m_ActiveScene->m_Sg.m_Root));
-
-        temp->setTransform(
+        current_node->setTransform(
           (x_drag > 0) ? (x_drag > prev_x_drag) ? RIGHT : LEFT : (x_drag > prev_x_drag) ? LEFT : RIGHT, 
           x_drag / transform_factor, 
           0
         );
       }
-      catch (const std::exception &e) { } 
-    }
 
-    prev_y_drag = y_drag;
-    
-    if (ImGui::DragFloat("y##y_slider", &y_drag, grab_speed))
-    {
-      try
+      prev_y_drag = y_drag;
+      
+      if (ImGui::DragFloat("y##y_slider", &y_drag, grab_speed))
       {
-        std::shared_ptr<Node> temp = app_sg->search(all_objects.at(item_objects), std::shared_ptr<Node>(World::get().m_ActiveScene->m_Sg.m_Root));
-
-        temp->setTransform(
+        current_node->setTransform(
           (y_drag > 0) ? (y_drag > prev_y_drag) ? UP : DOWN : (y_drag > prev_y_drag) ? DOWN : UP, 
           y_drag / transform_factor,
           0
         );
       }
-      catch(const std::exception& e) { }
-    }
-    
-    prev_z_drag = z_drag;
-    
-    if (ImGui::DragFloat("z##z_slider", &z_drag, grab_speed))
-    {
-      try
+      
+      prev_z_drag = z_drag;
+      
+      if (ImGui::DragFloat("z##z_slider", &z_drag, grab_speed))
       {
-        std::shared_ptr<Node> temp = app_sg->search(all_objects.at(item_objects), std::shared_ptr<Node>(World::get().m_ActiveScene->m_Sg.m_Root));
-
-        temp->setTransform(
+        current_node->setTransform(
           (z_drag > 0) ? (z_drag > prev_z_drag) ? FORWARDS : BACKWARDS : (z_drag > prev_z_drag) ? BACKWARDS : FORWARDS, 
           z_drag / transform_factor, 
           0
         );
       }
-      catch (const std::exception &e) { }
     }
   #endif
   }
@@ -439,7 +422,7 @@ namespace MX
     {
       if (ImGui::TreeNode((it->m_Name + "##scenes tree").c_str()))
       {
-        if (it->m_Name != World::get().m_ActiveScene->m_Name)
+        if (it->m_Name != MX_WORLD.m_ActiveScene->m_Name)
         {
           if (ImGui::Button("load##load scene"))
             ImGui::OpenPopup("Scene##load");
@@ -447,7 +430,7 @@ namespace MX
           ImGui::SameLine();
         }
         
-        if (World::get().m_ExistingScenes.size() > 1)
+        if (MX_WORLD.m_ExistingScenes.size() > 1)
         {
           if (ImGui::Button("delete##delete scene"))
             ImGui::OpenPopup("Scene##delete");
@@ -494,7 +477,7 @@ namespace MX
       {
         if (!strlen(input) == 0 && scene_name_accepted)
         {
-          World::get().push(std::shared_ptr<Scene>(new Scene(input)));
+          MX_WORLD.push(std::shared_ptr<Scene>(new Scene(input)));
           memset(&input[0], 0, sizeof(input));
           
           ImGui::CloseCurrentPopup();
@@ -517,7 +500,7 @@ namespace MX
   {
     if (ImGui::BeginPopupModal("Scene##delete", NULL, popup_flags))
     {
-      if (World::get().m_ExistingScenes.size() > 1)
+      if (MX_WORLD.m_ExistingScenes.size() > 1)
         scene_delete_accepted = 1;
 
       if (scene_delete_accepted)
@@ -531,11 +514,11 @@ namespace MX
         {
           for (std::vector<std::shared_ptr<Scene>>::iterator iter = (*all_scenes).begin(); iter != (*all_scenes).end(); ++iter)
           {
-            if  ((*iter)->m_Name == scene->m_Name && iter != World::get().m_ExistingScenes.begin())
+            if  ((*iter)->m_Name == scene->m_Name && iter != MX_WORLD.m_ExistingScenes.begin())
             {
               MX_INFO("MX: World: Deleting scene: " + (*iter)->m_Name);
-              World::get().m_ExistingScenes.erase(iter);
-              World::get().m_ActiveScene = World::get().m_ExistingScenes.at(0);
+              MX_WORLD.m_ExistingScenes.erase(iter);
+              MX_WORLD.m_ActiveScene = MX_WORLD.m_ExistingScenes.at(0);
               break;
             }
           }
@@ -571,7 +554,7 @@ namespace MX
       if (progress >= 1.0f /* changes are being discarded when swapping scenes */)
       {
         progress = 0.0f;
-        World::get().m_ActiveScene = scene;
+        MX_WORLD.m_ActiveScene = scene;
         ImGui::CloseCurrentPopup();
       }
 
@@ -584,10 +567,10 @@ namespace MX
     if (ImGui::BeginPopupModal("Scene##load scene from combo", NULL, popup_flags))
     {
       // display all scenes
-      all_current_scenes.resize(World::get().m_ExistingScenes.size());
+      all_current_scenes.resize(MX_WORLD.m_ExistingScenes.size());
 
-      for (unsigned int i = 0; i < World::get().m_ExistingScenes.size(); ++i)
-        all_current_scenes[i] = World::get().m_ExistingScenes[i]->m_Name.c_str();
+      for (unsigned int i = 0; i < MX_WORLD.m_ExistingScenes.size(); ++i)
+        all_current_scenes[i] = MX_WORLD.m_ExistingScenes[i]->m_Name.c_str();
 
       static int item_current_scenes = 0;
       ImGui::Text("Select a scene to load:");
@@ -597,7 +580,7 @@ namespace MX
 
       if (ImGui::Button("Confirm##confirm load scene from combo", ImVec2(60.0f, 20.0f)))
       {
-        World::get().m_ActiveScene = World::get().m_ExistingScenes[item_current_scenes];
+        MX_WORLD.m_ActiveScene = MX_WORLD.m_ExistingScenes[item_current_scenes];
         item_current_scenes = 0;
         ImGui::CloseCurrentPopup();
       }
@@ -637,7 +620,7 @@ namespace MX
       }
       if (ImGui::Button("Confirm##confirm spawn object") && !strlen(input) == 0 && object_name_accepted)
       {
-        World::get().m_ActiveScene->push(input);
+        MX_WORLD.m_ActiveScene->push(input);
         memset(&input[0], 0, sizeof(input));
         ImGui::CloseCurrentPopup();
       }

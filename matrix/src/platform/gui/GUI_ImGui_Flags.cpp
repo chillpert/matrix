@@ -16,11 +16,19 @@ namespace MX
   bool hierarchy_window_enabled = 1;
   bool logger_window_enabled = 1;
   bool demo_window_enabled = 1;
+  bool file_inspector_enabled = 0;
 
   bool p_open_editor = 1;
   bool p_open_hierarchy = 1;
   bool p_open_logger = 1;
   bool p_open_demo = 1;
+
+  float file_inspector_width = 0;
+  float file_inspector_height = 0;
+  std::string file_inspector_name;
+  void* file_inspector_id;
+
+  bool needs_refresh = 1;
 
   std::vector<const char*> all_models;
   std::vector<const char*> all_shaders;

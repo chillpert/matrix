@@ -25,7 +25,7 @@ namespace MX
   const int initial_window_width = 1400;
   const int initial_window_height = 800;
 
-  const std::string glsl_version = "#version 330";
+  const std::string glsl_version = "#version 460";
 
 #ifdef MX_PLATFORM_WINDOWS_X64
   extern std::chrono::time_point<std::chrono::steady_clock> current_time;

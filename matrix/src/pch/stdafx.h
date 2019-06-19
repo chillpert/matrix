@@ -13,12 +13,8 @@
   #endif
 
   // window
-  #ifdef MX_GLFW_ACTIVE
-    #include <GLFW/glfw3.h>
-  #elif MX_SDL2_ACTIVE
-    #include <SDL.h>
-    #undef main
-  #endif
+  #include <SDL.h>
+  #undef main
 
   // maths
   #define GLM_ENABLE_EXPERIMENTAL 

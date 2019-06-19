@@ -4,8 +4,19 @@
 
 namespace MX
 {
+  Scene::Scene(const std::string &name)
+      : m_Name(name) { }
+
+  Scene::~Scene()
+  {
+    MX_INFO_LOG("MX: Scene: Destructor");
+  }
+
   bool Scene::object_already_exists(const std::string &name)
   {
+    if (name == m_Sg.m_Root->m_Name)
+      return 1;
+
     for (const std::string &it : m_ExistingObjects)
     {
       if (it == name)
@@ -17,7 +28,7 @@ namespace MX
 
   void Scene::initialize()
   {
-
+    
   }
 
   void Scene::update()
@@ -48,6 +59,7 @@ namespace MX
     if (!object_already_exists(name))
     {
       std::shared_ptr<Node> node = std::shared_ptr<Node>(new Node(name));
+      node->setShader(MX_GET_SHADER("static_color"));
       m_Sg.m_Root->addChild(node);
       m_ExistingObjects.push_back(name);
       return 1;
@@ -59,19 +71,18 @@ namespace MX
   // adds object to scene graph
   bool Scene::push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to)
   {
+    MX_INFO_LOG("MX: Scene: " + m_Name + " Push: " + object_name);
+
     if (!object_already_exists(object_name))
       m_ExistingObjects.push_back(object_name);
     else
       return 0;
 
-    std::shared_ptr<MX_MODEL> temp(new MX_MODEL(file_name));
-    temp->initialize();
-    World::get().m_Models.push_back(temp);
+    std::shared_ptr<Node> temp(new Node(object_name));
+    temp->setShader(MX_GET_SHADER("static_color"));
+    temp->setModel(MX_GET_MODEL(file_name));
 
-    std::shared_ptr<Node> temp_node_to_attach_to = m_Sg.search(node_to_attach_to, m_Sg.m_Root);
-    
-    temp_node_to_attach_to->addChild(std::shared_ptr<Node>(new Node(object_name, temp, World::get().getShader("blinn_phong"), nullptr)));
-    
+    m_Sg.search(node_to_attach_to, m_Sg.m_Root)->addChild(temp);
     MX_SUCCESS_LOG("MX: Scene: Push: " + object_name);
     return 1;
   }
@@ -79,24 +90,26 @@ namespace MX
   // delete object from scene graph
   bool Scene::pop(const std::string &name)
   {
-  #ifdef MX_DEBUG
-    try
-    {
-      std::shared_ptr<Node> temp_node = m_Sg.search(name, m_Sg.m_Root);
-      std::ostringstream address;
-      address << temp_node;
-      std::string address_s =  address.str();
-      MX_INFO_LOG("MX: Scene: " + m_Name + ": Pop: Trying to pop: " + temp_node->m_Name + ": Adress: " + address_s);
-    }
-    catch (const std::exception &e)
-    {
-      return 0;
-    }
-    
-  #endif
-    m_Sg.iterative_delete(name);
+    std::shared_ptr<Node> temp_node = m_Sg.search(name, m_Sg.m_Root);
 
-    MX_SUCCESS_LOG("MX: Scene: " + m_Name + ": Pop: " + name);
-    return 1;
+  #ifdef MX_DEBUG
+    std::ostringstream address;
+    address << temp_node;
+    std::string address_s =  address.str();
+    MX_INFO_LOG("MX: Scene: " + m_Name + "Pop: Node: " + temp_node->m_Name + ": Address: " + address_s);
+  #endif
+
+    for (auto iter = temp_node->m_Parent->m_Children.begin(); iter != temp_node->m_Parent->m_Children.end(); ++iter)
+    {
+      if ((*iter)->m_Name == temp_node->m_Name)
+      {
+        temp_node->m_Parent->m_Children.erase(iter);
+        MX_SUCCESS_LOG("MX: Scene: Pop");
+        return 1;
+      }
+    }
+
+    MX_FATAL("MX: Scene: " + m_Name + "Pop: Node: " + temp_node->m_Name + ": Address: " + address_s);
+    return 0;
   }
 }

@@ -1,22 +1,9 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#define MX_WORLD MX::World::get()
-#define MX_SCENEGRAPH MX::World::get().m_ActiveScene->m_Sg
-#define MX_CAMERA MX::World::get().m_ActiveScene->m_Cam
-#define MX_SCENE MX::World::get().m_ActiveScene
-#define MX_ROOT MX::World::get().m_ActiveScene->m_Sg.m_Root
-
-#define MX_GET_SHADER(name) MX::World::get().getShader(name)
-#define MX_GET_MODEL(name) MX::World::get().getModel(name)
-#define MX_GET_TEXTURE(name) MX::World::get().getTexture(name)
-
-// disabled for faster start up
-//#define MX_INSTANT_TEXTURE_INIT
-//#define MX_INSTANT_MODEL_INIT
-
-#define MX_INSTANT_SHADER_INIT
-#define MX_INSTANT_SCENE_INIT
+#define MX_GET_SHADER(name) MX::MX_WORLD.getShader(name)
+#define MX_GET_MODEL(name) MX::MX_WORLD.getModel(name)
+#define MX_GET_TEXTURE(name) MX::MX_WORLD.getTexture(name)
 
 #include "matrix/src/pch/stdafx.h"
 #include "matrix/src/layers/Scene.h"
@@ -34,12 +21,12 @@
   #include "matrix/src/platform/api/Texture_DirectX.h"
 #endif
 
-namespace MX 
+namespace MX
 {
   class World
   {
   public:
-    MX_API static World &get();
+    MX_API World() = default;
     MX_API ~World();
 
     MX_API void initialize();
@@ -52,9 +39,6 @@ namespace MX
     MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name);
     MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name);
     MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name);
-
-  private:
-    MX_API World() {}
 
   public:
     std::shared_ptr<Scene> m_ActiveScene;

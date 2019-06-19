@@ -51,7 +51,7 @@ namespace MX
       }
 
       if (draw_scene_graph)
-        draw_scene_graph_menu(*World::get().m_ActiveScene->m_Sg.m_Root);
+        draw_scene_graph_menu(*MX_WORLD.m_ActiveScene->m_Sg.m_Root);
       else  
         draw_outline_menu();
     }
@@ -86,23 +86,25 @@ namespace MX
   static void draw_outline_menu()
   {
   #ifdef MX_IMGUI_ACTIVE
-    for (auto it : all_objects)
+    static size_t selected = -1;
+    static size_t prev_selcted = selected;
+
+    std::shared_ptr<Node> temp;
+
+    for (size_t n = 0; n < all_objects.size(); n++)
     {
-      const std::string node_name = std::string(it);
-
-      if (node_name != "Root")
-      {
-        if (ImGui::TreeNode((node_name + "##outline tree").c_str()))
-        {
-          std::shared_ptr<Node> temp = MX::World::get().m_ActiveScene->m_Sg.search(std::string(it), MX::World::get().m_ActiveScene->m_Sg.m_Root);
-          ImGui::Text(("Shader: " + temp->m_Shader->m_Name).c_str());
-          ImGui::Text(("Texture: " + temp->m_Texture->getName()).c_str());
-          ImGui::Text(("Model: " + temp->m_Model->getName()).c_str());
-
-          ImGui::TreePop();
-        }
-      }
+      temp = current_scenegraph->search(std::string(all_objects.at(n)), current_root);
+      if (ImGui::Selectable(temp->m_Name.c_str(), selected == n))
+        selected = n;
     }
+
+    if (selected >= 0 && selected < all_objects.size() && temp != nullptr && prev_selcted != selected)
+    {
+      prev_selcted = selected;
+      needs_refresh = 1;
+      current_node = current_scenegraph->search(std::string(all_objects.at(selected)), current_root);;
+    }
+
   #endif
   }
 }

@@ -162,7 +162,7 @@ namespace MX
   #define MX_SCROLL_DOWN
 
   // mouse (moved)
-  #define MX_MOUSE_MOVED(x, y)  World::get().m_ActiveScene->m_Cam.processMouse(x,y);
+  #define MX_MOUSE_MOVED(x, y)  MX_WORLD.m_ActiveScene->m_Cam.processMouse(x,y);
 
 }
 

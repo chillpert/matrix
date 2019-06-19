@@ -3,8 +3,6 @@
 
 #include "matrix/src/platform/window/Window.h"
 
-#ifdef MX_SDL2_ACTIVE
-
 namespace MX
 {
   class Window_SDL2 : public Window
@@ -32,7 +30,5 @@ namespace MX
     SDL_Window *m_Window = NULL;
   };
 }
-
-#endif
 
 #endif // Window_SDL2_H

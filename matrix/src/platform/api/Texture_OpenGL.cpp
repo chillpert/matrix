@@ -39,6 +39,8 @@ namespace MX
   {
     create();
     load();
+
+    m_initialized = 1;
   }
 
   void Texture_OpenGL::load()

@@ -12,10 +12,12 @@ namespace MX
   class Scene
   {
   public:
-    MX_API Scene() {}
-    MX_API Scene(const std::string &name)
-      : m_Name(name) {}
-    MX_API ~Scene() {}
+    MX_API Scene() = delete;
+    MX_API Scene(const std::string &name);
+    MX_API ~Scene();
+
+    MX_API Scene(const Scene&) = default;
+    MX_API Scene &operator=(const Scene&) = default;
 
     MX_API void initialize();
     MX_API void update();

@@ -11,14 +11,14 @@ namespace MX
     MX_API SceneGraph();
     MX_API ~SceneGraph();
 
+    MX_API SceneGraph(const SceneGraph&) = default;
+    MX_API SceneGraph &operator=(const SceneGraph&) = default;
+
     MX_API void initialize();
     MX_API void update();
     MX_API void render();
-    
-    MX_API std::shared_ptr<Node> search(const std::string &name, std::shared_ptr<Node> it);
 
-    MX_API void recursive_delete(std::shared_ptr<Node> it);
-    MX_API void iterative_delete(const std::string &name);
+    MX_API std::shared_ptr<Node> search(const std::string &name, std::shared_ptr<Node> it);
 
     MX_API void getAllObjects(std::vector<std::string> *vec, std::shared_ptr<Node> it);
     MX_API void getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it);
@@ -28,6 +28,7 @@ namespace MX
 
   public:
     std::shared_ptr<Node> m_Root;
+    bool is_paused = 0;
   };
 }
 
