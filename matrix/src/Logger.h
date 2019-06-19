@@ -25,7 +25,7 @@
 #endif
 
 #include <Core.h>
-
+#include <Utils.h>
 #include <string>
 
 namespace MX

@@ -7,13 +7,9 @@
 
 #include <stdafx.h>
 #include <Scene.h>
-
 #include <Shader.h>
 #include <Model.h>
 #include <Texture.h>
-#include <Model_OpenGL.h>
-#include <Shader_OpenGL.h>
-#include <Texture_OpenGL.h>
 
 namespace MX
 {
@@ -23,6 +19,10 @@ namespace MX
     MX_API World() = default;
     MX_API ~World();
 
+    MX_API static World &get_default_world();
+
+    MX_API World &operator=(const World&) = default;
+
     MX_API void initialize();
     MX_API void update();
     MX_API void render();
@@ -30,9 +30,12 @@ namespace MX
     MX_API void push(std::shared_ptr<Scene> scene);
     MX_API void pop(const std::string &name);
 
-    MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name);
-    MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name);
-    MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name);
+    MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name) const;
+    MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name) const;
+    MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name) const;
+
+  private:
+    MX_API World(const World&) = delete;
 
   public:
     std::shared_ptr<Scene> m_ActiveScene;

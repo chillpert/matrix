@@ -27,13 +27,12 @@
 
 // event
 
-// platform
-  // api
-  #include <Shader.h>
+// api
+#include <Shader.h>
 
-  // window
-  #include <Window.h>
+// window
+#include <Window.h>
 
-  #include <SDL.h>
+#include <SDL.h>
 
 #endif // MATRIX_H

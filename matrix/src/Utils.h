@@ -22,7 +22,7 @@ namespace MX
   std::string f_str(float num, float num_decimals);
   const char* str_c(const std::string &str);
 
-  const int initial_window_width = 1400;
+  const int initial_window_width = 1600;
   const int initial_window_height = 800;
 
   const std::string glsl_version = "#version 460";

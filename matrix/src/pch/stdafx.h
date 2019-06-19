@@ -27,10 +27,6 @@
   #include <stb_image.h>
 
 // libraries
-#ifdef MX_PLATFORM_WINDOWS_X64
-  #include <windows.h>
-#endif
-
 #include <iostream>
 #include <memory>
 #include <string>

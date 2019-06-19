@@ -1,37 +1,44 @@
 #include <Matrix.h>
 
-void initialize()
+void load_debug_scene()
 {
-  MX::MX_WORLD.initialize();
+  using namespace MX;
 
-  MX::MX_WORLD.push(std::shared_ptr<MX::Scene>(new MX::Scene("debug")));
+  MX_SCENE->push("Jupiter", "sphere.obj", "Root");
+  MX_SCENE->push("Saturn", "sphere.obj", "Jupiter");
 
-  MX::MX_SCENE->push("Jupiter", "sphere.obj", "Root");
-  MX::MX_SCENE->push("Saturn", "sphere.obj", "Jupiter");
+  MX_SCENE->push("Rock", "rock.obj", "Root");
 
-  MX::MX_SCENE->push("Rock", "rock.obj", "Root");
-
-  std::shared_ptr<MX::Node> jupiter = MX::MX_SCENEGRAPH.search("Jupiter", MX::MX_ROOT);
-  jupiter->setTransform(MX::Y, 0.3f, 1);
+  std::shared_ptr<Node> jupiter = MX_SCENEGRAPH.search("Jupiter", MX_ROOT);
+  jupiter->setTransform(Y, 0.3f, 1);
   jupiter->setShader(MX_GET_SHADER("blinn_phong"));
   jupiter->setTexture(MX_GET_TEXTURE("2k_jupiter.jpg"));
 
-  std::shared_ptr<MX::Node> saturn = MX::MX_SCENEGRAPH.search("Saturn", MX::MX_ROOT);
-  saturn->setTransform(MX::SCALE, 0.4f, 0);
-  saturn->setTransform(MX::Y, 0.8f, 1);
-  saturn->setTransform(MX::RIGHT, 5.0f, 0);
+  std::shared_ptr<Node> saturn = MX_SCENEGRAPH.search("Saturn", MX_ROOT);
+  saturn->setTransform(SCALE, 0.4f, 0);
+  saturn->setTransform(Y, 0.8f, 1);
+  saturn->setTransform(RIGHT, 5.0f, 0);
   saturn->setShader(MX_GET_SHADER("blinn_phong"));
   saturn->setTexture(MX_GET_TEXTURE("2k_saturn.jpg"));
 
-  std::shared_ptr<MX::Node> rock = MX::MX_SCENEGRAPH.search("Rock", MX::MX_ROOT);
-  rock->setTransform(MX::SCALE, 0.05f, 0);
-  rock->setTransform(MX::BACKWARDS, 35.0f, 0);
-  rock->setTransform(MX::LEFT, 0.5f, 0);
-  rock->setTransform(MX::Y, 0.8f, 1);
-  rock->setTransform(MX::X, 0.5f, 1);
+  std::shared_ptr<Node> rock = MX_SCENEGRAPH.search("Rock", MX_ROOT);
+  rock->setTransform(SCALE, 0.05f, 0);
+  rock->setTransform(BACKWARDS, 35.0f, 0);
+  rock->setTransform(LEFT, 0.5f, 0);
+  rock->setTransform(Y, 0.8f, 1);
+  rock->setTransform(X, 0.5f, 1);
   rock->setShader(MX_GET_SHADER("phong"));
   rock->setTexture(MX_GET_TEXTURE("rock.jpg"));
+}
 
+void initialize()
+{
+  MX::MX_WORLD.initialize();
+  MX::MX_WORLD.push(std::shared_ptr<MX::Scene>(new MX::Scene("debug")));
+
+#ifdef MX_DEBUG
+  load_debug_scene();
+#endif
 }
 
 void update()

@@ -1,14 +1,29 @@
+#include <Logger.h>
+
+#define _CRT_SECURE_NO_WARNINGS
+#ifdef MX_PLATFORM_WINDOWS_X64
+  #include <windows.h>
+#endif
+
+#ifdef MX_IMGUI_ACTIVE
+  #include <GUI_ImGui_Flags.h>
+#endif
+
+// global macros for debugging
 #ifdef MX_DEBUG
-  // global macros for debugging
   #define MX_LOG_FATAL   "FATAL  [" + t + "]: " + message + "\n"
   #define MX_LOG_WARN    "WARNING[" + t + "]: " + message + "\n"
   #define MX_LOG_INFO    "INFO   [" + t + "]: " + message + "\n"
   #define MX_LOG_SUCCESS "SUCCESS[" + t + "]: " + message + "\n"
 
+  #define MX_WRITE_TO_GUI(x, y) writeToGUI(x, y)
+
   #define MX_GUI_FATAL   "[" + t + "]: " + message + "\n"
   #define MX_GUI_WARN    "[" + t + "]: " + message + "\n"
   #define MX_GUI_INFO    "[" + t + "]: " + message + "\n"
   #define MX_GUI_SUCCESS "[" + t + "]: " + message + "\n"
+
+  #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage
 
   #ifdef MX_PLATFORM_WINDOWS_X64
     #define MX_CONSOLE_HANDLE HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -37,14 +52,15 @@
   #define MX_LOG_WARN    finalMessage
   #define MX_LOG_INFO    finalMessage
   #define MX_LOG_SUCCESS finalMessage
-#endif
 
-#define _CRT_SECURE_NO_WARNINGS
+  #define MX_WRITE_TO_GUI(x, y)
 
-#include <stdafx.h>
+  #define MX_GUI_FATAL
+  #define MX_GUI_WARN
+  #define MX_GUI_INFO
+  #define MX_GUI_SUCCESS
 
-#ifdef MX_IMGUI_ACTIVE
-  #include <GUI_ImGui_Flags.h>
+  #define MX_PRINT_TO_CONSOLE(x)
 #endif
 
 namespace MX
@@ -138,67 +154,67 @@ namespace MX
   {
     std::string t = getTime();
     MX_PRINT_FATAL;
-    std::cerr << finalMessage;
+    MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_FATAL);
-    writeToGUI(MX_GUI_FATAL, mx_fatal);
+    MX_WRITE_TO_GUI(MX_GUI_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn(const std::string &message)
   {
     std::string t = getTime();
     MX_PRINT_WARN;
-    std::cerr << finalMessage;
+    MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_WARN);
-    writeToGUI(MX_GUI_WARN, mx_warn);
+    MX_WRITE_TO_GUI(MX_GUI_WARN, mx_warn);
   }
 
   void Logger::p_Info(const std::string &message)
   {
     std::string t = getTime();
     MX_PRINT_INFO;
-    std::cerr << finalMessage;
+    MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_INFO);
-    writeToGUI(MX_GUI_INFO, mx_info);
+    MX_WRITE_TO_GUI(MX_GUI_INFO, mx_info);
   }
 
   void Logger::p_Success(const std::string &message)
   {
     std::string t = getTime();
     MX_PRINT_SUCCESS;
-    std::cerr << finalMessage;
+    MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_SUCCESS);
-    writeToGUI(MX_GUI_SUCCESS, mx_success);
+    MX_WRITE_TO_GUI(MX_GUI_SUCCESS, mx_success);
   }
 
   void Logger::p_Fatal_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_FATAL);
-    writeToGUI(MX_GUI_FATAL, mx_fatal);
+    MX_WRITE_TO_GUI(MX_GUI_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_WARN);
-    writeToGUI(MX_GUI_WARN, mx_warn);
+    MX_WRITE_TO_GUI(MX_GUI_WARN, mx_warn);
   }
 
   void Logger::p_Info_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_INFO);
-    writeToGUI(MX_GUI_INFO, mx_info);
+    MX_WRITE_TO_GUI(MX_GUI_INFO, mx_info);
   }
 
   void Logger::p_Success_log(const std::string &message)
   {
     std::string t = getTime();
     writeToFile(MX_LOG_SUCCESS);
-    writeToGUI(MX_GUI_SUCCESS, mx_success);
+    MX_WRITE_TO_GUI(MX_GUI_SUCCESS, mx_success);
   }
 }

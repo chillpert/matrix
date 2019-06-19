@@ -20,48 +20,45 @@ namespace MX
 {
   void set_resource_files(const std::string &path_to_folder);
 
+  World &World::get_default_world()
+  {
+    static World instance;
+    return instance;
+  }
+
   World::~World()
   {
     MX_INFO_LOG("MX: World: Destructor");
   }
 
-  std::shared_ptr<MX_MODEL> World::getModel(const std::string &name)
+  std::shared_ptr<MX_MODEL> World::getModel(const std::string &name) const
   {
     for (auto it : m_Models)
     {
       if (it->getName() == name)
-      {
-      #ifdef MX_INSTANT_MODEL_INIT
-        //it->initialize();
-      #endif
         return std::static_pointer_cast<MX_MODEL>(it);
-      }
     }
 
     throw std::exception();
   }
 
-  std::shared_ptr<MX_SHADER> World::getShader(const std::string &name)
+  std::shared_ptr<MX_SHADER> World::getShader(const std::string &name) const
   {
     for (auto it : m_Shaders)
     {
       if (it->m_Name == name)
-      {
         return std::static_pointer_cast<MX_SHADER>(it);
-      }
     }
 
     throw std::exception();
   }
 
-  std::shared_ptr<MX_TEXTURE> World::getTexture(const std::string &name)
+  std::shared_ptr<MX_TEXTURE> World::getTexture(const std::string &name) const
   {
     for (auto it : m_Textures)
     {
       if (it->getName() == name)
-      {
         return std::static_pointer_cast<MX_TEXTURE>(it);
-      }
     }
 
     throw std::exception();

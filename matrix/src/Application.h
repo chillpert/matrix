@@ -32,8 +32,8 @@ namespace MX
     std::unique_ptr<API> m_API;
     std::unique_ptr<GUI> m_GUI;
     std::unique_ptr<Window> m_Window;
-    std::unique_ptr<LayerStack> m_LayerStack;
 
+    LayerStack m_LayerStack;
     World m_World;
 
     bool m_Running;
