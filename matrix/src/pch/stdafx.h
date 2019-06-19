@@ -46,8 +46,8 @@
 #include <exception>
 
 // project files
-#include "matrix/src/Utils.h"
-#include "matrix/src/Logger.h"
-#include "matrix/src/platform/api/API_ErrorHandling.h"
+#include <Utils.h>
+#include <Logger.h>
+#include <API_ErrorHandling.h>
 
 #endif // STDAFX_H

@@ -1,9 +1,9 @@
-#include "matrix/src/layers/World.h"
+#include <World.h>
 #ifdef MX_IMGUI_ACTIVE
-  #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
+  #include <GUI_ImGui_Flags.h>
 #endif
 
-#include "matrix/src/Application.h"
+#include <Application.h>
 
 #define MX_INSTANT_MODEL_INIT
 

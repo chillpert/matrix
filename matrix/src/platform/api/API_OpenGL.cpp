@@ -1,5 +1,5 @@
-#include "matrix/src/platform/api/API_OpenGL.h"
-#include "matrix/src/Application.h"
+#include <API_OpenGL.h>
+#include <Application.h>
 
 namespace MX
 {

@@ -1,5 +1,4 @@
-#include "matrix/src/Application.h"
-#include <string>
+#include <Application.h>
 
 namespace MX
 {

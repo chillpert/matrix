@@ -1,7 +1,7 @@
 #ifndef API_OPENGL_H
 #define API_OPENGL_H
 
-#include "matrix/src/platform/api/API.h"
+#include <API.h>
 
 namespace MX
 {

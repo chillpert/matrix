@@ -1,5 +1,5 @@
-#include "matrix/src/event/KeyboardEvent.h"
-#include "matrix/src/controller/Controller.h"
+#include <KeyboardEvent.h>
+#include <Controller.h>
 
 namespace MX 
 {

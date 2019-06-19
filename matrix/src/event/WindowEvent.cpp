@@ -1,5 +1,5 @@
-#include "matrix/src/event/WindowEvent.h"
-#include "matrix/src/controller/Controller.h"
+#include <WindowEvent.h>
+#include <Controller.h>
 
 namespace MX 
 {

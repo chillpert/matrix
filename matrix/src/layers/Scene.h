@@ -1,11 +1,11 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "matrix/src/platform/api/Model.h"
-#include "matrix/src/platform/api/Model_Handler.h"
+#include <Model.h>
+#include <Model_Handler.h>
 
-#include "matrix/src/Camera.h"
-#include "matrix/src/layers/SceneGraph.h"
+#include <Camera.h>
+#include <SceneGraph.h>
 
 namespace MX
 {

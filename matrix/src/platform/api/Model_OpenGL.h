@@ -1,7 +1,7 @@
 #ifndef MODEL_OPENGL_H
 #define MODEL_OPENGL_H
 
-#include "matrix/src/platform/api/Model.h"
+#include <Model.h>
 
 namespace MX
 {

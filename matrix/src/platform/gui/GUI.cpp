@@ -1,4 +1,4 @@
-#include "matrix/src/platform/gui/GUI.h"
+#include <GUI.h>
 
 namespace MX
 {

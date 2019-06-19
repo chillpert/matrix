@@ -1,4 +1,4 @@
-#include "matrix/src/layers/Node.h"
+#include <Node.h>
 
 namespace MX
 {

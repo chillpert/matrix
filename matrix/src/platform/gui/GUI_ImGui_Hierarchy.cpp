@@ -1,6 +1,6 @@
-#include "matrix/src/platform/gui/GUI_ImGui.h"
-#include "matrix/src/Application.h"
-#include "matrix/src/layers/World.h"
+#include <GUI_ImGui.h>
+#include <Application.h>
+#include <World.h>
 
 namespace MX
 {

@@ -7,7 +7,7 @@
   #define MX_MODEL MX::Model_DirectX
 #endif
 
-#include "matrix/src/pch/stdafx.h"
+#include <stdafx.h>
 
 namespace MX
 {

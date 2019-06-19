@@ -1,5 +1,5 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "matrix/src/platform/api/Texture_OpenGL.h"
+#include <Texture_OpenGL.h>
 
 namespace MX
 {

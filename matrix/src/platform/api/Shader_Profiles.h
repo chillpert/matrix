@@ -1,7 +1,7 @@
 #ifndef SHADER_PROFILES_H
 #define SHADER_PROGILES_H
 
-#include "matrix/src/pch/stdafx.h"
+#include <stdafx.h>
 
 namespace MX
 {

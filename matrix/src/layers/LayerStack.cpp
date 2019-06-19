@@ -1,4 +1,4 @@
-#include "matrix/src/layers/LayerStack.h"
+#include <LayerStack.h>
 
 namespace MX
 {

@@ -1,5 +1,5 @@
-#include "matrix/src/event/MouseEvent.h"
-#include "matrix/src/controller/Controller.h"
+#include <MouseEvent.h>
+#include <Controller.h>
 
 namespace MX 
 {

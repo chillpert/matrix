@@ -2,52 +2,37 @@
 #define MATRIX_H
 
 // application
-#include "matrix/src/Application.h"
+#include <Application.h>
 
 // world and scenes
-#include "matrix/src/layers/World.h"
-#include "matrix/src/layers/Node.h"
-#include "matrix/src/layers/Scene.h"
-#include "matrix/src/layers/SceneGraph.h"
+#include <World.h>
+#include <Node.h>
+#include <Scene.h>
+#include <SceneGraph.h>
 
 // debugging
-#ifdef MX_DEBUG
-  #include "matrix/src/Logger.h"
-#endif
+#include <Logger.h>
 
-#include "matrix/src/Camera.h"
+#include <Camera.h>
 
 // model
-#include "matrix/src/platform/api/Model.h"
-#ifdef MX_OPENGL_ACTIVE
-  #include "matrix/src/platform/api/Model_OpenGL.h"
-#elif MX_DIRECTX_ACTIVE
-  #include "matrix/src/platform/api/Model_DirectX.h"
-#endif
-  #include "matrix/src/platform/api/Parser_Wavefront.h"
+#include <Model.h>
 
 // layers
-#include "matrix/src/layers/Layer.h"
-#include "matrix/src/layers/LayerStack.h"
+#include <Layer.h>
+#include <LayerStack.h>
 
 // controller
-#include "matrix/src/controller/Controller.h"
+#include <Controller.h>
 
 // event
 
 // platform
   // api
-  #include "matrix/src/platform/api/Shader.h"
-  #ifdef MX_OPENGL_ACTIVE
-    #include "matrix/src/platform/api/Shader_OpenGL.h"
-  #elif MX_DIRECTX_ACTIVE
-    #include "matrix/src/platform/api/Shader_DirectX.h"
-  #endif
-
-  // gui
+  #include <Shader.h>
 
   // window
-  #include "matrix/src/platform/window/Window.h"
+  #include <Window.h>
 
   #include <SDL.h>
 

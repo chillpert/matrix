@@ -1,5 +1,5 @@
-#include "matrix/src/platform/api/Model_OpenGL.h"
-#include "matrix/src/platform/api/Parser_Wavefront.h"
+#include <Model_OpenGL.h>
+#include <Parser_Wavefront.h>
 
 namespace MX
 {

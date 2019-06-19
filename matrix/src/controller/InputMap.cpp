@@ -1,4 +1,4 @@
-#include "matrix/src/controller/InputMap.h"
+#include <InputMap.h>
 
 namespace MX 
 {

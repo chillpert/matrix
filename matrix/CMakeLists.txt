@@ -2,7 +2,15 @@ cmake_minimum_required(VERSION 3.14.0)
 message("MX: Configuring Framework")
 
 # include project files
-include_directories(${CMAKE_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/matrix)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/pch)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/controller)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/event)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/layers)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/api)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/window)
 
 # resource directories
 add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")

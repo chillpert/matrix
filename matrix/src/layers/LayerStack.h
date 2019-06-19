@@ -1,8 +1,7 @@
 #ifndef LAYERSTACK_H
 #define LAYERSTACK_H
 
-#include "matrix/src/layers/Layer.h"
-#include <vector>
+#include <Layer.h>
 
 namespace MX
 {

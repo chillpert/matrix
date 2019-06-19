@@ -1,18 +1,14 @@
 #ifndef GUI_IMGUI_H
 #define GUI_IMGUI_H
 
-#include "matrix/src/platform/gui/GUI.h"
-#include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
+#include <GUI.h>
+#include <GUI_ImGui_Flags.h>
 
 #include <imgui.h>
-#include "matrix/src/layers/World.h"
-#include "matrix/src/layers/Scene.h"
-#include "matrix/src/platform/api/Model.h"
-#ifdef MX_OPENGL_ACTIVE 
-  #include "matrix/src/platform/api/Model_OpenGL.h"
-#elif MX_DIRECTX_ACTIVE
-  #include "matrix/src/platform/api/Model_DirectX.h"
-#endif
+#include <World.h>
+#include <Scene.h>
+#include <Model.h>
+#include <Model_OpenGL.h>
 
 namespace MX
 {

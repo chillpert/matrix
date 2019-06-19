@@ -7,15 +7,15 @@
 #define MX_SCENE Application::get().m_World.m_ActiveScene
 #define MX_ROOT Application::get().m_World.m_ActiveScene->m_Sg.m_Root
 
-#include "matrix/src/pch/stdafx.h"
-#include "matrix/src/platform/window/Window.h"
-#include "matrix/src/platform/window/Window_SDL2.h"
-#include "matrix/src/platform/api/API.h"
-#include "matrix/src/platform/api/API_OpenGL.h"
-#include "matrix/src/platform/gui/GUI.h"
-#include "matrix/src/platform/gui/GUI_ImGui.h"
-#include "matrix/src/layers/LayerStack.h"
-#include "matrix/src/layers/World.h"
+#include <stdafx.h>
+#include <Window.h>
+#include <Window_SDL2.h>
+#include <API.h>
+#include <API_OpenGL.h>
+#include <GUI.h>
+#include <GUI_ImGui.h>
+#include <LayerStack.h>
+#include <World.h>
 
 namespace MX
 {

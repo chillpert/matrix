@@ -41,10 +41,10 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "matrix/src/pch/stdafx.h"
+#include <stdafx.h>
 
 #ifdef MX_IMGUI_ACTIVE
-  #include "matrix/src/platform/gui/GUI_ImGui_Flags.h"
+  #include <GUI_ImGui_Flags.h>
 #endif
 
 namespace MX

@@ -1,8 +1,8 @@
-#include "matrix/src/Utils.h"
-#include "matrix/src/platform/gui/GUI_ImGui.h"
-#include "matrix/src/Application.h"
-#include "matrix/src/event/WindowEvent.h"
-#include "matrix/src/controller/Controller.h"
+#include <Utils.h>
+#include <GUI_ImGui.h>
+#include <Application.h>
+#include <WindowEvent.h>
+#include <Controller.h>
 
 namespace MX
 {

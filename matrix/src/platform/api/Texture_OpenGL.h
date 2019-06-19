@@ -1,7 +1,7 @@
 #ifndef TEXTURE_OPENGL_H
 #define TEXTURE_OPENGL_H
 
-#include "matrix/src/platform/api/Texture.h"
+#include <Texture.h>
 
 namespace MX
 {

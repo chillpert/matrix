@@ -1,6 +1,6 @@
-#include "matrix/src/platform/api/Shader_OpenGL.h"
-#include "matrix/src/layers/World.h"
-#include "matrix/src/Application.h"
+#include <Shader_OpenGL.h>
+#include <World.h>
+#include <Application.h>
 
 namespace MX
 {

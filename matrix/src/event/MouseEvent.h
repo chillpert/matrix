@@ -1,7 +1,7 @@
 #ifndef MOUSEEVENT_H
 #define MOUSEEVENT_H
 
-#include "matrix/src/event/Event.h"
+#include <Event.h>
 
 namespace MX 
 {

@@ -1,7 +1,7 @@
-#include "matrix/src/platform/gui/GUI_ImGui.h"
-#include "matrix/src/platform/window/Window.h"
-#include "matrix/src/platform/window/Window_SDL2.h"
-#include "matrix/src/Application.h"
+#include <GUI_ImGui.h>
+#include <Window.h>
+#include <Window_SDL2.h>
+#include <Application.h>
 
 #ifdef MX_IMGUI_ACTIVE
   #include <imgui_impl_sdl.h>

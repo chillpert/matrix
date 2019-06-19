@@ -1,10 +1,9 @@
 #ifndef MODEL_HANDLER_H
 #define MODEL_HANDLER_H
 
-#include "matrix/src/pch/stdafx.h"
-#include "matrix/src/platform/api/Model.h"
-#include "matrix/src/platform/api/Model_OpenGL.h"
-#include "matrix/src/platform/api/Model_DirectX.h"
+#include <stdafx.h>
+#include <Model.h>
+#include <Model_OpenGL.h>
 
 // use this macro to spawn in objects
 #define MX_SPAWN_OBJECT(object_name, file_name) MX::spawnObject(object_name, file_name);

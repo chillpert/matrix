@@ -1,6 +1,6 @@
-#include "matrix/src/Camera.h"
-#include "matrix/src/controller/InputMap.h"
-#include "matrix/src/Application.h"
+#include <Camera.h>
+#include <InputMap.h>
+#include <Application.h>
 
 namespace MX
 {

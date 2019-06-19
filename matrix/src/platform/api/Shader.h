@@ -7,7 +7,7 @@
   #define MX_SHADER MX::Shader_DirectX
 #endif
 
-#include "matrix/src/pch/stdafx.h"
+#include <stdafx.h>
 
 namespace MX
 {

@@ -1,10 +1,10 @@
-#include "matrix/src/platform/window/Window_SDL2.h"
-#include "matrix/src/event/KeyboardEvent.h"
-#include "matrix/src/event/MouseEvent.h"
-#include "matrix/src/event/WindowEvent.h"
-#include "matrix/src/controller/Controller.h"
-#include "matrix/src/layers/World.h"
-#include "matrix/src/Application.h"
+#include <Window_SDL2.h>
+#include <KeyboardEvent.h>
+#include <MouseEvent.h>
+#include <WindowEvent.h>
+#include <Controller.h>
+#include <World.h>
+#include <Application.h>
 
 #ifdef MX_IMGUI_ACTIVE
   #include <imgui.h>

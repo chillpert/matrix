@@ -1,10 +1,10 @@
 #ifndef INPUTMAP_H
 #define INPUTMAP_H
 
-#include "matrix/src/controller/Controller.h"
-#include "matrix/src/layers/World.h"
-#include "matrix/src/Camera.h"
-#include "matrix/src/Application.h"
+#include <Controller.h>
+#include <World.h>
+#include <Camera.h>
+#include <Application.h>
 
 namespace MX 
 {

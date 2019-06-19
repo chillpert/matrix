@@ -5,21 +5,15 @@
 #define MX_GET_MODEL(name) MX::MX_WORLD.getModel(name)
 #define MX_GET_TEXTURE(name) MX::MX_WORLD.getTexture(name)
 
-#include "matrix/src/pch/stdafx.h"
-#include "matrix/src/layers/Scene.h"
+#include <stdafx.h>
+#include <Scene.h>
 
-#include "matrix/src/platform/api/Shader.h"
-#include "matrix/src/platform/api/Model.h"
-#include "matrix/src/platform/api/Texture.h"
-#ifdef MX_OPENGL_ACTIVE
-  #include "matrix/src/platform/api/Model_OpenGL.h"
-  #include "matrix/src/platform/api/Shader_OpenGL.h"
-  #include "matrix/src/platform/api/Texture_OpenGL.h"
-#elif MX_DIRECTX_ACTIVE
-  #include "matrix/src/platform/api/Model_DirectX.h"
-  #include "matrix/src/platform/api/Shader_DirectX.h"
-  #include "matrix/src/platform/api/Texture_DirectX.h"
-#endif
+#include <Shader.h>
+#include <Model.h>
+#include <Texture.h>
+#include <Model_OpenGL.h>
+#include <Shader_OpenGL.h>
+#include <Texture_OpenGL.h>
 
 namespace MX
 {

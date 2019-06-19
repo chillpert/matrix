@@ -1,6 +1,6 @@
-#include "matrix/src/layers/SceneGraph.h"
-#include "matrix/src/layers/World.h"
-#include "matrix/src/Application.h"
+#include <SceneGraph.h>
+#include <World.h>
+#include <Application.h>
 
 namespace MX
 {

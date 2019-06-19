@@ -1,7 +1,7 @@
 #ifndef KEYBOARDEVENT_H
 #define KEYBOARDEVENT_H
 
-#include "matrix/src/event/Event.h"
+#include <Event.h>
 
 namespace MX 
 {

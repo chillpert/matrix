@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "matrix/src/pch/stdafx.h"
+#include <stdafx.h>
 
 namespace MX
 {

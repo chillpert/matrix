@@ -1,10 +1,9 @@
 #ifndef MODEL_WAVEFRONT_H
 #define MODEL_WAVEFRONT_H
 
-#include "matrix/src/pch/stdafx.h"
-#include "matrix/src/platform/api/Model.h"
-#include "matrix/src/platform/api/Model_OpenGL.h"
-#include "matrix/src/platform/api/Model_DirectX.h"
+#include <stdafx.h>
+#include <Model.h>
+#include <Model_OpenGL.h>
 
 namespace MX
 {

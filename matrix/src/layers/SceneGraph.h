@@ -1,7 +1,7 @@
 #ifndef SCENEGRAPH_HPP
 #define SCENEGRAPH_HPP
 
-#include "matrix/src/layers/Node.h"
+#include <Node.h>
 
 namespace MX
 {
