@@ -7,8 +7,6 @@
 #include <imgui.h>
 #include <World.h>
 #include <Scene.h>
-#include <Model.h>
-#include <Model_OpenGL.h>
 
 namespace MX
 {

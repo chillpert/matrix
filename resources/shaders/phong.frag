@@ -7,14 +7,14 @@ in VS_OUT {
   vec2 TexCoords;
 } fs_in;
 
-uniform sampler2D texture1;
+uniform sampler2D texture_diffuse1;
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
 uniform float ambientStrength;
 
 void main()
 {           
-  vec3 color = texture(texture1, fs_in.TexCoords).rgb;
+  vec3 color = texture(texture_diffuse1, fs_in.TexCoords).rgb;
   // ambient
   vec3 ambient = ambientStrength * color * lightColor;
   // diffuse

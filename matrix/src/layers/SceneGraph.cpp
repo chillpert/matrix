@@ -92,7 +92,7 @@ namespace MX
     }
 
     if (it.m_Model != nullptr)
-      it.m_Model->render(*std::static_pointer_cast<MX_SHADER>(it.m_Shader));
+      it.m_Model->render(std::static_pointer_cast<MX_SHADER>(it.m_Shader));
 
     if (!it.m_Children.empty())
     {

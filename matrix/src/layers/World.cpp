@@ -31,7 +31,7 @@ namespace MX
     MX_INFO_LOG("MX: World: Destructor");
   }
 
-  std::shared_ptr<Assimp_Model> World::getModel(const std::string &name) const
+  std::shared_ptr<Model> World::getModel(const std::string &name) const
   {
     for (auto it : m_Models)
     {
@@ -183,7 +183,7 @@ namespace MX
 
       	  if (!model_file_exists_already)
       	  {
-      	    std::shared_ptr<Assimp_Model> temp_model(new Assimp_Model(file_name_with_ending));
+      	    std::shared_ptr<Model> temp_model(new Model(file_name_with_ending));
       	    MX_WORLD.m_Models.push_back(temp_model);
 
           #ifdef MX_IMGUI_ACTIVE

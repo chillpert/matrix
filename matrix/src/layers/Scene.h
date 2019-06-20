@@ -1,9 +1,6 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <Model.h>
-#include <Model_Handler.h>
-
 #include <Camera.h>
 #include <SceneGraph.h>
 

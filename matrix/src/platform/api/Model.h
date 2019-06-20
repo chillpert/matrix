@@ -1,57 +1,55 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#ifdef MX_OPENGL_ACTIVE
-  #define MX_MODEL MX::Model_OpenGL
-#elif MX_DIRECTX_ACTIVE
-  #define MX_MODEL MX::Model_DirectX
-#endif
-
 #include <stdafx.h>
 
-namespace MX
-{
-  struct RGB
-  {
-    float r;
-    float g;
-    float b;
-  };
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
-  struct Material
-  {
-    RGB m_Ambient;
-    RGB m_Diffuse;
-    RGB m_Specular;
-    float m_Alpha;
-    float m_Shininess;
-    std::string m_TexturePath;
-  };
+#include <Mesh.h>
+#include <Mesh_OpenGL.h>
+#include <Shader.h>
+#include <Shader_OpenGL.h>
+
+#ifdef MX_OPENGL_ACTIVE
+  #define MX_MESH Mesh_OpenGL
+#elif MX_DIRECTX_ACTIVE
+  #define MX_MESH Mesh_DirectX
+#endif
+
+namespace MX {
 
   class Model
   {
   public:
-    MX_API Model() = default;
+    MX_API Model() = delete;
+    MX_API Model(const std::string &path, bool instant_init = 0, bool gamma = 0);
     MX_API ~Model() = default;
 
     MX_API Model(const Model&) = default;
     MX_API Model &operator=(const Model&) = default;
 
-    MX_API virtual void initialize() = 0;
-    MX_API virtual void draw() = 0;
-    MX_API virtual void setGeometry(u_int64_t draw_mode) = 0;
-    
-    MX_API std::string getName() const { return m_Name; }
+    MX_API void initialize();
+    MX_API void render(std::shared_ptr<MX_SHADER> shader);
 
-    std::string m_Name;
-    std::string m_Path;
+  private:
+    MX_API void process_node(aiNode *node, const aiScene *scene);
+    MX_API MX_MESH process_mesh(aiMesh *mesh, const aiScene *scene);
 
-    std::vector<Material*> m_MaterialList;
-    std::vector<glm::vec3> m_V;
-    std::vector<glm::vec2> m_Vt;
-    std::vector<glm::vec3> m_Vn;
+    MX_API std::vector<Assimp_Texture> load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName);
 
-    bool m_initialized = 0;
+  public:
+    // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+    std::vector<Assimp_Texture> textures_loaded;
+
+    std::vector<MX_MESH> m_meshes;
+    std::vector<MX_TEXTURE> m_textures;
+    std::string m_directory;
+    std::string m_full_path;
+    std::string m_name;
+    bool m_initialized;
+    bool m_gamma_correction;
   };
 }
 

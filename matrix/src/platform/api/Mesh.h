@@ -27,25 +27,24 @@ namespace MX
   class Mesh
   {
   public:
-    Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Assimp_Texture> textures);
-    ~Mesh() = default;
+    MX_API Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Assimp_Texture> textures);
+    MX_API virtual ~Mesh() = default;
 
-    Mesh(const Mesh&) = default;
-    Mesh &operator=(const Mesh&) = default;
+    MX_API Mesh(const Mesh&) = default;
+    MX_API Mesh &operator=(const Mesh&) = default;
 
-    void initialize();
-    void render_mesh(MX_SHADER shader);
+    MX_API virtual void initialize() = 0;
+    MX_API virtual void render_mesh(std::shared_ptr<MX_SHADER> shader) = 0;
 
-  public:
+  protected:
     std::vector<Vertex> m_vertices;
     std::vector<unsigned int> m_indices;
     std::vector<Assimp_Texture> m_textures;
-    unsigned int m_vao;
 
-  private:
-    unsigned int m_vbo, m_ebo;
+    GLuint m_vao;
+    GLuint m_vbo;
+    GLuint m_ebo;
   };
 }
 
 #endif // MESH_H
-

@@ -75,25 +75,6 @@ void render()
 {
   using namespace MX;
   MX_WORLD.render();
-/*
-  static MX_SHADER assimp_shader("blinn_phong", 1);
-  static Assimp_Model nano_suit("nanosuit/nanosuit.obj", 1);
-
-  assimp_shader.use();
-  glm::mat4 projection = MX_CAMERA.getProjectionMatrix();
-  glm::mat4 view = MX_CAMERA.getViewMatrix();
-  assimp_shader.setfMat4("projection", projection);
-  assimp_shader.setfMat4("view", view);
-  assimp_shader.setfVec3("lightPosition", glm::fvec3(0.0f, 5.0f, 5.0f));
-  assimp_shader.setfVec3("lightColor", glm::fvec3(1.0f, 1.0f, 1.0f));
-  assimp_shader.setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());
-  assimp_shader.setFloat("ambientStrength", 0.08f);
-
-  glm::mat4 model = glm::mat4(1.0f);
-  model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-  assimp_shader.setfMat4("model", model);
-  nano_suit.render(assimp_shader);
-*/
 }
 
 int main()
