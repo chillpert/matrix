@@ -4,28 +4,32 @@ namespace MX
 {
   unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
 
-  Assimp_Model::Assimp_Model(const std::string &path, bool gamma)
-    : m_gamma_correction(gamma)
+  Assimp_Model::Assimp_Model(const std::string &path, bool instant_init, bool gamma)
+    : m_name(path), m_initialized(0), m_gamma_correction(gamma)
   {
-    load_model(path);
+    m_full_path = MX_MODEL_PATH + path;
+    m_directory = m_full_path.substr(0, m_full_path.find_last_of('/'));
+
+    if (instant_init)
+      initialize();
   }
 
-  void Assimp_Model::load_model(const std::string &path)
+  void Assimp_Model::initialize()
   {
     // read file via ASSIMP
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+    const aiScene* scene = importer.ReadFile(m_full_path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
     // check for errors
     if(!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
       MX_FATAL("MX: Assimp: " + *importer.GetErrorString());
       return;
     }
-    // retrieve the directory path of the filepath
-    m_directory = path.substr(0, path.find_last_of('/'));
 
     // process ASSIMP's root node recursively
     process_node(scene->mRootNode, scene);
+
+    m_initialized = 1;
   }
 
   void Assimp_Model::process_node(aiNode *node, const aiScene *scene)

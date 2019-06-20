@@ -17,18 +17,17 @@ namespace MX {
   {
   public:
     Assimp_Model() = delete;
-    Assimp_Model(const std::string &path, bool gamma = false);
+    Assimp_Model(const std::string &path, bool instant_init = 0, bool gamma = 0);
     ~Assimp_Model() = default;
 
     Assimp_Model(const Assimp_Model&) = default;
     Assimp_Model &operator=(const Assimp_Model&) = default;
 
     void render(MX_SHADER shader);
+    // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
+    void initialize();
 
   private:
-    // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-    void load_model(const std::string &path);
-
     // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this 
     // process on its children nodes (if any).
     void process_node(aiNode *node, const aiScene *scene);
@@ -44,6 +43,9 @@ namespace MX {
 
     std::vector<Mesh> m_meshes;
     std::string m_directory;
+    std::string m_full_path;
+    std::string m_name;
+    bool m_initialized;
     bool m_gamma_correction;
   };
 

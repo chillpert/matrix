@@ -5,7 +5,7 @@
 namespace MX
 {
   Scene::Scene(const std::string &name)
-      : m_Name(name) { }
+    : m_Name(name) { }
 
   Scene::~Scene()
   {
@@ -78,8 +78,9 @@ namespace MX
     else
       return 0;
 
+
     std::shared_ptr<Node> temp(new Node(object_name));
-    temp->setShader(MX_GET_SHADER("static_color"));
+    temp->setShader(MX_GET_SHADER("blinn_phong"));
     temp->setModel(MX_GET_MODEL(file_name));
 
     m_Sg.search(node_to_attach_to, m_Sg.m_Root)->addChild(temp);

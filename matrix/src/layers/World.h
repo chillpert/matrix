@@ -8,7 +8,7 @@
 #include <stdafx.h>
 #include <Scene.h>
 #include <Shader.h>
-#include <Model.h>
+#include <Assimp_Model.h>
 #include <Texture.h>
 
 namespace MX
@@ -30,7 +30,7 @@ namespace MX
     MX_API void push(std::shared_ptr<Scene> scene);
     MX_API void pop(const std::string &name);
 
-    MX_API std::shared_ptr<MX_MODEL> getModel(const std::string &name) const;
+    MX_API std::shared_ptr<Assimp_Model> getModel(const std::string &name) const;
     MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name) const;
     MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name) const;
 
@@ -41,7 +41,7 @@ namespace MX
     std::shared_ptr<Scene> m_ActiveScene;
     std::vector<std::shared_ptr<Scene>> m_ExistingScenes;
   
-    std::vector<std::shared_ptr<Model>> m_Models;
+    std::vector<std::shared_ptr<Assimp_Model>> m_Models;
     std::vector<std::shared_ptr<Shader>> m_Shaders;
     std::vector<std::shared_ptr<Texture>> m_Textures;
   };

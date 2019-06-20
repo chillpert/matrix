@@ -31,12 +31,12 @@ namespace MX
     MX_INFO_LOG("MX: World: Destructor");
   }
 
-  std::shared_ptr<MX_MODEL> World::getModel(const std::string &name) const
+  std::shared_ptr<Assimp_Model> World::getModel(const std::string &name) const
   {
     for (auto it : m_Models)
     {
-      if (it->getName() == name)
-        return std::static_pointer_cast<MX_MODEL>(it);
+      if (it->m_name == name)
+        return it;
     }
 
     throw std::exception();
@@ -177,13 +177,13 @@ namespace MX
 				
       	  for (const auto it : MX_WORLD.m_Models)
       	  {
-      	    if (it->getName() == file_name)
+      	    if (it->m_name == file_name)
       	      model_file_exists_already = 1;
       	  }
 
       	  if (!model_file_exists_already)
       	  {
-      	    std::shared_ptr<Model> temp_model(new MX_MODEL(file_name_with_ending));
+      	    std::shared_ptr<Assimp_Model> temp_model(new Assimp_Model(file_name_with_ending));
       	    MX_WORLD.m_Models.push_back(temp_model);
 
           #ifdef MX_IMGUI_ACTIVE

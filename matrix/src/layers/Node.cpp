@@ -2,7 +2,7 @@
 
 namespace MX
 {
-  Node::Node(const std::string &node_name, std::shared_ptr<MX_MODEL> model, std::shared_ptr<MX_SHADER> shader, std::shared_ptr<MX_TEXTURE> texture)
+  Node::Node(const std::string &node_name, std::shared_ptr<Assimp_Model> model, std::shared_ptr<MX_SHADER> shader, std::shared_ptr<MX_TEXTURE> texture)
     : m_Name(node_name), m_Model(model), m_Shader(shader), m_Texture(texture), m_visible(true) { }
 
   void Node::addChild(std::shared_ptr<Node> node)
@@ -62,7 +62,7 @@ namespace MX
     m_Trans.push(t, factor, is_animated);
   }
 
-  void Node::setModel(std::shared_ptr<MX_MODEL> model)
+  void Node::setModel(std::shared_ptr<Assimp_Model> model)
   {
     if (!model->m_initialized)
       model->initialize();

@@ -173,7 +173,7 @@ namespace MX
           for (u_int64_t i = 0; i < all_models.size(); ++i)
           {
             std::string rhs = all_models[i] + std::string(".obj");
-            if (current_node->m_Model->m_Name == rhs)
+            if (current_node->m_Model->m_name == rhs)
               item_models = i;
           }
         }
@@ -319,7 +319,7 @@ namespace MX
   
       if (item_prev_models != item_models)
       {
-        current_node->setModel(std::static_pointer_cast<MX_MODEL>(MX_WORLD.m_Models[item_models]));
+        current_node->setModel(MX_WORLD.m_Models[item_models]);
         item_prev_models = item_models;
       }
 
