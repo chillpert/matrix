@@ -31,8 +31,8 @@ namespace MX
     MX_API void pop(const std::string &name);
 
     MX_API std::shared_ptr<Model> getModel(const std::string &name) const;
-    MX_API std::shared_ptr<MX_SHADER> getShader(const std::string &name) const;
-    MX_API std::shared_ptr<MX_TEXTURE> getTexture(const std::string &name) const;
+    MX_API std::shared_ptr<Shader> getShader(const std::string &name) const;
+    MX_API std::shared_ptr<Texture> getTexture(const std::string &name) const;
 
   private:
     MX_API World(const World&) = delete;

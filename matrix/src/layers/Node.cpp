@@ -44,7 +44,7 @@ namespace MX
     }
 
     MX_FATAL("MX: Node: Get Child: " + name + " is not a child of " + m_Name);
-    throw std::exception();
+    throw mx_entity_not_found(name);
   }
 
   void Node::setLocalTransform(const glm::fmat4& mat)
@@ -70,7 +70,7 @@ namespace MX
     m_Model = model;
   }
 
-  void Node::setShader(std::shared_ptr<MX_SHADER> shader)
+  void Node::setShader(std::shared_ptr<Shader> shader)
   {
     if (!shader->m_initialized)
       shader->initialize();
@@ -78,7 +78,7 @@ namespace MX
     m_Shader = shader;
   }
 
-  void Node::setTexture(std::shared_ptr<MX_TEXTURE> texture)
+  void Node::setTexture(std::shared_ptr<Texture> texture)
   {
     if (!texture->m_initialized)
       texture->initialize();

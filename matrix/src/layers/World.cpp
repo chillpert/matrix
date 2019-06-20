@@ -39,29 +39,29 @@ namespace MX
         return it;
     }
 
-    throw std::exception();
+    throw mx_entity_not_found(name);
   }
 
-  std::shared_ptr<MX_SHADER> World::getShader(const std::string &name) const
+  std::shared_ptr<Shader> World::getShader(const std::string &name) const
   {
     for (auto it : m_Shaders)
     {
       if (it->m_Name == name)
-        return std::static_pointer_cast<MX_SHADER>(it);
+        return it;
     }
 
-    throw std::exception();
+    throw mx_entity_not_found(name);
   }
 
-  std::shared_ptr<MX_TEXTURE> World::getTexture(const std::string &name) const
+  std::shared_ptr<Texture> World::getTexture(const std::string &name) const
   {
     for (auto it : m_Textures)
     {
       if (it->getName() == name)
-        return std::static_pointer_cast<MX_TEXTURE>(it);
+        return it;
     }
 
-    throw std::exception();
+    throw mx_entity_not_found(name);
   }
 
   void World::initialize()
@@ -108,15 +108,7 @@ namespace MX
       if (m_ExistingScenes.at(i)->m_Name == name)
       {
         m_ExistingScenes.at(i) = nullptr;
-
-        try 
-        {
-          m_ExistingScenes.erase(m_ExistingScenes.begin() + i);
-        }
-        catch (std::exception e)
-        {
-          MX_FATAL(e.what());
-        }
+        m_ExistingScenes.erase(m_ExistingScenes.begin() + i);
 
         MX_WARN("MX: World: Scene " + m_ExistingScenes.at(i)->m_Name + ": Deleted");
       }

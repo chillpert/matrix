@@ -30,8 +30,8 @@ namespace MX
     void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
 
     MX_API void setModel(std::shared_ptr<Model> model);
-    MX_API void setShader(std::shared_ptr<MX_SHADER> shader);
-    MX_API void setTexture(std::shared_ptr<MX_TEXTURE> texture);
+    MX_API void setShader(std::shared_ptr<Shader> shader);
+    MX_API void setTexture(std::shared_ptr<Texture> texture);
   
     MX_API void setTransform(const Trans &t, float factor, bool is_animated);
 

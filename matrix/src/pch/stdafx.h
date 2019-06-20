@@ -46,5 +46,6 @@
 #include <Utils.h>
 #include <Logger.h>
 #include <API_ErrorHandling.h>
+#include <MatrixExceptions.h>
 
 #endif // STDAFX_H
