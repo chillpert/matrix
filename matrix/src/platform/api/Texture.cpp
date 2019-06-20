@@ -5,5 +5,6 @@ namespace MX
   Texture::Texture(const std::string &name)
   {
     m_Name = name;
+    m_path = MX_TEXTURE_PATH + name;
   }
 }

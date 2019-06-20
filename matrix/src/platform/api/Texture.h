@@ -34,13 +34,10 @@ namespace MX
     MX_API const std::string &getName() const { return m_Name; }
     MX_API virtual u_int64_t getID() = 0;
 
-  protected:
-    MX_API virtual void create() = 0;
-    MX_API virtual void load() = 0;
-
   public:
     STB_Texture m_Stb;
     std::string m_Name;
+    std::string m_path;
 
     bool m_initialized = 0;
   };

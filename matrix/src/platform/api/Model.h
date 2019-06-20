@@ -11,6 +11,8 @@
 #include <Mesh_OpenGL.h>
 #include <Shader.h>
 #include <Shader_OpenGL.h>
+#include <Texture.h>
+#include <Texture_OpenGL.h>
 
 #ifdef MX_OPENGL_ACTIVE
   #define MX_MESH Mesh_OpenGL
@@ -18,8 +20,8 @@
   #define MX_MESH Mesh_DirectX
 #endif
 
-namespace MX {
-
+namespace MX
+{
   class Model
   {
   public:
@@ -42,9 +44,8 @@ namespace MX {
   public:
     // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
     std::vector<Assimp_Texture> textures_loaded;
-
     std::vector<MX_MESH> m_meshes;
-    std::vector<MX_TEXTURE> m_textures;
+
     std::string m_directory;
     std::string m_full_path;
     std::string m_name;
