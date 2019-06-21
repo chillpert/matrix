@@ -32,10 +32,19 @@ if(WIN32 AND CMAKE_CL_64)
   link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
 endif()
 
+# sdl image
+INCLUDE(FindPkgConfig)
+
+PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+
+include_directories(${PROJECT_SOURCE_DIR}/external/SDL-image)
+
 # linking
 if(UNIX)
   set(WINDOW_LIB ${WINDOW_LIB}
     SDL2
+    ${SDL2IMAGE_LIBRARIES}
   )
 
 elseif(WIN32 AND CMAKE_CL_64)
