@@ -14,12 +14,15 @@
 
   // window
   #include <SDL.h>
+  #include <SDL_thread.h>
+  #include <SDL_image.h>
   #undef main
 
   // maths
   #define GLM_ENABLE_EXPERIMENTAL 
   #include <glm/gtx/string_cast.hpp>
   #include <glm/glm.hpp>
+  #include <glm/gtx/matrix_decompose.hpp>
   #include <glm/gtc/matrix_transform.hpp>
   #include <glm/gtc/type_ptr.hpp>
 
