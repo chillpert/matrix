@@ -2,7 +2,7 @@
 
 namespace MX
 {
-  Mesh_OpenGL::Mesh_OpenGL(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Assimp_Texture> textures)
+  Mesh_OpenGL::Mesh_OpenGL(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures)
     : Mesh(vertices, indices, textures)
   {
     initialize();
@@ -51,8 +51,10 @@ namespace MX
     {
       glActiveTexture(GL_TEXTURE0 + i);
 
+      std::shared_ptr<MX_TEXTURE> temp = std::static_pointer_cast<MX_TEXTURE>(m_textures.at(i));
+
       std::string number;
-      std::string name = m_textures[i].type;
+      std::string name = temp->m_type;
 
       if(name == "texture_diffuse")
         number = std::to_string(diffuse_nr++);
@@ -64,7 +66,7 @@ namespace MX
         number = std::to_string(height_nr++);
 
       glUniform1i(glGetUniformLocation(shader->m_ID, (name + number).c_str()), i);
-      glBindTexture(GL_TEXTURE_2D, m_textures[i].id);
+      glBindTexture(GL_TEXTURE_2D, temp->m_ID);
     }
 
     glBindVertexArray(m_vao);

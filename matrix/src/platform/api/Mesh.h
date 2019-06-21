@@ -5,6 +5,8 @@
 
 #include <Shader.h>
 #include <Shader_OpenGL.h>
+#include <Texture.h>
+#include <Texture_OpenGL.h>
 
 namespace MX
 {
@@ -27,7 +29,7 @@ namespace MX
   class Mesh
   {
   public:
-    MX_API Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Assimp_Texture> textures);
+    MX_API Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures);
     MX_API virtual ~Mesh() = default;
 
     MX_API Mesh(const Mesh&) = default;
@@ -39,7 +41,7 @@ namespace MX
   protected:
     std::vector<Vertex> m_vertices;
     std::vector<unsigned int> m_indices;
-    std::vector<Assimp_Texture> m_textures;
+    std::vector<std::shared_ptr<Texture>> m_textures;
 
     GLuint m_vao;
     GLuint m_vbo;

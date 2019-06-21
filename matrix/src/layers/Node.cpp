@@ -64,25 +64,40 @@ namespace MX
 
   void Node::setModel(std::shared_ptr<Model> model)
   {
-    if (!model->m_initialized)
-      model->initialize();
-  
-    m_Model = model;
+    if (model != nullptr)
+    {
+      if (!model->m_initialized)
+        model->initialize();
+    
+      m_Model = model;
+    }
+    else
+      m_Model = nullptr;
   }
 
   void Node::setShader(std::shared_ptr<Shader> shader)
   {
-    if (!shader->m_initialized)
-      shader->initialize();
+    if (shader != nullptr)
+    {
+      if (!shader->m_initialized)
+        shader->initialize();
 
-    m_Shader = shader;
+      m_Shader = shader;
+    }
+    else
+      m_Shader = nullptr;
   }
 
   void Node::setTexture(std::shared_ptr<Texture> texture)
   {
-    if (!texture->m_initialized)
-      texture->initialize();
+    if (texture != nullptr)
+    {
+      if (!texture->m_initialized)
+        texture->initialize();
 
-    m_Texture = texture;
+      m_Texture = texture;
+    }
+    else
+      m_Texture = nullptr;
   }
 }

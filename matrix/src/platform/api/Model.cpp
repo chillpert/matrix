@@ -5,7 +5,7 @@ namespace MX
   unsigned int load_texture(const std::string &path, const std::string &directory);
 
   Model::Model(const std::string &path, bool instant_init, bool gamma)
-    : m_name(path), m_initialized(0), m_gamma_correction(gamma)
+    : m_name(path), m_gamma_correction(gamma)
   {
     m_full_path = MX_MODEL_PATH + path;
     m_directory = m_full_path.substr(0, m_full_path.find_last_of('/'));
@@ -54,7 +54,7 @@ namespace MX
   {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Assimp_Texture> textures;
+    std::vector<std::shared_ptr<Texture>> textures;
 
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
@@ -109,24 +109,24 @@ namespace MX
     // process materials
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];    
 
-    std::vector<Assimp_Texture> diffuseMaps = load_material_texture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+    std::vector<std::shared_ptr<Texture>> diffuseMaps = load_material_texture(material, aiTextureType_DIFFUSE, "texture_diffuse");
     textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-    std::vector<Assimp_Texture> specularMaps = load_material_texture(material, aiTextureType_SPECULAR, "texture_specular");
+    std::vector<std::shared_ptr<Texture>> specularMaps = load_material_texture(material, aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-    std::vector<Assimp_Texture> normalMaps = load_material_texture(material, aiTextureType_HEIGHT, "texture_normal");
+    std::vector<std::shared_ptr<Texture>> normalMaps = load_material_texture(material, aiTextureType_HEIGHT, "texture_normal");
     textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
 
-    std::vector<Assimp_Texture> heightMaps = load_material_texture(material, aiTextureType_AMBIENT, "texture_height");
+    std::vector<std::shared_ptr<Texture>> heightMaps = load_material_texture(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
     
     return MX_MESH(vertices, indices, textures);
   }
 
-  std::vector<Assimp_Texture> Model::load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName)
+  std::vector<std::shared_ptr<Texture>> Model::load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName)
   {
-    std::vector<Assimp_Texture> textures;
+    std::vector<std::shared_ptr<Texture>> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
     {
       aiString str;
@@ -135,7 +135,7 @@ namespace MX
       bool skip = false;
       for (unsigned int j = 0; j < textures_loaded.size(); j++)
       {
-        if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
+        if (std::strcmp(textures_loaded[j]->m_path.data(), str.C_Str()) == 0)
         {
           textures.push_back(textures_loaded[j]);
           skip = true;
@@ -144,10 +144,10 @@ namespace MX
       }
       if (!skip)
       {
-        Assimp_Texture texture;
-        texture.id = load_texture(str.C_Str(), this->m_directory);
-        texture.type = typeName;
-        texture.path = str.C_Str();
+        std::shared_ptr<MX_TEXTURE> texture(std::make_shared<MX_TEXTURE>());
+        texture->m_ID = load_texture(str.C_Str(), this->m_directory);
+        texture->m_type = typeName;
+        texture->m_path = str.C_Str();
         textures.push_back(texture);
         textures_loaded.push_back(texture);
       }

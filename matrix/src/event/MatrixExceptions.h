@@ -34,7 +34,8 @@ public:
 
   virtual const char *what() const throw ()
   {
-    return std::string(("MX: Exception: Entity not found: ") + m_msg).c_str();
+    std::string temp_msg = "MX: Exception: Entity not found: " + m_msg;
+    return m_msg.c_str();
   }
 };
 

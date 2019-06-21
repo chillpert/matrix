@@ -39,18 +39,18 @@ namespace MX
     MX_API void process_node(aiNode *node, const aiScene *scene);
     MX_API MX_MESH process_mesh(aiMesh *mesh, const aiScene *scene);
 
-    MX_API std::vector<Assimp_Texture> load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName);
+    MX_API std::vector<std::shared_ptr<Texture>> load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName);
 
   public:
     // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-    std::vector<Assimp_Texture> textures_loaded;
+    std::vector<std::shared_ptr<Texture>> textures_loaded;
     std::vector<MX_MESH> m_meshes;
 
     std::string m_directory;
     std::string m_full_path;
     std::string m_name;
-    bool m_initialized;
     bool m_gamma_correction;
+    bool m_initialized = 0;
   };
 }
 

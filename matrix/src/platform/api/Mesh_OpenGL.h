@@ -8,7 +8,7 @@ namespace MX
   class Mesh_OpenGL : public Mesh
   {
   public:
-    MX_API Mesh_OpenGL(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Assimp_Texture> textures);
+    MX_API Mesh_OpenGL(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<Texture>> textures);
     MX_API ~Mesh_OpenGL() = default;
 
     MX_API Mesh_OpenGL(const Mesh_OpenGL&) = default;

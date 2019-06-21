@@ -11,14 +11,13 @@
   #include <boost/filesystem.hpp>
   #include <boost/range/iterator_range.hpp>
 #elif MX_PLATFORM_WINDOWS_X64
-  // files are stored in externals for better portabilitys
   #include <boost/filesystem.hpp>
   #include <boost/range/iterator_range.hpp>
 #endif
 
 namespace MX
 {
-  void set_resource_files(const std::string &path_to_folder);
+  void set_resource_files(const std::string &path_to_folder, std::string recurs_path = "");
 
   World &World::get_default_world()
   {
@@ -33,35 +32,56 @@ namespace MX
 
   std::shared_ptr<Model> World::getModel(const std::string &name) const
   {
-    for (auto it : m_Models)
+    try
     {
-      if (it->m_name == name)
-        return it;
-    }
+      for (auto it : m_Models)
+      {
+        if (it->m_name == name)
+          return it;
+      }
 
-    throw mx_entity_not_found(name);
+      throw mx_entity_not_found(name);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
   }
 
   std::shared_ptr<Shader> World::getShader(const std::string &name) const
   {
-    for (auto it : m_Shaders)
+    try
     {
-      if (it->m_Name == name)
-        return it;
-    }
+      for (auto it : m_Shaders)
+      {
+        if (it->m_Name == name)
+          return it;
+      }
 
-    throw mx_entity_not_found(name);
+      throw mx_entity_not_found(name);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
   }
 
   std::shared_ptr<Texture> World::getTexture(const std::string &name) const
   {
-    for (auto it : m_Textures)
+    try
     {
-      if (it->getName() == name)
-        return it;
-    }
+      for (auto it : m_Textures)
+      {
+        if (it->m_Name == name)
+          return it;
+      }
 
-    throw mx_entity_not_found(name);
+      throw mx_entity_not_found(name);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
   }
 
   void World::initialize()
@@ -71,15 +91,6 @@ namespace MX
     set_resource_files(MX_TEXTURE_PATH);
 
     for (auto it : m_ExistingScenes)
-      it->initialize();
-
-    //for (auto it : m_Models)
-      //it->initialize();
-
-    for (auto it : m_Shaders)
-      it->initialize();
-
-    for (auto it : m_Textures)
       it->initialize();
   }
 
@@ -115,17 +126,17 @@ namespace MX
     }
   }
 
-  void set_resource_files(const std::string &path_to_folder)
+  void set_resource_files(const std::string &path_to_folder, std::string recurs_path)
   {
     bool model = 0;
     bool shader = 0;
     bool texture = 0;
 
-    if (path_to_folder == MX_MODEL_PATH)
+    if (path_to_folder.find(MX_MODEL_PATH) != std::string::npos)
       model = 1;
-    else if (path_to_folder == MX_SHADER_PATH)
+    else if (path_to_folder.find(MX_SHADER_PATH) != std::string::npos)
       shader = 1;
-    else if (path_to_folder == MX_TEXTURE_PATH)
+    else if (path_to_folder.find(MX_TEXTURE_PATH) != std::string::npos)
       texture = 1;
     else
     {
@@ -141,102 +152,112 @@ namespace MX
 
       for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
       {
-        std::string temp = itr->path().string();
-			#ifdef MX_PLATFORM_WINDOWS_X64
-        std::size_t found_slash = temp.find_last_of("\\");
-      #elif MX_PLATFORM_UNIX_X64
-        std::size_t found_slash = temp.find_last_of("/");
-      #endif
-        std::size_t found_point = temp.find_last_of(".");
+        if (boost::filesystem::is_directory(itr->path()))
+        {
+          std::string temp_path = itr->path().string();
+          recurs_path = temp_path.substr(temp_path.find_last_of('/') + 1);
+          set_resource_files(temp_path, recurs_path + '/');
+          recurs_path = "";
+        }
+        else
+        {
+          std::string temp = itr->path().string();
+        #ifdef MX_PLATFORM_WINDOWS_X64
+          std::size_t found_slash = temp.find_last_of("\\");
+        #elif MX_PLATFORM_UNIX_X64
+          std::size_t found_slash = temp.find_last_of("/");
+        #endif
+          std::size_t found_point = temp.find_last_of(".");
 
-        std::string temp_without_ending = temp.substr(found_slash + 1, found_point - found_slash - 1);
-        std::string temp_with_ending = temp.substr(found_slash + 1);
+          std::string temp_without_ending = recurs_path + temp.substr(found_slash + 1, found_point - found_slash - 1);
+          std::string temp_with_ending = recurs_path + temp.substr(found_slash + 1);
 
-        char *file_name = new char[temp_without_ending.size()  + 1];
-        std::copy(temp_without_ending.begin(), temp_without_ending.end(), file_name);
-        file_name[temp_without_ending.size()] = '\0';
+          char *file_name = new char[temp_without_ending.size() + 1];
+          std::copy(temp_without_ending.begin(), temp_without_ending.end(), file_name);
+          file_name[temp_without_ending.size()] = '\0';
 
-				char *file_name_with_ending = new char[temp_with_ending.size()  + 1];
-        std::copy(temp_with_ending.begin(), temp_with_ending.end(), file_name_with_ending);
-        file_name_with_ending[temp_with_ending.size()] = '\0';
+          char *file_name_with_ending = new char[temp_with_ending.size()  + 1];
+          std::copy(temp_with_ending.begin(), temp_with_ending.end(), file_name_with_ending);
+          file_name_with_ending[temp_with_ending.size()] = '\0';
 
-			/*#####################
-							MODELS
-			#####################*/
-      	if (model)
-      	{
-      	  bool model_file_exists_already = 0;
-				
-      	  for (const auto it : MX_WORLD.m_Models)
-      	  {
-      	    if (it->m_name == file_name)
-      	      model_file_exists_already = 1;
-      	  }
+        /*#####################
+                MODELS
+        #####################*/
+          if (model)
+          {
+            bool model_file_exists_already = 0;
+          
+            for (const auto it : MX_WORLD.m_Models)
+            {
+              if (it->m_name == file_name)
+                model_file_exists_already = 1;
+            }
 
-      	  if (!model_file_exists_already)
-      	  {
-      	    std::shared_ptr<Model> temp_model(new Model(file_name_with_ending));
-      	    MX_WORLD.m_Models.push_back(temp_model);
+            if (!model_file_exists_already && std::string(file_name_with_ending).find(".obj") != std::string::npos)
+            {
+              std::shared_ptr<Model> temp_model(new Model(file_name_with_ending));
+              MX_WORLD.m_Models.push_back(temp_model);
 
-          #ifdef MX_IMGUI_ACTIVE
-						all_models.push_back(file_name);
-					#endif 
-      	  }
-      	}
+            #ifdef MX_IMGUI_ACTIVE
+              all_models.push_back(file_name);
+            #endif
+            }
+          }
 
-			/*#####################
-							SHADER
-			#####################*/
-      	else if (shader)
-      	{
-      	  bool shader_file_exists_already = 0;
-				
-      	  for (const auto it : MX_WORLD.m_Shaders)
-      	  {
-      	    if (it->m_Name == file_name)
-      	      shader_file_exists_already = 1;
-      	  }
+        /*#####################
+                SHADER
+        #####################*/
+          else if (shader)
+          {
+            bool shader_file_exists_already = 0;
 
-      	  if (!shader_file_exists_already)
-      	  {
-      	    std::shared_ptr<Shader> temp_shader(new MX_SHADER(file_name));
-      	    MX_WORLD.m_Shaders.push_back(temp_shader);
-					#ifdef MX_IMGUI_ACTIVE
-      	    all_shaders.push_back(file_name); 
-      		#endif
-					}
-      	}
+            for (const auto it : MX_WORLD.m_Shaders)
+            {
+              if (it->m_Name == file_name)
+                shader_file_exists_already = 1;
+            }
 
-			/*#####################
-						TEXTURES
-			#####################*/
-      	else if (texture)
-      	{
-      	  bool texture_file_exists_already = 0;
+            if (!shader_file_exists_already)
+            {
+              std::shared_ptr<Shader> temp_shader(new MX_SHADER(file_name));
+              MX_WORLD.m_Shaders.push_back(temp_shader);
+            #ifdef MX_IMGUI_ACTIVE
+              all_shaders.push_back(file_name); 
+            #endif
+            }
+          }
 
-      	  for (auto it : MX_WORLD.m_Textures)
-      	  {
-      	    if (it->getName() == file_name)
-      	      texture_file_exists_already = 1;
-      	  }
+        /*#####################
+              TEXTURES
+        #####################*/
+          else if (texture)
+          {
+            bool texture_file_exists_already = 0;
 
-      	  if (!texture_file_exists_already)
-      	  {
-            std::shared_ptr<MX_TEXTURE> temp_texture(new MX_TEXTURE(file_name_with_ending));
-      	    MX_WORLD.m_Textures.push_back(temp_texture);
-					#ifdef MX_IMGUI_ACTIVE
-      	    all_diffuse_maps.push_back(file_name);
-      		#endif
-					}	
-      	}
-			}
-      
-			if (model)
-   			MX_INFO_LOG("MX: Model: " + std::to_string(MX_WORLD.m_Models.size()) + " files found");
-			else if (shader)
-				MX_INFO_LOG("MX: Shader: " + std::to_string(MX_WORLD.m_Shaders.size()) + " files found");
-			else if (texture)
-				MX_INFO_LOG("MX: Texture: " + std::to_string(MX_WORLD.m_Textures.size()) + " files found");
+            for (auto it : MX_WORLD.m_Textures)
+            {
+              if (it->m_Name == file_name && (std::string(file_name).find(".jpg") != std::string::npos || std::string(file_name).find(".png") != std::string::npos))
+                texture_file_exists_already = 1;
+            }
+
+            if (!texture_file_exists_already)
+            {
+              std::shared_ptr<MX_TEXTURE> temp_texture(new MX_TEXTURE(file_name_with_ending));
+              MX_WORLD.m_Textures.push_back(temp_texture);
+            #ifdef MX_IMGUI_ACTIVE
+              all_diffuse_maps.push_back(file_name);
+            #endif
+            }
+          }
+        }
+      }
+
+      if (model)
+        MX_INFO_LOG("MX: Model: " + std::to_string(MX_WORLD.m_Models.size()) + " files found");
+      else if (shader)
+        MX_INFO_LOG("MX: Shader: " + std::to_string(MX_WORLD.m_Shaders.size()) + " files found");
+      else if (texture)
+        MX_INFO_LOG("MX: Texture: " + std::to_string(MX_WORLD.m_Textures.size()) + " files found");
 		}
   	else
   	{

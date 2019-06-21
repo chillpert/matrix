@@ -47,7 +47,7 @@ namespace MX
       m_initialized = 1;
     }
     else
-      MX_FATAL("MX: Texture: OpenGL: Failed to load texture file");
+      MX_FATAL("MX: Texture: OpenGL: Failed to load texture file: " + m_Name);
 
     stbi_image_free(data);
   }

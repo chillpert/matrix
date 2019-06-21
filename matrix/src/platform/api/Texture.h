@@ -22,6 +22,7 @@ namespace MX
   class Texture
   {
   public:
+    MX_API Texture() = default;
     MX_API Texture(const std::string &name);
     MX_API virtual ~Texture() = default;
 
@@ -36,8 +37,10 @@ namespace MX
 
   public:
     STB_Texture m_Stb;
+
     std::string m_Name;
     std::string m_path;
+    std::string m_type;
 
     bool m_initialized = 0;
   };

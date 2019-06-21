@@ -4,53 +4,53 @@ void load_debug_scene()
 {
   using namespace MX;
 
-  MX_SCENE->push("NanoSuit", "nanosuit.obj", "Root");
-  std::shared_ptr<Node> nano_suit = MX_SCENEGRAPH.search("NanoSuit", MX_ROOT);
-  nano_suit->setTransform(SCALE, 0.2f, 0);
-  nano_suit->setTransform(Y, 0.5f, 1);
-  nano_suit->setShader(MX_GET_SHADER("blinn_phong"));
+  MX_SCENE->push("Characters", "Root");
+  {
+    MX_SCENE->push("Prophet", MX_GET_MODEL("nanosuit_model/nanosuit.obj"), MX_GET_SHADER("blinn_phong"), "Characters");
+    auto nano_suit = MX_SCENEGRAPH.search("Prophet", MX_ROOT);
+    nano_suit->setTransform(SCALE, 0.2f, 0);
+    nano_suit->setTransform(DOWN, 3.5f, 0);
+  }
 
-  MX_SCENE->push("Rock", "rock.obj", "Root");
-  std::shared_ptr<Node> rock = MX_SCENEGRAPH.search("Rock", MX_ROOT);
-  rock->setTransform(SCALE, 0.05f, 0);
-  rock->setTransform(BACKWARDS, 35.0f, 0);
-  rock->setTransform(LEFT, 0.5f, 0);
-  rock->setTransform(Y, 0.8f, 1);
-  rock->setTransform(X, 0.5f, 1);
-  rock->setShader(MX_GET_SHADER("phong"));
-  rock->setTexture(MX_GET_TEXTURE("rock.jpg"));
+  MX_SCENE->push("Environment");
+  {
+    MX_SCENE->push("Rock 1", MX_GET_MODEL("rock.obj"), MX_GET_SHADER("phong"), MX_GET_TEXTURE("rock.jpg"), "Environment");
+    auto rock_1 = MX_SCENEGRAPH.search("Rock 1", MX_ROOT);
+    rock_1->setTransform(SCALE, 0.05f, 0);
+    rock_1->setTransform(BACKWARDS, 35.0f, 0);
+    rock_1->setTransform(LEFT, 0.5f, 0);
+    rock_1->setTransform(Y, 0.8f, 1);
+    rock_1->setTransform(X, 0.5f, 1);
 
-  MX_SCENE->push("Rock_2", "rock.obj", "Root");
-  std::shared_ptr<Node> rock_2 = MX_SCENEGRAPH.search("Rock_2", MX_ROOT);
-  rock_2->setTransform(SCALE, 0.15f, 0);
-  rock_2->setTransform(FORWARDS, 35.0f, 0);
-  rock_2->setTransform(LEFT, 0.5f, 0);
-  rock_2->setTransform(Z, 0.8f, 1);
-  rock_2->setTransform(Y, 0.5f, 1);
-  rock_2->setShader(MX_GET_SHADER("phong"));
-  rock_2->setTexture(MX_GET_TEXTURE("rock.jpg"));
+    MX_SCENE->push("Rock 2", MX_GET_MODEL("rock.obj"), MX_GET_SHADER("phong"), MX_GET_TEXTURE("rock.jpg"), "Environment");
+    auto rock_2 = MX_SCENEGRAPH.search("Rock 2", MX_ROOT);
+    rock_2->setTransform(SCALE, 0.15f, 0);
+    rock_2->setTransform(FORWARDS, 35.0f, 0);
+    rock_2->setTransform(LEFT, 0.5f, 0);
+    rock_2->setTransform(Z, 0.8f, 1);
+    rock_2->setTransform(Y, 0.5f, 1);
 
-  MX_SCENE->push("Rock_3", "rock.obj", "NanoSuit");
-  std::shared_ptr<Node> rock_3 = MX_SCENEGRAPH.search("Rock_3", MX_ROOT);
-  rock_3->setTransform(SCALE, 0.55f, 0);
-  rock_3->setTransform(LEFT, 4.5f, 0);
-  rock_3->setTransform(Z, 0.8f, 1);
-  rock_3->setShader(MX_GET_SHADER("phong"));
-  rock_3->setTexture(MX_GET_TEXTURE("rock.jpg"));
-  
-  MX_SCENE->push("Jupiter", "sphere.obj", "Root");
-  std::shared_ptr<Node> jupiter = MX_SCENEGRAPH.search("Jupiter", MX_ROOT);
-  jupiter->setTransform(Y, 0.3f, 1);
-  jupiter->setShader(MX_GET_SHADER("blinn_phong"));
-  jupiter->setTexture(MX_GET_TEXTURE("2k_jupiter.jpg"));
+    MX_SCENE->push("Rock 3", MX_GET_MODEL("rock.obj"), MX_GET_SHADER("phong"), MX_GET_TEXTURE("rock.jpg"), "Environment");
+    auto rock_3 = MX_SCENEGRAPH.search("Rock 3", MX_ROOT);
+    rock_3->setTransform(SCALE, 0.55f, 0);
+    rock_3->setTransform(LEFT, 4.5f, 0);
+    rock_3->setTransform(Z, 0.8f, 1);
 
-  MX_SCENE->push("Saturn", "sphere.obj", "Jupiter");
-  std::shared_ptr<Node> saturn = MX_SCENEGRAPH.search("Saturn", MX_ROOT);
-  saturn->setTransform(SCALE, 0.4f, 0);
-  saturn->setTransform(Y, 0.8f, 1);
-  saturn->setTransform(RIGHT, 5.0f, 0);
-  saturn->setShader(MX_GET_SHADER("blinn_phong"));
-  saturn->setTexture(MX_GET_TEXTURE("2k_saturn.jpg"));
+    MX_SCENE->push("Planets", "Environment");
+    {
+      MX_SCENE->push("Jupiter", MX_GET_MODEL("sphere.obj"), MX_GET_SHADER("blinn_phong"), MX_GET_TEXTURE("2k_jupiter.jpg"), "Planets");
+      auto jupiter = MX_SCENEGRAPH.search("Jupiter", MX_ROOT);
+      jupiter->setTransform(Y, 0.3f, 1);
+
+      {
+        MX_SCENE->push("Saturn", MX_GET_MODEL("sphere.obj"), MX_GET_SHADER("blinn_phong"), MX_GET_TEXTURE("2k_saturn.jpg"), "Jupiter");
+        auto saturn = MX_SCENEGRAPH.search("Saturn", MX_ROOT);
+        saturn->setTransform(SCALE, 0.4f, 0);
+        saturn->setTransform(Y, 0.8f, 1);
+        saturn->setTransform(RIGHT, 5.0f, 0);
+      }
+    }
+  }
 }
 
 void initialize()

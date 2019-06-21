@@ -298,6 +298,7 @@ namespace MX
       ImGui::SameLine();
 
       if (current_node->m_Texture != nullptr)
+      {
         if (ImGui::ImageButton(my_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / my_tex_w, 16.0f / my_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
         {
           file_inspector_id = my_tex_id;
@@ -306,6 +307,7 @@ namespace MX
           file_inspector_name = current_node->m_Texture->m_Name;
           file_inspector_enabled = 1;
         }
+      }
 
       ImGui::Spacing();
       ImGui::BulletText("Normal Map");

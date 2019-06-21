@@ -54,37 +54,40 @@ namespace MX
     node_to_attach_to->addChild(std::shared_ptr<Node>(node));
   }
 
-  bool Scene::push(const std::string &name)
+  bool Scene::push(const std::string &name, const std::string &node_to_attach_to)
   {
-    if (!object_already_exists(name))
-    {
-      std::shared_ptr<Node> node = std::shared_ptr<Node>(new Node(name));
-      node->setShader(MX_GET_SHADER("static_color"));
-      m_Sg.m_Root->addChild(node);
-      m_ExistingObjects.push_back(name);
-      return 1;
-    }
-    
-    return 0;
+    push(name, nullptr, nullptr, nullptr, node_to_attach_to);
   }
 
-  // adds object to scene graph
-  bool Scene::push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to)
+  bool Scene::push(const std::string &name, std::shared_ptr<Model> model, const std::string &node_to_attach_to)
   {
-    MX_INFO_LOG("MX: Scene: " + m_Name + " Push: " + object_name);
+    push(name, model, nullptr, nullptr, node_to_attach_to);
+  }
 
-    if (!object_already_exists(object_name))
-      m_ExistingObjects.push_back(object_name);
+  bool Scene::push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const std::string &node_to_attach_to)
+  {
+    push(name, model, shader, nullptr, node_to_attach_to);
+  }
+
+  bool Scene::push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, const std::string &node_to_attach_to)
+  {
+    MX_INFO_LOG("MX: Scene: " + m_Name + " Push: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
     else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push: " + name + ": Invalid name - object already exists");
       return 0;
+    }
 
+    std::shared_ptr<Node> temp(new Node(name));
+    temp->setModel(model);
+    temp->setShader(shader);
+    temp->setTexture(texture);
 
-    std::shared_ptr<Node> temp(new Node(object_name));
-    temp->setShader(MX_GET_SHADER("blinn_phong"));
-    temp->setModel(MX_GET_MODEL(file_name));
-
-    m_Sg.search(node_to_attach_to, m_Sg.m_Root)->addChild(temp);
-    MX_SUCCESS_LOG("MX: Scene: Push: " + object_name);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+    MX_SUCCESS_LOG("MX: Scene: "  + m_Name + " Push: " + name);
     return 1;
   }
 

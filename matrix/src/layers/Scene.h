@@ -3,6 +3,9 @@
 
 #include <Camera.h>
 #include <SceneGraph.h>
+#include <Shader.h>
+#include <Model.h>
+#include <Texture.h>
 
 namespace MX
 {
@@ -22,10 +25,14 @@ namespace MX
 
     // return 1 if name is unique, searches the entire scene's scenegraph
     MX_API bool addItemEntry(const std::string &name);
-    
-    MX_API bool push(const std::string &name);
-    MX_API bool push(const std::string &object_name, const std::string &file_name, const std::string &node_to_attach_to);
+
     MX_API bool push(std::shared_ptr<Node> node, std::shared_ptr<Node> node_to_attach_to);
+
+    MX_API bool push(const std::string &name, const std::string &node_to_attach_to = "Root");
+    MX_API bool push(const std::string &name, std::shared_ptr<Model> model, const std::string &node_to_attach_to);
+    MX_API bool push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const std::string &node_to_attach_to);
+    MX_API bool push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, const std::string &node_to_attach_to);
+
     MX_API bool pop(const std::string &name);
   
   private:
