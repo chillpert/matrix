@@ -4,6 +4,11 @@ void load_debug_scene()
 {
   using namespace MX;
 
+  MX_SCENE->push("Light");
+  {
+    MX_SCENE->push("Lamp 1", "Light");
+  }
+
   MX_SCENE->push("Characters", "Root");
   {
     MX_SCENE->push("Prophet", MX_GET_MODEL("nanosuit_model/nanosuit.obj"), MX_GET_SHADER("blinn_phong"), "Characters");

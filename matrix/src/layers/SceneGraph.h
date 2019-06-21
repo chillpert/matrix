@@ -2,6 +2,9 @@
 #define SCENEGRAPH_HPP
 
 #include <Node.h>
+#include <ContainerNode.h>
+#include <LightNode.h>
+#include <ObjectNode.h>
 
 namespace MX
 {
@@ -28,6 +31,10 @@ namespace MX
 
   public:
     std::shared_ptr<Node> m_Root;
+
+    std::vector<std::shared_ptr<ContainerNode>> m_container_nodes;
+    std::vector<std::shared_ptr<ObjectNode>> m_object_nodes;
+    std::vector<std::shared_ptr<LightNode>> m_light_nodes;
     bool is_paused = 0;
   };
 }

@@ -78,9 +78,13 @@ namespace MX
       it.m_Shader->setfMat4("view", MX_WORLD.m_ActiveScene->m_Cam.getViewMatrix());
       it.m_Shader->setfMat4("projection", MX_WORLD.m_ActiveScene->m_Cam.getProjectionMatrix());
 
-      it.m_Shader->setfVec3("lightPosition", glm::fvec3(5.0f, -5.0f, 1.0f));
+      auto light_node = search("Lamp 1", m_Root);
+      glm::mat4 t = light_node->getWorldTransform();
+      glm::vec3 temp = glm::vec3(t[3]);
+
+      it.m_Shader->setfVec3("lightPosition", temp);
       it.m_Shader->setfVec3("lightColor", glm::fvec3(1.0f, 1.0f, 1.0f));
-      it.m_Shader->setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());    
+      it.m_Shader->setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());
       it.m_Shader->setFloat("ambientStrength", 0.08f);
     }
 
