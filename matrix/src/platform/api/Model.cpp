@@ -144,10 +144,10 @@ namespace MX
       }
       if (!skip)
       {
-        std::shared_ptr<MX_TEXTURE> texture(std::make_shared<MX_TEXTURE>());
-        texture->m_ID = load_texture(str.C_Str(), this->m_directory);
+        std::shared_ptr<MX_TEXTURE> texture(std::make_shared<MX_TEXTURE>(str.C_Str(), m_directory + '/'));
         texture->m_type = typeName;
-        texture->m_path = str.C_Str();
+        texture->initialize();
+
         textures.push_back(texture);
         textures_loaded.push_back(texture);
       }

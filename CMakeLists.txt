@@ -23,6 +23,7 @@ option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)
 
 option(USE_IMGUI "use ImGui" ON)
+option(GUI_LOG_ALL "log all events in gui logger" OFF)
 option(LOG_WINDOW_EVENTS "log window events" OFF)
 #####################################
 

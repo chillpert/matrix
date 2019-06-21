@@ -23,7 +23,7 @@ namespace MX
   {
   public:
     MX_API Texture() = default;
-    MX_API Texture(const std::string &name);
+    MX_API Texture(const std::string &name, const std::string &path = MX_TEXTURE_PATH);
     MX_API virtual ~Texture() = default;
 
     MX_API Texture(const Texture&) = default;
@@ -32,7 +32,6 @@ namespace MX
     MX_API virtual void initialize() = 0;
     MX_API virtual void use() const = 0;
 
-    MX_API const std::string &getName() const { return m_Name; }
     MX_API virtual u_int64_t getID() = 0;
 
   public:

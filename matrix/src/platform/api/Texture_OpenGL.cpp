@@ -3,8 +3,8 @@
 
 namespace MX
 {
-  Texture_OpenGL::Texture_OpenGL(const std::string &name, bool instant_init)
-    : Texture(name)
+  Texture_OpenGL::Texture_OpenGL(const std::string &name, const std::string &path, bool instant_init)
+    : Texture(name, path)
   {
     if (instant_init)
       initialize();

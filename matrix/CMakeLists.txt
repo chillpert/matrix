@@ -186,6 +186,10 @@ include_directories(${PROJECT_SOURCE_DIR}/external/glm)
 include_directories(${PROJECT_SOURCE_DIR}/external/imgui/examples)
 include_directories(${PROJECT_SOURCE_DIR}/external/imgui)
 
+if(GUI_LOG_ALL)
+  add_compile_definitions(MX_GUI_LOG_ALL)
+endif()
+
 if(USE_IMGUI)
   message("MX: Using ImGui")
   add_compile_definitions(MX_IMGUI_ACTIVE)
