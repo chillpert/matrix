@@ -26,21 +26,22 @@ namespace MX
   };
 
   // GUI_ImGui_Editor.cpp
-  MX_API void renderEditorWindow();
-  MX_API void renderFileInspectorWindow();
+  void renderEditorWindow();
+  void renderFileInspectorWindow();
 
   // GUI_ImGui_Hierarchy.cpp
-  MX_API void renderHierarchyWindow();
+  void renderHierarchyWindow();
 
   // GUI_ImGui_MenuBar.cpp
-  MX_API void renderMenuBar();
+  void renderMenuBar();
 
-  // GUI_ImGui.cpp
-  MX_API void renderViewport();
-  MX_API void renderDockSpace();
+  // GUI_ImGui_Viewport.cpp
+  void renderViewport();
+  void renderDockSpace();
+  void renderPerformanceMonitor();
 
   // GUI_ImGui_Logger.cpp
-  MX_API void renderLoggerWindow();
+  void renderLoggerWindow();
 }
 
 #endif // GUI_IMGUI_H

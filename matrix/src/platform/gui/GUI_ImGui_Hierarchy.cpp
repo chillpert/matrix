@@ -63,7 +63,7 @@ namespace MX
   {
   #ifdef MX_IMGUI_ACTIVE
     if (it.m_Name != "Root")
-      ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+      ImGui::Indent(20.0f);
 
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     

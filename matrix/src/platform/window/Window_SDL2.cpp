@@ -30,6 +30,7 @@ namespace MX
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
       SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+      SDL_SetHint(SDL_HINT_RENDER_VSYNC, "1");
 
       m_Window = SDL_CreateWindow(m_Props.m_Title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
                                   m_Props.m_Width, m_Props.m_Height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -45,6 +46,7 @@ namespace MX
       {
         MX_SUCCESS("MX: Window: SDL2");
 
+        m_surface = SDL_GetWindowSurface(m_Window);
         m_Context = SDL_GL_CreateContext(m_Window);
 
         if (m_Context == NULL)
@@ -83,7 +85,13 @@ namespace MX
   void Window_SDL2::close()
   {
     SDL_GL_DeleteContext(m_Context);
+
+    SDL_FreeSurface(m_surface);
+    m_surface = nullptr;
+
     SDL_DestroyWindow(m_Window);
+    m_Window = nullptr;
+
     SDL_Quit();
   }
 

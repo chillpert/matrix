@@ -27,7 +27,8 @@ namespace MX
     MX_API Window_SDL2 *getWindow() override { return this; }
   
     SDL_GLContext m_Context;
-    SDL_Window *m_Window = NULL;
+    SDL_Window *m_Window = nullptr;
+    SDL_Surface *m_surface = nullptr;
   };
 }
 
