@@ -16,14 +16,22 @@
   #define MX_LOG_INFO    "INFO   [" + t + "]: " + message + "\n"
   #define MX_LOG_SUCCESS "SUCCESS[" + t + "]: " + message + "\n"
 
-  #define MX_WRITE_TO_GUI(x, y) writeToGUI(x, y)
+  #ifdef MX_GUI_LOG_ALL
+    #define MX_WRITE_TO_GUI(x, y) writeToGUI(x, y)
+  #else
+    #define MX_WRITE_TO_GUI(x, y)
+  #endif
 
   #define MX_GUI_FATAL   "[" + t + "]: " + message + "\n"
   #define MX_GUI_WARN    "[" + t + "]: " + message + "\n"
   #define MX_GUI_INFO    "[" + t + "]: " + message + "\n"
   #define MX_GUI_SUCCESS "[" + t + "]: " + message + "\n"
 
-  #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage
+  #ifdef MX_PLATFORM_UNIX_X64
+    #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage.substr(12)
+  #elif MX_PLATFORM_WINDOWS_X64
+    #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage.substr(6)
+  #endif
 
   #ifdef MX_PLATFORM_WINDOWS_X64
     #define MX_CONSOLE_HANDLE HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -34,10 +42,10 @@
     #define MX_PRINT_RESET    SetConsoleTextAttribute(hConsole, 7);
   #elif MX_PLATFORM_UNIX_X64
     #define MX_CONSOLE_HANDLE
-    #define MX_PRINT_FATAL    std::string finalMessage = "\033[31mFATAL  [" + t + "]: " + message + "\033[0m\n";
-    #define MX_PRINT_WARN     std::string finalMessage = "\033[33mWARNING[" + t + "]: " + message + "\033[0m\n";
-    #define MX_PRINT_INFO     std::string finalMessage = "\033[90mINFO   [" + t + "]: " + message + "\033[0m\n";
-    #define MX_PRINT_SUCCESS  std::string finalMessage = "\033[32mSUCCESS[" + t + "]: " + message + "\033[0m\n";
+    #define MX_PRINT_FATAL    std::string finalMessage = "\033[31mFATAL  \033[31m[" + t + "]: " + message + "\033[0m\n";
+    #define MX_PRINT_WARN     std::string finalMessage = "\033[33mWARNING\033[33m[" + t + "]: " + message + "\033[0m\n";
+    #define MX_PRINT_INFO     std::string finalMessage = "\033[90mINFO   \033[90m[" + t + "]: " + message + "\033[0m\n";
+    #define MX_PRINT_SUCCESS  std::string finalMessage = "\033[32mSUCCESS\033[32m[" + t + "]: " + message + "\033[0m\n";
     #define MX_PRINT_RESET
   #endif
 #else
