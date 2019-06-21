@@ -39,12 +39,12 @@ namespace MX
 
     static void p_Fatal(const std::string &message);
     static void p_Warn(const std::string &message);
-    static void p_Info(const std::string &message);  
+    static void p_Info(const std::string &message);
     static void p_Success(const std::string &message);
 
     static void p_Fatal_log(const std::string &message);
     static void p_Warn_log(const std::string &message);
-    static void p_Info_log(const std::string &message);  
+    static void p_Info_log(const std::string &message);
     static void p_Success_log(const std::string &message);
   };
 }

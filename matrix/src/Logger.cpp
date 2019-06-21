@@ -165,7 +165,7 @@ namespace MX
     MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_FATAL);
-    MX_WRITE_TO_GUI(MX_GUI_FATAL, mx_fatal);
+    writeToGUI(MX_GUI_FATAL, mx_fatal);
   }
 
   void Logger::p_Warn(const std::string &message)
@@ -175,7 +175,7 @@ namespace MX
     MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_WARN);
-    MX_WRITE_TO_GUI(MX_GUI_WARN, mx_warn);
+    writeToGUI(MX_GUI_WARN, mx_warn);
   }
 
   void Logger::p_Info(const std::string &message)
@@ -185,7 +185,7 @@ namespace MX
     MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_INFO);
-    MX_WRITE_TO_GUI(MX_GUI_INFO, mx_info);
+    writeToGUI(MX_GUI_INFO, mx_info);
   }
 
   void Logger::p_Success(const std::string &message)
@@ -195,7 +195,7 @@ namespace MX
     MX_PRINT_TO_CONSOLE(finalMessage);
     MX_PRINT_RESET;
     writeToFile(MX_LOG_SUCCESS);
-    MX_WRITE_TO_GUI(MX_GUI_SUCCESS, mx_success);
+    writeToGUI(MX_GUI_SUCCESS, mx_success);
   }
 
   void Logger::p_Fatal_log(const std::string &message)
