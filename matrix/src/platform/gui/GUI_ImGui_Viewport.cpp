@@ -164,11 +164,15 @@ namespace MX
       if (!p_open_performance_monitor)
         performance_monitor_enabled = 0;
 
+      static bool is_running = 1;
+      static bool is_recording = 0;
+
       static float fps_avg;
       static int max_fps = 0;
       static std::vector<float> frames;
 
-      frames.push_back(static_cast<float>(current_frame));
+      if (is_running)
+        frames.push_back(static_cast<float>(current_frame));
 
       if (current_frame > max_fps)
         max_fps = current_frame;
@@ -180,8 +184,42 @@ namespace MX
 
       std::string fps_avg_message = "avg " + std::to_string(fps_avg);
 
-      ImGui::PlotLines("Frame Time", frames.data(), frames.size(), 0, fps_avg_message.c_str(), 0.0f, static_cast<int>(max_fps) * 1.5f, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 37.0f)); // 37.0f so that no scroll bar will appear
+      ImGui::PlotLines("Frame Time", frames.data(), frames.size(), 0, fps_avg_message.c_str(), 0.0f, static_cast<int>(max_fps) * 2.0f, ImVec2(ImGui::GetWindowWidth(), ImGui::GetWindowHeight() - 65.0f)); // 37.0f so that no scroll bar will appear
 
+      if (ImGui::BeginMenuBar())
+      {
+        if (ImGui::MenuItem("Reset", "", true, is_running && !is_recording))
+          frames.clear();
+
+        if (is_running)
+        {
+          if (ImGui::MenuItem("Pause", "", true, !is_recording))
+            is_running = 0;
+        }
+        else
+        {
+          if (ImGui::MenuItem("Continue", "", true, !is_recording))
+            is_running = 1;
+        }
+
+        // write to performance_report.txt
+        if (is_recording)
+        {
+          if (ImGui::MenuItem("Stop", "", true, is_running))
+            is_recording = 0;
+        }
+        else
+        {
+          if (ImGui::MenuItem("Record", "", true, is_running))
+            is_recording = 1;
+        }
+        
+        
+
+        ImGui::EndMenuBar();
+      }
+      
+      
       if (frames.size() > 20000)
         frames.clear();
     }
