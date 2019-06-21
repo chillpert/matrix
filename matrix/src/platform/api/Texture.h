@@ -33,6 +33,7 @@ namespace MX
     MX_API virtual void use() const = 0;
 
     MX_API virtual u_int64_t getID() = 0;
+    MX_API virtual Texture *get() { return this; }
 
   public:
     STB_Texture m_Stb;

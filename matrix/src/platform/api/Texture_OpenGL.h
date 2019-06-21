@@ -19,6 +19,7 @@ namespace MX
     MX_API void use() const override;
 
     MX_API u_int64_t getID() { return static_cast<u_int64_t>(m_ID); }
+    MX_API Texture_OpenGL *get() { return this; }
 
   public:
     GLuint m_ID;
