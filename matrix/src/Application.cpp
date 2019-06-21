@@ -8,6 +8,7 @@ namespace MX
 
     m_API = std::make_unique<MX_API_TYPE>();
     m_GUI = std::make_unique<MX_GUI_TYPE>();
+
     m_Window =  std::make_unique<Window_SDL2>();
 
     m_World = World::get_default_world();

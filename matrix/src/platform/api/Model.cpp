@@ -44,13 +44,13 @@ namespace MX
     }
   }
 
-  void Model::render(std::shared_ptr<MX_SHADER> shader)
+  void Model::render(std::shared_ptr<Shader> shader)
   {
     for(unsigned int i = 0; i < m_meshes.size(); i++)
-      m_meshes[i].render_mesh(shader);
+      m_meshes[i]->render_mesh(shader);
   }
 
-  MX_MESH Model::process_mesh(aiMesh *mesh, const aiScene *scene)
+  std::shared_ptr<Mesh> Model::process_mesh(aiMesh *mesh, const aiScene *scene)
   {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -120,8 +120,8 @@ namespace MX
 
     std::vector<std::shared_ptr<Texture>> heightMaps = load_material_texture(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-    
-    return MX_MESH(vertices, indices, textures);
+
+    return std::static_pointer_cast<Mesh>(std::make_shared<MX_MESH>(vertices, indices, textures));
   }
 
   std::vector<std::shared_ptr<Texture>> Model::load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName)

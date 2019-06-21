@@ -15,7 +15,7 @@ namespace MX
     MX_API Mesh_OpenGL &operator=(const Mesh_OpenGL&) = default;
  
     MX_API void initialize() override;
-    MX_API void render_mesh(std::shared_ptr<MX_SHADER> shader) override;
+    MX_API void render_mesh(std::shared_ptr<Shader> shader) override;
   };
 }
 

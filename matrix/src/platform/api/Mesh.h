@@ -19,13 +19,6 @@ namespace MX
     glm::vec3 bitangent;
   };
 
-  struct Assimp_Texture
-  {
-    unsigned int id;
-    std::string type;
-    std::string path;
-  };
-
   class Mesh
   {
   public:
@@ -36,7 +29,7 @@ namespace MX
     MX_API Mesh &operator=(const Mesh&) = default;
 
     MX_API virtual void initialize() = 0;
-    MX_API virtual void render_mesh(std::shared_ptr<MX_SHADER> shader) = 0;
+    MX_API virtual void render_mesh(std::shared_ptr<Shader> shader) = 0;
 
   protected:
     std::vector<Vertex> m_vertices;

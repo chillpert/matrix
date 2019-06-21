@@ -33,18 +33,18 @@ namespace MX
     MX_API Model &operator=(const Model&) = default;
 
     MX_API void initialize();
-    MX_API void render(std::shared_ptr<MX_SHADER> shader);
+    MX_API void render(std::shared_ptr<Shader> shader);
 
   private:
     MX_API void process_node(aiNode *node, const aiScene *scene);
-    MX_API MX_MESH process_mesh(aiMesh *mesh, const aiScene *scene);
+    MX_API std::shared_ptr<Mesh> process_mesh(aiMesh *mesh, const aiScene *scene);
 
     MX_API std::vector<std::shared_ptr<Texture>> load_material_texture(aiMaterial *mat, aiTextureType type, std::string typeName);
 
   public:
     // stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
     std::vector<std::shared_ptr<Texture>> textures_loaded;
-    std::vector<MX_MESH> m_meshes;
+    std::vector<std::shared_ptr<Mesh>> m_meshes;
 
     std::string m_directory;
     std::string m_full_path;

@@ -40,7 +40,7 @@ namespace MX
     glBindVertexArray(0);
   }
 
-  void Mesh_OpenGL::render_mesh(std::shared_ptr<MX_SHADER> shader)
+  void Mesh_OpenGL::render_mesh(std::shared_ptr<Shader> shader)
   {
     u_int64_t diffuse_nr = 1;
     u_int64_t specular_nr = 1;
@@ -51,10 +51,11 @@ namespace MX
     {
       glActiveTexture(GL_TEXTURE0 + i);
 
-      std::shared_ptr<MX_TEXTURE> temp = std::static_pointer_cast<MX_TEXTURE>(m_textures.at(i));
+      std::shared_ptr<MX_TEXTURE> temp_texture = std::static_pointer_cast<MX_TEXTURE>(m_textures.at(i));
+      std::shared_ptr<MX_SHADER> temp_shader = std::static_pointer_cast<MX_SHADER>(shader);
 
       std::string number;
-      std::string name = temp->m_type;
+      std::string name = temp_texture->m_type;
 
       if(name == "texture_diffuse")
         number = std::to_string(diffuse_nr++);
@@ -65,8 +66,8 @@ namespace MX
       else if(name == "texture_height")
         number = std::to_string(height_nr++);
 
-      glUniform1i(glGetUniformLocation(shader->m_ID, (name + number).c_str()), i);
-      glBindTexture(GL_TEXTURE_2D, temp->m_ID);
+      glUniform1i(glGetUniformLocation(temp_shader->m_ID, (name + number).c_str()), i);
+      glBindTexture(GL_TEXTURE_2D, temp_texture->m_ID);
     }
 
     glBindVertexArray(m_vao);
