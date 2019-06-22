@@ -62,7 +62,7 @@ namespace MX
   static void draw_scene_graph_menu(Node &it)
   {
   #ifdef MX_IMGUI_ACTIVE
-    if (it.m_Name != "Root")
+    if (it.m_Name != default_root_name)
       ImGui::Indent(20.0f);
 
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
@@ -78,7 +78,7 @@ namespace MX
       }
     }
 
-    if (it.m_Name != "Root")
+    if (it.m_Name != default_root_name)
       ImGui::Unindent();
   #endif
   }

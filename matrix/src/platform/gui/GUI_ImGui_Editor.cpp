@@ -32,6 +32,7 @@ namespace MX
   static int item_diffuse_map = 0;
   static int item_normal_map = 0;
   static int item_bump_map = 0;
+  static int item_height_map = 0;
   static int item_parent = 0;
 
   // pop_flags
@@ -151,7 +152,7 @@ namespace MX
 
     if (ImGui::Button("spawn##object", ImVec2(60.0f, 20.0f)))
     {
-      if (current_scene->push(std::string(object_name)))
+      if (current_scene->push_object(std::string(object_name), default_root_name))
       {
         current_node = current_scenegraph->search(object_name, current_root);
         needs_refresh = 1;
@@ -168,18 +169,6 @@ namespace MX
 
       if (current_node != current_root)
       {
-        if (current_node->m_Model != nullptr)
-        {
-          for (u_int64_t i = 0; i < all_models.size(); ++i)
-          {
-            std::string rhs = all_models[i] + std::string(".obj");
-            if (current_node->m_Model->m_name == rhs)
-              item_models = i;
-          }
-        }
-        else
-          item_models = -1;
-
         if (current_node->m_Shader != nullptr)
         {
           for (u_int64_t i = 0; i < all_shaders.size(); ++i)
@@ -191,41 +180,70 @@ namespace MX
         else
           item_shaders = -1;
 
-        if (current_node->m_Texture != nullptr)
+        if (dynamic_cast<ObjectNode*>(current_node.get()))
         {
-          for (u_int64_t i = 0; i < all_diffuse_maps.size(); ++i)
-          {
-            std::string rhs = all_diffuse_maps[i] + std::string(".jpg");
-            if (current_node->m_Texture->m_Name == rhs)
-              item_diffuse_map = i;
-          }
-        }
-        else
-          item_diffuse_map = -1;
+          auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
 
-        if (current_node->m_Texture != nullptr)
-        {
-        for (u_int64_t i = 0; i < all_normal_maps.size(); ++i)
+          if (object_node_ptr->m_Model != nullptr)
           {
-            std::string rhs = all_normal_maps[i] + std::string(".jpg");
-            if (current_node->m_Texture->m_Name == rhs)
-              item_diffuse_map = i;
+            for (u_int64_t i = 0; i < all_models.size(); ++i)
+            {
+              std::string rhs = all_models[i] + std::string(".obj");
+              if (object_node_ptr->m_Model->m_name == rhs)
+                item_models = i;
+            }
           }
-        }
-        else
-          item_normal_map = -1;
+          else
+            item_models = -1;
 
-        if (current_node->m_Shader != nullptr)
-        {
-          for (u_int64_t i = 0; i < all_bump_maps.size(); ++i)
+          if (object_node_ptr->m_textures != nullptr)
           {
-            std::string rhs = all_bump_maps[i] + std::string(".jpg");
-            if (current_node->m_Texture->m_Name == rhs)
-              item_bump_map = i;
+            for (u_int64_t i = 0; i < all_diffuse_maps.size(); ++i)
+            {
+              std::string rhs = all_diffuse_maps[i] + std::string(".jpg");
+              if (object_node_ptr->m_textures->diffuse->m_Name == rhs)
+                item_diffuse_map = i;
+            }
           }
+          else
+            item_diffuse_map = -1;
+
+          if (object_node_ptr->m_textures != nullptr)
+          {
+          for (u_int64_t i = 0; i < all_normal_maps.size(); ++i)
+            {
+              std::string rhs = all_normal_maps[i] + std::string(".jpg");
+              if (object_node_ptr->m_textures->normal->m_Name == rhs)
+                item_diffuse_map = i;
+            }
+          }
+          else
+            item_normal_map = -1;
+
+          if (object_node_ptr->m_Shader != nullptr)
+          {
+            for (u_int64_t i = 0; i < all_bump_maps.size(); ++i)
+            {
+              std::string rhs = all_bump_maps[i] + std::string(".jpg");
+              if (object_node_ptr->m_textures->bump->m_Name == rhs)
+                item_bump_map = i;
+            }
+          }
+          else
+            item_bump_map = -1;
+
+          if (object_node_ptr->m_Shader != nullptr)
+          {
+            for (u_int64_t i = 0; i < all_bump_maps.size(); ++i)
+            {
+              std::string rhs = all_bump_maps[i] + std::string(".jpg");
+              if (object_node_ptr->m_textures->height->m_Name == rhs)
+                item_height_map = i;
+            }
+          }
+          else
+            item_bump_map = -1;
         }
-        else
-          item_bump_map = -1;
 
         for (u_int64_t i = 0; i < all_objects.size(); ++i)
         {
@@ -253,16 +271,22 @@ namespace MX
       static int item_prev_diffuse_map = item_diffuse_map;
       static int item_prev_normal_map = item_normal_map;
       static int item_prev_bump_map = item_bump_map;
+      static int item_prev_height_map = item_height_map;
 
-      static ImTextureID my_tex_id;
-      static float my_tex_w;
-      static float my_tex_h;
+      static ImTextureID diffuse_tex_id;
+      static float diffuse_tex_w;
+      static float diffuse_tex_h;
 
-      if (current_node->m_Texture != nullptr)
+      if (dynamic_cast<ObjectNode*>(current_node.get()))
       {
-        my_tex_id = (void*)current_node->m_Texture->getID();
-        my_tex_w = static_cast<float>(current_node->m_Texture->m_Stb.width);
-        my_tex_h = static_cast<float>(current_node->m_Texture->m_Stb.height);
+        auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
+
+        if (object_node_ptr->m_textures != nullptr)
+        {
+          diffuse_tex_id = (void*)object_node_ptr->m_textures->diffuse->getID();
+          diffuse_tex_w = static_cast<float>(object_node_ptr->m_textures->diffuse->m_Stb.width);
+          diffuse_tex_h = static_cast<float>(object_node_ptr->m_textures->diffuse->m_Stb.height);
+        }
       }
 
       ImGui::BeginChild("Parent Group", ImVec2(0, 70), true);
@@ -297,15 +321,20 @@ namespace MX
       ImGui::Combo("##diffuse map", &item_diffuse_map, all_diffuse_maps.data(), IM_ARRAYSIZE(all_diffuse_maps.data()) * all_diffuse_maps.size());
       ImGui::SameLine();
 
-      if (current_node->m_Texture != nullptr)
+      if (dynamic_cast<ObjectNode*>(current_node.get()))
       {
-        if (ImGui::ImageButton(my_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / my_tex_w, 16.0f / my_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
+        auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
+
+        if (object_node_ptr->m_textures != nullptr)
         {
-          file_inspector_id = my_tex_id;
-          file_inspector_width = my_tex_w;
-          file_inspector_height = my_tex_h;
-          file_inspector_name = current_node->m_Texture->m_Name;
-          file_inspector_enabled = 1;
+          if (ImGui::ImageButton(diffuse_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / diffuse_tex_w, 16.0f / diffuse_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
+          {
+            file_inspector_id = diffuse_tex_id;
+            file_inspector_width = diffuse_tex_w;
+            file_inspector_height = diffuse_tex_h;
+            file_inspector_name = object_node_ptr->m_textures->diffuse->m_Name;
+            file_inspector_enabled = 1;
+          }
         }
       }
 
@@ -318,12 +347,6 @@ namespace MX
       ImGui::Combo("##bump map", &item_bump_map, all_bump_maps.data(), IM_ARRAYSIZE(all_bump_maps.data()) * all_bump_maps.size());
 
       ImGui::EndChild();
-  
-      if (item_prev_models != item_models)
-      {
-        current_node->setModel(MX_WORLD.m_Models[item_models]);
-        item_prev_models = item_models;
-      }
 
       if (item_prev_shaders != item_shaders)
       {
@@ -331,22 +354,39 @@ namespace MX
         item_prev_shaders = item_shaders;
       }
 
-      if (item_prev_diffuse_map != item_diffuse_map)
+      if (dynamic_cast<ObjectNode*>(current_node.get()))
       {
-        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_diffuse_map]));
-        item_prev_diffuse_map = item_diffuse_map;
-      }
+        auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
 
-      if (item_prev_normal_map != item_normal_map)
-      {
-        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_normal_map]));
-        item_prev_normal_map = item_normal_map;
-      }
+        if (item_prev_models != item_models)
+        {
+          object_node_ptr->setModel(MX_WORLD.m_Models[item_models]);
+          item_prev_models = item_models;
+        }
 
-      if (item_prev_bump_map != item_bump_map)
-      {
-        current_node->setTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_bump_map]));
-        item_prev_bump_map = item_bump_map;
+        if (item_prev_diffuse_map != item_diffuse_map)
+        {
+          object_node_ptr->setDiffuseTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_diffuse_map]));
+          item_prev_diffuse_map = item_diffuse_map;
+        }
+
+        if (item_prev_normal_map != item_normal_map)
+        {
+          object_node_ptr->setNormalTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_normal_map]));
+          item_prev_normal_map = item_normal_map;
+        }
+
+        if (item_prev_bump_map != item_bump_map)
+        {
+          object_node_ptr->setBumpTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_bump_map]));
+          item_prev_bump_map = item_bump_map;
+        }
+
+        if (item_prev_height_map != item_height_map)
+        {
+          object_node_ptr->setHeightTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_height_map]));
+          item_prev_height_map = item_height_map;
+        }
       }
     }
   #endif
@@ -622,7 +662,7 @@ namespace MX
       }
       if (ImGui::Button("Confirm##confirm spawn object") && !strlen(input) == 0 && object_name_accepted)
       {
-        MX_WORLD.m_ActiveScene->push(input);
+        MX_WORLD.m_ActiveScene->push_object(input, default_root_name);
         memset(&input[0], 0, sizeof(input));
         ImGui::CloseCurrentPopup();
       }

@@ -276,7 +276,7 @@ namespace MX
     
           if (input[0] == 1920 && input[1] == 1080)
             Application::get().m_Window->m_Props.m_FullScreen = 1;
-    
+
           resolution_accepted = 1;
           show_set_resolution_popup = 0;
           ImGui::CloseCurrentPopup();

@@ -19,6 +19,7 @@ namespace MX
   extern std::vector<const char*> all_diffuse_maps;
   extern std::vector<const char*> all_normal_maps;
   extern std::vector<const char*> all_bump_maps;
+  extern std::vector<const char*> all_height_maps;
 
   extern std::vector<const char*> all_current_scenes;
   extern std::vector<const char*> all_objects;

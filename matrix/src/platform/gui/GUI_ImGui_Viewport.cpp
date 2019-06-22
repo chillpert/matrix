@@ -19,6 +19,7 @@ namespace MX
     if (opt_fullscreen)
     {
       ImGuiViewport* viewport = ImGui::GetMainViewport();
+      auto window_props = Application::get().m_Window->m_Props;
       ImGui::SetNextWindowPos(viewport->Pos);
       ImGui::SetNextWindowSize(viewport->Size);
       ImGui::SetNextWindowViewport(viewport->ID);
@@ -46,7 +47,6 @@ namespace MX
       ImGui::PopStyleVar(2);
 
     ImGui::End();
-
   #endif
   }
 
@@ -76,7 +76,6 @@ namespace MX
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus; 
     if (no_autoresize)      window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 
-    
     static int first_iteration = 1;
     static ImTextureID my_tex_id;
     static float my_tex_w;
