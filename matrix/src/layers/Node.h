@@ -15,11 +15,13 @@ namespace MX
   {
   public:
     MX_API Node() = delete;
-    MX_API Node(const std::string &node_name, std::shared_ptr<Model> model = nullptr, std::shared_ptr<MX_SHADER> shader = nullptr, std::shared_ptr<MX_TEXTURE> texture = nullptr);
+    MX_API Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader = nullptr);
     MX_API virtual ~Node() = default;
 
     MX_API Node(const Node&) = default;
     MX_API Node &operator=(const Node&) = default;
+
+    MX_API virtual void upload_uniforms();
     
     MX_API virtual void addChild(std::shared_ptr<Node> node);
     MX_API virtual std::shared_ptr<Node> getChild(const std::string &name);
@@ -29,10 +31,8 @@ namespace MX
     MX_API void setLocalTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
     MX_API void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
 
-    MX_API virtual void setModel(std::shared_ptr<Model> model);
     MX_API virtual void setShader(std::shared_ptr<Shader> shader);
-    MX_API virtual void setTexture(std::shared_ptr<Texture> texture);
-  
+
     MX_API void setTransform(const Trans &t, float factor, bool is_animated);
 
     MX_API glm::fmat4 &getLocalTransform() { return m_Trans.m_local; }
@@ -40,9 +40,8 @@ namespace MX
 
   public:
     std::string m_Name;
-    std::shared_ptr<Model> m_Model;
+
     std::shared_ptr<Shader> m_Shader;
-    std::shared_ptr<Texture> m_Texture;
 
     std::shared_ptr<Node> m_Parent;
     std::list<std::shared_ptr<Node>> m_Children;

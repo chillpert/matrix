@@ -41,55 +41,182 @@ namespace MX
     m_Sg.render();
   }
 
+  /*###########################################################################################################################
+  ######################################           PUSH ARBITRARY             #################################################
+  ###########################################################################################################################*/
+
   bool Scene::push(std::shared_ptr<Node> node, std::shared_ptr<Node> node_to_attach_to)
   {
     if (!object_already_exists(node->m_Name))
     {
       m_ExistingObjects.push_back(node->m_Name);
+      node_to_attach_to->addChild(std::shared_ptr<Node>(node));
       return 1;
     }
-    else
-      return 0;
 
-    node_to_attach_to->addChild(std::shared_ptr<Node>(node));
+    return 0;
   }
 
-  bool Scene::push(const std::string &name, const std::string &node_to_attach_to)
-  {
-    push(name, nullptr, nullptr, nullptr, node_to_attach_to);
-  }
+  /*###########################################################################################################################
+  ######################################             CONTAINER                #################################################
+  ###########################################################################################################################*/
 
-  bool Scene::push(const std::string &name, std::shared_ptr<Model> model, const std::string &node_to_attach_to)
+  bool Scene::push_container(const std::string &name, const std::string &node_to_attach_to)
   {
-    push(name, model, nullptr, nullptr, node_to_attach_to);
-  }
-
-  bool Scene::push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const std::string &node_to_attach_to)
-  {
-    push(name, model, shader, nullptr, node_to_attach_to);
-  }
-
-  bool Scene::push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, const std::string &node_to_attach_to)
-  {
-    MX_INFO_LOG("MX: Scene: " + m_Name + " Push: " + name);
+    MX_INFO("MX: Scene: " + m_Name + " Push Container: " + name);
 
     if (!object_already_exists(name))
       m_ExistingObjects.push_back(name);
     else
     {
-      MX_WARN("MX: Scene: " + m_Name + " Push: " + name + ": Invalid name - object already exists");
+      MX_WARN("MX: Scene: " + m_Name + " Push Container: " + name + ": Invalid name - object already exists");
       return 0;
     }
 
-    std::shared_ptr<Node> temp(new Node(name));
-    temp->setModel(model);
-    temp->setShader(shader);
-    temp->setTexture(texture);
+    std::shared_ptr<ContainerNode> object_node = std::make_shared<ContainerNode>(name);
 
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
     MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
-    MX_SUCCESS_LOG("MX: Scene: "  + m_Name + " Push: " + name);
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Container: " + name);
     return 1;
   }
+
+  /*###########################################################################################################################
+  #######################################             OBJECTS                ##################################################
+  ###########################################################################################################################*/
+
+  bool Scene::push_object(const std::string &name, const std::string &node_to_attach_to)
+  {
+    push_object_with_texture_profile(name, nullptr, nullptr, nullptr, node_to_attach_to);
+  }
+
+  bool Scene::push_object(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const std::string &node_to_attach_to)
+  {
+    push_object_with_texture_profile(name, model, shader, nullptr, node_to_attach_to);
+  }
+
+  bool Scene::push_object_with_diffuse_texture(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Object: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Object: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<ObjectNode> object_node = std::make_shared<ObjectNode>(name);
+    object_node->setModel(model);
+    object_node->setShader(shader);
+    object_node->setDiffuseTexture(texture);
+
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
+    return 1;
+  }
+
+  bool Scene::push_object_with_texture_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<TextureProfile> texture_profile, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Object: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Object: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<ObjectNode> object_node = std::make_shared<ObjectNode>(name);
+    object_node->setModel(model);
+    object_node->setShader(shader);
+    object_node->setTextureProfile(texture_profile);
+
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
+    return 1;
+  }
+
+  /*###########################################################################################################################
+  #######################################             LIGHTS                ###################################################
+  ###########################################################################################################################*/
+
+  bool Scene::push_directional_light(const std::string &name, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Directional Light: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Directional Light: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<DirectionalLightNode> light_node = std::make_shared<DirectionalLightNode>(name);
+    light_node->setShader(MX_GET_SHADER("blinn_phong"));
+
+    MX_SCENEGRAPH.m_directional_light_nodes.push_back(light_node);
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Directional Light: " + name);
+    return 1;
+  }
+
+  bool Scene::push_point_light(const std::string &name, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Point Light: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Point Light: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<PointLightNode> light_node = std::make_shared<PointLightNode>(name);
+    light_node->setShader(MX_GET_SHADER("blinn_phong"));
+
+    MX_SCENEGRAPH.m_point_light_nodes.push_back(light_node);
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Point Light: " + name);
+    return 1;
+  }
+
+  bool Scene::push_spot_light(const std::string &name, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Spot Light: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Spot Light: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<SpotLightNode> light_node = std::make_shared<SpotLightNode>(name);
+    light_node->setShader(MX_GET_SHADER("blinn_phong"));
+
+    MX_SCENEGRAPH.m_spot_light_nodes.push_back(light_node);
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Spot Light: " + name);
+    return 1;
+  }
+
+  /*###########################################################################################################################
+  #######################################               POP                 ###################################################
+  ###########################################################################################################################*/
 
   // delete object from scene graph
   bool Scene::pop(const std::string &name)
@@ -100,7 +227,7 @@ namespace MX
     std::ostringstream address;
     address << temp_node;
     std::string address_s =  address.str();
-    MX_INFO_LOG("MX: Scene: " + m_Name + "Pop: Node: " + temp_node->m_Name + ": Address: " + address_s);
+    MX_INFO("MX: Scene: " + m_Name + "Pop: Node: " + temp_node->m_Name + ": Address: " + address_s);
   #endif
 
     for (auto iter = temp_node->m_Parent->m_Children.begin(); iter != temp_node->m_Parent->m_Children.end(); ++iter)
@@ -108,7 +235,7 @@ namespace MX
       if ((*iter)->m_Name == temp_node->m_Name)
       {
         temp_node->m_Parent->m_Children.erase(iter);
-        MX_SUCCESS_LOG("MX: Scene: Pop");
+        MX_SUCCESS("MX: Scene: Pop");
         return 1;
       }
     }

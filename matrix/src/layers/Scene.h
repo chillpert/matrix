@@ -26,15 +26,42 @@ namespace MX
     // return 1 if name is unique, searches the entire scene's scenegraph
     MX_API bool addItemEntry(const std::string &name);
 
+    // push arbitrary node
     MX_API bool push(std::shared_ptr<Node> node, std::shared_ptr<Node> node_to_attach_to);
+    
+    // add containers
+    MX_API bool push_container(const std::string &name, const std::string &node_to_attach_to = default_root_name);
 
-    MX_API bool push(const std::string &name, const std::string &node_to_attach_to = "Root");
-    MX_API bool push(const std::string &name, std::shared_ptr<Model> model, const std::string &node_to_attach_to);
-    MX_API bool push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const std::string &node_to_attach_to);
-    MX_API bool push(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, const std::string &node_to_attach_to);
+    // add objects
+    MX_API bool push_object(const std::string &name, const std::string &node_to_attach_to= default_root_name);
+    MX_API bool push_object(
+      const std::string &name,
+      std::shared_ptr<Model> model,
+      std::shared_ptr<Shader> shader,
+      const std::string &node_to_attach_to = default_root_name
+    );
+    MX_API bool push_object_with_diffuse_texture(
+      const std::string &name,
+      std::shared_ptr<Model> model,
+      std::shared_ptr<Shader> shader,
+      std::shared_ptr<Texture> texture,
+      const std::string &node_to_attach_to = default_root_name
+    );
+    MX_API bool push_object_with_texture_profile(
+      const std::string &name,
+      std::shared_ptr<Model> model,
+      std::shared_ptr<Shader> shader,
+      std::shared_ptr<TextureProfile> texture_profile,
+      const std::string &node_to_attach_to = default_root_name
+    );
 
+    // add light sources
+    MX_API bool push_directional_light(const std::string &name, const std::string &node_to_attach_to = default_root_name);
+    MX_API bool push_point_light(const std::string &name, const std::string &node_to_attach_to = default_root_name);
+    MX_API bool push_spot_light(const std::string &name, const std::string &node_to_attach_to = default_root_name);
+    
     MX_API bool pop(const std::string &name);
-  
+
   private:
     MX_API bool object_already_exists(const std::string &name);
 

@@ -1,13 +1,24 @@
 #include <Node.h>
 
+#include <Application.h>
+
 namespace MX
 {
-  Node::Node(const std::string &node_name, std::shared_ptr<Model> model, std::shared_ptr<MX_SHADER> shader, std::shared_ptr<MX_TEXTURE> texture)
-    : m_Name(node_name), m_Model(model), m_Shader(shader), m_Texture(texture), m_visible(true) { }
+  Node::Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader)
+    : m_Name(node_name), m_Shader(shader), m_visible(true) { }
+
+  void Node::upload_uniforms()
+  {
+    m_Shader->use();
+    m_Shader->setfMat4("model", getWorldTransform());
+    m_Shader->setfMat4("view", MX_CAMERA.getViewMatrix());
+    m_Shader->setfMat4("projection", MX_CAMERA.getProjectionMatrix());
+    m_Shader->setfVec3("viewPosition", MX_CAMERA.m_Position);
+  }
 
   void Node::addChild(std::shared_ptr<Node> node)
   {
-    node->setParent(std::shared_ptr<Node>(this));
+    node->setParent(std::shared_ptr<Node>(this));;
     m_Children.push_back(node);
     MX_INFO_LOG("MX: Node: " + node->m_Name + " added to parent: " + this->m_Name);
   }
@@ -62,19 +73,6 @@ namespace MX
     m_Trans.push(t, factor, is_animated);
   }
 
-  void Node::setModel(std::shared_ptr<Model> model)
-  {
-    if (model != nullptr)
-    {
-      if (!model->m_initialized)
-        model->initialize();
-    
-      m_Model = model;
-    }
-    else
-      m_Model = nullptr;
-  }
-
   void Node::setShader(std::shared_ptr<Shader> shader)
   {
     if (shader != nullptr)
@@ -86,18 +84,5 @@ namespace MX
     }
     else
       m_Shader = nullptr;
-  }
-
-  void Node::setTexture(std::shared_ptr<Texture> texture)
-  {
-    if (texture != nullptr)
-    {
-      if (!texture->m_initialized)
-        texture->initialize();
-
-      m_Texture = texture;
-    }
-    else
-      m_Texture = nullptr;
   }
 }

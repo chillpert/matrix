@@ -6,7 +6,7 @@ namespace MX
 {
   SceneGraph::SceneGraph()
   {
-    m_Root = std::shared_ptr<Node>(new Node("Root"));
+    m_Root = std::shared_ptr<Node>(new Node(default_root_name));
   }
 
   SceneGraph::~SceneGraph()
@@ -21,12 +21,13 @@ namespace MX
 
   void SceneGraph::render()
   {
-    recursive_render(*m_Root);
+    recursive_render(m_Root);
   }
 
   std::shared_ptr<Node> hidden_search_holder = nullptr;
+  static bool first_search_iteration = 1;
 
-  std::shared_ptr<Node> SceneGraph::search(const std::string &name, std::shared_ptr<Node> it)
+  void recursive_search(const std::string &name, std::shared_ptr<Node> it)
   {
     if (it->m_Name == name)
       hidden_search_holder = it;
@@ -34,8 +35,18 @@ namespace MX
     if (!it->m_Children.empty())
     {
       for (auto it : it->m_Children)
-        search(name, it);
+        recursive_search(name, it);
     }
+  }
+
+  std::shared_ptr<Node> SceneGraph::search(const std::string &name, std::shared_ptr<Node> it)
+  {
+    hidden_search_holder = nullptr;
+
+    recursive_search(name, it);
+
+    if (hidden_search_holder == nullptr)
+      throw mx_entity_not_found(name + " (SceneGraph::search)");
 
     return hidden_search_holder;
   }
@@ -62,47 +73,41 @@ namespace MX
     }
   }
 
-  void SceneGraph::recursive_render(Node &it, glm::fmat4 mat)
+  void SceneGraph::recursive_render(std::shared_ptr<Node> it, glm::fmat4 mat)
   {
     if (is_paused)
-      it.m_Trans.m_moving = 0;
+      it->m_Trans.m_moving = 0;
     else
-      it.m_Trans.m_moving = 1;
+      it->m_Trans.m_moving = 1;
 
-    it.setWorldTransform(mat);
+    it->setWorldTransform(mat);
 
-    if (it.m_Shader != nullptr)
+    if (it->m_Shader != nullptr)
     {
-      it.m_Shader->use();
-      it.m_Shader->setfMat4("model", it.getWorldTransform());
-      it.m_Shader->setfMat4("view", MX_WORLD.m_ActiveScene->m_Cam.getViewMatrix());
-      it.m_Shader->setfMat4("projection", MX_WORLD.m_ActiveScene->m_Cam.getProjectionMatrix());
-
-      auto light_node = search("Lamp 1", m_Root);
-      glm::mat4 t = light_node->getWorldTransform();
-      glm::vec3 temp = glm::vec3(t[3]);
-
-      it.m_Shader->setfVec3("lightPosition", temp);
-      it.m_Shader->setfVec3("lightColor", glm::fvec3(1.0f, 1.0f, 1.0f));
-      it.m_Shader->setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());
-      it.m_Shader->setFloat("ambientStrength", 0.08f);
-    }
-
-    if (it.m_Texture != nullptr)
-    {
-      it.m_Shader->use();
-      it.m_Texture->use();
-      it.m_Shader->setInt("texture1", 0);
-    }
-
-    if (it.m_Model != nullptr)
-      it.m_Model->render(std::static_pointer_cast<MX_SHADER>(it.m_Shader));
-
-    if (!it.m_Children.empty())
-    {
-      for (auto itChild : it.m_Children)
+      if (!dynamic_cast<LightNode*>(it.get()) && !dynamic_cast<DirectionalLightNode*>(it.get()) && !dynamic_cast<PointLightNode*>(it.get()) && !dynamic_cast<SpotLightNode*>(it.get()))
       {
-        recursive_render(*std::shared_ptr<Node>(itChild), it.getWorldTransform());
+        // lights
+        for (u_short i = 0; i < m_directional_light_nodes.size(); ++i)
+          m_directional_light_nodes.at(i)->upload_uniforms(i);
+
+        for (u_short i = 0; i < m_point_light_nodes.size(); ++i)
+          m_point_light_nodes.at(i)->upload_uniforms(i);;
+        
+        for (u_short i = 0; i < m_spot_light_nodes.size(); ++i)
+          m_spot_light_nodes.at(i)->upload_uniforms(i);
+
+        // if it == LightNode, dont do anything
+        it->upload_uniforms();
+      }
+
+      
+    }
+
+    if (!it->m_Children.empty())
+    {
+      for (auto itChild : it->m_Children)
+      {
+        recursive_render(itChild, it->getWorldTransform());
       }
     }
   }

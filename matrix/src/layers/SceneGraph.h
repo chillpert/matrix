@@ -27,14 +27,18 @@ namespace MX
     MX_API void getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it);
 
   private:
-    MX_API void recursive_render(Node &it, glm::fmat4 mat = glm::fmat4(1.0f));
+    MX_API void recursive_render(std::shared_ptr<Node> it, glm::fmat4 mat = glm::fmat4(1.0f));
 
   public:
     std::shared_ptr<Node> m_Root;
 
     std::vector<std::shared_ptr<ContainerNode>> m_container_nodes;
     std::vector<std::shared_ptr<ObjectNode>> m_object_nodes;
-    std::vector<std::shared_ptr<LightNode>> m_light_nodes;
+    
+    std::vector<std::shared_ptr<DirectionalLightNode>> m_directional_light_nodes;
+    std::vector<std::shared_ptr<PointLightNode>> m_point_light_nodes;
+    std::vector<std::shared_ptr<SpotLightNode>> m_spot_light_nodes;
+
     bool is_paused = 0;
   };
 }

@@ -44,6 +44,7 @@
 #include <utility>
 #include <map>
 #include <exception>
+#include <typeinfo>
 
 // project files
 #include <Utils.h>

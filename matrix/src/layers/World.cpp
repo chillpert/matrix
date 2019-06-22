@@ -84,6 +84,33 @@ namespace MX
     }
   }
 
+  std::shared_ptr<TextureProfile> World::getTextureProfile(std::shared_ptr<Texture> diffuse, std::shared_ptr<Texture> normal, std::shared_ptr<Texture> bump, std::shared_ptr<Texture> height) const
+  {
+    std::shared_ptr<TextureProfile> profile = std::make_shared<TextureProfile>();
+
+    try
+    {
+      for (auto it : m_Textures)
+      {
+        if (it->m_type.find("texture_diffuse") != std::string::npos)
+          profile->diffuse = it;
+        else if (it->m_type.find("texture_normal") != std::string::npos)
+          profile->normal = it;
+        else if (it->m_type.find("texture_bump") != std::string::npos)
+          profile->bump = it;
+        else if (it->m_type.find("texture_height") != std::string::npos)
+          profile->height = it;
+      }
+
+      if (profile->diffuse == nullptr)
+        throw mx_entity_not_found(diffuse->m_Name);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
+  }
+
   void World::initialize()
   {
     set_resource_files(MX_SHADER_PATH);
