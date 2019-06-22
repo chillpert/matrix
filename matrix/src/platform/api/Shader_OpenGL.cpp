@@ -18,6 +18,7 @@ namespace MX
 
   void Shader_OpenGL::initialize()
   {
+    MX_INFO("MX: API: OpenGL: Shader: Initialization: " + m_Name);
     m_ID = glCreateProgram();
 
     m_VsSource = parseFile(m_VsPath);
@@ -48,13 +49,7 @@ namespace MX
 
   void Shader_OpenGL::update()
   {
-    use();
-    setfMat4("view", MX_WORLD.m_ActiveScene->m_Cam.getViewMatrix());
-    setfMat4("projection", MX_WORLD.m_ActiveScene->m_Cam.getProjectionMatrix());
-
-    setfVec3("lightPosition", glm::vec3(5, -5, 1));
-    setfVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
-    setfVec3("viewPosition", MX_WORLD.m_ActiveScene->m_Cam.getPosition());
+    MX_FATAL("THIS IS Shader_OpenGL update | this function should not be called. WADDUHEK");
   }
 
 

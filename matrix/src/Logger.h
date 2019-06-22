@@ -24,6 +24,9 @@
   #define MX_SUCCESS_LOG(x)
 #endif
 
+#include <iostream>
+#include <ostream>
+#include <fstream>
 #include <Core.h>
 #include <Utils.h>
 #include <string>

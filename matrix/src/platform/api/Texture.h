@@ -12,6 +12,18 @@
 
 namespace MX
 {
+  class Texture;
+
+  struct TextureProfile
+  {
+    std::shared_ptr<Texture> diffuse = nullptr;
+    std::shared_ptr<Texture> normal = nullptr;
+    std::shared_ptr<Texture> bump = nullptr;
+    std::shared_ptr<Texture> height = nullptr;
+
+    float shininess = 32.0f;
+  };
+
   struct STB_Texture
   {
     int width = 0;
@@ -40,7 +52,7 @@ namespace MX
 
     std::string m_Name;
     std::string m_path;
-    std::string m_type;
+    std::string m_type = "texture_diffuse1";
 
     bool m_initialized = 0;
   };

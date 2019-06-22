@@ -28,7 +28,6 @@ namespace MX
   
     SDL_GLContext m_Context;
     SDL_Window *m_Window = nullptr;
-    SDL_Surface *m_surface = nullptr;
   };
 }
 

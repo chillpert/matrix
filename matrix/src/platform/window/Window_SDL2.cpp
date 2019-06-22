@@ -46,7 +46,6 @@ namespace MX
       {
         MX_SUCCESS("MX: Window: SDL2");
 
-        m_surface = SDL_GetWindowSurface(m_Window);
         m_Context = SDL_GL_CreateContext(m_Window);
 
         if (m_Context == NULL)
@@ -85,9 +84,6 @@ namespace MX
   void Window_SDL2::close()
   {
     SDL_GL_DeleteContext(m_Context);
-
-    SDL_FreeSurface(m_surface);
-    m_surface = nullptr;
 
     SDL_DestroyWindow(m_Window);
     m_Window = nullptr;

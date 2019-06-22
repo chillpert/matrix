@@ -17,7 +17,7 @@ message("MX: Build type not set. Continuing with: ${CMAKE_BUILD_TYPE}")
       FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
-########### CHANGE THIS #############
+################### CHANGE THIS ######################
 # needs clean reconfigure
 option(USE_OPENGL "use OpenGL" ON)
 option(USE_DIRECTX "use DirectX" OFF)
@@ -25,7 +25,7 @@ option(USE_DIRECTX "use DirectX" OFF)
 option(USE_IMGUI "use ImGui" ON)
 option(GUI_LOG_ALL "log all events in gui logger" OFF)
 option(LOG_WINDOW_EVENTS "log window events" OFF)
-#####################################
+######################################################
 
 # config for Matrix Framework
 include(${PROJECT_SOURCE_DIR}/matrix/CMakeLists.txt)

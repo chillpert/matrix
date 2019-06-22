@@ -33,6 +33,10 @@ namespace MX
 
   void API_OpenGL::clear() const
   {
+    int screen_x = Application::get().m_Window->m_Props.m_Width;
+    int screen_y = Application::get().m_Window->m_Props.m_Height;
+
+  #ifdef MX_IMGUI_ACTIVE
     Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
 
     int viewport_x = app_viewport->m_Viewport_max_x;
@@ -41,14 +45,15 @@ namespace MX
     int corner_x = app_viewport->m_Viewport_min_x;
     int corner_y = app_viewport->m_Viewport_min_y;
 
-    int screen_y = Application::get().m_Window->m_Props.m_Height;
-
     MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
 
     glViewport(corner_x,
                screen_y - corner_y,
                viewport_x,
                viewport_y);
+  #else
+    glViewport(0, 0, screen_x, screen_y);
+  #endif
 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

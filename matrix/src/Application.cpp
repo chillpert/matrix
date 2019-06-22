@@ -7,7 +7,7 @@ namespace MX
     MX_INFO_LOG("MX: Application: Constructor");
 
     m_API = std::make_unique<MX_API_TYPE>();
-    m_GUI = std::make_unique<MX_GUI_TYPE>();
+    m_GUI = std::make_unique<GUI_ImGui>();
 
     m_Window =  std::make_unique<Window_SDL2>();
 
