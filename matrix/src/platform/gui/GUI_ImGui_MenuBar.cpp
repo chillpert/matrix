@@ -64,23 +64,6 @@ namespace MX
 
       if (ImGui::BeginMenu("Window"))
       {
-        if (!editor_window_enabled)
-        {
-          if (ImGui::MenuItem("show editor", "CTRL+E"))
-          {
-            editor_window_enabled = 1;
-            p_open_editor = 1;
-          }
-        }
-        else
-        {
-          if (ImGui::MenuItem("hide editor", "CTRL+E"))
-          {
-            editor_window_enabled = 0;
-            p_open_editor = 0;
-          }
-        }
-
         if (!hierarchy_window_enabled)
         {
           if (ImGui::MenuItem("show hierarchy", "CTRL+H"))
@@ -151,7 +134,7 @@ namespace MX
 
         ImGui::Separator();
 
-        if (logger_window_enabled || hierarchy_window_enabled || editor_window_enabled || demo_window_enabled || performance_monitor_enabled)
+        if (logger_window_enabled || hierarchy_window_enabled || demo_window_enabled || performance_monitor_enabled)
         {
           if (ImGui::MenuItem("hide all", "CTRL+G"))
           {
@@ -159,8 +142,6 @@ namespace MX
             p_open_logger = 0;
             hierarchy_window_enabled = 0;
             p_open_hierarchy = 0;
-            editor_window_enabled = 0;
-            p_open_editor = 0;
             demo_window_enabled = 0;
             p_open_demo = 0;
             performance_monitor_enabled = 0;
@@ -175,8 +156,6 @@ namespace MX
             p_open_logger = 1;
             hierarchy_window_enabled = 1;
             p_open_hierarchy = 1;
-            editor_window_enabled = 1;
-            p_open_editor = 1;
             demo_window_enabled = 1;
             p_open_demo = 1;
             performance_monitor_enabled = 1;

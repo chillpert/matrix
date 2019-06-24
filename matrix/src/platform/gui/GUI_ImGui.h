@@ -10,7 +10,7 @@
 
 namespace MX
 {
-  class GUI_ImGui: public GUI
+  class GUI_ImGui : public GUI
   {
   public: 
     MX_API GUI_ImGui() = default;
@@ -26,12 +26,15 @@ namespace MX
   };
 
   // GUI_ImGui_Editor.cpp
-  void renderEditorWindow();
   void renderFileInspectorWindow();
+  void renderScenesMenu();
+  void renderAssestsMenu();
+  void renderTransformMenu();
+  void renderSpawnMenu();
 
   // GUI_ImGui_Hierarchy.cpp
-  void renderHierarchyWindow();
-
+  void renderOutline();
+  void renderSceneGraph();
   // GUI_ImGui_MenuBar.cpp
   void renderMenuBar();
 

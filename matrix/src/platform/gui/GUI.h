@@ -3,6 +3,12 @@
 
 #include <stdafx.h>
 
+#ifdef MX_IMGUI_ACTIVE
+  #define MX_GUI_TYPE GUI_ImGui
+#else
+  #define MX_GUI_TYPE GUI
+#endif
+
 namespace MX
 {
   class GUI

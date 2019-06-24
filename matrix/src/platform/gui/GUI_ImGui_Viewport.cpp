@@ -59,7 +59,7 @@ namespace MX
     static bool no_menu = 1;
     static bool no_move = 0;
     static bool no_resize = 0;
-    static bool no_collapse = 0;
+    static bool no_collapse = 1;
     static bool no_nav = 0;
     static bool no_background = 1;
     static bool no_bring_to_front = 0;
@@ -212,13 +212,10 @@ namespace MX
           if (ImGui::MenuItem("Record", "", true, is_running))
             is_recording = 1;
         }
-        
-        
 
         ImGui::EndMenuBar();
       }
-      
-      
+
       if (frames.size() > 20000)
         frames.clear();
     }

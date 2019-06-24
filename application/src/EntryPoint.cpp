@@ -8,7 +8,9 @@ void load_debug_scene()
   {
     MX_SCENE->push_directional_light("Directional Light 1", "Lighting");
     MX_SCENE->push_point_light("Point Light 1", "Lighting");
-    //MX_SCENE->push_spot_light("Spot Light 1", "Lighting");
+
+    // to see the flashlight you need to active it in outline
+    MX_SCENE->push_spot_light("Spot Light 1", "Lighting");
   }
 
   MX_SCENE->push_object("Characters", default_root_name);

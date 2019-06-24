@@ -44,6 +44,8 @@ namespace MX
 
 	const char* str_c(const std::string &str)
 	{
+    char test[str.size()];
+
 		const char* temp;
 	#ifdef MX_PLATFORM_UNIX_X64
 		#pragma GCC diagnostic push
@@ -53,7 +55,7 @@ namespace MX
 	#else
 		temp = str.c_str();
 	#endif
-		return temp;		
+		return temp;
 	}
 }
 

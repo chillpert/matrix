@@ -86,7 +86,7 @@ namespace MX
 
   std::shared_ptr<TextureProfile> World::getTextureProfile(std::shared_ptr<Texture> diffuse, std::shared_ptr<Texture> normal, std::shared_ptr<Texture> bump, std::shared_ptr<Texture> height) const
   {
-    std::shared_ptr<TextureProfile> profile = std::make_shared<TextureProfile>();
+    std::shared_ptr<TextureProfile> profile(new TextureProfile());
 
     try
     {
@@ -226,6 +226,7 @@ namespace MX
               MX_WORLD.m_Models.push_back(temp_model);
 
             #ifdef MX_IMGUI_ACTIVE
+              model_test.push_back({{static_cast<int>(MX_WORLD.m_Models.size()), temp_model}});
               all_models.push_back(file_name);
             #endif
             }

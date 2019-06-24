@@ -14,6 +14,9 @@ namespace MX
 
   bool Scene::object_already_exists(const std::string &name)
   {
+    if (name == "")
+      return 1;
+
     if (name == m_Sg.m_Root->m_Name)
       return 1;
 
@@ -73,7 +76,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ContainerNode> object_node = std::make_shared<ContainerNode>(name);
+    std::shared_ptr<ContainerNode> object_node(new ContainerNode(name));
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
     MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
@@ -107,7 +110,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ObjectNode> object_node = std::make_shared<ObjectNode>(name);
+    std::shared_ptr<ObjectNode> object_node(new ObjectNode(name));
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setDiffuseTexture(texture);
@@ -130,7 +133,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ObjectNode> object_node = std::make_shared<ObjectNode>(name);
+    std::shared_ptr<ObjectNode> object_node(new ObjectNode(name));
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setTextureProfile(texture_profile);
@@ -157,7 +160,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<DirectionalLightNode> light_node = std::make_shared<DirectionalLightNode>(name);
+    std::shared_ptr<DirectionalLightNode> light_node(new DirectionalLightNode(name));
     light_node->setShader(MX_GET_SHADER("blinn_phong"));
 
     MX_SCENEGRAPH.m_directional_light_nodes.push_back(light_node);
@@ -180,7 +183,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<PointLightNode> light_node = std::make_shared<PointLightNode>(name);
+    std::shared_ptr<PointLightNode> light_node(new PointLightNode(name));
     light_node->setShader(MX_GET_SHADER("blinn_phong"));
 
     MX_SCENEGRAPH.m_point_light_nodes.push_back(light_node);
@@ -203,7 +206,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<SpotLightNode> light_node = std::make_shared<SpotLightNode>(name);
+    std::shared_ptr<SpotLightNode> light_node(new SpotLightNode(name));
     light_node->setShader(MX_GET_SHADER("blinn_phong"));
 
     MX_SCENEGRAPH.m_spot_light_nodes.push_back(light_node);

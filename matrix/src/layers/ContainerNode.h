@@ -10,8 +10,6 @@ namespace MX
   public:
     MX_API ContainerNode() = delete;
     MX_API ContainerNode(const std::string &name);
-
-
   };
 }
 

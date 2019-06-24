@@ -1,6 +1,10 @@
 #ifndef STDAFX_H
 #define STDAFX_H
 
+#ifdef MX_PLATFORM_UNIX_X64
+  #pragma GCC diagnostic ignored "-Wformat-security"
+#endif
+
 // external
 
   // API

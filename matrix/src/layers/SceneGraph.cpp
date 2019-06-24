@@ -6,7 +6,9 @@ namespace MX
 {
   SceneGraph::SceneGraph()
   {
-    m_Root = std::shared_ptr<Node>(new Node(default_root_name));
+    std::shared_ptr<Node> temp_root(new Node(default_root_name));
+    temp_root->m_Parent = nullptr;
+    m_Root = temp_root;
   }
 
   SceneGraph::~SceneGraph()
@@ -82,25 +84,25 @@ namespace MX
 
     it->setWorldTransform(mat);
 
-    if (it->m_Shader != nullptr)
+    if (it->m_Shader != nullptr && it->m_visible)
     {
       if (!dynamic_cast<LightNode*>(it.get()) && !dynamic_cast<DirectionalLightNode*>(it.get()) && !dynamic_cast<PointLightNode*>(it.get()) && !dynamic_cast<SpotLightNode*>(it.get()))
       {
         // lights
         for (u_short i = 0; i < m_directional_light_nodes.size(); ++i)
-          m_directional_light_nodes.at(i)->upload_uniforms(i);
+          if (m_directional_light_nodes.at(i)->m_visible)
+            m_directional_light_nodes.at(i)->upload_uniforms(i);
 
         for (u_short i = 0; i < m_point_light_nodes.size(); ++i)
-          m_point_light_nodes.at(i)->upload_uniforms(i);;
+          if (m_point_light_nodes.at(i)->m_visible)
+            m_point_light_nodes.at(i)->upload_uniforms(i);
         
         for (u_short i = 0; i < m_spot_light_nodes.size(); ++i)
-          m_spot_light_nodes.at(i)->upload_uniforms(i);
+          if (m_spot_light_nodes.at(i)->m_visible)
+            m_spot_light_nodes.at(i)->upload_uniforms(i);
 
-        // if it == LightNode, dont do anything
         it->upload_uniforms();
       }
-
-      
     }
 
     if (!it->m_Children.empty())

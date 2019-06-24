@@ -4,17 +4,15 @@
 
 namespace MX
 {
-  static bool draw_scene_graph = 1;
-
   static void draw_scene_graph_menu(Node &it);
   static void draw_outline_menu();
 
-  void renderHierarchyWindow()
+  void renderSceneGraph()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
     static bool no_scrollbar = 0;
-    static bool no_menu = 0;
+    static bool no_menu = 1;
     static bool no_move = 0;
     static bool no_resize = 0;
     static bool no_collapse = 1;
@@ -34,26 +32,87 @@ namespace MX
     if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
     if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
 
-    if (ImGui::Begin("Hierarchy", &p_open_hierarchy, window_flags))
+    if (ImGui::Begin("Scene Graph", &p_open_scenegraph, window_flags))
+      draw_scene_graph_menu(*MX_WORLD.m_ActiveScene->m_Sg.m_Root);
+    
+    ImGui::End();
+  #endif
+  }
+
+  void renderOutline()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+    static bool no_titlebar = 0;
+    static bool no_scrollbar = 0;
+    static bool no_menu = 1;
+    static bool no_move = 0;
+    static bool no_resize = 0;
+    static bool no_collapse = 1;
+    static bool no_nav = 0;
+    static bool no_background = 0;
+    static bool no_bring_to_front = 0;
+
+    static ImGuiWindowFlags window_flags = 0;
+
+    if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;
+    if (no_scrollbar)       window_flags |= ImGuiWindowFlags_NoScrollbar;
+    if (!no_menu)           window_flags |= ImGuiWindowFlags_MenuBar;
+    if (no_move)            window_flags |= ImGuiWindowFlags_NoMove;
+    if (no_resize)          window_flags |= ImGuiWindowFlags_NoResize;
+    if (no_collapse)        window_flags |= ImGuiWindowFlags_NoCollapse;
+    if (no_nav)             window_flags |= ImGuiWindowFlags_NoNav;
+    if (no_background)      window_flags |= ImGuiWindowFlags_NoBackground;
+    if (no_bring_to_front)  window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+    if (ImGui::Begin("Outline", &p_open_outline, window_flags))
     {
-      if (!p_open_hierarchy)
-        hierarchy_window_enabled = 0;
+      static size_t selected = -1;
+      static size_t prev_selected = selected;
 
-      if (ImGui::BeginMenuBar())
+      std::shared_ptr<Node> temp;
+
+      ImGui::Columns(2, NULL, false);
+      for (size_t n = 0; n < all_objects.size(); n++)
       {
-        if (ImGui::MenuItem("Scene Graph", "", true, !draw_scene_graph))
-          draw_scene_graph = 1;
-
-        if (ImGui::MenuItem("Outline", "", true, draw_scene_graph))
-          draw_scene_graph = 0;
+        temp = current_scenegraph->search(std::string(all_objects.at(n)), current_root);
+        if (ImGui::Selectable(temp->m_Name.c_str(), selected == n))
+          selected = n;
         
-        ImGui::EndMenuBar();
-      }
+        ImGui::NextColumn();
 
-      if (draw_scene_graph)
-        draw_scene_graph_menu(*MX_WORLD.m_ActiveScene->m_Sg.m_Root);
-      else  
-        draw_outline_menu();
+        std::string button_label = "V##" + std::to_string(n);
+        if (temp->m_visible)
+        {
+           if (ImGui::Button(button_label.c_str()))
+            temp->m_visible = 0;
+        }
+        else
+        {
+          ImGui::PushID(n);
+          ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+          ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.7f, 0.7f, 0.7f, 1.0f));
+          ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8f, 0.8f, 0.8f, 1.0f));
+
+          if (ImGui::Button(button_label.c_str()))
+            temp->m_visible = 1;
+          
+          ImGui::PopStyleColor(3);
+          ImGui::PopID();
+        }
+
+        ImGui::NextColumn();
+      }
+      ImGui::Columns(1);
+
+      if (selected >= 0 && selected < all_objects.size() && temp != nullptr && prev_selected != selected && cool_down == 0)
+      {
+        prev_selected = selected;
+        needs_refresh = 1;
+        cool_down = 1;
+
+        current_node = current_scenegraph->search(std::string(all_objects.at(selected)), current_root);
+        MX_SUCCESS("MX: GUI: ImGui: Changing current node");
+      }
     }
     ImGui::End();
   #endif
@@ -80,31 +139,6 @@ namespace MX
 
     if (it.m_Name != default_root_name)
       ImGui::Unindent();
-  #endif
-  }
-
-  static void draw_outline_menu()
-  {
-  #ifdef MX_IMGUI_ACTIVE
-    static size_t selected = -1;
-    static size_t prev_selcted = selected;
-
-    std::shared_ptr<Node> temp;
-
-    for (size_t n = 0; n < all_objects.size(); n++)
-    {
-      temp = current_scenegraph->search(std::string(all_objects.at(n)), current_root);
-      if (ImGui::Selectable(temp->m_Name.c_str(), selected == n))
-        selected = n;
-    }
-
-    if (selected >= 0 && selected < all_objects.size() && temp != nullptr && prev_selcted != selected)
-    {
-      prev_selcted = selected;
-      needs_refresh = 1;
-      current_node = current_scenegraph->search(std::string(all_objects.at(selected)), current_root);;
-    }
-
   #endif
   }
 }

@@ -3,7 +3,10 @@
 namespace MX
 {
   ObjectNode::ObjectNode(const std::string &name)
-    : Node(name) { }
+    : Node(name)
+  {
+    m_textures = std::shared_ptr<TextureProfile>(new TextureProfile());
+  }
 
   void ObjectNode::upload_uniforms()
   {

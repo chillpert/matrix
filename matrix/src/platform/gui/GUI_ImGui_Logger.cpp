@@ -213,7 +213,7 @@ namespace MX
 
       if (!p_open_logger)
         logger_window_enabled = 0;
-      }
+    }
     ImGui::End();
   #endif
   }
