@@ -9,15 +9,6 @@ namespace MX
   static const float grab_speed = 0.001f;
   static const float transform_factor = 100.0f;
 
-  static bool scene_name_accepted = 1;
-  static bool scene_delete_accepted = 0;
-  static bool object_name_accepted = 1;
-  // static bool object_delete_accepted = 0;
-
-  static bool show_transform_menu = 0;
-  static bool show_scenes_menu = 1;
-  static bool show_assets_menu = 0;
-
   // pop_flags
   static ImGuiWindowFlags popup_flags = 0;
   static bool popup_no_titlebar = 0;
@@ -33,7 +24,6 @@ namespace MX
 
   static void render_new_scene_popup();
   static void render_load_scene_popup();
-  static void render_spawn_object_popup();
   static void render_delete_scene_popup();
 
   void renderFileInspectorWindow()
@@ -190,7 +180,6 @@ namespace MX
     if (ImGui::Begin("Assets", &p_open_assets, window_flags))
     {
       static int item_models = -1;
-      static int item_objects = -1;
       static int item_shaders = -1;
       static int item_diffuse_map = -1;
       static int item_normal_map = -1;
@@ -216,7 +205,6 @@ namespace MX
         needs_refresh = 0;
 
         item_models = -1;
-        item_objects = -1;
         item_shaders = -1;
         item_diffuse_map = -1;
         item_normal_map = -1;
@@ -358,10 +346,10 @@ namespace MX
         static float height_tex_w;
         static float height_tex_h;
 
-        const float max_parent_child_height = 40.0f;
-        const float max_shader_child_height = 100.0f;
-        const float max_model_child_height = 100.0f;
-        const float max_map_child_height = 150.0f;
+        static float max_parent_child_height = 40.0f;
+        static float max_shader_child_height = 115.0f;
+        static float max_model_child_height = 40.0f;
+        static float max_map_child_height = 120.0f;
 
         if (dynamic_cast<ObjectNode*>(current_node.get()))
         {
@@ -434,6 +422,77 @@ namespace MX
           {
             ImGui::SetNextItemWidth(-1);
             ImGui::Combo("##shaders to select", &item_shaders, all_shaders.data(), IM_ARRAYSIZE(all_shaders.data()) * all_shaders.size(), max_combo);
+          
+            if (dynamic_cast<LightNode*>(current_node.get()))
+            {
+              std::shared_ptr<LightNode>lightnode_ptr = std::static_pointer_cast<LightNode>(current_node);
+              
+              ImGui::Spacing();
+              ImGui::Separator();
+              ImGui::Spacing();
+
+              std::vector<float> ambient{lightnode_ptr->ambient.r, lightnode_ptr->ambient.g, lightnode_ptr->ambient.b};
+              ImGui::SliderFloat3("Ambient##ambient light color", ambient.data(), 0.0f, 1.0f);
+              lightnode_ptr->ambient.r = ambient.at(0);
+              lightnode_ptr->ambient.g = ambient.at(1);
+              lightnode_ptr->ambient.b = ambient.at(2);
+
+              std::vector<float> diffuse{lightnode_ptr->diffuse.r, lightnode_ptr->diffuse.g, lightnode_ptr->diffuse.b};
+              ImGui::SliderFloat3("Diffuse##diffuse light color", diffuse.data(), 0.0f, 1.0f);
+              lightnode_ptr->diffuse.r = diffuse.at(0);
+              lightnode_ptr->diffuse.g = diffuse.at(1);
+              lightnode_ptr->diffuse.b = diffuse.at(2);
+
+              std::vector<float> specular{lightnode_ptr->specular.r, lightnode_ptr->specular.g, lightnode_ptr->specular.b};
+              ImGui::SliderFloat3("Specular##specular light color", specular.data(), 0.0f, 1.0f);
+              lightnode_ptr->specular.r = specular.at(0);
+              lightnode_ptr->specular.g = specular.at(1);
+              lightnode_ptr->specular.b = specular.at(2);
+
+              if (dynamic_cast<PointLightNode*>(current_node.get()))
+              {
+                std::shared_ptr<PointLightNode> pointlight_ptr = std::static_pointer_cast<PointLightNode>(current_node);
+
+                ImGui::Spacing();
+                ImGui::Separator();
+                ImGui::Spacing();
+
+                ImGui::Text("Light Attenuation");
+                ImGui::SliderFloat("Constant##constant light", &pointlight_ptr->constant, 0.0f, 2.0f);
+                ImGui::SliderFloat("Linear##linear attenuation", &pointlight_ptr->linear, 0.0f, 10.0f);
+                ImGui::SliderFloat("Quadratic##linear attenutation", &pointlight_ptr->quadratic, 0.0f, 2.0f);
+              
+                max_shader_child_height = 230.0f;
+              }
+              else if (dynamic_cast<SpotLightNode*>(current_node.get()))
+              {
+                std::shared_ptr<SpotLightNode> pointlight_ptr = std::static_pointer_cast<SpotLightNode>(current_node);
+
+                ImGui::Spacing();
+                ImGui::Separator();
+                ImGui::Spacing();
+
+                ImGui::Text("Light Attenuation");
+                ImGui::SliderFloat("Constant##constant light", &pointlight_ptr->constant, 0.0f, 2.0f);
+                ImGui::SliderFloat("Linear##linear attenuation", &pointlight_ptr->linear, 0.0f, 10.0f);
+                ImGui::SliderFloat("Quadratic##linear attenutation", &pointlight_ptr->quadratic, 0.0f, 2.0f);
+
+                ImGui::Spacing();
+                ImGui::Separator();
+                ImGui::Spacing();
+
+                ImGui::Text("Spot");
+                ImGui::SliderFloat("Cut off##spot light cut off", &pointlight_ptr->cut_off, 0.0f, 100.0f);
+                ImGui::SliderFloat("Outer cut off##spot light outer cut off", &pointlight_ptr->outer_cut_off, 0.0f, 100.0f);
+              
+                max_shader_child_height = 320.0f;
+              }
+              else
+                max_shader_child_height = 130.0f;
+            }
+            else
+              max_shader_child_height = 40.0f;
+            
           }
           ImGui::EndChild();
         }
@@ -452,6 +511,7 @@ namespace MX
 
           if (ImGui::CollapsingHeader("Maps##texture maps"))
           {
+            static ImGuiWindowFlags winflags;
             if (ImGui::BeginChild("maps child", ImVec2(-1, max_map_child_height), true))
             {
               if (dynamic_cast<ObjectNode*>(current_node.get()))
@@ -573,12 +633,6 @@ namespace MX
     static float x_rotate_drag = 0;
     static float y_rotate_drag = 0;
     static float z_rotate_drag = 0;
-
-    static float prev_x_rotate_drag = 0;
-    static float prev_y_rotate_drag = 0;
-    static float prev_z_rotate_drag = 0;
-
-    prev_x_rotate_drag = x_rotate_drag;
         
     ImGui::SetNextItemWidth(-10);
     if (ImGui::DragFloat("xr##x_rotate_slider", &x_rotate_drag, grab_speed))
@@ -586,15 +640,11 @@ namespace MX
       node->setTransform(X, x_rotate_drag / transform_factor, 0);
     }
 
-    prev_y_rotate_drag = y_rotate_drag;
-
     ImGui::SetNextItemWidth(-10);
     if (ImGui::DragFloat("yr##y_rotate_slider", &y_rotate_drag, grab_speed))
     {
       node->setTransform(Y, x_rotate_drag / transform_factor, 0);
     }
-
-    prev_z_rotate_drag = z_rotate_drag;
 
     ImGui::SetNextItemWidth(-10);
     if (ImGui::DragFloat("zr##z_rotate_slider", &z_rotate_drag, grab_speed))
@@ -613,7 +663,6 @@ namespace MX
     static float prev_y_translate_drag = 0;
     static float prev_z_translate_drag = 0;
 
-    
     prev_x_translate_drag = x_translate_drag;
         
     ImGui::SetNextItemWidth(-10);
@@ -844,7 +893,8 @@ namespace MX
   #ifdef MX_IMGUI_ACTIVE
     if (ImGui::BeginPopupModal("Scene##create", NULL, popup_flags))
     {
-      if (scene_name_accepted)
+      static bool input_accepted = 1;
+      if (input_accepted)
         ImGui::Text("Type in an unique name:");
       else
         ImGui::Text("Name already in use");
@@ -856,17 +906,17 @@ namespace MX
       {
         if (it->m_Name == input)
         {
-          scene_name_accepted = 0;
+          input_accepted = 0;
           break;
         }
         else
-          scene_name_accepted = 1;
+          input_accepted = 1;
       }
 
       ImGui::SameLine();
       if (ImGui::Button("Confirm##confirm create scene"))
       {
-        if (!strlen(input) == 0 && scene_name_accepted)
+        if (!strlen(input) == 0 && input_accepted)
         {
           MX_WORLD.push(std::shared_ptr<Scene>(new Scene(input)));
           memset(&input[0], 0, sizeof(input));
@@ -878,7 +928,7 @@ namespace MX
       ImGui::SameLine();
       if (ImGui::Button("Cancel##cancel create scene"))
       {
-        scene_name_accepted = 1;
+        input_accepted = 1;
         ImGui::CloseCurrentPopup();
       }
 
@@ -964,49 +1014,6 @@ namespace MX
 
       if (ImGui::Button("Cancel##cancel load scene from combo"))
         ImGui::CloseCurrentPopup();
-
-      ImGui::EndPopup();
-    }
-  #endif
-  }
-
-  static void render_spawn_object_popup()
-  {
-  #ifdef MX_IMGUI_ACTIVE
-    if (ImGui::BeginPopupModal("Object##spawn object", NULL, popup_flags))
-    {
-      if (object_name_accepted)
-        ImGui::Text("Give the object an unique name:");
-      else
-        ImGui::Text("Name is already being used");
-      
-      static char input[128];
-      ImGui::InputText("##type in name for object to spawn", input, IM_ARRAYSIZE(input));
-
-      for (const std::string &it : all_objects)
-      {
-        if (it == input)
-        {
-          object_name_accepted = 0;
-          break;
-        }
-        else
-          object_name_accepted = 1;
-      }
-      if (ImGui::Button("Confirm##confirm spawn object") && !strlen(input) == 0 && object_name_accepted)
-      {
-        MX_WORLD.m_ActiveScene->push_object(input, default_root_name);
-        memset(&input[0], 0, sizeof(input));
-        ImGui::CloseCurrentPopup();
-      }
-
-      ImGui::SameLine();
-
-      if (ImGui::Button("Cancel##cancle spawn object"))
-      {
-        object_name_accepted = 1;
-        ImGui::CloseCurrentPopup();
-      }
 
       ImGui::EndPopup();
     }

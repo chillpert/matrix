@@ -21,6 +21,8 @@ namespace MX
     MX_API Node(const Node&) = default;
     MX_API Node &operator=(const Node&) = default;
 
+    MX_API virtual std::string getIdentifier() = 0;
+
     MX_API virtual void upload_uniforms();
     
     MX_API virtual void addChild(std::shared_ptr<Node> node);

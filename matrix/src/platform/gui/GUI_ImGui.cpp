@@ -102,7 +102,10 @@ namespace MX
     colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
+    all_scenes = &MX_WORLD.m_ExistingScenes;
     current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
+    current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
+    current_scene = MX_WORLD.m_ActiveScene;
     current_node = current_root;
 
     MX_IMGUI_INIT
@@ -116,11 +119,6 @@ namespace MX
   void GUI_ImGui::update()
   {
   #ifdef MX_IMGUI_ACTIVE
-    current_scene = MX_WORLD.m_ActiveScene;
-    current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
-    current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
-    all_scenes = &MX_WORLD.m_ExistingScenes;
-
     all_objects.clear();
     current_scene->m_Sg.getAllObjects(all_objects, current_scene->m_Sg.m_Root);
 

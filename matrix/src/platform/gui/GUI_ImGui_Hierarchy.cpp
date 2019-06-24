@@ -71,7 +71,7 @@ namespace MX
 
       std::shared_ptr<Node> temp;
 
-      ImGui::Columns(2, NULL, false);
+      ImGui::Columns(3, "outline window", true);
       for (size_t n = 0; n < all_objects.size(); n++)
       {
         temp = current_scenegraph->search(std::string(all_objects.at(n)), current_root);
@@ -100,6 +100,10 @@ namespace MX
           ImGui::PopID();
         }
 
+        ImGui::NextColumn();
+
+        ImGui::Text(temp->getIdentifier().c_str());
+      
         ImGui::NextColumn();
       }
       ImGui::Columns(1);

@@ -31,7 +31,7 @@ namespace MX
 
   void Scene::initialize()
   {
-    
+    m_Sg.initialize();
   }
 
   void Scene::update()

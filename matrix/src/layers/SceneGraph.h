@@ -27,6 +27,8 @@ namespace MX
     MX_API void getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it);
 
   private:
+    MX_API void upload_lighting_unfiorms();
+    MX_API void recursive_initialize(std::shared_ptr<Node> it);
     MX_API void recursive_render(std::shared_ptr<Node> it, glm::fmat4 mat = glm::fmat4(1.0f));
 
   public:

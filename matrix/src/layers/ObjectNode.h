@@ -15,6 +15,8 @@ namespace MX
     MX_API ObjectNode(const ObjectNode&) = default;
     MX_API ObjectNode &operator=(const ObjectNode&) = default;
 
+    MX_API std::string getIdentifier() { return "Geometry"; }
+
     MX_API virtual void upload_uniforms();
 
     MX_API virtual void setTextureProfile(std::shared_ptr<TextureProfile> texture);

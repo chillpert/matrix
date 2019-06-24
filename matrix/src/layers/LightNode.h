@@ -17,6 +17,8 @@ namespace MX
     MX_API LightNode(const LightNode&) = default;
     MX_API LightNode &operator=(const LightNode&) = default;
 
+    MX_API virtual std::string getIdentifier() = 0;
+
     MX_API virtual void upload_uniforms(u_short index);
 
     glm::vec3 ambient = glm::fvec3(0.1f, 0.1f, 0.1f);
@@ -32,6 +34,8 @@ namespace MX
     MX_API DirectionalLightNode() = delete;
     MX_API DirectionalLightNode(const std::string &name);
 
+    MX_API std::string getIdentifier() { return "Directional Light"; }
+
     void upload_uniforms(u_short index) override;
   
   public:
@@ -43,6 +47,8 @@ namespace MX
   public:
     MX_API PointLightNode() = delete;
     MX_API PointLightNode(const std::string &name);
+
+    MX_API std::string getIdentifier() { return "Point Light"; }
 
     void upload_uniforms(u_short index) override;
 
@@ -59,6 +65,8 @@ namespace MX
   public:
     MX_API SpotLightNode() = delete;
     MX_API SpotLightNode(const std::string &name);
+
+    MX_API std::string getIdentifier() { return "Spot Light"; }
 
     void upload_uniforms(u_short index) override;
 

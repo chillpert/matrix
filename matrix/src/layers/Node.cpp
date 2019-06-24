@@ -32,7 +32,7 @@ namespace MX
       
       std::shared_ptr<Node> old_parent = m_Parent;
 
-      node->m_Children.push_back(std::move(std::make_shared<Node>(Node(*this))));
+      node->m_Children.push_back(std::shared_ptr<Node>(this));
       m_Parent = node;
 
       std::list<std::shared_ptr<Node>>::iterator iter;
