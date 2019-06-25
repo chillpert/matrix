@@ -4,7 +4,7 @@
 #include <Node.h>
 #include <ContainerNode.h>
 #include <LightNode.h>
-#include <ObjectNode.h>
+#include <GeometryNode.h>
 
 namespace MX
 {
@@ -35,7 +35,7 @@ namespace MX
     std::shared_ptr<Node> m_Root;
 
     std::vector<std::shared_ptr<ContainerNode>> m_container_nodes;
-    std::vector<std::shared_ptr<ObjectNode>> m_object_nodes;
+    std::vector<std::shared_ptr<GeometryNode>> m_object_nodes;
     
     std::vector<std::shared_ptr<DirectionalLightNode>> m_directional_light_nodes;
     std::vector<std::shared_ptr<PointLightNode>> m_point_light_nodes;

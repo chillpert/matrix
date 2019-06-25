@@ -9,6 +9,9 @@ namespace MX
   static const float grab_speed = 0.001f;
   static const float transform_factor = 100.0f;
 
+  static const float drag_min = 0.0f;
+  static const float drag_max = 1.0f;
+
   // pop_flags
   static ImGuiWindowFlags popup_flags = 0;
   static bool popup_no_titlebar = 0;
@@ -230,9 +233,9 @@ namespace MX
           else
             item_shaders = -1;
 
-          if (dynamic_cast<ObjectNode*>(current_node.get()))
+          if (dynamic_cast<GeometryNode*>(current_node.get()))
           {
-            auto object_node_ptr = dynamic_cast<ObjectNode*>(current_node.get());
+            auto object_node_ptr = dynamic_cast<GeometryNode*>(current_node.get());
 
             if (object_node_ptr->m_Model != nullptr)
             {
@@ -349,11 +352,11 @@ namespace MX
         static float max_parent_child_height = 40.0f;
         static float max_shader_child_height = 115.0f;
         static float max_model_child_height = 40.0f;
-        static float max_map_child_height = 120.0f;
+        static float max_map_child_height = 230.0f;
 
-        if (dynamic_cast<ObjectNode*>(current_node.get()))
+        if (dynamic_cast<GeometryNode*>(current_node.get()))
         {
-          auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
+          auto object_node_ptr = std::static_pointer_cast<GeometryNode>(current_node);
 
           if (object_node_ptr->m_textures != nullptr)
           {
@@ -431,23 +434,23 @@ namespace MX
               ImGui::Separator();
               ImGui::Spacing();
 
-              std::vector<float> ambient{lightnode_ptr->ambient.r, lightnode_ptr->ambient.g, lightnode_ptr->ambient.b};
-              ImGui::SliderFloat3("Ambient##ambient light color", ambient.data(), 0.0f, 1.0f);
-              lightnode_ptr->ambient.r = ambient.at(0);
-              lightnode_ptr->ambient.g = ambient.at(1);
-              lightnode_ptr->ambient.b = ambient.at(2);
+              ImVec4 ambient{lightnode_ptr->ambient.r, lightnode_ptr->ambient.g, lightnode_ptr->ambient.b, 1.0f};
+              ImGui::ColorEdit3("Ambient##ambient light colorr", (float*)&ambient);
+              lightnode_ptr->ambient.r = ambient.x;
+              lightnode_ptr->ambient.g = ambient.y;
+              lightnode_ptr->ambient.b = ambient.z;
 
-              std::vector<float> diffuse{lightnode_ptr->diffuse.r, lightnode_ptr->diffuse.g, lightnode_ptr->diffuse.b};
-              ImGui::SliderFloat3("Diffuse##diffuse light color", diffuse.data(), 0.0f, 1.0f);
-              lightnode_ptr->diffuse.r = diffuse.at(0);
-              lightnode_ptr->diffuse.g = diffuse.at(1);
-              lightnode_ptr->diffuse.b = diffuse.at(2);
+              ImVec4 diffuse{lightnode_ptr->diffuse.r, lightnode_ptr->diffuse.g, lightnode_ptr->diffuse.b, 1.0f};
+              ImGui::ColorEdit3("Diffuse##diffuse light color", (float*)&diffuse);
+              lightnode_ptr->diffuse.r = diffuse.x;
+              lightnode_ptr->diffuse.g = diffuse.y;
+              lightnode_ptr->diffuse.b = diffuse.z;
 
-              std::vector<float> specular{lightnode_ptr->specular.r, lightnode_ptr->specular.g, lightnode_ptr->specular.b};
-              ImGui::SliderFloat3("Specular##specular light color", specular.data(), 0.0f, 1.0f);
-              lightnode_ptr->specular.r = specular.at(0);
-              lightnode_ptr->specular.g = specular.at(1);
-              lightnode_ptr->specular.b = specular.at(2);
+              ImVec4 specular{lightnode_ptr->specular.r, lightnode_ptr->specular.g, lightnode_ptr->specular.b, 1.0f};
+              ImGui::ColorEdit3("Specular##specular light color", (float*)&specular);
+              lightnode_ptr->specular.r = specular.x;
+              lightnode_ptr->specular.g = specular.y;
+              lightnode_ptr->specular.b = specular.z;
 
               if (dynamic_cast<PointLightNode*>(current_node.get()))
               {
@@ -497,7 +500,7 @@ namespace MX
           ImGui::EndChild();
         }
 
-        if (dynamic_cast<ObjectNode*>(current_node.get()))
+        if (dynamic_cast<GeometryNode*>(current_node.get()))
         {
           if (ImGui::CollapsingHeader("Model##model header"))
           {
@@ -511,12 +514,11 @@ namespace MX
 
           if (ImGui::CollapsingHeader("Maps##texture maps"))
           {
-            static ImGuiWindowFlags winflags;
             if (ImGui::BeginChild("maps child", ImVec2(-1, max_map_child_height), true))
             {
-              if (dynamic_cast<ObjectNode*>(current_node.get()))
+              if (dynamic_cast<GeometryNode*>(current_node.get()))
               {
-                auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
+                auto object_node_ptr = std::static_pointer_cast<GeometryNode>(current_node);
 
                 if (object_node_ptr->m_textures != nullptr)
                 {
@@ -533,6 +535,16 @@ namespace MX
                   }
                   ImGui::SameLine();
                   ImGui::Combo("Diffuse##diffuse map", &item_diffuse_map, all_diffuse_maps.data(), IM_ARRAYSIZE(all_diffuse_maps.data()) * all_diffuse_maps.size(), max_combo);
+                  ImGui::SameLine();
+                  if (ImGui::Button("X##delete diffuse texture"))
+                  {
+                    if (object_node_ptr->m_textures->diffuse != nullptr)
+                    {
+                      object_node_ptr->m_textures->diffuse->unbind();
+                      object_node_ptr->m_textures->diffuse = nullptr;
+                    }
+                    
+                  }
 
                   if (ImGui::ImageButton(normal_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / normal_tex_w, 16.0f / normal_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
                   {
@@ -576,6 +588,30 @@ namespace MX
                   ImGui::SameLine();
                   ImGui::Combo("Height##height map", &item_height_map, all_height_maps.data(), IM_ARRAYSIZE(all_height_maps.data()) * all_height_maps.size(), max_combo);
                 }
+
+                ImGui::Spacing();
+                ImGui::Separator();
+                ImGui::Spacing();
+
+                ImGui::Text("Material");
+                
+                ImVec4 ambient{object_node_ptr->material.ambient.r, object_node_ptr->material.ambient.g, object_node_ptr->material.ambient.b, 1.0f};
+                ImGui::ColorEdit3("Ambient##ambient material color", (float*)&ambient);
+                object_node_ptr->material.ambient.r = ambient.x;
+                object_node_ptr->material.ambient.g = ambient.y;
+                object_node_ptr->material.ambient.b = ambient.z;
+
+                ImVec4 diffuse{object_node_ptr->material.diffuse.r, object_node_ptr->material.diffuse.g, object_node_ptr->material.diffuse.b, 1.0f};
+                ImGui::ColorEdit3("Diffuse##diffuse material color", (float*)&diffuse);
+                object_node_ptr->material.diffuse.r = diffuse.x;
+                object_node_ptr->material.diffuse.g = diffuse.y;
+                object_node_ptr->material.diffuse.b = diffuse.z;
+
+                ImVec4 specular{object_node_ptr->material.specular.r, object_node_ptr->material.specular.g, object_node_ptr->material.specular.b, 1.0f};
+                ImGui::ColorEdit3("Specular##specular material color", (float*)&specular);
+                object_node_ptr->material.specular.r = specular.x;
+                object_node_ptr->material.specular.g = specular.y;
+                object_node_ptr->material.specular.b = specular.z;
               }
             }
             ImGui::EndChild();
@@ -587,9 +623,9 @@ namespace MX
             item_prev_shaders = item_shaders;
           }
 
-          if (dynamic_cast<ObjectNode*>(current_node.get()) && current_node != nullptr && current_node != current_root)
+          if (dynamic_cast<GeometryNode*>(current_node.get()) && current_node != nullptr && current_node != current_root)
           {
-            auto object_node_ptr = std::static_pointer_cast<ObjectNode>(current_node);
+            auto object_node_ptr = std::static_pointer_cast<GeometryNode>(current_node);
 
             if (item_prev_models != item_models && item_models >= 0)
             {
@@ -794,7 +830,7 @@ namespace MX
         {
           translate_node(current_node);
         }
-        else if (dynamic_cast<ObjectNode*>(current_node.get()))
+        else if (dynamic_cast<GeometryNode*>(current_node.get()))
         {
           translate_node(current_node);
           ImGui::Separator();

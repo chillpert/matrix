@@ -11,6 +11,11 @@ namespace MX
       initialize(); 
   }
 
+  Shader_OpenGL::~Shader_OpenGL()
+  {
+    glDeleteShader(m_ID);
+  }
+
   void Shader_OpenGL::use() const
   {
     glUseProgram(m_ID); 

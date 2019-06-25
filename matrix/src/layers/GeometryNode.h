@@ -1,19 +1,19 @@
-#ifndef OBJECTNODE_H
-#define OBJECTNODE_H
+#ifndef GeometryNode_H
+#define GeometryNode_H
 
 #include <Node.h>
 
 namespace MX
 {
-  class ObjectNode : public Node
+  class GeometryNode : public Node
   {
   public:
-    MX_API ObjectNode() = delete;
-    MX_API ObjectNode(const std::string &name);
-    MX_API virtual ~ObjectNode() = default;
+    MX_API GeometryNode() = delete;
+    MX_API GeometryNode(const std::string &name);
+    MX_API virtual ~GeometryNode() = default;
 
-    MX_API ObjectNode(const ObjectNode&) = default;
-    MX_API ObjectNode &operator=(const ObjectNode&) = default;
+    MX_API GeometryNode(const GeometryNode&) = default;
+    MX_API GeometryNode &operator=(const GeometryNode&) = default;
 
     MX_API std::string getIdentifier() { return "Geometry"; }
 
@@ -29,7 +29,8 @@ namespace MX
 
     std::shared_ptr<Model> m_Model = nullptr;
     std::shared_ptr<TextureProfile> m_textures;
+    Material material;
   };
 }
 
-#endif // OBJECTNODE_H
+#endif // GeometryNode_H

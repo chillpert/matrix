@@ -110,7 +110,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ObjectNode> object_node(new ObjectNode(name));
+    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setDiffuseTexture(texture);
@@ -133,7 +133,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ObjectNode> object_node(new ObjectNode(name));
+    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setTextureProfile(texture_profile);

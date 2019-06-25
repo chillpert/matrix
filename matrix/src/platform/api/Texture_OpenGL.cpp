@@ -10,10 +10,20 @@ namespace MX
       initialize();
   }
 
+  Texture_OpenGL::~Texture_OpenGL()
+  {
+    glDeleteTextures(1, &m_ID);
+  }
+
   void Texture_OpenGL::use() const
   {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_ID);
+  }
+
+  void Texture_OpenGL::unbind() const
+  {
+    glBindTexture(m_ID, 0);
   }
 
   void Texture_OpenGL::initialize()

@@ -14,14 +14,21 @@ namespace MX
 {
   class Texture;
 
+  struct Material
+  {
+    glm::vec3 ambient = {1.0f, 1.0f, 1.0f};
+    glm::vec3 diffuse = {1.0f, 1.0f, 1.0f};
+    glm::vec3 specular = {1.0f, 1.0f, 1.0f};
+
+    float shininess = 32.0f;
+  };
+
   struct TextureProfile
   {
     std::shared_ptr<Texture> diffuse = nullptr;
     std::shared_ptr<Texture> normal = nullptr;
     std::shared_ptr<Texture> bump = nullptr;
     std::shared_ptr<Texture> height = nullptr;
-
-    float shininess = 32.0f;
   };
 
   struct STB_Texture
@@ -43,6 +50,7 @@ namespace MX
 
     MX_API virtual void initialize() = 0;
     MX_API virtual void use() const = 0;
+    MX_API virtual void unbind() const = 0;
 
     MX_API virtual u_int64_t getID() = 0;
     MX_API virtual Texture *get() { return this; }

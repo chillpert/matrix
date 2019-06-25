@@ -1,14 +1,14 @@
-#include <ObjectNode.h>
+#include <GeometryNode.h>
 
 namespace MX
 {
-  ObjectNode::ObjectNode(const std::string &name)
+  GeometryNode::GeometryNode(const std::string &name)
     : Node(name)
   {
     m_textures = std::shared_ptr<TextureProfile>(new TextureProfile());
   }
 
-  void ObjectNode::upload_uniforms()
+  void GeometryNode::upload_uniforms()
   {
     Node::upload_uniforms();
 
@@ -36,13 +36,17 @@ namespace MX
       m_textures->height->use();
     }
 
-    m_Shader->setFloat("material.shininess", m_textures->shininess);
+    m_Shader->setfVec3("material.ambient", material.ambient);
+    m_Shader->setfVec3("material.diffuse", material.diffuse);
+    m_Shader->setfVec3("material.specular", material.specular);
+
+    m_Shader->setFloat("material.shininess", material.shininess);
 
     if (m_Model != nullptr)
       m_Model->render(std::static_pointer_cast<MX_SHADER>(m_Shader));
   }
 
-  void ObjectNode::setTextureProfile(std::shared_ptr<TextureProfile> texture)
+  void GeometryNode::setTextureProfile(std::shared_ptr<TextureProfile> texture)
   {
     if (texture != nullptr)
     {
@@ -51,24 +55,36 @@ namespace MX
         if (!texture->diffuse->m_initialized)
           texture->diffuse->initialize();
 
+        m_textures->diffuse = texture->diffuse;
+      }
+
+      if (texture->normal != nullptr)
+      {
         if (!texture->normal->m_initialized)
           texture->normal->initialize();
 
+        m_textures->normal = texture->normal;
+      }
+
+      if (texture->bump != nullptr)
+      {
         if (!texture->bump->m_initialized)
           texture->bump->initialize();
 
+        m_textures->bump = texture->bump;
+      }
+
+      if (texture->height != nullptr)
+      {
         if (!texture->height->m_initialized)
           texture->height->initialize();
-        
-        m_textures->diffuse = texture->diffuse;
-        m_textures->normal = texture->normal;
-        m_textures->bump = texture->bump;
+
         m_textures->height = texture->height;
       }
     }
   }
 
-  void ObjectNode::setDiffuseTexture(std::shared_ptr<Texture> diffuse)
+  void GeometryNode::setDiffuseTexture(std::shared_ptr<Texture> diffuse)
   {
     if (diffuse != nullptr)
     {
@@ -77,7 +93,7 @@ namespace MX
     }
   }
 
-  void ObjectNode::setNormalTexture(std::shared_ptr<Texture> normal)
+  void GeometryNode::setNormalTexture(std::shared_ptr<Texture> normal)
   {
     if (normal != nullptr)
     {
@@ -86,7 +102,7 @@ namespace MX
     }
   }
 
-  void ObjectNode::setBumpTexture(std::shared_ptr<Texture> bump)
+  void GeometryNode::setBumpTexture(std::shared_ptr<Texture> bump)
   {
     if (bump != nullptr)
     {
@@ -95,7 +111,7 @@ namespace MX
     }
   }
 
-  void ObjectNode::setHeightTexture(std::shared_ptr<Texture> height)
+  void GeometryNode::setHeightTexture(std::shared_ptr<Texture> height)
   {
     if (height != nullptr)
     {
@@ -104,7 +120,7 @@ namespace MX
     }
   }
 
-  void ObjectNode::setModel(std::shared_ptr<Model> model)
+  void GeometryNode::setModel(std::shared_ptr<Model> model)
   {
     if (model != nullptr)
     {
