@@ -54,6 +54,21 @@ namespace MX
       std::shared_ptr<TextureProfile> texture_profile,
       const std::string &node_to_attach_to = default_root_name
     );
+    MX_API bool push_object_with_material_profile(
+      const std::string &name,
+      std::shared_ptr<Model> model,
+      std::shared_ptr<Shader> shader,
+      const MaterialProfile &material_profile,
+      const std::string &node_to_attach_to = default_root_name
+    );
+    MX_API bool push_object_with_material_and_texture_profile(
+      const std::string &name,
+      std::shared_ptr<Model> model,
+      std::shared_ptr<Shader> shader,
+      const MaterialProfile &material_profile,
+      std::shared_ptr<TextureProfile> texture_profile,
+      const std::string &node_to_attach_to = default_root_name
+    );
 
     // add light sources
     MX_API bool push_directional_light(const std::string &name, const std::string &node_to_attach_to = default_root_name);

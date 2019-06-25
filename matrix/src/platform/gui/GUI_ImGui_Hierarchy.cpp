@@ -69,11 +69,12 @@ namespace MX
       static size_t selected = -1;
       static size_t prev_selected = selected;
 
-      std::shared_ptr<Node> temp;
+      std::shared_ptr<Node> temp = nullptr;
 
       ImGui::Columns(3, "outline window", true);
       for (size_t n = 0; n < all_objects.size(); n++)
       {
+        std::cout << all_objects.at(n) << std::endl;
         temp = current_scenegraph->search(std::string(all_objects.at(n)), current_root);
         if (ImGui::Selectable(temp->m_Name.c_str(), selected == n))
           selected = n;

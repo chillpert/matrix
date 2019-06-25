@@ -33,6 +33,15 @@
 
 namespace MX
 {
+  enum logger_message_type
+  {
+    mx_warn,
+    mx_info,
+    mx_success,
+    mx_fatal,
+    mx_all       // only used for gui-mx-logger
+  };
+
   struct MX_API Logger
   {
     static std::string getTime();

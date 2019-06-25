@@ -11,6 +11,10 @@
 
 namespace MX
 {
+  class Node;
+
+  typedef std::shared_ptr<Node> MX_Node;
+
   class Node
   {
   public:
@@ -20,6 +24,8 @@ namespace MX
 
     MX_API Node(const Node&) = default;
     MX_API Node &operator=(const Node&) = default;
+
+    MX_API virtual Node *getNode() { return this; }
 
     MX_API virtual std::string getIdentifier() = 0;
 

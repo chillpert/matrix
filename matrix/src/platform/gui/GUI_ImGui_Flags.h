@@ -8,6 +8,7 @@
 
 namespace MX
 {
+  extern bool global_cool_down;
   extern bool cool_down;
 
   extern std::shared_ptr<Node> current_node;

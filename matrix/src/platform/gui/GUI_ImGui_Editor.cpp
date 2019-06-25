@@ -255,9 +255,12 @@ namespace MX
               {
                 for (u_int64_t i = 0; i < all_diffuse_maps.size(); ++i)
                 {
-                  std::string rhs = all_diffuse_maps[i] + std::string(".jpg");
-                  if (object_node_ptr->m_textures->diffuse->m_Name == rhs)
+                  std::string rhs = all_diffuse_maps[i];// + std::string(".jpg");
+                  if (remove_file_ending(object_node_ptr->m_textures->diffuse->m_Name) == rhs)
+                  {
+                    MX_FATAL("hi");
                     item_diffuse_map = i;
+                  }
                 }
               }
             }
@@ -352,7 +355,7 @@ namespace MX
         static float max_parent_child_height = 40.0f;
         static float max_shader_child_height = 115.0f;
         static float max_model_child_height = 40.0f;
-        static float max_map_child_height = 230.0f;
+        static float max_map_child_height = 260.0f;
 
         if (dynamic_cast<GeometryNode*>(current_node.get()))
         {
@@ -543,7 +546,6 @@ namespace MX
                       object_node_ptr->m_textures->diffuse->unbind();
                       object_node_ptr->m_textures->diffuse = nullptr;
                     }
-                    
                   }
 
                   if (ImGui::ImageButton(normal_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / normal_tex_w, 16.0f / normal_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
@@ -595,23 +597,25 @@ namespace MX
 
                 ImGui::Text("Material");
                 
-                ImVec4 ambient{object_node_ptr->material.ambient.r, object_node_ptr->material.ambient.g, object_node_ptr->material.ambient.b, 1.0f};
+                ImVec4 ambient{object_node_ptr->m_material.ambient.r, object_node_ptr->m_material.ambient.g, object_node_ptr->m_material.ambient.b, 1.0f};
                 ImGui::ColorEdit3("Ambient##ambient material color", (float*)&ambient);
-                object_node_ptr->material.ambient.r = ambient.x;
-                object_node_ptr->material.ambient.g = ambient.y;
-                object_node_ptr->material.ambient.b = ambient.z;
+                object_node_ptr->m_material.ambient.r = ambient.x;
+                object_node_ptr->m_material.ambient.g = ambient.y;
+                object_node_ptr->m_material.ambient.b = ambient.z;
 
-                ImVec4 diffuse{object_node_ptr->material.diffuse.r, object_node_ptr->material.diffuse.g, object_node_ptr->material.diffuse.b, 1.0f};
+                ImVec4 diffuse{object_node_ptr->m_material.diffuse.r, object_node_ptr->m_material.diffuse.g, object_node_ptr->m_material.diffuse.b, 1.0f};
                 ImGui::ColorEdit3("Diffuse##diffuse material color", (float*)&diffuse);
-                object_node_ptr->material.diffuse.r = diffuse.x;
-                object_node_ptr->material.diffuse.g = diffuse.y;
-                object_node_ptr->material.diffuse.b = diffuse.z;
+                object_node_ptr->m_material.diffuse.r = diffuse.x;
+                object_node_ptr->m_material.diffuse.g = diffuse.y;
+                object_node_ptr->m_material.diffuse.b = diffuse.z;
 
-                ImVec4 specular{object_node_ptr->material.specular.r, object_node_ptr->material.specular.g, object_node_ptr->material.specular.b, 1.0f};
+                ImVec4 specular{object_node_ptr->m_material.specular.r, object_node_ptr->m_material.specular.g, object_node_ptr->m_material.specular.b, 1.0f};
                 ImGui::ColorEdit3("Specular##specular material color", (float*)&specular);
-                object_node_ptr->material.specular.r = specular.x;
-                object_node_ptr->material.specular.g = specular.y;
-                object_node_ptr->material.specular.b = specular.z;
+                object_node_ptr->m_material.specular.r = specular.x;
+                object_node_ptr->m_material.specular.g = specular.y;
+                object_node_ptr->m_material.specular.b = specular.z;
+
+                ImGui::InputFloat("Shininess##material shininess", &object_node_ptr->m_material.shininess);
               }
             }
             ImGui::EndChild();
@@ -956,6 +960,7 @@ namespace MX
         {
           MX_WORLD.push(std::shared_ptr<Scene>(new Scene(input)));
           memset(&input[0], 0, sizeof(input));
+          global_cool_down = 1;
 
           ImGui::CloseCurrentPopup();
         }
@@ -1040,6 +1045,7 @@ namespace MX
       if (ImGui::Button("Confirm##confirm load scene from combo", ImVec2(60.0f, 20.0f)))
       {
         MX_WORLD.m_ActiveScene = MX_WORLD.m_ExistingScenes[item_current_scenes];
+        global_cool_down = 1;
         item_current_scenes = -1;
         ImGui::CloseCurrentPopup();
       }

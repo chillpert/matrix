@@ -3,6 +3,7 @@
 
 namespace MX
 {
+  bool global_cool_down = 0;
   bool cool_down = 0;
 
   std::shared_ptr<Node> current_node;

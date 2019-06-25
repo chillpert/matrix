@@ -14,7 +14,7 @@ namespace MX
 {
   class Texture;
 
-  struct Material
+  struct MaterialProfile
   {
     glm::vec3 ambient = {1.0f, 1.0f, 1.0f};
     glm::vec3 diffuse = {1.0f, 1.0f, 1.0f};

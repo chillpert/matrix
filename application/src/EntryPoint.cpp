@@ -64,6 +64,32 @@ void load_debug_scene()
   MX_SUCCESS("MX: Debug Scene: Initialized");
 }
 
+void load_material_test_scene()
+{
+  using namespace MX;
+  MX_SCENE->push_container("Lighting");
+  MX_SCENE->push_container("Spheres");
+
+  //MX_SCENE->push_directional_light("Directional Light", "Lighting");
+  MX_SCENE->push_point_light("Point Light 1", "Lighting");
+  MX_SCENE->push_spot_light("Spot Light 1", "Lighting");
+
+  MX_SCENE->push_object_with_diffuse_texture("Jade", MX_GET_MODEL("sphere.obj"), MX_GET_SHADER("blinn_phong"), MX_GET_TEXTURE("basic.jpg"), "Spheres");
+  MX_Node jade_node = MX_SCENEGRAPH.search("Jade", MX_ROOT);
+  jade_node->setTransform(LEFT, 2.0f, 0);
+
+  MX_SCENE->push_object_with_diffuse_texture("Emerald", MX_GET_MODEL("sphere.obj"), MX_GET_SHADER("blinn_phong"), MX_GET_TEXTURE("basic.jpg"), "Spheres");
+  std::shared_ptr<GeometryNode> emerald_node = std::static_pointer_cast<GeometryNode>(MX_SCENEGRAPH.search("Emerald", MX_ROOT));
+  emerald_node->m_material.ambient = {0.0215f, 0.1745f, 0.0215f};
+  emerald_node->m_material.diffuse = {0.07568f, 0.61424f, 0.07568f};
+  emerald_node->m_material.specular = {0.633f, 0.727811f, 0.633f};
+  emerald_node->m_material.shininess = 76.8f;
+
+  MX_SCENE->push_object_with_diffuse_texture("Obsidian", MX_GET_MODEL("sphere.obj"), MX_GET_SHADER("blinn_phong"), MX_GET_TEXTURE("basic.jpg"), "Spheres");
+  MX_Node obsidian_node = MX_SCENEGRAPH.search("Obsidian", MX_ROOT);
+  obsidian_node->setTransform(LEFT, -2.0f, 0);
+}
+
 void initialize()
 {
   using namespace MX;
@@ -73,6 +99,12 @@ void initialize()
 
 #ifdef MX_DEBUG
   load_debug_scene();
+#endif
+
+  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("material test")));
+
+#ifdef MX_DEBUG
+  load_material_test_scene();
 #endif
 }
 

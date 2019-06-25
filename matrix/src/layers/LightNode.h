@@ -7,6 +7,16 @@ namespace MX
 {
   extern std::string light_type;
 
+  class LightNode;
+  class DirectionalLightNode;
+  class PointLightNode;
+  class SpotLightNode;
+
+  typedef LightNode* MX_LightNode;
+  typedef DirectionalLightNode* MX_DirectionalLightNode;
+  typedef PointLightNode* MX_PointLightNode;
+  typedef SpotLightNode* MX_SpotLightNode;
+
   class LightNode : public Node
   {
   public:
@@ -16,6 +26,8 @@ namespace MX
 
     MX_API LightNode(const LightNode&) = default;
     MX_API LightNode &operator=(const LightNode&) = default;
+
+    MX_API virtual LightNode* getNode() { return this; }
 
     MX_API virtual std::string getIdentifier() = 0;
 
@@ -34,6 +46,8 @@ namespace MX
     MX_API DirectionalLightNode() = delete;
     MX_API DirectionalLightNode(const std::string &name);
 
+    MX_API DirectionalLightNode* getNode() { return this; }
+
     MX_API std::string getIdentifier() { return "Directional Light"; }
 
     void upload_uniforms(u_short index) override;
@@ -47,6 +61,8 @@ namespace MX
   public:
     MX_API PointLightNode() = delete;
     MX_API PointLightNode(const std::string &name);
+
+    MX_API PointLightNode* getNode() { return this; }
 
     MX_API std::string getIdentifier() { return "Point Light"; }
 
@@ -65,6 +81,8 @@ namespace MX
   public:
     MX_API SpotLightNode() = delete;
     MX_API SpotLightNode(const std::string &name);
+
+    MX_API SpotLightNode* getNode() { return this; }
 
     MX_API std::string getIdentifier() { return "Spot Light"; }
 

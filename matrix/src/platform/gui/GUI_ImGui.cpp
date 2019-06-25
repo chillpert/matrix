@@ -119,6 +119,20 @@ namespace MX
   void GUI_ImGui::update()
   {
   #ifdef MX_IMGUI_ACTIVE
+    if (global_cool_down)
+    {
+      current_node = current_root;
+      MX_FATAL("seting new scene graph");
+
+      all_scenes = &MX_WORLD.m_ExistingScenes;
+      current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
+      current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
+      current_scene = MX_WORLD.m_ActiveScene;
+      current_node = current_root;
+    }
+
+    global_cool_down = 0;
+
     all_objects.clear();
     current_scene->m_Sg.getAllObjects(all_objects, current_scene->m_Sg.m_Root);
 
@@ -138,18 +152,18 @@ namespace MX
     renderDockSpace();
     renderViewport();
 
-    if (demo_window_enabled)            ImGui::ShowDemoWindow();
+    if (demo_window_enabled)                                 ImGui::ShowDemoWindow();
 
-    if (menubar_enabled)                renderMenuBar();
-    if (spawn_window_enabled)           renderSpawnMenu();
-    if (scenegraph_enabled)             renderSceneGraph();
-    if (outline_enabled)                renderOutline();
-    if (scenes_window_enabled)          renderScenesMenu();
-    if (assets_window_enabled)          renderAssestsMenu();
-    if (logger_window_enabled)          renderLoggerWindow();
-    if (transform_window_enabled)       renderTransformMenu();
-    if (performance_monitor_enabled)    renderPerformanceMonitor();
-    if (file_inspector_enabled)         renderFileInspectorWindow();
+    if (!global_cool_down && menubar_enabled)                renderMenuBar();
+    if (!global_cool_down && spawn_window_enabled)           renderSpawnMenu();
+    if (!global_cool_down && scenegraph_enabled)             renderSceneGraph();
+    if (!global_cool_down && outline_enabled)                renderOutline();
+    if (!global_cool_down && scenes_window_enabled)          renderScenesMenu();
+    if (!global_cool_down && assets_window_enabled)          renderAssestsMenu();
+    if (!global_cool_down && logger_window_enabled)          renderLoggerWindow();
+    if (!global_cool_down && transform_window_enabled)       renderTransformMenu();
+    if (!global_cool_down && performance_monitor_enabled)    renderPerformanceMonitor();
+    if (!global_cool_down && file_inspector_enabled)         renderFileInspectorWindow();
 
     ImGui::Render();
     MX_IMGUI_API_RENDER

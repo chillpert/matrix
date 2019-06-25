@@ -37,7 +37,10 @@ namespace MX
       for (auto it : m_Models)
       {
         if (it->m_name == name)
+        {
+          if (!it->m_initialized) it->initialize();
           return it;
+        }
       }
 
       throw mx_entity_not_found(name);
@@ -55,7 +58,10 @@ namespace MX
       for (auto it : m_Shaders)
       {
         if (it->m_Name == name)
+        {
+          if (!it->m_initialized) it->initialize();
           return it;
+        }
       }
 
       throw mx_entity_not_found(name);
@@ -73,7 +79,10 @@ namespace MX
       for (auto it : m_Textures)
       {
         if (it->m_Name == name)
+        {
+          if (!it->m_initialized) it->initialize();
           return it;
+        }
       }
 
       throw mx_entity_not_found(name);

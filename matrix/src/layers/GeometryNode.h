@@ -5,6 +5,10 @@
 
 namespace MX
 {
+  class GeometryNode;
+
+  typedef GeometryNode* MX_GeometryNode;
+
   class GeometryNode : public Node
   {
   public:
@@ -15,11 +19,14 @@ namespace MX
     MX_API GeometryNode(const GeometryNode&) = default;
     MX_API GeometryNode &operator=(const GeometryNode&) = default;
 
+    MX_API GeometryNode *getNode() { return this; }
+
     MX_API std::string getIdentifier() { return "Geometry"; }
 
     MX_API virtual void upload_uniforms();
 
     MX_API virtual void setTextureProfile(std::shared_ptr<TextureProfile> texture);
+    MX_API virtual void setMaterialProfile(const MaterialProfile &material);
     MX_API virtual void setDiffuseTexture(std::shared_ptr<Texture> diffuse);
     MX_API virtual void setNormalTexture(std::shared_ptr<Texture> normal);
     MX_API virtual void setBumpTexture(std::shared_ptr<Texture> bump);
@@ -29,7 +36,7 @@ namespace MX
 
     std::shared_ptr<Model> m_Model = nullptr;
     std::shared_ptr<TextureProfile> m_textures;
-    Material material;
+    MaterialProfile m_material;
   };
 }
 

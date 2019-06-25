@@ -36,11 +36,11 @@ namespace MX
       m_textures->height->use();
     }
 
-    m_Shader->setfVec3("material.ambient", material.ambient);
-    m_Shader->setfVec3("material.diffuse", material.diffuse);
-    m_Shader->setfVec3("material.specular", material.specular);
+    m_Shader->setfVec3("material.ambient", m_material.ambient);
+    m_Shader->setfVec3("material.diffuse", m_material.diffuse);
+    m_Shader->setfVec3("material.specular", m_material.specular);
 
-    m_Shader->setFloat("material.shininess", material.shininess);
+    m_Shader->setFloat("material.shininess", m_material.shininess);
 
     if (m_Model != nullptr)
       m_Model->render(std::static_pointer_cast<MX_SHADER>(m_Shader));
@@ -82,6 +82,14 @@ namespace MX
         m_textures->height = texture->height;
       }
     }
+  }
+
+  void GeometryNode::setMaterialProfile(const MaterialProfile &material)
+  {
+    m_material.ambient = material.ambient;
+    m_material.diffuse = material.diffuse;
+    m_material.specular = material.specular;
+    m_material.shininess = material.shininess;
   }
 
   void GeometryNode::setDiffuseTexture(std::shared_ptr<Texture> diffuse)

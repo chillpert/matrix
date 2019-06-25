@@ -144,6 +144,53 @@ namespace MX
     return 1;
   }
 
+  bool Scene::push_object_with_material_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const MaterialProfile &material_profile, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Object: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Object: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
+    object_node->setModel(model);
+    object_node->setShader(shader);
+    object_node->setMaterialProfile(material_profile);
+
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
+    return 1;
+  }
+
+  bool Scene::push_object_with_material_and_texture_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const MaterialProfile &material_profile, std::shared_ptr<TextureProfile> texture_profile, const std::string &node_to_attach_to)
+  {
+    MX_INFO("MX: Scene: " + m_Name + " Push Object: " + name);
+
+    if (!object_already_exists(name))
+      m_ExistingObjects.push_back(name);
+    else
+    {
+      MX_WARN("MX: Scene: " + m_Name + " Push Object: " + name + ": Invalid name - object already exists");
+      return 0;
+    }
+
+    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
+    object_node->setModel(model);
+    object_node->setShader(shader);
+    object_node->setTextureProfile(texture_profile);
+    object_node->setMaterialProfile(material_profile);
+
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
+    MX_SCENEGRAPH.search(node_to_attach_to, MX_ROOT)->addChild(temp);
+    MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
+    return 1;
+  }
+
   /*###########################################################################################################################
   #######################################             LIGHTS                ###################################################
   ###########################################################################################################################*/
