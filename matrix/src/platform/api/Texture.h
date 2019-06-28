@@ -26,6 +26,7 @@ namespace MX
   struct TextureProfile
   {
     std::shared_ptr<Texture> diffuse = nullptr;
+    std::shared_ptr<Texture> specular = nullptr;
     std::shared_ptr<Texture> normal = nullptr;
     std::shared_ptr<Texture> bump = nullptr;
     std::shared_ptr<Texture> height = nullptr;
@@ -49,7 +50,7 @@ namespace MX
     MX_API Texture &operator=(const Texture&) = default;
 
     MX_API virtual void initialize() = 0;
-    MX_API virtual void use() const = 0;
+    MX_API virtual void use(int index = 0) const = 0;
     MX_API virtual void unbind() const = 0;
 
     MX_API virtual u_int64_t getID() = 0;
@@ -60,7 +61,7 @@ namespace MX
 
     std::string m_Name;
     std::string m_path;
-    std::string m_type = "texture_diffuse1";
+    std::string m_type = "texture_diffuse";
 
     bool m_initialized = 0;
   };

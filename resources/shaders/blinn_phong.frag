@@ -58,9 +58,11 @@ struct SpotLight
 
 struct Material
 {
+  // do not have an ambient texture since that is in 99% of all cases identical to diffuse
   sampler2D diffuse_texture1;
   sampler2D specular_texture1;
   sampler2D normal_texture1;
+  sampler2D bump_texture1;
   sampler2D height_texture1;
 
   vec3 ambient;
@@ -177,7 +179,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
   vec3 specular = light.specular * (spec * texture(material.specular_texture1, fs_in.TexCoords).rgb * material.specular);
 
   // spotlight (soft edges)
-  float theta = dot(lightDir, normalize(-light.direction)); 
+  float theta = dot(lightDir, normalize(-light.direction));
   float epsilon = (light.cutOff - light.outerCutOff);
   float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
   diffuse  *= intensity;

@@ -27,7 +27,9 @@ namespace MX
 
     MX_API virtual void setTextureProfile(std::shared_ptr<TextureProfile> texture);
     MX_API virtual void setMaterialProfile(const MaterialProfile &material);
+
     MX_API virtual void setDiffuseTexture(std::shared_ptr<Texture> diffuse);
+    MX_API virtual void setSpecularTexture(std::shared_ptr<Texture> specular);
     MX_API virtual void setNormalTexture(std::shared_ptr<Texture> normal);
     MX_API virtual void setBumpTexture(std::shared_ptr<Texture> bump);
     MX_API virtual void setHeightTexture(std::shared_ptr<Texture> height);

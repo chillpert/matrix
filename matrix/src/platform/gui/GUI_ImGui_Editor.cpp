@@ -241,8 +241,7 @@ namespace MX
             {
               for (u_int64_t i = 0; i < all_models.size(); ++i)
               {
-                std::string rhs = all_models[i] + std::string(".obj");
-                if (object_node_ptr->m_Model->m_name == rhs)
+                if (remove_file_ending(object_node_ptr->m_Model->m_name) == all_models[i])
                   item_models = i;
               }
             }
@@ -255,12 +254,8 @@ namespace MX
               {
                 for (u_int64_t i = 0; i < all_diffuse_maps.size(); ++i)
                 {
-                  std::string rhs = all_diffuse_maps[i];// + std::string(".jpg");
-                  if (remove_file_ending(object_node_ptr->m_textures->diffuse->m_Name) == rhs)
-                  {
-                    MX_FATAL("hi");
+                  if (remove_file_ending(object_node_ptr->m_textures->diffuse->m_Name) == all_diffuse_maps[i])
                     item_diffuse_map = i;
-                  }
                 }
               }
             }
@@ -273,8 +268,7 @@ namespace MX
               {
                 for (u_int64_t i = 0; i < all_normal_maps.size(); ++i)
                 {
-                  std::string rhs = all_normal_maps[i] + std::string(".jpg");
-                  if (object_node_ptr->m_textures->normal->m_Name == rhs)
+                  if (remove_file_ending(object_node_ptr->m_textures->normal->m_Name) == all_normal_maps[i])
                     item_normal_map = i;
                 }
               }
@@ -288,8 +282,7 @@ namespace MX
               {
                 for (u_int64_t i = 0; i < all_bump_maps.size(); ++i)
                 {
-                  std::string rhs = all_bump_maps[i] + std::string(".jpg");
-                  if (object_node_ptr->m_textures->bump->m_Name == rhs)
+                  if (remove_file_ending(object_node_ptr->m_textures->bump->m_Name) == all_bump_maps[i])
                     item_bump_map = i;
                 }
               }
@@ -303,8 +296,7 @@ namespace MX
               {
                 for (u_int64_t i = 0; i < all_height_maps.size(); ++i)
                 {
-                  std::string rhs = all_height_maps[i] + std::string(".jpg");
-                  if (object_node_ptr->m_textures->height->m_Name == rhs)
+                  if (remove_file_ending(object_node_ptr->m_textures->height->m_Name) == all_height_maps[i])
                     item_height_map = i;
                 }
               }
@@ -454,6 +446,8 @@ namespace MX
               lightnode_ptr->specular.r = specular.x;
               lightnode_ptr->specular.g = specular.y;
               lightnode_ptr->specular.b = specular.z;
+
+              ImGui::SliderFloat("Ambient Intensity##light ambient strenght", &lightnode_ptr->ambient_strength, 0.0f, 5.0f);
 
               if (dynamic_cast<PointLightNode*>(current_node.get()))
               {

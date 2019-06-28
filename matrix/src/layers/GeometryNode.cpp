@@ -14,26 +14,32 @@ namespace MX
 
     if (m_textures->diffuse != nullptr)
     {
+      m_textures->diffuse->use(0);
       m_Shader->setInt("material.diffuse_texture1", 0);
-      m_textures->diffuse->use();
+    }
+
+    if (m_textures->specular != nullptr)
+    {
+      m_textures->specular->use(1);
+      m_Shader->setInt("material.specular_texture1", 1);
     }
     
     if (m_textures->normal != nullptr)
     {
-      m_Shader->setInt("material.normal_texture1", 1);
-      m_textures->normal->use();
+      m_textures->normal->use(2);
+      m_Shader->setInt("material.normal_texture1", 2);
     }
     
     if (m_textures->bump != nullptr)
     {
-      m_Shader->setInt("material.bump_texture1", 2);
-      m_textures->bump->use();
+      m_textures->bump->use(3);
+      m_Shader->setInt("material.bump_texture1", 3);
     }
     
     if (m_textures->height != nullptr)
     {
-      m_Shader->setInt("material.height_texture1", 3);
-      m_textures->height->use();
+      m_textures->height->use(4);
+      m_Shader->setInt("material.height_texture1", 4);
     }
 
     m_Shader->setfVec3("material.ambient", m_material.ambient);
@@ -56,6 +62,14 @@ namespace MX
           texture->diffuse->initialize();
 
         m_textures->diffuse = texture->diffuse;
+      }
+
+      if (texture->specular != nullptr)
+      {
+        if (!texture->specular->m_initialized)
+          texture->specular->initialize();
+
+        m_textures->specular = texture->specular;
       }
 
       if (texture->normal != nullptr)
@@ -98,6 +112,15 @@ namespace MX
     {
       diffuse->initialize();
       m_textures->diffuse = diffuse;
+    }
+  }
+
+  void GeometryNode::setSpecularTexture(std::shared_ptr<Texture> specular)
+  {
+    if (specular != nullptr)
+    {
+      specular->initialize();
+      m_textures->specular = specular;
     }
   }
 

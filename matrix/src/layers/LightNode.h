@@ -33,11 +33,11 @@ namespace MX
 
     MX_API virtual void upload_uniforms(u_short index);
 
-    glm::vec3 ambient = glm::fvec3(0.1f, 0.1f, 0.1f);
+    glm::vec3 ambient = glm::fvec3(0.2f, 0.2f, 0.2f);
     glm::vec3 diffuse = glm::fvec3(0.8f, 0.8f, 0.8f);
     glm::vec3 specular = glm::fvec3(1.0f, 1.0f, 1.0f);
 
-    float ambient_strength = 0.08f;
+    float ambient_strength = 0.7f;
   };
 
   class DirectionalLightNode : public LightNode

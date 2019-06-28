@@ -65,7 +65,7 @@ namespace MX
         number = std::to_string(normal_nr++);
       else if(name == "texture_height")
         number = std::to_string(height_nr++);
-
+      
       glUniform1i(glGetUniformLocation(temp_shader->m_ID, (name + number).c_str()), i);
       glBindTexture(GL_TEXTURE_2D, temp_texture->m_ID);
     }

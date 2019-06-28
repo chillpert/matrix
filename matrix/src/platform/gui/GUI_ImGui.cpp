@@ -121,8 +121,8 @@ namespace MX
   #ifdef MX_IMGUI_ACTIVE
     if (global_cool_down)
     {
+      MX_INFO("MX: GUI: Update: Setting new active scene");
       current_node = current_root;
-      MX_FATAL("seting new scene graph");
 
       all_scenes = &MX_WORLD.m_ExistingScenes;
       current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;

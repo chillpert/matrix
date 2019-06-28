@@ -15,9 +15,9 @@ namespace MX
     glDeleteTextures(1, &m_ID);
   }
 
-  void Texture_OpenGL::use() const
+  void Texture_OpenGL::use(int index) const
   {
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0 + index);
     glBindTexture(GL_TEXTURE_2D, m_ID);
   }
 

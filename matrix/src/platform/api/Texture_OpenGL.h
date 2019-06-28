@@ -16,7 +16,7 @@ namespace MX
     MX_API Texture_OpenGL &operator=(const Texture_OpenGL&) = default;
     
     MX_API void initialize() override;
-    MX_API void use() const override;
+    MX_API void use(int index = 0) const override;
     MX_API void unbind() const override;
 
     MX_API u_int64_t getID() { return static_cast<u_int64_t>(m_ID); }
