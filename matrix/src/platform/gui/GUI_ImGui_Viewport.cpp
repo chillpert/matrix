@@ -92,7 +92,7 @@ namespace MX
 
       if (first_iteration)
       {
-        std::unique_ptr<Texture> play_button(std::make_unique<MX_TEXTURE>("elon.jpg"));
+        std::unique_ptr<Texture> play_button(std::make_unique<MX_TEXTURE>("diffuse/elon.jpg"));
         auto derived_tex_ptr = static_cast<MX_TEXTURE*>(play_button.get());
         
         play_button->initialize();

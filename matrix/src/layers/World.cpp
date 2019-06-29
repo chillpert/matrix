@@ -103,6 +103,8 @@ namespace MX
       {
         if (it->m_type.find("texture_diffuse") != std::string::npos)
           profile->diffuse = it;
+        else if (it->m_type.find("texture_specular") != std::string::npos)
+          profile->specular = it;
         else if (it->m_type.find("texture_normal") != std::string::npos)
           profile->normal = it;
         else if (it->m_type.find("texture_bump") != std::string::npos)
