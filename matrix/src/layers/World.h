@@ -34,13 +34,15 @@ namespace MX
     MX_API std::shared_ptr<Model> getModel(const std::string &name) const;
     MX_API std::shared_ptr<Shader> getShader(const std::string &name) const;
     MX_API std::shared_ptr<Texture> getTexture(const std::string &name) const;
-
+/*
     MX_API std::shared_ptr<TextureProfile> getTextureProfile(
       std::shared_ptr<Texture> diffuse,
+      std::shared_ptr<Texture> specular = nullptr,
       std::shared_ptr<Texture> normal = nullptr,
       std::shared_ptr<Texture> bump = nullptr,
       std::shared_ptr<Texture> height = nullptr
     ) const;
+*/
 
   private:
     MX_API World(const World&) = delete;
@@ -51,7 +53,13 @@ namespace MX
   
     std::vector<std::shared_ptr<Model>> m_Models;
     std::vector<std::shared_ptr<Shader>> m_Shaders;
-    std::vector<std::shared_ptr<Texture>> m_Textures;
+
+    std::vector<std::shared_ptr<Texture>> m_diffuse_maps;
+    std::vector<std::shared_ptr<Texture>> m_specular_maps;
+    std::vector<std::shared_ptr<Texture>> m_normal_maps;
+    std::vector<std::shared_ptr<Texture>> m_bump_maps;
+    std::vector<std::shared_ptr<Texture>> m_height_maps;
+    std::vector<std::shared_ptr<Texture>> m_displacement_maps;
   };
 }
 

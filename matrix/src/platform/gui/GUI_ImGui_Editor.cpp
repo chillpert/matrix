@@ -679,25 +679,31 @@ namespace MX
 
             if (item_prev_diffuse_map != item_diffuse_map && item_diffuse_map >= 0)
             {
-              object_node_ptr->setDiffuseTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_diffuse_map]));
+              object_node_ptr->setDiffuseTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_diffuse_maps[item_diffuse_map]));
               item_prev_diffuse_map = item_diffuse_map;
+            }
+
+            if (item_prev_specular_map != item_specular_map && item_specular_map >= 0)
+            {
+              object_node_ptr->setSpecularTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_specular_maps[item_specular_map]));
+              item_prev_specular_map = item_specular_map;
             }
 
             if (item_prev_normal_map != item_normal_map && item_normal_map >= 0)
             {
-              object_node_ptr->setNormalTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_normal_map]));
+              object_node_ptr->setNormalTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_normal_maps[item_normal_map]));
               item_prev_normal_map = item_normal_map;
             }
 
             if (item_prev_bump_map != item_bump_map && item_bump_map >= 0)
             {
-              object_node_ptr->setBumpTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_bump_map]));
+              object_node_ptr->setBumpTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_bump_maps[item_bump_map]));
               item_prev_bump_map = item_bump_map;
             }
 
             if (item_prev_height_map != item_height_map && item_height_map >= 0)
             {
-              object_node_ptr->setHeightTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_Textures[item_height_map]));
+              object_node_ptr->setHeightTexture(std::static_pointer_cast<MX_TEXTURE>(MX_WORLD.m_height_maps[item_height_map]));
               item_prev_height_map = item_height_map;
             }
           }

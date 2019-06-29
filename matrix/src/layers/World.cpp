@@ -76,7 +76,43 @@ namespace MX
   {
     try
     {
-      for (auto it : m_Textures)
+      for (auto it : m_diffuse_maps)
+      {
+        if (it->m_Name == name)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_specular_maps)
+      {
+        if (it->m_Name == name)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_normal_maps)
+      {
+        if (it->m_Name == name)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_bump_maps)
+      {
+        if (it->m_Name == name)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_height_maps)
       {
         if (it->m_Name == name)
         {
@@ -86,35 +122,6 @@ namespace MX
       }
 
       throw mx_entity_not_found(name);
-    }
-    catch (const mx_entity_not_found &e)
-    {
-      MX_FATAL(e.what());
-    }
-  }
-
-  std::shared_ptr<TextureProfile> World::getTextureProfile(std::shared_ptr<Texture> diffuse, std::shared_ptr<Texture> normal, std::shared_ptr<Texture> bump, std::shared_ptr<Texture> height) const
-  {
-    std::shared_ptr<TextureProfile> profile(new TextureProfile());
-
-    try
-    {
-      for (auto it : m_Textures)
-      {
-        if (it->m_type.find("texture_diffuse") != std::string::npos)
-          profile->diffuse = it;
-        else if (it->m_type.find("texture_specular") != std::string::npos)
-          profile->specular = it;
-        else if (it->m_type.find("texture_normal") != std::string::npos)
-          profile->normal = it;
-        else if (it->m_type.find("texture_bump") != std::string::npos)
-          profile->bump = it;
-        else if (it->m_type.find("texture_height") != std::string::npos)
-          profile->height = it;
-      }
-
-      if (profile->diffuse == nullptr)
-        throw mx_entity_not_found(diffuse->m_Name);
     }
     catch (const mx_entity_not_found &e)
     {
@@ -273,7 +280,31 @@ namespace MX
           {
             bool texture_file_exists_already = 0;
 
-            for (auto it : MX_WORLD.m_Textures)
+            for (auto it : MX_WORLD.m_diffuse_maps)
+            {
+              if (it->m_Name == file_name && (std::string(file_name).find(".jpg") != std::string::npos || std::string(file_name).find(".png") != std::string::npos))
+                texture_file_exists_already = 1;
+            }
+
+            for (auto it : MX_WORLD.m_normal_maps)
+            {
+              if (it->m_Name == file_name && (std::string(file_name).find(".jpg") != std::string::npos || std::string(file_name).find(".png") != std::string::npos))
+                texture_file_exists_already = 1;
+            }
+
+            for (auto it : MX_WORLD.m_specular_maps)
+            {
+              if (it->m_Name == file_name && (std::string(file_name).find(".jpg") != std::string::npos || std::string(file_name).find(".png") != std::string::npos))
+                texture_file_exists_already = 1;
+            }
+
+            for (auto it : MX_WORLD.m_bump_maps)
+            {
+              if (it->m_Name == file_name && (std::string(file_name).find(".jpg") != std::string::npos || std::string(file_name).find(".png") != std::string::npos))
+                texture_file_exists_already = 1;
+            }
+
+            for (auto it : MX_WORLD.m_height_maps)
             {
               if (it->m_Name == file_name && (std::string(file_name).find(".jpg") != std::string::npos || std::string(file_name).find(".png") != std::string::npos))
                 texture_file_exists_already = 1;
@@ -282,10 +313,38 @@ namespace MX
             if (!texture_file_exists_already)
             {
               std::shared_ptr<MX_TEXTURE> temp_texture(new MX_TEXTURE(file_name_with_ending));
-              MX_WORLD.m_Textures.push_back(temp_texture);
-            #ifdef MX_IMGUI_ACTIVE
-              all_diffuse_maps.push_back(file_name);
-            #endif
+
+              if (itr->path().string().find("diffuse") != std::string::npos)
+              {
+                std::cout << itr->path().string() << std::endl;
+                temp_texture->m_type = "texture_diffuse";
+                all_diffuse_maps.push_back(file_name);
+                MX_WORLD.m_diffuse_maps.push_back(temp_texture);
+              }
+              else if (itr->path().string().find("normal") != std::string::npos)
+              {
+                temp_texture->m_type = "texture_normal";
+                all_normal_maps.push_back(file_name);
+                MX_WORLD.m_normal_maps.push_back(temp_texture);
+              }
+              else if (itr->path().string().find("specular") != std::string::npos)
+              {
+                temp_texture->m_type = "texture_specular";
+                all_specular_maps.push_back(file_name);
+                MX_WORLD.m_specular_maps.push_back(temp_texture);
+              }
+              else if (itr->path().string().find("bump") != std::string::npos)
+              {
+                temp_texture->m_type = "texture_bump";
+                all_bump_maps.push_back(file_name);
+                MX_WORLD.m_bump_maps.push_back(temp_texture);
+              }
+              else if (itr->path().string().find("height") != std::string::npos)
+              {
+                temp_texture->m_type = "texture_height";
+                all_height_maps.push_back(file_name);
+                MX_WORLD.m_height_maps.push_back(temp_texture);
+              }
             }
           }
         }
@@ -296,7 +355,11 @@ namespace MX
       else if (shader)
         MX_INFO_LOG("MX: Shader: " + std::to_string(MX_WORLD.m_Shaders.size()) + " files found");
       else if (texture)
-        MX_INFO_LOG("MX: Texture: " + std::to_string(MX_WORLD.m_Textures.size()) + " files found");
+        MX_INFO_LOG("MX: Diffuse Maps:  " + std::to_string(MX_WORLD.m_diffuse_maps.size()) + " files found");
+        MX_INFO_LOG("MX: Specular Maps: " + std::to_string(MX_WORLD.m_specular_maps.size()) + " files found");
+        MX_INFO_LOG("MX: Normal Maps:   " + std::to_string(MX_WORLD.m_normal_maps.size()) + " files found");
+        MX_INFO_LOG("MX: Bump Maps:     " + std::to_string(MX_WORLD.m_bump_maps.size()) + " files found");
+        MX_INFO_LOG("MX: Height Maps:   " + std::to_string(MX_WORLD.m_height_maps.size()) + " files found");
 		}
   	else
   	{
