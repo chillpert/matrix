@@ -85,7 +85,7 @@ namespace MX
         if (current_scene->push_object(std::string(object_name), default_root_name))
         {
           MX_INFO_LOG("MX: Scene: Push: Object: " + std::string(object_name));
-          current_node = current_scenegraph->search(object_name, current_root);
+          current_node = current_scenegraph->search(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Object: " + std::string(object_name));
         }
@@ -96,7 +96,7 @@ namespace MX
         if (current_scene->push_container(std::string(object_name), default_root_name))
         {
           MX_INFO_LOG("MX: Scene: Push: Container: " + std::string(object_name));
-          current_node = current_scenegraph->search(object_name, current_root);
+          current_node = current_scenegraph->search(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Container: " + std::string(object_name));
         }
@@ -121,7 +121,7 @@ namespace MX
         {
           MX_INFO_LOG("MX: Scene: Push: Directional Light: " + std::string(object_name));
           ++current_directional_light_entities;
-          current_node = current_scenegraph->search(object_name, current_root);
+          current_node = current_scenegraph->search(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Directional Light: " + std::string(object_name));
         }
@@ -133,7 +133,7 @@ namespace MX
         {
           MX_INFO_LOG("MX: Scene: Push: Point Light: " + std::string(object_name));
           ++current_point_light_entities;
-          current_node = current_scenegraph->search(object_name, current_root);
+          current_node = current_scenegraph->search(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Point Light: " + std::string(object_name));
         }
@@ -145,7 +145,7 @@ namespace MX
         {
           MX_INFO_LOG("MX: Scene: Push: Spot Light: " + std::string(object_name));
           ++current_spot_light_entities;
-          current_node = current_scenegraph->search(object_name, current_root);
+          current_node = current_scenegraph->search(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Spot Light: " + std::string(object_name));
         }
@@ -185,12 +185,14 @@ namespace MX
       static int item_models = -1;
       static int item_shaders = -1;
       static int item_diffuse_map = -1;
+      static int item_specular_map = -1;
       static int item_normal_map = -1;
       static int item_bump_map = -1;
       static int item_height_map = -1;
       static int item_parent = -1;
 
       static ImTextureID diffuse_tex_id;
+      static ImTextureID specular_tex_id;
       static ImTextureID normal_tex_id;
       static ImTextureID bump_tex_id;
       static ImTextureID height_tex_id;
@@ -198,6 +200,7 @@ namespace MX
       int item_prev_models = item_models;
       int item_prev_shaders = item_shaders;
       int item_prev_diffuse_map = item_diffuse_map;
+      int item_prev_specular_map = item_specular_map;
       int item_prev_normal_map = item_normal_map;
       int item_prev_bump_map = item_bump_map;
       int item_prev_height_map = item_height_map;
@@ -210,12 +213,14 @@ namespace MX
         item_models = -1;
         item_shaders = -1;
         item_diffuse_map = -1;
+        item_specular_map = -1;
         item_normal_map = -1;
         item_bump_map = -1;
         item_height_map = -1;
         item_parent = -1;
 
         diffuse_tex_id = nullptr;
+        specular_tex_id = nullptr;
         normal_tex_id = nullptr;
         bump_tex_id = nullptr;
         height_tex_id = nullptr;
@@ -261,6 +266,20 @@ namespace MX
             }
             else
               item_diffuse_map = -1;
+
+            if (object_node_ptr->m_textures != nullptr)
+            {
+              if (object_node_ptr->m_textures->specular != nullptr)
+              {
+                for (u_int64_t i = 0; i < all_specular_maps.size(); ++i)
+                {
+                  if (remove_file_ending(object_node_ptr->m_textures->specular->m_Name) == all_specular_maps[i])
+                    item_specular_map = i;
+                }
+              }
+            }
+            else
+              item_specular_map = -1;
 
             if (object_node_ptr->m_textures != nullptr)
             {
@@ -321,6 +340,7 @@ namespace MX
           item_models = -1;
           item_shaders = -1;
           item_diffuse_map = -1;
+          item_specular_map = -1;
           item_normal_map = -1;
           item_bump_map = -1;
           item_height_map = -1;
@@ -335,6 +355,9 @@ namespace MX
         static float diffuse_tex_w;
         static float diffuse_tex_h;
 
+        static float specular_tex_w;
+        static float specular_tex_h;
+
         static float normal_tex_w;
         static float normal_tex_h;
 
@@ -347,7 +370,7 @@ namespace MX
         static float max_parent_child_height = 40.0f;
         static float max_shader_child_height = 115.0f;
         static float max_model_child_height = 40.0f;
-        static float max_map_child_height = 260.0f;
+        static float max_map_child_height = 290.0f;
 
         if (dynamic_cast<GeometryNode*>(current_node.get()))
         {
@@ -360,6 +383,13 @@ namespace MX
               diffuse_tex_id = (void*)object_node_ptr->m_textures->diffuse->getID();
               diffuse_tex_w = static_cast<float>(object_node_ptr->m_textures->diffuse->m_Stb.width);
               diffuse_tex_h = static_cast<float>(object_node_ptr->m_textures->diffuse->m_Stb.height);
+            }
+
+            if (object_node_ptr->m_textures->specular != nullptr)
+            {
+              specular_tex_id = (void*)object_node_ptr->m_textures->specular->getID();
+              specular_tex_w = static_cast<float>(object_node_ptr->m_textures->specular->m_Stb.width);
+              specular_tex_h = static_cast<float>(object_node_ptr->m_textures->specular->m_Stb.height);
             }
 
             if (object_node_ptr->m_textures->normal != nullptr)
@@ -387,11 +417,13 @@ namespace MX
         else
         {
           diffuse_tex_id = nullptr;
+          specular_tex_id = nullptr;
           normal_tex_id = nullptr;
           bump_tex_id = nullptr;
           height_tex_id = nullptr;
 
           item_diffuse_map = -1;
+          item_specular_map = -1;
           item_normal_map = -1;
           item_bump_map = -1;
           item_height_map = -1;
@@ -407,7 +439,7 @@ namespace MX
 
             if (item_prev_parent != item_parent)
             {
-              current_node->setParent(current_scenegraph->search(all_objects.at(item_parent), current_root));
+              current_node->setParent(current_scenegraph->search(all_objects.at(item_parent)));
               needs_refresh = 1;
             }
           }
@@ -541,6 +573,20 @@ namespace MX
                       object_node_ptr->m_textures->diffuse = nullptr;
                     }
                   }
+
+                  if (ImGui::ImageButton(specular_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / specular_tex_w, 16.0f / specular_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
+                  {
+                    if (object_node_ptr->m_textures->specular != nullptr)
+                    {
+                      file_inspector_id = specular_tex_id;
+                      file_inspector_width = specular_tex_w;
+                      file_inspector_height = specular_tex_h;
+                      file_inspector_name = object_node_ptr->m_textures->specular->m_Name;
+                      file_inspector_enabled = 1;
+                    }
+                  }
+                  ImGui::SameLine();
+                  ImGui::Combo("Specular##specular map", &item_specular_map, all_specular_maps.data(), IM_ARRAYSIZE(all_specular_maps.data()) * all_specular_maps.size(), max_combo);
 
                   if (ImGui::ImageButton(normal_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / normal_tex_w, 16.0f / normal_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
                   {

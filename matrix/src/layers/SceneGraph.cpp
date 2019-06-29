@@ -31,8 +31,7 @@ namespace MX
     recursive_render(m_Root);
   }
 
-  std::shared_ptr<Node> hidden_search_holder = nullptr;
-  static bool first_search_iteration = 1;
+  static std::shared_ptr<Node> hidden_search_holder = nullptr;
 
   void recursive_search(const std::string &name, std::shared_ptr<Node> it)
   {
@@ -46,16 +45,37 @@ namespace MX
     }
   }
 
-  std::shared_ptr<Node> SceneGraph::search(const std::string &name, std::shared_ptr<Node> it)
+  std::shared_ptr<Node> SceneGraph::search(const std::string &name, const NodeType &type, std::shared_ptr<Node> it)
   {
     hidden_search_holder = nullptr;
 
-    recursive_search(name, it);
+    if (it == nullptr)
+      recursive_search(name, Application::get().m_World.m_ActiveScene->m_Sg.m_Root);
+    else
+      recursive_search(name, it);
 
     if (hidden_search_holder == nullptr)
       throw mx_entity_not_found(name + " (SceneGraph::search)");
 
-    return hidden_search_holder;
+    switch (type)
+    {
+      case type_node:
+        return hidden_search_holder;
+      case type_container:
+        return std::static_pointer_cast<ContainerNode>(hidden_search_holder);
+      case type_geometry:
+        return std::static_pointer_cast<GeometryNode>(hidden_search_holder);
+      case type_light:
+        return std::static_pointer_cast<LightNode>(hidden_search_holder);
+      case type_directionalLight:
+        return std::static_pointer_cast<DirectionalLightNode>(hidden_search_holder);
+      case type_pointLight:
+        return std::static_pointer_cast<PointLightNode>(hidden_search_holder);
+      case type_spotLight:
+        return std::static_pointer_cast<SpotLightNode>(hidden_search_holder);
+      default:
+        throw mx_invalid_type(name + " (SceneGraph::search)");
+    }
   }
 
   void SceneGraph::getAllObjects(std::vector<std::string> *vec, std::shared_ptr<Node> it)

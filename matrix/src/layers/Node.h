@@ -15,6 +15,11 @@ namespace MX
 
   typedef std::shared_ptr<Node> MX_Node;
 
+  enum NodeType
+  {
+    type_node, type_geometry, type_container, type_light, type_directionalLight, type_spotLight, type_pointLight
+  };
+
   class Node
   {
   public:
@@ -30,7 +35,7 @@ namespace MX
     MX_API virtual std::string getIdentifier() = 0;
 
     MX_API virtual void upload_uniforms();
-    
+
     MX_API virtual void addChild(std::shared_ptr<Node> node);
     MX_API virtual std::shared_ptr<Node> getChild(const std::string &name);
 

@@ -74,7 +74,7 @@ namespace MX
       ImGui::Columns(3, "outline window", true);
       for (size_t n = 0; n < all_objects.size(); n++)
       {
-        temp = current_scenegraph->search(std::string(all_objects.at(n)), current_root);
+        temp = current_scenegraph->search(std::string(all_objects.at(n)));
         if (ImGui::Selectable(temp->m_Name.c_str(), selected == n))
           selected = n;
         
@@ -114,7 +114,7 @@ namespace MX
         needs_refresh = 1;
         cool_down = 1;
 
-        current_node = current_scenegraph->search(std::string(all_objects.at(selected)), current_root);
+        current_node = current_scenegraph->search(std::string(all_objects.at(selected)));
         MX_SUCCESS("MX: GUI: ImGui: Changing current node");
       }
     }

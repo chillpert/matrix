@@ -51,6 +51,7 @@ namespace MX
   std::vector<const char*> all_models;
   std::vector<const char*> all_shaders;
   std::vector<const char*> all_diffuse_maps;
+  std::vector<const char*> all_specular_maps;
   std::vector<const char*> all_normal_maps;
   std::vector<const char*> all_bump_maps;
   std::vector<const char*> all_height_maps;

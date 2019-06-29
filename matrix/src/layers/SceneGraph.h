@@ -21,7 +21,7 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    MX_API std::shared_ptr<Node> search(const std::string &name, std::shared_ptr<Node> it);
+    MX_API std::shared_ptr<Node> search(const std::string &name, const NodeType &type = type_node, std::shared_ptr<Node> it = nullptr);
 
     MX_API void getAllObjects(std::vector<std::string> *vec, std::shared_ptr<Node> it);
     MX_API void getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it);

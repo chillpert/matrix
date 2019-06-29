@@ -39,5 +39,23 @@ public:
   }
 };
 
+class mx_invalid_type : public mx_exception
+{
+public:
+  explicit mx_invalid_type(const char *message)
+    : mx_exception(message) { }
+
+  explicit mx_invalid_type(const std::string &message)
+    : mx_exception(message) { }
+
+  virtual ~mx_invalid_type() throw () { }
+
+  virtual const char *what() const throw ()
+  {
+    std::string temp_msg = "MX: Exception: Invalid type: " + m_msg;
+    return m_msg.c_str();
+  }
+};
+
 
 #endif // CUSTOMEXCEPTION_H
