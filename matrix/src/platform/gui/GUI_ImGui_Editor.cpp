@@ -85,7 +85,7 @@ namespace MX
         if (current_scene->push_object(std::string(object_name), default_root_name))
         {
           MX_INFO_LOG("MX: Scene: Push: Object: " + std::string(object_name));
-          current_node = current_scenegraph->search(object_name);
+          current_node = current_scenegraph->search<Node>(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Object: " + std::string(object_name));
         }
@@ -96,7 +96,7 @@ namespace MX
         if (current_scene->push_container(std::string(object_name), default_root_name))
         {
           MX_INFO_LOG("MX: Scene: Push: Container: " + std::string(object_name));
-          current_node = current_scenegraph->search(object_name);
+          current_node = current_scenegraph->search<Node>(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Container: " + std::string(object_name));
         }
@@ -121,7 +121,7 @@ namespace MX
         {
           MX_INFO_LOG("MX: Scene: Push: Directional Light: " + std::string(object_name));
           ++current_directional_light_entities;
-          current_node = current_scenegraph->search(object_name);
+          current_node = current_scenegraph->search<Node>(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Directional Light: " + std::string(object_name));
         }
@@ -133,7 +133,7 @@ namespace MX
         {
           MX_INFO_LOG("MX: Scene: Push: Point Light: " + std::string(object_name));
           ++current_point_light_entities;
-          current_node = current_scenegraph->search(object_name);
+          current_node = current_scenegraph->search<Node>(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Point Light: " + std::string(object_name));
         }
@@ -145,7 +145,7 @@ namespace MX
         {
           MX_INFO_LOG("MX: Scene: Push: Spot Light: " + std::string(object_name));
           ++current_spot_light_entities;
-          current_node = current_scenegraph->search(object_name);
+          current_node = current_scenegraph->search<Node>(object_name);
           needs_refresh = 1;
           MX_SUCCESS("MX: Scene: Push: Spot Light: " + std::string(object_name));
         }
@@ -439,7 +439,7 @@ namespace MX
 
             if (item_prev_parent != item_parent)
             {
-              current_node->setParent(current_scenegraph->search(all_objects.at(item_parent)));
+              current_node->setParent(current_scenegraph->search<Node>(all_objects.at(item_parent)));
               needs_refresh = 1;
             }
           }

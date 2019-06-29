@@ -25,7 +25,7 @@ namespace MX
       if (iter->t == X)
       {
         if (!iter->is_animated)
-          m_local = glm::rotate(m_local, iter->factor, glm::vec3(iter->factor, 0.0f, 0.0f));
+          m_local = glm::rotate(m_local, glm::radians(iter->factor), glm::vec3(iter->factor, 0.0f, 0.0f));
         else
           trans = glm::rotate(trans, get_time() * iter->factor, glm::vec3(get_time() * iter->factor, 0.0f, 0.0f));
       }

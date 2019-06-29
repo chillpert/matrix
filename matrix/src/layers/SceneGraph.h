@@ -8,6 +8,10 @@
 
 namespace MX
 {
+  extern std::shared_ptr<Node> hidden_search_holder;
+
+  void recursive_search(const std::string &name, std::shared_ptr<Node> it);
+
   class SceneGraph
   {
   public:
@@ -21,7 +25,21 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    MX_API std::shared_ptr<Node> search(const std::string &name, const NodeType &type = type_node, std::shared_ptr<Node> it = nullptr);
+    template <class T>
+    MX_API std::shared_ptr<T> search(const std::string &name, std::shared_ptr<Node> it = nullptr)
+    {
+      hidden_search_holder = nullptr;
+
+      if (it == nullptr)
+        recursive_search(name, m_Root);
+      else
+        recursive_search(name, it);
+
+      if (hidden_search_holder == nullptr)
+        throw mx_entity_not_found(name + " (SceneGraph::search)");
+
+      return std::static_pointer_cast<T>(hidden_search_holder);
+    }
 
     MX_API void getAllObjects(std::vector<std::string> *vec, std::shared_ptr<Node> it);
     MX_API void getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it);

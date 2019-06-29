@@ -76,10 +76,10 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ContainerNode> object_node(new ContainerNode(name));
+    std::shared_ptr<ContainerNode> container_node(new ContainerNode(name));
 
-    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(container_node);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Container: " + name);
     return 1;
   }
@@ -116,7 +116,7 @@ namespace MX
     object_node->setDiffuseTexture(texture);
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -139,7 +139,7 @@ namespace MX
     object_node->setTextureProfile(texture_profile);
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -162,7 +162,7 @@ namespace MX
     object_node->setMaterialProfile(material_profile);
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -186,7 +186,7 @@ namespace MX
     object_node->setMaterialProfile(material_profile);
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -212,7 +212,7 @@ namespace MX
 
     MX_SCENEGRAPH.m_directional_light_nodes.push_back(light_node);
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
 
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Directional Light: " + name);
     return 1;
@@ -235,7 +235,7 @@ namespace MX
 
     MX_SCENEGRAPH.m_point_light_nodes.push_back(light_node);
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
 
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Point Light: " + name);
     return 1;
@@ -258,7 +258,7 @@ namespace MX
 
     MX_SCENEGRAPH.m_spot_light_nodes.push_back(light_node);
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
-    MX_SCENEGRAPH.search(node_to_attach_to)->addChild(temp);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
 
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Spot Light: " + name);
     return 1;
@@ -271,7 +271,7 @@ namespace MX
   // delete object from scene graph
   bool Scene::pop(const std::string &name)
   {
-    std::shared_ptr<Node> temp_node = m_Sg.search(name);
+    std::shared_ptr<Node> temp_node = m_Sg.search<Node>(name);
 
   #ifdef MX_DEBUG
     std::ostringstream address;
