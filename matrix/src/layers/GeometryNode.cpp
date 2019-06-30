@@ -12,34 +12,47 @@ namespace MX
   {
     Node::upload_uniforms();
 
-    if (m_textures->diffuse != nullptr)
+    if (m_textures != nullptr)
     {
-      m_textures->diffuse->use(0);
-      m_Shader->setInt("material.diffuse_texture1", 0);
-    }
+      if (m_textures->diffuse != nullptr)
+      {
+        m_textures->diffuse->use(0);
+        m_Shader->setInt("material.diffuse_texture1", 0);
+      }
 
-    if (m_textures->specular != nullptr)
-    {
-      m_textures->specular->use(1);
-      m_Shader->setInt("material.specular_texture1", 1);
-    }
-    
-    if (m_textures->normal != nullptr)
-    {
-      m_textures->normal->use(2);
-      m_Shader->setInt("material.normal_texture1", 2);
-    }
-    
-    if (m_textures->bump != nullptr)
-    {
-      m_textures->bump->use(3);
-      m_Shader->setInt("material.bump_texture1", 3);
-    }
-    
-    if (m_textures->height != nullptr)
-    {
-      m_textures->height->use(4);
-      m_Shader->setInt("material.height_texture1", 4);
+      if (m_textures->specular != nullptr)
+      {
+        m_textures->specular->use(1);
+        m_Shader->setInt("material.specular_texture1", 1);
+      }
+      else
+        m_Shader->setInt("material.specular_texture1", 0);
+      
+
+      if (m_textures->normal != nullptr)
+      {
+        m_textures->normal->use(2);
+        m_Shader->setInt("material.normal_texture1", 2);
+      }
+      else
+        m_Shader->setInt("material.normal_texture1", 0);
+      
+      
+      if (m_textures->bump != nullptr)
+      {
+        m_textures->bump->use(3);
+        m_Shader->setInt("material.bump_texture1", 3);
+      }
+      else
+        m_Shader->setInt("material.bump_texture1", 0);
+      
+      if (m_textures->height != nullptr)
+      {
+        m_textures->height->use(4);
+        m_Shader->setInt("material.height_texture1", 4);
+      }
+      else
+        m_Shader->setInt("material.height_texture1", 0);
     }
 
     m_Shader->setfVec3("material.ambient", m_material.ambient);
@@ -52,50 +65,48 @@ namespace MX
       m_Model->render(std::static_pointer_cast<MX_SHADER>(m_Shader));
   }
 
-  void GeometryNode::setTextureProfile(std::shared_ptr<TextureProfile> texture)
+  void GeometryNode::setTextureProfile(const TextureProfile &texture)
   {
-    if (texture != nullptr)
+    if (texture.diffuse != nullptr)
     {
-      if (texture->diffuse != nullptr)
-      {
-        if (!texture->diffuse->m_initialized)
-          texture->diffuse->initialize();
+      if (!texture.diffuse->m_initialized)
+        texture.diffuse->initialize();
 
-        m_textures->diffuse = texture->diffuse;
-      }
-
-      if (texture->specular != nullptr)
-      {
-        if (!texture->specular->m_initialized)
-          texture->specular->initialize();
-
-        m_textures->specular = texture->specular;
-      }
-
-      if (texture->normal != nullptr)
-      {
-        if (!texture->normal->m_initialized)
-          texture->normal->initialize();
-
-        m_textures->normal = texture->normal;
-      }
-
-      if (texture->bump != nullptr)
-      {
-        if (!texture->bump->m_initialized)
-          texture->bump->initialize();
-
-        m_textures->bump = texture->bump;
-      }
-
-      if (texture->height != nullptr)
-      {
-        if (!texture->height->m_initialized)
-          texture->height->initialize();
-
-        m_textures->height = texture->height;
-      }
+      m_textures->diffuse = texture.diffuse;
     }
+
+    if (texture.specular != nullptr)
+    {
+      if (!texture.specular->m_initialized)
+        texture.specular->initialize();
+
+      m_textures->specular = texture.specular;
+    }
+
+    if (texture.normal != nullptr)
+    {
+      if (!texture.normal->m_initialized)
+        texture.normal->initialize();
+
+      m_textures->normal = texture.normal;
+    }
+
+    if (texture.bump != nullptr)
+    {
+      if (!texture.bump->m_initialized)
+        texture.bump->initialize();
+
+      m_textures->bump = texture.bump;
+    }
+
+    if (texture.height != nullptr)
+    {
+      if (!texture.height->m_initialized)
+        texture.height->initialize();
+
+      m_textures->height = texture.height;
+    }
+
   }
 
   void GeometryNode::setMaterialProfile(const MaterialProfile &material)

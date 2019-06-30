@@ -952,12 +952,14 @@ namespace MX
         if (ImGui::CollapsingHeader(it->m_Name.c_str()))
         {
           // scene properties
-          if (ImGui::BeginChild("scene properties child", ImVec2(-1, 113.0f), true, false))
+          std::string child_name = "scene properties child" + it->m_Name;
+          if (ImGui::BeginChild(child_name.c_str(), ImVec2(-1, 113.0f), true, false))
           {
             ImGui::BulletText("Total:        %lu", it->m_ExistingObjects.size());
             ImGui::Separator();
             ImGui::BulletText("Lighting:");
             ImGui::Indent();
+            // needs to be fixed
             ImGui::BulletText("Directional:  %lu", current_scenegraph->m_directional_light_nodes.size());
             ImGui::BulletText("Point:        %lu", current_scenegraph->m_point_light_nodes.size());
             ImGui::BulletText("Spot:         %lu", current_scenegraph->m_spot_light_nodes.size());

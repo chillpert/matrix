@@ -25,7 +25,7 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    template <class T>
+    template <typename T>
     MX_API std::shared_ptr<T> search(const std::string &name, std::shared_ptr<Node> it = nullptr)
     {
       hidden_search_holder = nullptr;
@@ -45,7 +45,7 @@ namespace MX
     MX_API void getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it);
 
   private:
-    MX_API void upload_lighting_unfiorms();
+    MX_API void upload_lighting_uniforms();
     MX_API void recursive_initialize(std::shared_ptr<Node> it);
     MX_API void recursive_render(std::shared_ptr<Node> it, glm::fmat4 mat = glm::fmat4(1.0f));
 

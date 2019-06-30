@@ -119,7 +119,7 @@ namespace MX
     }
   }
 
-  void SceneGraph::upload_lighting_unfiorms()
+  void SceneGraph::upload_lighting_uniforms()
   {
     // lights
     for (u_short i = 0; i < m_directional_light_nodes.size(); ++i)
@@ -141,7 +141,7 @@ namespace MX
     {
       if (!dynamic_cast<LightNode*>(it.get()) && !dynamic_cast<DirectionalLightNode*>(it.get()) && !dynamic_cast<PointLightNode*>(it.get()) && !dynamic_cast<SpotLightNode*>(it.get()))
       {
-        upload_lighting_unfiorms();
+        upload_lighting_uniforms();
         it->upload_uniforms();
       }
     }
@@ -166,7 +166,7 @@ namespace MX
     {
       if (!dynamic_cast<LightNode*>(it.get()) && !dynamic_cast<DirectionalLightNode*>(it.get()) && !dynamic_cast<PointLightNode*>(it.get()) && !dynamic_cast<SpotLightNode*>(it.get()))
       {
-        upload_lighting_unfiorms();
+        upload_lighting_uniforms();
         it->upload_uniforms();
       }
     }

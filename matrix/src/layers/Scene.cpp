@@ -90,12 +90,12 @@ namespace MX
 
   bool Scene::push_object(const std::string &name, const std::string &node_to_attach_to)
   {
-    push_object_with_texture_profile(name, nullptr, nullptr, nullptr, node_to_attach_to);
+    return push_object_with_texture_profile(name, nullptr, nullptr, TextureProfile(), node_to_attach_to);
   }
 
   bool Scene::push_object(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const std::string &node_to_attach_to)
   {
-    push_object_with_texture_profile(name, model, shader, nullptr, node_to_attach_to);
+    return push_object_with_texture_profile(name, model, shader, TextureProfile(), node_to_attach_to);
   }
 
   bool Scene::push_object_with_diffuse_texture(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<Texture> texture, const std::string &node_to_attach_to)
@@ -121,7 +121,7 @@ namespace MX
     return 1;
   }
 
-  bool Scene::push_object_with_texture_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, std::shared_ptr<TextureProfile> texture_profile, const std::string &node_to_attach_to)
+  bool Scene::push_object_with_texture_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const TextureProfile &texture_profile, const std::string &node_to_attach_to)
   {
     MX_INFO("MX: Scene: " + m_Name + " Push Object: " + name);
 
@@ -167,7 +167,7 @@ namespace MX
     return 1;
   }
 
-  bool Scene::push_object_with_material_and_texture_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const MaterialProfile &material_profile, std::shared_ptr<TextureProfile> texture_profile, const std::string &node_to_attach_to)
+  bool Scene::push_object_with_material_and_texture_profile(const std::string &name, std::shared_ptr<Model> model, std::shared_ptr<Shader> shader, const MaterialProfile &material_profile, const TextureProfile &texture_profile, const std::string &node_to_attach_to)
   {
     MX_INFO("MX: Scene: " + m_Name + " Push Object: " + name);
 

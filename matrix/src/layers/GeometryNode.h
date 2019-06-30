@@ -25,7 +25,7 @@ namespace MX
 
     MX_API virtual void upload_uniforms();
 
-    MX_API virtual void setTextureProfile(std::shared_ptr<TextureProfile> texture);
+    MX_API virtual void setTextureProfile(const TextureProfile &texture);
     MX_API virtual void setMaterialProfile(const MaterialProfile &material);
 
     MX_API virtual void setDiffuseTexture(std::shared_ptr<Texture> diffuse);

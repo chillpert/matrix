@@ -64,12 +64,6 @@ void init_debug_scene()
   MX_SUCCESS("MX: Debug Scene: Initialized");
 }
 
-void init_material_test_scene()
-{
-  using namespace MX;
-
-}
-
 void init_floor_scene()
 {
   using namespace MX;
@@ -80,14 +74,60 @@ void init_floor_scene()
   MX_SCENE->push_point_light("Point Light 1");
   MX_SCENE->push_spot_light("Spot Light 1");
 
-  MX_SCENE->push_object_with_diffuse_texture("Floor", MX_GET_MODEL("quad.obj"), MX_GET_SHADER("blinn_phong"), MX_GET_TEXTURE("diffuse/wood.png"));
+  TextureProfile floor_textures;
+  floor_textures.diffuse = MX_GET_TEXTURE("diffuse/wood.png");
+  floor_textures.specular = MX_GET_TEXTURE("specular/wood_specular.jpg");
+
+  MX_SCENE->push_object_with_texture_profile("Floor", MX_GET_MODEL("quad.obj"), MX_GET_SHADER("blinn_phong"), floor_textures);
   auto floor_node = MX_SCENEGRAPH.search<GeometryNode>("Floor");
   floor_node->setTransform(SCALE, 2.0f, 0);
   floor_node->setTransform(X, 270.0f, 0);
 
   MX_SCENE->push_object("Box");
   auto box = MX_SCENEGRAPH.search<GeometryNode>("Box");
-  box->m_textures;
+  box->m_Shader = MX_GET_SHADER("blinn_phong");
+  box->m_Model = MX_GET_MODEL("cube.obj");
+  box->m_textures->diffuse = MX_GET_TEXTURE("diffuse/box.png");
+  box->m_textures->specular = MX_GET_TEXTURE("specular/box_specular.png");
+
+  box->setTransform(Y, 60.0f, 0);
+
+  box->setTransform(UP, 0.49f, 0);
+  box->setTransform(LEFT, 1.5f, 0);
+  box->setTransform(BACKWARDS, 0.5f, 0);
+
+  TextureProfile wooden_chair;
+  wooden_chair.diffuse = MX_GET_TEXTURE("diffuse/wood dark.jpg");
+  wooden_chair.specular = MX_GET_TEXTURE("specular/wood_specular.jpg");
+
+  MaterialProfile wooden_chair_material;
+  wooden_chair_material.shininess = 4.0f;
+
+  MX_SCENE->push_object_with_material_and_texture_profile("Chair Wood", MX_GET_MODEL("simple_chair/Chair.obj"), MX_GET_SHADER("blinn_phong"), wooden_chair_material, wooden_chair);
+  auto chair = MX_SCENEGRAPH.search<GeometryNode>("Chair Wood");
+  chair->setTransform(FORWARDS, 1.0f, 0);
+  chair->setTransform(LEFT, 0.8f, 0);
+  chair->setTransform(Y, 117.0f, 0);
+}
+
+void init_material_test_scene()
+{
+  using namespace MX;
+
+  MX_SCENE->push_directional_light("Dir Light 1");
+  auto dir_light = MX_SCENEGRAPH.search<DirectionalLightNode>("Dir Light 1");
+  dir_light->ambient_strength = 1.0f;
+
+  MaterialProfile emerald_profile;
+  emerald_profile.ambient = {0.0215f, 0.1745f, 0.0215f};
+  emerald_profile.diffuse = {0.07568f, 0.61424f, 0.07568f};
+  emerald_profile.specular = {0.633f, 0.727811f, 0.633f};
+  emerald_profile.shininess = {0.6f * 128.0f};
+
+  TextureProfile emerald_texture_profile;
+  emerald_texture_profile.diffuse = MX_GET_TEXTURE("diffuse/white.jpg");
+
+  MX_SCENE->push_object_with_material_and_texture_profile("Emerald", MX_GET_MODEL("cube.obj"), MX_GET_SHADER("blinn_phong"), emerald_profile, emerald_texture_profile);
 }
 
 void initialize()
@@ -95,24 +135,23 @@ void initialize()
   using namespace MX;
 
   MX_WORLD.initialize();
-  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("debug")));
+  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("Debug")));
 
 #ifdef MX_DEBUG
   init_debug_scene();
 #endif
 
-  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("material test")));
+  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("Materials")));
 
 #ifdef MX_DEBUG
   init_material_test_scene();
 #endif
 
-  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("floor")));
+  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("Room")));
 
 #ifdef MX_DEBUG
   init_floor_scene();
 #endif
-
 }
 
 void update()

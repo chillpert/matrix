@@ -49,6 +49,8 @@ namespace MX
     {
       MX_FATAL(e.what());
     }
+
+    return nullptr;
   }
 
   std::shared_ptr<Shader> World::getShader(const std::string &name) const
@@ -70,6 +72,8 @@ namespace MX
     {
       MX_FATAL(e.what());
     }
+
+    return nullptr;
   }
 
   std::shared_ptr<Texture> World::getTexture(const std::string &name) const
@@ -127,6 +131,8 @@ namespace MX
     {
       MX_FATAL(e.what());
     }
+
+    return nullptr;
   }
 
   void World::initialize()
@@ -242,7 +248,6 @@ namespace MX
             {
               std::shared_ptr<Model> temp_model(new Model(file_name_with_ending));
               MX_WORLD.m_Models.push_back(temp_model);
-
             #ifdef MX_IMGUI_ACTIVE
               model_test.push_back({{static_cast<int>(MX_WORLD.m_Models.size()), temp_model}});
               all_models.push_back(file_name);
@@ -316,7 +321,6 @@ namespace MX
 
               if (itr->path().string().find("diffuse") != std::string::npos)
               {
-                std::cout << itr->path().string() << std::endl;
                 temp_texture->m_type = "texture_diffuse";
                 all_diffuse_maps.push_back(file_name);
                 MX_WORLD.m_diffuse_maps.push_back(temp_texture);
@@ -360,11 +364,11 @@ namespace MX
         MX_INFO_LOG("MX: Normal Maps:   " + std::to_string(MX_WORLD.m_normal_maps.size()) + " files found");
         MX_INFO_LOG("MX: Bump Maps:     " + std::to_string(MX_WORLD.m_bump_maps.size()) + " files found");
         MX_INFO_LOG("MX: Height Maps:   " + std::to_string(MX_WORLD.m_height_maps.size()) + " files found");
-		}
-  	else
-  	{
-  	  MX_FATAL("MX: Utils: Check folder for files: Path " + path_to_folder + " is not valid");
+    }
+    else
+    {
+      MX_FATAL("MX: Utils: Check folder for files: Path " + path_to_folder + " is not valid");
       return;
-  	}
+    }
   }
 }
