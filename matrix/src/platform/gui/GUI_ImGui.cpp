@@ -178,6 +178,10 @@ namespace MX
     MX_IMGUI_API_CLOSE
     MX_IMGUI_CLEAN
     ImGui::DestroyContext();
+
+    // delete allocated chars
+    for (std::vector<const char*>::iterator iter = all_models.begin() + 1; iter != all_models.end(); ++iter)
+      delete *iter;
   #endif
   }
 }
