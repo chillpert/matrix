@@ -27,7 +27,6 @@ namespace MX
       }
       else
         m_Shader->setInt("material.specular_texture1", 0);
-      
 
       if (m_textures->normal != nullptr)
       {
@@ -36,8 +35,7 @@ namespace MX
       }
       else
         m_Shader->setInt("material.normal_texture1", 0);
-      
-      
+
       if (m_textures->bump != nullptr)
       {
         m_textures->bump->use(3);
@@ -45,7 +43,7 @@ namespace MX
       }
       else
         m_Shader->setInt("material.bump_texture1", 0);
-      
+
       if (m_textures->height != nullptr)
       {
         m_textures->height->use(4);

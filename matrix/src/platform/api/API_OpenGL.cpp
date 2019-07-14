@@ -24,6 +24,8 @@ namespace MX
   void API_OpenGL::update() const
   {
     glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   }
 
   void API_OpenGL::render() const
@@ -33,7 +35,7 @@ namespace MX
 
   void API_OpenGL::clear() const
   {
-    int screen_x = Application::get().m_Window->m_Props.m_Width;
+    // int screen_x = Application::get().m_Window->m_Props.m_Width;
     int screen_y = Application::get().m_Window->m_Props.m_Height;
 
   #ifdef MX_IMGUI_ACTIVE

@@ -20,10 +20,10 @@
 namespace MX
 {
   class Application
-  {     
+  {
   public:
     MX_API static Application &get();
-  
+
     MX_API void initialize(void (*initialize_func)());
     MX_API void render(void (*render_func)());
     MX_API void update(void (*update_func)());
@@ -37,7 +37,7 @@ namespace MX
     World m_World;
 
     bool m_Running;
-  
+
   private:
     MX_API Application();
     MX_API ~Application();
