@@ -31,9 +31,6 @@ namespace MX
     MX_API virtual void initialize() = 0;
     MX_API virtual void render_mesh(std::shared_ptr<Shader> shader) = 0;
 
-  public:
-    std::vector<std::shared_ptr<Texture>> m_textures;
-
   protected:
     std::vector<Vertex> m_vertices;
     std::vector<unsigned int> m_indices;
@@ -41,6 +38,9 @@ namespace MX
     GLuint m_vao;
     GLuint m_vbo;
     GLuint m_ebo;
+
+  public:
+    std::vector<std::shared_ptr<Texture>> m_textures;
   };
 }
 

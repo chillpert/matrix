@@ -204,8 +204,11 @@ namespace MX
       for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
       {
         std::string temp_path = itr->path().string();
+        
+      #ifdef MX_PLATFORM_WINDOWS_X64
         auto found = temp_path.find_last_of('\\');
         temp_path.at(found) = '/';
+      #endif
 
         if (boost::filesystem::is_directory(itr->path()))
         {

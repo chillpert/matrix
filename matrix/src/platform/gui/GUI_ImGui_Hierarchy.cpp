@@ -5,7 +5,6 @@
 namespace MX
 {
   static void draw_scene_graph_menu(Node &it);
-  static void draw_outline_menu();
 
   void renderSceneGraph()
   {
