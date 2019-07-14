@@ -18,7 +18,7 @@ namespace MX
   std::string f_str(float num);
   std::string f_str(float num, float num_decimals);
   std::string remove_file_ending(const std::string &name);
-  const char* str_c(const std::string &str);
+  // const char* str_c(const std::string &str);
 
 #ifdef MX_PLATFORM_WINDOWS_X64
   extern std::chrono::time_point<std::chrono::steady_clock> current_time;

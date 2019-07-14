@@ -53,7 +53,7 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
 
 endif()
 
-# copy sdl2.dll to binary location in post build
+# copy dlls to binary location in post build
 if(NOT UNIX)
   message("MX: Copying SDL2.dll to binary location")
 
@@ -67,8 +67,8 @@ if(NOT UNIX)
     )
 endif()
 
-# copy glewd.dll to binary location in post build
-if(USE_OPENGL AND NOT UNIX)
+# copy dlls to binary location in post build
+if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
   message("MX: Copying glewd.dll to binary location")
 
   add_custom_command(
@@ -78,5 +78,15 @@ if(USE_OPENGL AND NOT UNIX)
             ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll
             ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/glewd.dll
     COMMENT "Running POST_BUILD action: Copying glewd.dll to binary location"
+    )
+
+    message("MX: Copying assimp-vc141-mtd.dll to binary location")
+
+    add_custom_command(
+      TARGET Sandbox
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy
+              ${PROJECT_SOURCE_DIR}/build/external/assimp/code/assimp-vc141-mtd.dll
+              ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/assimp-vc141-mtd.dll
     )
 endif()

@@ -30,7 +30,7 @@
   #ifdef MX_PLATFORM_UNIX_X64
     #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage.substr(12)
   #elif MX_PLATFORM_WINDOWS_X64
-    #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage.substr(6)
+    #define MX_PRINT_TO_CONSOLE(x) std::cerr << finalMessage.substr(7)
   #endif
 
   #ifdef MX_PLATFORM_WINDOWS_X64

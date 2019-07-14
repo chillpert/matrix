@@ -203,16 +203,26 @@ namespace MX
 
       for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
       {
+        std::string temp_path = itr->path().string();
+        auto found = temp_path.find_last_of('\\');
+        temp_path.at(found) = '/';
+
         if (boost::filesystem::is_directory(itr->path()))
         {
-          std::string temp_path = itr->path().string();
+        #ifdef MX_PLATFORM_UNIX_X64 
           recurs_path = temp_path.substr(temp_path.find_last_of('/') + 1);
           set_resource_files(temp_path, recurs_path + '/');
+          
+        #elif MX_PLATFORM_WINDOWS_X64
+          recurs_path = temp_path.substr(temp_path.find_last_of('/') + 1);
+          set_resource_files(temp_path, recurs_path + '/');
+        #endif
           recurs_path = "";
         }
         else
         {
           std::string temp = itr->path().string();
+
         #ifdef MX_PLATFORM_WINDOWS_X64
           std::size_t found_slash = temp.find_last_of("\\");
         #elif MX_PLATFORM_UNIX_X64

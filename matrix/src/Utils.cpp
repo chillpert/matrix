@@ -39,9 +39,10 @@ namespace MX
   {
     std::string temp = std::to_string(num);
     size_t found = temp.find('.');
-    return temp.substr(0, found + num_decimals + 1);
+    return temp.substr(0, found + static_cast<size_t>(num_decimals) + 1);
   }
 
+/*
   const char* str_c(const std::string &str)
   {
     char test[str.size()];
@@ -56,6 +57,7 @@ namespace MX
   #endif
     return temp;
   }
+*/
 
   std::string remove_file_ending(const std::string &name)
   {

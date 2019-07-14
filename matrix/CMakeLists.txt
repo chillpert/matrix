@@ -33,10 +33,14 @@ if(WIN32 AND CMAKE_CL_64)
 endif()
 
 # sdl image
-INCLUDE(FindPkgConfig)
+if(UNIX)
+  INCLUDE(FindPkgConfig)
 
-PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
-PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+  PKG_SEARCH_MODULE(SDL2 REQUIRED sdl2)
+  PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
+elseif(WIN32 AND CMAKE_CL_64)
+
+endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/external/SDL-image)
 
@@ -83,9 +87,15 @@ include_directories(
 
 link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code)
 
-set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
+if(UNIX)
+  set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
     libassimpd.so
   )
+elseif(WIN32 AND CMAKE_CL_64)
+  set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
+    assimp-vc141-mtd
+  )
+endif()
 
 ####################################################################################################
 #############################      rendering API        ############################################

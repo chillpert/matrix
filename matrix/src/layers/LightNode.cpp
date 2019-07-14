@@ -7,7 +7,7 @@ namespace MX
   LightNode::LightNode(const std::string &name)
     : Node(name) { }
 
-  void LightNode::upload_uniforms(u_short index)
+  void LightNode::upload_uniforms(unsigned short index)
   {
     if (light_type == "UNDEF")
       MX_FATAL("MX: Node: LightNode: Uniform upload is UNDEF");
@@ -26,7 +26,7 @@ namespace MX
   DirectionalLightNode::DirectionalLightNode(const std::string &name)
     : LightNode(name) { }
 
-  void DirectionalLightNode::upload_uniforms(u_short index)
+  void DirectionalLightNode::upload_uniforms(unsigned short index)
   {
     light_type = "dir_lights";
     std::string index_s = std::to_string(index);
@@ -39,7 +39,7 @@ namespace MX
   PointLightNode::PointLightNode(const std::string &name)
     : LightNode(name) { }
 
-  void PointLightNode::upload_uniforms(u_short index)
+  void PointLightNode::upload_uniforms(unsigned short index)
   {
     light_type = "point_lights";
     std::string index_s = std::to_string(index);
@@ -56,7 +56,7 @@ namespace MX
   SpotLightNode::SpotLightNode(const std::string &name)
     : LightNode(name) { }
 
-  void SpotLightNode::upload_uniforms(u_short index)
+  void SpotLightNode::upload_uniforms(unsigned short index)
   {
     light_type = "spot_lights";
     std::string index_s = std::to_string(index);

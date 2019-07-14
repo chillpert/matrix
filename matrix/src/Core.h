@@ -4,7 +4,7 @@
 #ifdef MX_PLATFORM_WINDOWS_X64
   #ifdef MX_BUILD_DLL
     #define MX_API __declspec(dllexport)
-  #else   
+  #else
     #define MX_API __declspec(dllimport)
   #endif
 #elif MX_PLATFORM_UNIX_X64

@@ -31,61 +31,7 @@ namespace MX
     recursive_render(m_Root);
   }
 
-  //static std::shared_ptr<Node> hidden_search_holder = nullptr;
-/*
-  void recursive_search(const std::string &name, std::shared_ptr<Node> it)
-  {
-    if (it->m_Name == name)
-      hidden_search_holder = it;
-
-    if (!it->m_Children.empty())
-    {
-      for (auto it : it->m_Children)
-        recursive_search(name, it);
-    }
-  }
-*/
-/*
-  std::shared_ptr<T> SceneGraph::search(const std::string &name, const NodeType &type, std::shared_ptr<Node> it)
-  {
-    hidden_search_holder = nullptr;
-
-    if (it == nullptr)
-      recursive_search(name, Application::get().m_World.m_ActiveScene->m_Sg.m_Root);
-    else
-      recursive_search(name, it);
-
-    if (hidden_search_holder == nullptr)
-      throw mx_entity_not_found(name + " (SceneGraph::search)");
-
-    std::shared_ptr<T> result = std::static_pointer_cast<T>(hidden_search_holder);
-    return result;
-
-    switch (type)
-    {
-      case type_node:
-        return hidden_search_holder;
-      case type_container:
-        return std::static_pointer_cast<ContainerNode>(hidden_search_holder);
-      case type_geometry:
-        return std::static_pointer_cast<GeometryNode>(hidden_search_holder);
-      case type_light:
-        return std::static_pointer_cast<LightNode>(hidden_search_holder);
-      case type_directionalLight:
-        return std::static_pointer_cast<DirectionalLightNode>(hidden_search_holder);
-      case type_pointLight:
-        return std::static_pointer_cast<PointLightNode>(hidden_search_holder);
-      case type_spotLight:
-        return std::static_pointer_cast<SpotLightNode>(hidden_search_holder);
-      default:
-        throw mx_invalid_type(name + " (SceneGraph::search)");
-    }
-  }
-*/
-
-  std::shared_ptr<Node> hidden_search_holder = nullptr;
-
-  void recursive_search(const std::string &name, std::shared_ptr<Node> it)
+  void SceneGraph::recursive_search(const std::string &name, std::shared_ptr<Node> it)
   {
     if (it->m_Name == name)
       hidden_search_holder = it;
@@ -122,15 +68,15 @@ namespace MX
   void SceneGraph::upload_lighting_uniforms()
   {
     // lights
-    for (u_short i = 0; i < m_directional_light_nodes.size(); ++i)
+    for (unsigned short i = 0; i < m_directional_light_nodes.size(); ++i)
       if (m_directional_light_nodes.at(i)->m_visible)
         m_directional_light_nodes.at(i)->upload_uniforms(i);
 
-    for (u_short i = 0; i < m_point_light_nodes.size(); ++i)
+    for (unsigned short i = 0; i < m_point_light_nodes.size(); ++i)
       if (m_point_light_nodes.at(i)->m_visible)
         m_point_light_nodes.at(i)->upload_uniforms(i);
 
-    for (u_short i = 0; i < m_spot_light_nodes.size(); ++i)
+    for (unsigned short i = 0; i < m_spot_light_nodes.size(); ++i)
       if (m_spot_light_nodes.at(i)->m_visible)
         m_spot_light_nodes.at(i)->upload_uniforms(i);
   }
