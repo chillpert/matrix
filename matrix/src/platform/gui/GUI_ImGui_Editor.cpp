@@ -439,7 +439,7 @@ namespace MX
 
             if (item_prev_parent != item_parent)
             {
-              current_node->setParent(current_scenegraph->search<Node>(all_objects.at(item_parent)));
+              current_node->setParent(current_scenegraph->search<Node>(all_objects.at(item_parent)).get());
               needs_refresh = 1;
             }
           }
@@ -1006,7 +1006,7 @@ namespace MX
       {
         if (!strlen(input) == 0 && input_accepted)
         {
-          MX_WORLD.push(std::shared_ptr<Scene>(new Scene(input)));
+          MX_WORLD.push(std::make_shared<Scene>(input));
           memset(&input[0], 0, sizeof(input));
           global_cool_down = 1;
 

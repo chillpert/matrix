@@ -76,10 +76,8 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<ContainerNode> container_node(new ContainerNode(name));
-
-    std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(container_node);
-    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
+    std::shared_ptr<ContainerNode> container_node = std::make_shared<ContainerNode>(name);
+    MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(std::static_pointer_cast<Node>(container_node));
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Container: " + name);
     return 1;
   }
@@ -110,7 +108,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
+    std::shared_ptr<GeometryNode> object_node = std::make_shared<GeometryNode>(name);
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setDiffuseTexture(texture);
@@ -133,7 +131,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
+    std::shared_ptr<GeometryNode> object_node = std::make_shared<GeometryNode>(name);
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setTextureProfile(texture_profile);
@@ -156,7 +154,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
+    std::shared_ptr<GeometryNode> object_node = std::make_shared<GeometryNode>(name);
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setMaterialProfile(material_profile);
@@ -179,7 +177,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<GeometryNode> object_node(new GeometryNode(name));
+    std::shared_ptr<GeometryNode> object_node = std::make_shared<GeometryNode>(name);
     object_node->setModel(model);
     object_node->setShader(shader);
     object_node->setTextureProfile(texture_profile);
@@ -207,7 +205,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<DirectionalLightNode> light_node(new DirectionalLightNode(name));
+    std::shared_ptr<DirectionalLightNode> light_node = std::make_shared<DirectionalLightNode>(name);
     light_node->setShader(MX_GET_SHADER("blinn_phong"));
 
     MX_SCENEGRAPH.m_directional_light_nodes.push_back(light_node);
@@ -230,7 +228,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<PointLightNode> light_node(new PointLightNode(name));
+    std::shared_ptr<PointLightNode> light_node = std::make_shared<PointLightNode>(name);
     light_node->setShader(MX_GET_SHADER("blinn_phong"));
 
     MX_SCENEGRAPH.m_point_light_nodes.push_back(light_node);
@@ -253,7 +251,7 @@ namespace MX
       return 0;
     }
 
-    std::shared_ptr<SpotLightNode> light_node(new SpotLightNode(name));
+    std::shared_ptr<SpotLightNode> light_node = std::make_shared<SpotLightNode>(name);
     light_node->setShader(MX_GET_SHADER("blinn_phong"));
 
     MX_SCENEGRAPH.m_spot_light_nodes.push_back(light_node);

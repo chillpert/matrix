@@ -18,6 +18,7 @@
 namespace MX
 {
   void set_resource_files(const std::string &path_to_folder, std::string recurs_path = "");
+  void log_resource_files();
 
   World &World::get_default_world()
   {
@@ -140,6 +141,7 @@ namespace MX
     set_resource_files(MX_SHADER_PATH);
     set_resource_files(MX_MODEL_PATH);
     set_resource_files(MX_TEXTURE_PATH);
+    log_resource_files();
 
     for (auto it : m_ExistingScenes)
       it->initialize();
@@ -175,6 +177,27 @@ namespace MX
         MX_WARN("MX: World: Scene " + m_ExistingScenes.at(i)->m_Name + ": Deleted");
       }
     }
+  }
+
+  static int model_counter = 0;
+  static int shader_counter = 0;
+  static int diffuse_tex_counter = 0;
+  static int specular_tex_counter = 0;
+  static int normal_tex_counter = 0;
+  static int bump_tex_counter = 0;
+  static int height_tex_counter = 0;
+
+  void log_resource_files()
+  {
+    MX_INFO_LOG("MX: Model: " + std::to_string(model_counter) + " files found");
+
+    MX_INFO_LOG("MX: Shader: " + std::to_string(shader_counter) + " files found");
+
+    MX_INFO_LOG("MX: Diffuse Maps:  " + std::to_string(diffuse_tex_counter) + " files found");
+    MX_INFO_LOG("MX: Specular Maps: " + std::to_string(specular_tex_counter) + " files found");
+    MX_INFO_LOG("MX: Normal Maps:   " + std::to_string(normal_tex_counter) + " files found");
+    MX_INFO_LOG("MX: Bump Maps:     " + std::to_string(bump_tex_counter) + " files found");
+    MX_INFO_LOG("MX: Height Maps:   " + std::to_string(height_tex_counter) + " files found");
   }
 
   void set_resource_files(const std::string &path_to_folder, std::string recurs_path)
@@ -233,16 +256,8 @@ namespace MX
         #endif
           std::size_t found_point = temp.find_last_of(".");
 
-          std::string temp_without_ending = recurs_path + temp.substr(found_slash + 1, found_point - found_slash - 1);
-          std::string temp_with_ending = recurs_path + temp.substr(found_slash + 1);
-
-          char *file_name = new char[temp_without_ending.size() + 1];
-          std::copy(temp_without_ending.begin(), temp_without_ending.end(), file_name);
-          file_name[temp_without_ending.size()] = '\0';
-
-          char *file_name_with_ending = new char[temp_with_ending.size()  + 1];
-          std::copy(temp_with_ending.begin(), temp_with_ending.end(), file_name_with_ending);
-          file_name_with_ending[temp_with_ending.size()] = '\0';
+          std::string file_name = recurs_path + temp.substr(found_slash + 1, found_point - found_slash - 1);
+          std::string file_name_with_ending = recurs_path + temp.substr(found_slash + 1);
 
         /*#####################
                 MODELS
@@ -259,11 +274,12 @@ namespace MX
 
             if (!model_file_exists_already && std::string(file_name_with_ending).find(".obj") != std::string::npos)
             {
-              std::shared_ptr<Model> temp_model(new Model(file_name_with_ending));
+              ++model_counter;
+              std::shared_ptr<Model> temp_model = std::make_shared<Model>(file_name_with_ending);
               MX_WORLD.m_Models.push_back(temp_model);
             #ifdef MX_IMGUI_ACTIVE
               model_test.push_back({{static_cast<int>(MX_WORLD.m_Models.size()), temp_model}});
-              all_models.push_back(file_name);
+              all_models.push_back(file_name.c_str());
             #endif
             }
           }
@@ -283,10 +299,11 @@ namespace MX
 
             if (!shader_file_exists_already)
             {
-              std::shared_ptr<Shader> temp_shader(new MX_SHADER(file_name));
+              ++shader_counter;
+              std::shared_ptr<Shader> temp_shader = std::make_shared<MX_SHADER>(file_name);
               MX_WORLD.m_Shaders.push_back(temp_shader);
             #ifdef MX_IMGUI_ACTIVE
-              all_shaders.push_back(file_name); 
+              all_shaders.push_back(file_name.c_str());
             #endif
             }
           }
@@ -330,53 +347,47 @@ namespace MX
 
             if (!texture_file_exists_already)
             {
-              std::shared_ptr<MX_TEXTURE> temp_texture(new MX_TEXTURE(file_name_with_ending));
+              std::shared_ptr<MX_TEXTURE> temp_texture = std::make_shared<MX_TEXTURE>(file_name_with_ending);
 
               if (itr->path().string().find("diffuse") != std::string::npos)
               {
+                ++diffuse_tex_counter;
                 temp_texture->m_type = "texture_diffuse";
-                all_diffuse_maps.push_back(file_name);
+                all_diffuse_maps.push_back(file_name.c_str());
                 MX_WORLD.m_diffuse_maps.push_back(temp_texture);
               }
               else if (itr->path().string().find("normal") != std::string::npos)
               {
+                ++normal_tex_counter;
                 temp_texture->m_type = "texture_normal";
-                all_normal_maps.push_back(file_name);
+                all_normal_maps.push_back(file_name.c_str());
                 MX_WORLD.m_normal_maps.push_back(temp_texture);
               }
               else if (itr->path().string().find("specular") != std::string::npos)
               {
+                ++specular_tex_counter;
                 temp_texture->m_type = "texture_specular";
-                all_specular_maps.push_back(file_name);
+                all_specular_maps.push_back(file_name.c_str());
                 MX_WORLD.m_specular_maps.push_back(temp_texture);
               }
               else if (itr->path().string().find("bump") != std::string::npos)
               {
+                ++bump_tex_counter;
                 temp_texture->m_type = "texture_bump";
-                all_bump_maps.push_back(file_name);
+                all_bump_maps.push_back(file_name.c_str());
                 MX_WORLD.m_bump_maps.push_back(temp_texture);
               }
               else if (itr->path().string().find("height") != std::string::npos)
               {
+                ++height_tex_counter;
                 temp_texture->m_type = "texture_height";
-                all_height_maps.push_back(file_name);
+                all_height_maps.push_back(file_name.c_str());
                 MX_WORLD.m_height_maps.push_back(temp_texture);
               }
             }
           }
         }
       }
-
-      if (model)
-        MX_INFO_LOG("MX: Model: " + std::to_string(MX_WORLD.m_Models.size()) + " files found");
-      else if (shader)
-        MX_INFO_LOG("MX: Shader: " + std::to_string(MX_WORLD.m_Shaders.size()) + " files found");
-      else if (texture)
-        MX_INFO_LOG("MX: Diffuse Maps:  " + std::to_string(MX_WORLD.m_diffuse_maps.size()) + " files found");
-        MX_INFO_LOG("MX: Specular Maps: " + std::to_string(MX_WORLD.m_specular_maps.size()) + " files found");
-        MX_INFO_LOG("MX: Normal Maps:   " + std::to_string(MX_WORLD.m_normal_maps.size()) + " files found");
-        MX_INFO_LOG("MX: Bump Maps:     " + std::to_string(MX_WORLD.m_bump_maps.size()) + " files found");
-        MX_INFO_LOG("MX: Height Maps:   " + std::to_string(MX_WORLD.m_height_maps.size()) + " files found");
     }
     else
     {

@@ -18,19 +18,22 @@ namespace MX
 
   void Node::addChild(std::shared_ptr<Node> node)
   {
-    node->setParent(std::shared_ptr<Node>(this));;
     m_Children.push_back(node);
+
+    // the following line causes the segmentation fault
+    node->setParent(this);
+    //node->m_Parent = this;
+
     MX_INFO_LOG("MX: Node: " + node->m_Name + " added to parent: " + this->m_Name);
   }
 
-  void Node::setParent(std::shared_ptr<Node> node)
+  void Node::setParent(Node *node)
   {
     if (m_Parent == nullptr)
       m_Parent = node;
     else
     {
-      
-      std::shared_ptr<Node> old_parent = m_Parent;
+      Node *old_parent = m_Parent;
 
       node->m_Children.push_back(std::shared_ptr<Node>(this));
       m_Parent = node;

@@ -34,15 +34,6 @@ namespace MX
     MX_API std::shared_ptr<Model> getModel(const std::string &name) const;
     MX_API std::shared_ptr<Shader> getShader(const std::string &name) const;
     MX_API std::shared_ptr<Texture> getTexture(const std::string &name) const;
-/*
-    MX_API std::shared_ptr<TextureProfile> getTextureProfile(
-      std::shared_ptr<Texture> diffuse,
-      std::shared_ptr<Texture> specular = nullptr,
-      std::shared_ptr<Texture> normal = nullptr,
-      std::shared_ptr<Texture> bump = nullptr,
-      std::shared_ptr<Texture> height = nullptr
-    ) const;
-*/
 
   private:
     MX_API World(const World&) = delete;

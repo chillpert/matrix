@@ -135,19 +135,21 @@ void initialize()
   using namespace MX;
 
   MX_WORLD.initialize();
-  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("Debug")));
+  MX_WORLD.push(std::make_shared<Scene>("Debug"));
+
+  MX_SCENE->push_container("test");
 
 #ifdef MX_DEBUG
   init_debug_scene();
 #endif
 
-  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("Materials")));
+  MX_WORLD.push(std::make_shared<Scene>("Materials"));
 
 #ifdef MX_DEBUG
   init_material_test_scene();
 #endif
 
-  MX_WORLD.push(std::shared_ptr<Scene>(new Scene("Room")));
+  MX_WORLD.push(std::make_shared<Scene>("Room"));
 
 #ifdef MX_DEBUG
   init_floor_scene();

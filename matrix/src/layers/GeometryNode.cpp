@@ -5,7 +5,7 @@ namespace MX
   GeometryNode::GeometryNode(const std::string &name)
     : Node(name)
   {
-    m_textures = std::shared_ptr<TextureProfile>(new TextureProfile());
+    m_textures = std::make_shared<TextureProfile>();
   }
 
   void GeometryNode::upload_uniforms()

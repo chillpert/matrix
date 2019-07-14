@@ -6,7 +6,7 @@ namespace MX
 {
   SceneGraph::SceneGraph()
   {
-    std::shared_ptr<Node> temp_root(new ContainerNode(default_root_name));
+    std::shared_ptr<Node> temp_root = std::make_shared<ContainerNode>(default_root_name);
     temp_root->m_Parent = nullptr;
     m_Root = temp_root;
   }

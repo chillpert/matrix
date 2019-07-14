@@ -20,7 +20,7 @@ namespace MX
   class LightNode : public Node
   {
   public:
-    MX_API LightNode() = delete;
+    MX_API LightNode() = default;
     MX_API LightNode(const std::string &name);
     MX_API virtual ~LightNode() = default;
 
@@ -43,7 +43,7 @@ namespace MX
   class DirectionalLightNode : public LightNode
   {
   public:
-    MX_API DirectionalLightNode() = delete;
+    MX_API DirectionalLightNode() = default;
     MX_API DirectionalLightNode(const std::string &name);
 
     MX_API DirectionalLightNode* getNode() { return this; }
@@ -59,7 +59,7 @@ namespace MX
   class PointLightNode : public LightNode
   {
   public:
-    MX_API PointLightNode() = delete;
+    MX_API PointLightNode() = default;
     MX_API PointLightNode(const std::string &name);
 
     MX_API PointLightNode* getNode() { return this; }
@@ -79,7 +79,7 @@ namespace MX
   class SpotLightNode : public LightNode
   {
   public:
-    MX_API SpotLightNode() = delete;
+    MX_API SpotLightNode() = default;
     MX_API SpotLightNode(const std::string &name);
 
     MX_API SpotLightNode* getNode() { return this; }

@@ -12,7 +12,8 @@ namespace MX
 
   Texture_OpenGL::~Texture_OpenGL()
   {
-    glDeleteTextures(1, &m_ID);
+    if (m_initialized)
+      glDeleteTextures(1, &m_ID);
   }
 
   void Texture_OpenGL::use(int index) const

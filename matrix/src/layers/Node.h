@@ -23,7 +23,7 @@ namespace MX
   class Node
   {
   public:
-    MX_API Node() = delete;
+    MX_API Node() = default;
     MX_API Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader = nullptr);
     MX_API virtual ~Node() = default;
 
@@ -39,7 +39,7 @@ namespace MX
     MX_API virtual void addChild(std::shared_ptr<Node> node);
     MX_API virtual std::shared_ptr<Node> getChild(const std::string &name);
 
-    MX_API virtual void setParent(std::shared_ptr<Node> node);
+    MX_API virtual void setParent(Node *node);
 
     MX_API void setLocalTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
     MX_API void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
@@ -56,7 +56,7 @@ namespace MX
 
     std::shared_ptr<Shader> m_Shader;
 
-    std::shared_ptr<Node> m_Parent;
+    Node *m_Parent = nullptr;
     std::list<std::shared_ptr<Node>> m_Children;
 
     Transform m_Trans;

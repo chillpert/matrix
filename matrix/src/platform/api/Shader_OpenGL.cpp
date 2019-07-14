@@ -76,7 +76,7 @@ namespace MX
 
   bool Shader_OpenGL::errorCheck(int type) const
   {
-    GLint success;
+    GLint success = 1;
     std::vector<char> infoLog;
 	  glGetProgramiv(m_ID, type, &success);
 
