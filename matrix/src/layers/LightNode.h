@@ -50,7 +50,7 @@ namespace MX
 
     MX_API std::string getIdentifier() { return "Directional Light"; }
 
-    void upload_uniforms(unsigned short index) override;
+    MX_API void upload_uniforms(unsigned short index) override;
   
   public:
     glm::vec3 direction = glm::vec3(1.0f, -1.0f, -1.0f);
@@ -66,7 +66,7 @@ namespace MX
 
     MX_API std::string getIdentifier() { return "Point Light"; }
 
-    void upload_uniforms(unsigned short index) override;
+    MX_API void upload_uniforms(unsigned short index) override;
 
   public:
     glm::vec3 position = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -86,7 +86,7 @@ namespace MX
 
     MX_API std::string getIdentifier() { return "Spot Light"; }
 
-    void upload_uniforms(unsigned short index) override;
+    MX_API void upload_uniforms(unsigned short index) override;
 
   public:
     glm::vec3 position = glm::vec3(0.0f, 5.0f, 0.0f);
