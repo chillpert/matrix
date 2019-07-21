@@ -65,7 +65,7 @@ namespace MX
                viewport_y);
 
     // framebuffer.resize(screen_x, screen_y);
-    std::cout << viewport_x << ", " << viewport_y << std::endl;
+    //std::cout << viewport_x << ", " << viewport_y << std::endl;
 
   #else
     glViewport(0, 0, screen_x, screen_y);
