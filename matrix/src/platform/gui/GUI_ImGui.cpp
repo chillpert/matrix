@@ -30,12 +30,15 @@ namespace MX
   void GUI_ImGui::initialize()
   {
   #ifdef MX_IMGUI_ACTIVE
-  
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.WantSaveIniSettings = 0;
+    io.IniFilename = NULL;
+
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    
+
     std::string font_file = MX_FONTS_PATH + std::string("DroidSans.ttf");
     font_global = io.Fonts->AddFontFromFileTTF(font_file.c_str(), 15.0f);
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;

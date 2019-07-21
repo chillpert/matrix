@@ -18,14 +18,18 @@ namespace MX
 
   protected:
     MX_API virtual bool initialize();
-    MX_API virtual void update() = 0;
+    MX_API virtual void bind() = 0;
+    MX_API virtual void unbind() = 0;
     MX_API virtual void render() = 0;
+    MX_API virtual void update() = 0;
+    MX_API virtual void resize(int width, int height) = 0;
+    MX_API virtual void render_quad() = 0;
 
   public:
     std::shared_ptr<Model> m_quad;
     std::shared_ptr<Shader> m_screen_shader;
 
-    bool m_initialized;
+    bool m_initialized = 0;
   };
 
 }

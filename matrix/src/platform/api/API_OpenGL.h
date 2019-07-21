@@ -2,6 +2,7 @@
 #define API_OPENGL_H
 
 #include <API.h>
+#include <Framebuffer_OpenGL.h>
 
 namespace MX
 {

@@ -63,14 +63,14 @@ namespace MX
 
   void Application::render(void (*render_func)())
   {
-    m_API->clear();
-
-    m_API->render();
+    // m_API->clear();
 
     render_func();
 
     m_GUI->render();
 
+    m_API->render();
+    
     m_Window->render();
   }
 
