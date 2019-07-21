@@ -17,7 +17,7 @@ namespace MX
 
     MX_API_ERROR;
 
-    framebuffer.initialize();
+    //framebuffer.initialize();
 
     glEnable(GL_DEPTH_TEST);
 
@@ -34,8 +34,8 @@ namespace MX
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   
-    framebuffer.bind();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //framebuffer.bind();
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //CLEAR muss vor der framebuffer.initailizeion gecalled werdenf
 
@@ -74,9 +74,9 @@ namespace MX
 
   void API_OpenGL::render() const
   {
-    framebuffer.unbind();
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //framebuffer.unbind();
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    framebuffer.render();
+    //framebuffer.render();
   }
 }

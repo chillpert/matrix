@@ -34,8 +34,6 @@ namespace MX
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.WantSaveIniSettings = 0;
-    io.IniFilename = NULL;
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
