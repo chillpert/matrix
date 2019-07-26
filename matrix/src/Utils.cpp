@@ -5,6 +5,9 @@
 
 namespace MX
 {
+  int max_window_width = 1920;
+  int max_window_height = 1080;
+
 #ifdef MX_PLATFORM_WINDOWS_X64
   std::chrono::time_point<std::chrono::steady_clock> current_time;
 #elif MX_PLATFORM_UNIX_X64

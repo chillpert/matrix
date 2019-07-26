@@ -10,6 +10,9 @@ namespace MX
   const int initial_window_width = 1400;
   const int initial_window_height = 800;
 
+  extern int max_window_width;
+  extern int max_window_height;
+
   const std::string default_root_name = "Root";
   const std::string glsl_version = "#version 330 core";
 

@@ -23,23 +23,26 @@ namespace MX
     m_shader.setInt("screen_texture", 0);
 
     auto viewport = Application::get().m_Window->m_Props.m_Viewport;
-    viewport.m_Viewport_max_x = 1000;
-    viewport.m_Viewport_max_y = 500;
-    std::cout << viewport.m_Viewport_max_x << ", " << viewport.m_Viewport_max_y << std::endl;
 
     glGenFramebuffers(1, &m_fbo);
 
     glGenTextures(1, &m_tex);
     glBindTexture(GL_TEXTURE_2D, m_tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewport.m_Viewport_max_x, viewport.m_Viewport_max_y, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, max_window_width, max_window_height, 0, GL_RGBA, GL_FLOAT, NULL);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glViewport(0, 20, 1000, 500);
+    glViewport(
+      viewport.m_Viewport_min_x,
+      viewport.m_Viewport_min_y,
+      viewport.m_Viewport_max_x,
+      viewport.m_Viewport_max_y
+    );
+
     glGenRenderbuffers(1, &m_rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, m_rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, viewport.m_Viewport_max_x, viewport.m_Viewport_max_y);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, max_window_width, max_window_height);
 
     bind();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_tex, 0);
@@ -55,6 +58,7 @@ namespace MX
     unbind();
 
     m_initialized = 1;
+    m_needs_refresh = 1;
     MX_SUCCESS("MX: Framebuffer: OpenGL: Initialization");
     return true;
   }
@@ -84,19 +88,21 @@ namespace MX
 
   }
 
-  void Framebuffer_OpenGL::resize(int width, int height)
+  void Framebuffer_OpenGL::resize()
   {
     glDeleteTextures(1, &m_tex);
 
+    auto viewport = Application::get().m_Window->m_Props.m_Viewport;
+
     glGenTextures(1, &m_tex);
     glBindTexture(GL_TEXTURE_2D, m_tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewport.m_Viewport_max_x, viewport.m_Viewport_max_y, 0, GL_RGBA, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glGenRenderbuffers(1, &m_rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, m_rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, viewport.m_Viewport_max_x, viewport.m_Viewport_max_y);
 
     bind();
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_tex, 0);

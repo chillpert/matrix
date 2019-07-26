@@ -331,5 +331,6 @@ namespace MX
   void Controller::handleResizeWindow(int width, int height)
   {
     Application::get().m_Window->resize(width, height);
+    Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
   }
 }

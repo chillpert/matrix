@@ -15,6 +15,9 @@ namespace MX
     void update() override;
     void render() override;
     void clear() override;
+
+  private:
+    void initialize_framebuffer();
   };
 }
 

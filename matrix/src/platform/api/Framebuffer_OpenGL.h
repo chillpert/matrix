@@ -19,7 +19,7 @@ namespace MX
     MX_API virtual void unbind() override;
     MX_API virtual void render() override;
     MX_API virtual void update() override;
-    MX_API virtual void resize(int width, int height) override;
+    MX_API virtual void resize() override;
 
   private:
     MX_API virtual void render_quad() override;

@@ -3,6 +3,25 @@
 
 namespace MX
 {
+  Window::WindowProps *window;
+
+  static bool waiting_for_framebuffer = 1;
+  static size_t counter = 0;
+
+  void API_OpenGL::initialize_framebuffer()
+  {
+    waiting_for_framebuffer = 0;
+    glViewport(0, 0, window->m_Width, window->m_Height);
+
+    if (m_framebuffer.m_needs_refresh && m_framebuffer.m_initialized)
+    {
+      m_framebuffer.m_needs_refresh = 0;
+      m_framebuffer.resize();
+    }
+    else
+      m_framebuffer.initialize();
+  }
+
   bool API_OpenGL::initialize()
   {
     glewExperimental = GL_TRUE;
@@ -15,8 +34,7 @@ namespace MX
 
     MX_API_ERROR;
 
-    glViewport(0, 0, 1400, 800);
-    m_framebuffer.initialize();
+    window = &Application::get().m_Window->m_Props;
 
     glEnable(GL_DEPTH_TEST);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -27,16 +45,38 @@ namespace MX
 
   void API_OpenGL::update()
   {
-    //clear();
-    glViewport(0, 0, 1000, 500);
+    int viewport_x = window->m_Viewport.m_Viewport_max_x;
+    int viewport_y = window->m_Viewport.m_Viewport_max_y;
 
-    glClearColor(0.5f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (MX_WORLD.m_ActiveScene != nullptr)
+      MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
 
-    if (m_framebuffer.m_initialized)
+    if (m_framebuffer.m_is_active)
+      glViewport(0, 0, viewport_x, viewport_y);
+    else
+    {
+      glViewport(
+        window->m_Viewport.m_Viewport_min_x,
+        window->m_Viewport.m_Viewport_min_y,
+        viewport_x,
+        viewport_y
+      );
+    }
+
+    // view port needs to be set according to GUI window size, therefore wait until assignments
+    if (waiting_for_framebuffer)
+      ++counter;
+
+    if (m_framebuffer.m_needs_refresh || (viewport_x != initial_window_width && !m_framebuffer.m_initialized))
+      initialize_framebuffer();
+
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    clear();
+
+    if (m_framebuffer.m_initialized && m_framebuffer.m_is_active)
     {
       m_framebuffer.bind();
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      clear();
     }
 
     // glEnable(GL_BLEND);
@@ -45,57 +85,21 @@ namespace MX
 
   void API_OpenGL::clear()
   {
-    int screen_y = Application::get().m_Window->m_Props.m_Height;
-
-  #ifdef MX_IMGUI_ACTIVE
-    Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
-
-    int viewport_x = app_viewport->m_Viewport_max_x;
-    int viewport_y = app_viewport->m_Viewport_max_y;
-
-    int corner_x = app_viewport->m_Viewport_min_x;
-    int corner_y = app_viewport->m_Viewport_min_y;
-
-    if (MX_WORLD.m_ActiveScene != nullptr)
-      MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
-
-    glViewport(corner_x,
-               screen_y - corner_y,
-               viewport_x,
-               viewport_y);
-
-    static bool waiting_for_framebuffer = 1;
-    static size_t counter = 0;
-
-    if (waiting_for_framebuffer)
-      ++counter;
-
-    if (counter > 10 && !m_framebuffer.m_initialized)
-    {
-      waiting_for_framebuffer = 0;
-      m_framebuffer.initialize();
-    }
-
-    //std::cout << "Screen_y: " << screen_y << ", corner_y: " << corner_y << std::endl;
-    //std::cout << corner_x << ", " << screen_y - corner_y << ", " << viewport_x << ", " << viewport_y << std::endl;
-
-    // m_framebuffer.resize(viewport_x, viewport_y);
-
-  #else
-    if (MX_WORLD.m_ActiveScene != nullptr)
-      MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(1000, 500);
-
-    int screen_x = Application::get().m_Window->m_Props.m_Width;
-    glViewport(0, 20, 1000, 500);
-  #endif
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
 
   void API_OpenGL::render()
   {
-    if (m_framebuffer.m_initialized)
+    if (m_framebuffer.m_initialized && m_framebuffer.m_is_active)
     {
       m_framebuffer.unbind();
-      glViewport(0, 20, 1000, 500);
+
+      glViewport(
+        window->m_Viewport.m_Viewport_min_x,
+        window->m_Viewport.m_Viewport_min_y,
+        window->m_Viewport.m_Viewport_max_x,
+        window->m_Viewport.m_Viewport_max_y
+      );
       m_framebuffer.render();
     }
   }

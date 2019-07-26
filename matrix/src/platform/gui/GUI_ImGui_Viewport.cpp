@@ -50,6 +50,8 @@ namespace MX
   #endif
   }
 
+  static ImVec2 prev_window_size;
+
   void renderViewport()
   {
   #ifdef MX_IMGUI_ACTIVE
@@ -94,7 +96,7 @@ namespace MX
       {
         std::unique_ptr<Texture> play_button(std::make_unique<MX_TEXTURE>("diffuse/elon.jpg"));
         auto derived_tex_ptr = static_cast<MX_TEXTURE*>(play_button.get());
-        
+
         play_button->initialize();
         my_tex_id = (void*)derived_tex_ptr->getID();
         my_tex_w = derived_tex_ptr->m_Stb.width;
@@ -124,20 +126,34 @@ namespace MX
         first_run = 0;
       }
 
-      // comments are values at start up with window resolution of 1200, 600
-      auto window_size = ImGui::GetWindowSize(); // 853, 581
-      auto window_pos = ImGui::GetWindowPos(); // 0, 19
+      ImGui::SameLine();
+
+      if (ImGui::Button("REFRESH"))
+        Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+
+      ImGui::SameLine();
+
+      if (ImGui::Button("TOGGLE FB"))
+        Application::get().m_API->m_framebuffer.m_is_active = !Application::get().m_API->m_framebuffer.m_is_active;
+
+      ImVec2 window_size = ImGui::GetWindowSize();
+      ImVec2 window_pos = ImGui::GetWindowPos();
+
+      if (window_size.x != prev_window_size.x)
+        Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+
+      prev_window_size = window_size;
 
       app_viewport->m_Viewport_min_x = window_pos.x; // 0
-      app_viewport->m_Viewport_min_y = window_size.y + window_pos.y; // 19
+      app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y); // 19
 
       app_viewport->m_Viewport_max_x = window_size.x; // 853
       app_viewport->m_Viewport_max_y = window_size.y; // 581
 
+/*
       if (Application::get().m_API->m_framebuffer.m_initialized)
       {
         ImVec2 pos = ImGui::GetCursorScreenPos();
-/*
         ImGui::GetWindowDrawList()->AddImage(
           (void*)Application::get().m_API->m_framebuffer.m_fbo,
           ImVec2(
@@ -157,23 +173,10 @@ namespace MX
           ImGui::GetCursorScreenPos().y + 500/2),
           ImVec2(0, 1), ImVec2(1, 0)
         );
-*/
       }
+*/
     }
     ImGui::End();
-
-    if (ImGui::Begin("test"))
-    {
-      ImGui::GetWindowDrawList()->AddImage(
-          (void*)Application::get().m_API->m_framebuffer.m_fbo,
-          ImVec2(ImGui::GetCursorScreenPos()),
-          ImVec2(ImGui::GetCursorScreenPos().x + 900/2, 
-          ImGui::GetCursorScreenPos().y + 500/2),
-          ImVec2(0, 1), ImVec2(1, 0)
-        );
-    }
-    ImGui::End();
-
   #endif
   }
 

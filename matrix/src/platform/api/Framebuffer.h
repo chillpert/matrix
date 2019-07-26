@@ -29,7 +29,7 @@ namespace MX
     MX_API virtual void unbind() = 0;
     MX_API virtual void render() = 0;
     MX_API virtual void update() = 0;
-    MX_API virtual void resize(int width, int height) = 0;
+    MX_API virtual void resize() = 0;
     MX_API virtual void render_quad() = 0;
 
   public:
@@ -37,6 +37,8 @@ namespace MX
     std::shared_ptr<Shader> m_screen_shader;
 
     bool m_initialized = 0;
+    bool m_needs_refresh = 1;
+    bool m_is_active = 1;
   };
 
 }
