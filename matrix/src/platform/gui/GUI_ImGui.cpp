@@ -175,6 +175,13 @@ namespace MX
   #endif
   }
 
+  void GUI_ImGui::clear()
+  {
+  #ifdef MX_IMGUI_ACTIVE
+  
+  #endif
+  }
+
   void GUI_ImGui::clean()
   {
   #ifdef MX_IMGUI_ACTIVE

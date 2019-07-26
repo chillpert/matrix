@@ -9,13 +9,12 @@ namespace MX
   class MX_API API_OpenGL : public API
   {
   public:
-    API_OpenGL() {}
-    ~API_OpenGL() {}
+    API_OpenGL() = default;
 
-    bool initialize() const override;
-    void update() const override;
-    void render() const override;
-    void clear() const override;
+    bool initialize() override;
+    void update() override;
+    void render() override;
+    void clear() override;
   };
 }
 

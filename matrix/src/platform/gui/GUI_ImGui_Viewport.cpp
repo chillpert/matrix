@@ -85,10 +85,10 @@ namespace MX
 
     if (ImGui::Begin("View Port", &p_open_viewport, window_flags))
     {
-      Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
-
       std::string fps_message = std::to_string(current_frame) + " FPS";
       ImGui::Text(fps_message.c_str());
+
+      Window::WindowProps::ViewPort *app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
 
       if (first_iteration)
       {
@@ -103,9 +103,14 @@ namespace MX
       }
 
       ImGui::SameLine();
-      if (ImGui::ImageButton(my_tex_id, ImVec2(16.0f, 16.0f), ImVec2(-1, -1), ImVec2(16.0f / my_tex_w, 16.0f / my_tex_h), 3, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)))
+      if (ImGui::ImageButton(
+        my_tex_id,
+        ImVec2(16.0f, 16.0f),
+        ImVec2(-1, -1), ImVec2(16.0f / my_tex_w, 16.0f / my_tex_h),
+        3,
+        ImVec4(0.0f, 0.0f, 0.0f, 1.0f))
+      )
         current_scenegraph->is_paused = !current_scenegraph->is_paused;
-
 
       static int menubar_offset = 19;
 
@@ -128,8 +133,47 @@ namespace MX
 
       app_viewport->m_Viewport_max_x = window_size.x; // 853
       app_viewport->m_Viewport_max_y = window_size.y; // 581
+
+      if (Application::get().m_API->m_framebuffer.m_initialized)
+      {
+        ImVec2 pos = ImGui::GetCursorScreenPos();
+/*
+        ImGui::GetWindowDrawList()->AddImage(
+          (void*)Application::get().m_API->m_framebuffer.m_fbo,
+          ImVec2(
+            ImGui::GetItemRectMin().x + pos.x,
+            ImGui::GetItemRectMin().y + pos.y
+          ),
+          ImVec2(pos.x + 1400 / 2, pos.y + 800 / 2),
+          ImVec2(0, 1), ImVec2(1, 0)
+        );
+*/
+
+/*
+        ImGui::GetWindowDrawList()->AddImage(
+          (void*)Application::get().m_API->m_framebuffer.m_fbo,
+          ImVec2(ImGui::GetCursorScreenPos()),
+          ImVec2(ImGui::GetCursorScreenPos().x + 900/2, 
+          ImGui::GetCursorScreenPos().y + 500/2),
+          ImVec2(0, 1), ImVec2(1, 0)
+        );
+*/
+      }
     }
     ImGui::End();
+
+    if (ImGui::Begin("test"))
+    {
+      ImGui::GetWindowDrawList()->AddImage(
+          (void*)Application::get().m_API->m_framebuffer.m_fbo,
+          ImVec2(ImGui::GetCursorScreenPos()),
+          ImVec2(ImGui::GetCursorScreenPos().x + 900/2, 
+          ImGui::GetCursorScreenPos().y + 500/2),
+          ImVec2(0, 1), ImVec2(1, 0)
+        );
+    }
+    ImGui::End();
+
   #endif
   }
 

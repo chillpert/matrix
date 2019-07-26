@@ -23,6 +23,7 @@ namespace MX
     MX_API void update() override;
     MX_API void render() override;
     MX_API void clean() override;
+    MX_API void clear() override;
   };
 
   // GUI_ImGui_Editor.cpp

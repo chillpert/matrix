@@ -11,18 +11,27 @@
 
 #include <stdafx.h>
 
+#include <Framebuffer.h>
+#include <Framebuffer_OpenGL.h>
+
 namespace MX
 {
   class MX_API API
   {
   public:
-    API() {}
-    virtual ~API() {}
-  
-    virtual bool initialize() const { return false; }
-    virtual void update() const {}
-    virtual void render() const {}
-    virtual void clear() const {}
+    API() = default;
+    virtual ~API() = default;
+
+    API(const API&) = default;
+    API &operator=(const API&) = default;
+
+    virtual bool initialize() { return false; }
+    virtual void update() {}
+    virtual void render() {}
+    virtual void clear() {}
+
+    int m_test;
+    MX_FRAMEBUFFER m_framebuffer;
   };
 }
 

@@ -30,14 +30,14 @@ namespace MX
     // set up window 
     m_Running = m_Window->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: Window");
-    
+
     // set up API
     m_Running = m_API->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: API");
-    
+
     initialize_func();
     MX_SUCCESS_LOG("MX: Application: Initialization: Func");
-  
+
     // set up GUI
     m_GUI->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: GUI");
@@ -52,24 +52,20 @@ namespace MX
   {
     m_Window->update();
 
-    m_Window->controllerCallback();
+    m_API->update();
 
     m_GUI->update();
-
-    m_API->update();
 
     update_func();
   }
 
   void Application::render(void (*render_func)())
   {
-    // m_API->clear();
-
     render_func();
 
-    m_GUI->render();
-
     m_API->render();
+
+    m_GUI->render();
     
     m_Window->render();
   }

@@ -5,6 +5,13 @@
 #include <Model.h>
 #include <Shader.h>
 
+#ifdef MX_PLATFORM_WINDOWS_X64
+  #define MX_FRAMEBUFFER Framebuffer_OpenGL
+#elif MX_PLATFORM_UNIX_X64
+  #define MX_FRAMEBUFFER Framebuffer_OpenGL
+#endif
+
+
 namespace MX
 {
   class Framebuffer

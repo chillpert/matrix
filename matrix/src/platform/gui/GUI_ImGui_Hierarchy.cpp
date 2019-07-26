@@ -8,7 +8,6 @@ namespace MX
 
   void renderSceneGraph()
   {
-  #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
     static bool no_scrollbar = 0;
     static bool no_menu = 1;
@@ -35,7 +34,6 @@ namespace MX
       draw_scene_graph_menu(*MX_WORLD.m_ActiveScene->m_Sg.m_Root);
     
     ImGui::End();
-  #endif
   }
 
   void renderOutline()

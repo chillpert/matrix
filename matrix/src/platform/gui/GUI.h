@@ -24,6 +24,7 @@ namespace MX
     MX_API virtual void update() = 0;
     MX_API virtual void render() = 0;
     MX_API virtual void clean() = 0;
+    MX_API virtual void clear() = 0;
   };
 }
 

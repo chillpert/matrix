@@ -73,6 +73,8 @@ namespace MX
       SDL_SetRelativeMouseMode(SDL_TRUE);
     else
       SDL_SetRelativeMouseMode(SDL_FALSE);
+
+    controllerCallback();
   }
 
   void Window_SDL2::render()

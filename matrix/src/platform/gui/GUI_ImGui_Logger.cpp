@@ -13,6 +13,7 @@ namespace MX
   static bool fatal_flag = 1;
   static bool success_flag = 1;
 
+#ifdef MX_IMGUI_ACTIVE
   static bool scroll_to_bottom_flag = 1;
   static bool scroll_to_top_flag = 0;
 
@@ -26,6 +27,7 @@ namespace MX
   static bool no_background = 0;
   static bool no_bring_to_front = 0;
   static ImGuiWindowFlags window_flags = 0;
+#endif
 
   static void toggle_flags()
   {
