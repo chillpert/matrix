@@ -32,6 +32,7 @@ namespace MX
   void renderAssestsMenu();
   void renderTransformMenu();
   void renderSpawnMenu();
+  void renderViewportSettingsMenu();
 
   // GUI_ImGui_Hierarchy.cpp
   void renderOutline();

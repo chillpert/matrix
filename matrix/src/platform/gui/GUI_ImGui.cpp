@@ -157,16 +157,17 @@ namespace MX
 
     if (demo_window_enabled)                                 ImGui::ShowDemoWindow();
 
-    if (!global_cool_down && menubar_enabled)                renderMenuBar();
-    if (!global_cool_down && spawn_window_enabled)           renderSpawnMenu();
-    if (!global_cool_down && scenegraph_enabled)             renderSceneGraph();
-    if (!global_cool_down && outline_enabled)                renderOutline();
-    if (!global_cool_down && scenes_window_enabled)          renderScenesMenu();
-    if (!global_cool_down && assets_window_enabled)          renderAssestsMenu();
-    if (!global_cool_down && logger_window_enabled)          renderLoggerWindow();
-    if (!global_cool_down && transform_window_enabled)       renderTransformMenu();
-    if (!global_cool_down && performance_monitor_enabled)    renderPerformanceMonitor();
-    if (!global_cool_down && file_inspector_enabled)         renderFileInspectorWindow();
+    if (!global_cool_down && menubar_enabled)                 renderMenuBar();
+    if (!global_cool_down && spawn_window_enabled)            renderSpawnMenu();
+    if (!global_cool_down && viewport_settings_window_enabled) renderViewportSettingsMenu();
+    if (!global_cool_down && scenegraph_enabled)              renderSceneGraph();
+    if (!global_cool_down && outline_enabled)                 renderOutline();
+    if (!global_cool_down && scenes_window_enabled)           renderScenesMenu();
+    if (!global_cool_down && assets_window_enabled)           renderAssestsMenu();
+    if (!global_cool_down && logger_window_enabled)           renderLoggerWindow();
+    if (!global_cool_down && transform_window_enabled)        renderTransformMenu();
+    if (!global_cool_down && performance_monitor_enabled)     renderPerformanceMonitor();
+    if (!global_cool_down && file_inspector_enabled)          renderFileInspectorWindow();
 
     ImGui::Render();
     MX_IMGUI_API_RENDER

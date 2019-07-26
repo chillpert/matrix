@@ -31,6 +31,15 @@ namespace MX
     MX_API virtual void update() = 0;
     MX_API virtual void resize() = 0;
     MX_API virtual void render_quad() = 0;
+    MX_API virtual void upload_settings() const = 0;
+
+  private:
+    struct Framebuffer_Settings
+    {
+      bool inverse_color = 1;
+      bool depth_map = 0;
+      bool shadow_map = 0;
+    };
 
   public:
     std::shared_ptr<Model> m_quad;
@@ -39,6 +48,8 @@ namespace MX
     bool m_initialized = 0;
     bool m_needs_refresh = 1;
     bool m_is_active = 1;
+
+    Framebuffer_Settings m_settings;
   };
 
 }

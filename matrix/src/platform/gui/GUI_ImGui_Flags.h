@@ -47,6 +47,7 @@ namespace MX
 
   // flags for handling close window events
   extern bool p_open_spawn;
+  extern bool p_open_viewport_settings;
   extern bool p_open_scenegraph;
   extern bool p_open_outline;
   extern bool p_open_scenes;
@@ -60,6 +61,7 @@ namespace MX
 
   // flags for toggling window visibility
   extern bool spawn_window_enabled;
+  extern bool viewport_settings_window_enabled;
   extern bool scenegraph_enabled;
   extern bool outline_enabled;
   extern bool menubar_enabled;

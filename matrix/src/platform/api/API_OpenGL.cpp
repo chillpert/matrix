@@ -81,6 +81,8 @@ namespace MX
 
     // glEnable(GL_BLEND);
     // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    m_framebuffer.upload_settings();
   }
 
   void API_OpenGL::clear()

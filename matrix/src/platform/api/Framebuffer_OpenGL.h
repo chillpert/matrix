@@ -14,15 +14,16 @@ namespace MX
     MX_API Framebuffer_OpenGL(const Framebuffer_OpenGL&) = default;
     MX_API Framebuffer_OpenGL &operator=(const Framebuffer_OpenGL&) = default;
 
-    MX_API virtual bool initialize() override;
-    MX_API virtual void bind() override;
-    MX_API virtual void unbind() override;
-    MX_API virtual void render() override;
-    MX_API virtual void update() override;
-    MX_API virtual void resize() override;
+    MX_API bool initialize() override;
+    MX_API void bind() override;
+    MX_API void unbind() override;
+    MX_API void render() override;
+    MX_API void update() override;
+    MX_API void resize() override;
+    MX_API void upload_settings() const override;
 
   private:
-    MX_API virtual void render_quad() override;
+    MX_API void render_quad() override;
 
   public:
     bool m_off_screen = false;

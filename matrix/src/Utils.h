@@ -14,7 +14,7 @@ namespace MX
   extern int max_window_height;
 
   const std::string default_root_name = "Root";
-  const std::string glsl_version = "#version 330 core";
+  const std::string glsl_version = "#version 460 core";
 
   std::string parseFile(const std::string &path);
   std::string tokenizeLine(const std::string &delimiter);

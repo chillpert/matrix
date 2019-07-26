@@ -85,7 +85,7 @@ namespace MX
 
   void Framebuffer_OpenGL::update()
   {
-
+    upload_settings();
   }
 
   void Framebuffer_OpenGL::resize()
@@ -134,5 +134,13 @@ namespace MX
     glBindVertexArray(m_quad_vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
+  }
+
+  void Framebuffer_OpenGL::upload_settings() const
+  {
+    m_shader.use();
+    m_shader.setBool("inverse_color", m_settings.inverse_color);
+    m_shader.setBool("depth_map", m_settings.depth_map);
+    m_shader.setBool("shadow_map", m_settings.shadow_map);
   }
 }

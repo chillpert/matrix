@@ -15,6 +15,7 @@ namespace MX
   std::vector<std::pair<std::string, ImVec4>> logger_messages_for_gui;
 
   bool spawn_window_enabled = 1;
+  bool viewport_settings_window_enabled = 1;
   bool scenegraph_enabled = 1;
   bool outline_enabled = 1;
   bool menubar_enabled = 1;
@@ -28,6 +29,7 @@ namespace MX
   bool file_inspector_enabled = 0;
 
   bool p_open_spawn = 1;
+  bool p_open_viewport_settings = 1;
   bool p_open_scenegraph = 1;
   bool p_open_outline = 1;
   bool p_open_scenes = 1;

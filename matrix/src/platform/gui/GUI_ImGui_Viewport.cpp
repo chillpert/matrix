@@ -133,9 +133,6 @@ namespace MX
 
       ImGui::SameLine();
 
-      if (ImGui::Button("TOGGLE FB"))
-        Application::get().m_API->m_framebuffer.m_is_active = !Application::get().m_API->m_framebuffer.m_is_active;
-
       ImVec2 window_size = ImGui::GetWindowSize();
       ImVec2 window_pos = ImGui::GetWindowPos();
 
