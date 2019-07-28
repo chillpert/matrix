@@ -70,8 +70,8 @@ void init_floor_scene()
 
   MX_CAMERA.m_Position = {0.0f, 1.0f, 4.0f};
 
-  //MX_SCENE->push_directional_light("Dir Light 1");
-  MX_SCENE->push_point_light("Point Light 1");
+  MX_SCENE->push_directional_light("Dir Light 1");
+  //MX_SCENE->push_point_light("Point Light 1");
   MX_SCENE->push_spot_light("Spot Light 1");
 
   TextureProfile floor_textures;

@@ -8,20 +8,6 @@ namespace MX
   static bool waiting_for_framebuffer = 1;
   static size_t counter = 0;
 
-  void API_OpenGL::initialize_framebuffer()
-  {
-    waiting_for_framebuffer = 0;
-    glViewport(0, 0, window->m_Width, window->m_Height);
-
-    if (m_framebuffer.m_needs_refresh && m_framebuffer.m_initialized)
-    {
-      m_framebuffer.m_needs_refresh = 0;
-      m_framebuffer.refresh();
-    }
-    else
-      m_framebuffer.initialize();
-  }
-
   bool API_OpenGL::initialize()
   {
     glewExperimental = GL_TRUE;
@@ -68,7 +54,18 @@ namespace MX
       ++counter;
 
     if (m_framebuffer.m_needs_refresh || (viewport_x != initial_window_width && !m_framebuffer.m_initialized))
-      initialize_framebuffer();
+    {
+      waiting_for_framebuffer = 0;
+      glViewport(0, 0, window->m_Width, window->m_Height);
+
+      if (m_framebuffer.m_needs_refresh && m_framebuffer.m_initialized)
+      {
+        m_framebuffer.m_needs_refresh = 0;
+        m_framebuffer.refresh();
+      }
+      else
+        m_framebuffer.initialize();
+    }
 
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     clear();

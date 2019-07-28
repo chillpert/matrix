@@ -46,6 +46,9 @@ namespace MX
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+      float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+      glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
     }
     else
     {
@@ -124,6 +127,14 @@ namespace MX
     glBindTexture(GL_TEXTURE_2D, m_depth_tex);
 
     render_quad();
+
+    //shadows
+    auto shader = MX_GET_SHADER("blinn_phong");
+    shader->setInt("shadowMap", 0);
+    shader->use();
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_depth_tex);
   }
 
   void Framebuffer_OpenGL::update()
@@ -153,6 +164,9 @@ namespace MX
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+      float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+      glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
       bind();
       glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_tex, 0);
@@ -212,11 +226,15 @@ namespace MX
 
   void Framebuffer_OpenGL::upload_settings() const
   {
-    static glm::vec3 light_pos(-2.0f, 4.0f, -1.0f);
+    glm::vec3 light_pos(-2.0f, 4.0f, -1.0f);
 
     glm::mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
     glm::mat4 light_view = glm::lookAt(light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 light_space_matrix = light_projection * light_view;
+
+    auto shader = MX_GET_SHADER("blinn_phong");
+    shader->use();
+    shader->setfMat4("lightSpaceMatrix", light_space_matrix);
 
     m_depth_shader->use();
     m_depth_shader->setfMat4("light_space_matrix", light_space_matrix);
