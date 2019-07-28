@@ -76,9 +76,9 @@ namespace MX
     {
       if (ImGui::CollapsingHeader("Framebuffer##set available framebuffer types"))
       {
-        auto *framebuffer_settings = &Application::get().m_API->m_framebuffer.m_settings;
-        ImGui::Checkbox("Inverse Color", &framebuffer_settings->inverse_color);
-        ImGui::Checkbox("Depth Map", &framebuffer_settings->depth_map);
+        auto *framebuffer = &Application::get().m_API->m_framebuffer;
+        ImGui::Checkbox("Inverse Color", &framebuffer->m_inversed_color);
+        ImGui::Checkbox("Depth Map", &framebuffer->m_depth_map);
       }
     }
     ImGui::End();

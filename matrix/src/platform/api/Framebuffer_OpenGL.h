@@ -27,10 +27,11 @@ namespace MX
 
   public:
     bool m_off_screen = false;
-    Shader_OpenGL m_shader;
+
     GLuint m_fbo;
     GLuint m_rbo;
     GLuint m_tex;
+    GLuint m_depth_tex;
     GLuint m_quad_vbo;
     GLuint m_quad_vao;
   };

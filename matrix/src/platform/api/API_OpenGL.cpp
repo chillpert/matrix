@@ -73,6 +73,9 @@ namespace MX
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     clear();
 
+    if (m_framebuffer.m_initialized)
+      m_framebuffer.update();
+
     if (m_framebuffer.m_initialized && m_framebuffer.m_is_active)
     {
       m_framebuffer.bind();
@@ -81,8 +84,6 @@ namespace MX
 
     // glEnable(GL_BLEND);
     // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    m_framebuffer.upload_settings();
   }
 
   void API_OpenGL::clear()
