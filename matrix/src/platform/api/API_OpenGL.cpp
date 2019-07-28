@@ -16,7 +16,7 @@ namespace MX
     if (m_framebuffer.m_needs_refresh && m_framebuffer.m_initialized)
     {
       m_framebuffer.m_needs_refresh = 0;
-      m_framebuffer.resize();
+      m_framebuffer.refresh();
     }
     else
       m_framebuffer.initialize();

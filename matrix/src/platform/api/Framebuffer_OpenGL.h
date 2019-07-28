@@ -19,7 +19,7 @@ namespace MX
     MX_API void unbind() override;
     MX_API void render() override;
     MX_API void update() override;
-    MX_API void resize() override;
+    MX_API void refresh() override;
     MX_API void upload_settings() const override;
 
   private:

@@ -136,7 +136,7 @@ namespace MX
       ImVec2 window_size = ImGui::GetWindowSize();
       ImVec2 window_pos = ImGui::GetWindowPos();
 
-      if (window_size.x != prev_window_size.x)
+      if (window_size.x != prev_window_size.x || window_size.y != prev_window_size.y)
         Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
 
       prev_window_size = window_size;

@@ -131,12 +131,12 @@ namespace MX
     static bool prev_depth_map = m_depth_map;
 
     if (prev_depth_map != m_depth_map)
-      resize();
+      refresh();
 
     upload_settings();
   }
 
-  void Framebuffer_OpenGL::resize()
+  void Framebuffer_OpenGL::refresh()
   {
     auto viewport = Application::get().m_Window->m_Props.m_Viewport;
 
@@ -210,37 +210,21 @@ namespace MX
     glBindVertexArray(0);
   }
 
-  glm::vec3 light_pos(-2.0f, 4.0f, -1.0f);
-
   void Framebuffer_OpenGL::upload_settings() const
   {
-    if (m_depth_map)
-    {
-      glm::mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-      glm::mat4 light_view = glm::lookAt(light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-      glm::mat4 light_space_matrix = light_projection * light_view;
+    static glm::vec3 light_pos(-2.0f, 4.0f, -1.0f);
 
-      m_depth_shader->use();
-      m_depth_shader->setfMat4("light_space_matrix", light_space_matrix);
+    glm::mat4 light_projection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    glm::mat4 light_view = glm::lookAt(light_pos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 light_space_matrix = light_projection * light_view;
 
-      m_quad_shader->use();
-      m_quad_shader->setBool("depth_map", true);
-    }
-    else
-    {
-      m_quad_shader->use();
-      m_quad_shader->setBool("depth_map", false);
-    }
+    m_depth_shader->use();
+    m_depth_shader->setfMat4("light_space_matrix", light_space_matrix);
 
-    if (m_inversed_color)
-    {
-      m_quad_shader->use();
-      m_quad_shader->setBool("inverse_color", true);
-    }
-    else
-    {
-      m_quad_shader->use();
-      m_quad_shader->setBool("inverse_color", false);
-    }
+    m_quad_shader->use();
+    m_quad_shader->setBool("depth_map", m_depth_map);
+
+    m_quad_shader->use();
+    m_quad_shader->setBool("inverse_color", m_inversed_color);
   }
 }

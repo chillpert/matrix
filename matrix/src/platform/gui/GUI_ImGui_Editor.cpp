@@ -77,8 +77,17 @@ namespace MX
       if (ImGui::CollapsingHeader("Framebuffer##set available framebuffer types"))
       {
         auto *framebuffer = &Application::get().m_API->m_framebuffer;
+        static bool prev_inversed_color = framebuffer->m_inversed_color;
+        static bool prev_depth_map = framebuffer->m_depth_map;
+
         ImGui::Checkbox("Inverse Color", &framebuffer->m_inversed_color);
         ImGui::Checkbox("Depth Map", &framebuffer->m_depth_map);
+
+        if (framebuffer->m_inversed_color != prev_inversed_color || framebuffer->m_depth_map != prev_depth_map)
+          framebuffer->m_needs_refresh = 1;
+
+        prev_inversed_color = framebuffer->m_inversed_color;
+        prev_depth_map = framebuffer->m_depth_map;
       }
     }
     ImGui::End();

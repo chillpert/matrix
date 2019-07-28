@@ -108,6 +108,14 @@ void init_floor_scene()
   chair->setTransform(FORWARDS, 1.0f, 0);
   chair->setTransform(LEFT, 0.8f, 0);
   chair->setTransform(Y, 117.0f, 0);
+
+/*
+  MX_SCENE->push_object("Plant", MX_GET_MODEL("table/table.obj"), MX_GET_SHADER("blinn_phong"));
+  auto plant = MX_SCENEGRAPH.search<GeometryNode>("Plant");  
+  //plant->setTransform(SCALE, 0.001f, 0);
+  plant->setTransform(SCALE, 0.06f, 0);
+  plant->setTransform(X, 3.1f, 0);
+*/
 }
 
 void init_material_test_scene()

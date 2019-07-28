@@ -30,7 +30,7 @@ namespace MX
     MX_API virtual void unbind() = 0;
     MX_API virtual void render() = 0;
     MX_API virtual void update() = 0;
-    MX_API virtual void resize() = 0;
+    MX_API virtual void refresh() = 0;
     MX_API virtual void render_quad() = 0;
     MX_API virtual void upload_settings() const = 0;
 
