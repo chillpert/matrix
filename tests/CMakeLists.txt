@@ -1,0 +1,1 @@
+include("${PROJECT_SOURCE_DIR}/tests/renderer/shadow mapping/CMakeLists.txt")

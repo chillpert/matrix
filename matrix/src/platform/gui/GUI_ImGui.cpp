@@ -1,7 +1,7 @@
-#include <GUI_ImGui.h>
-#include <Window.h>
-#include <Window_SDL2.h>
-#include <Application.h>
+#include "GUI_ImGui.h"
+#include "Window.h"
+#include "Window_SDL2.h"
+#include "Application.h"
 
 #ifdef MX_IMGUI_ACTIVE
   #include <imgui_impl_sdl.h>
@@ -29,6 +29,8 @@ namespace MX
 
   void GUI_ImGui::initialize()
   {
+    if (Application::get().m_Running == 1)
+    {
   #ifdef MX_IMGUI_ACTIVE
 
     IMGUI_CHECKVERSION();
@@ -105,6 +107,13 @@ namespace MX
     colors[ImGuiCol_NavWindowingDimBg]      = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
+    if (MX_WORLD.m_ExistingScenes.size() == 0 || MX_WORLD.m_ActiveScene == nullptr || MX_WORLD.m_ActiveScene->m_Sg.m_Root == nullptr)
+    {
+      Application::get().m_Running = 0;
+      MX_FATAL("MX: GUI: ImGui: World Editor can not be started, because there are no scenes available.");
+      return;
+    }
+
     all_scenes = &MX_WORLD.m_ExistingScenes;
     current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
     current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
@@ -117,10 +126,13 @@ namespace MX
     // reserve memory for incoming mx-logger messages
     logger_messages_for_gui.reserve(5000);
   #endif
+    }
   }
 
   void GUI_ImGui::update()
   {
+    if (Application::get().m_Running == 1)
+    {
   #ifdef MX_IMGUI_ACTIVE
     if (global_cool_down)
     {
@@ -143,10 +155,13 @@ namespace MX
     MX_IMGUI_NEW_FRAME
     ImGui::NewFrame();
   #endif
+    }
   }
 
   void GUI_ImGui::render()
   {
+    if (Application::get().m_Running == 1)
+    {
   #ifdef MX_IMGUI_ACTIVE
     // set font
     ImGui::PushFont(font_global);
@@ -174,17 +189,23 @@ namespace MX
 
     cool_down = 0;
   #endif
+    }
   }
 
   void GUI_ImGui::clear()
   {
+    if (Application::get().m_Running == 1)
+    {
   #ifdef MX_IMGUI_ACTIVE
   
   #endif
+    }
   }
 
   void GUI_ImGui::clean()
   {
+    if (Application::get().m_Running == 1)
+    {
   #ifdef MX_IMGUI_ACTIVE
     MX_IMGUI_API_CLOSE
     MX_IMGUI_CLEAN
@@ -194,5 +215,6 @@ namespace MX
     for (std::vector<const char*>::iterator iter = all_models.begin() + 1; iter != all_models.end(); ++iter)
       delete *iter;
   #endif
+    }
   }
 }
