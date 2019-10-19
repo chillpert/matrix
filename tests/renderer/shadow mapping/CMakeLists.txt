@@ -58,7 +58,7 @@ if(NOT UNIX)
   message("MX: Copying SDL2.dll to binary location")
 
   add_custom_command(
-    TARGET Sandbox
+    TARGET ShadowMapping
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
             ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/${SDL_BUILD_PATH}/SDL2d.dll
@@ -72,7 +72,7 @@ if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
   message("MX: Copying assimp-vc142-mtd.dll to binary location")
 
   add_custom_command(
-    TARGET Sandbox
+    TARGET ShadowMapping
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
             ${PROJECT_SOURCE_DIR}/build/external/assimp/code/${ASSIMP_BUILD_PATH}/assimp-vc142-mtd.dll
