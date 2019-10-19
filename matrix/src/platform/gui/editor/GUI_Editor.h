@@ -2,7 +2,8 @@
 #define GUI_EDITOR
 
 #include "GUI_ImGui.h"
-#include <GUI_ImGui_Flags.h>
+#include "GUI_ImGui_Flags.h"
+#include "Editor_Dock.h"
 
 namespace MX
 {
@@ -16,6 +17,9 @@ namespace MX
     MX_API void render() override;
     MX_API void clean() override;
     MX_API void clear() override;
+
+  private:
+    Editor_Dock m_dock;
 
     // GUI_ImGui_Editor.cpp
     void renderFileInspectorWindow();

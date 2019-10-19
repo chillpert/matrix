@@ -11,12 +11,11 @@ namespace MX
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    io.IniFilename = MX_IMGUI_DEFAULT_INI_PATH "gui_default_layout.ini";
+    //io.IniFilename = MX_IMGUI_DEFAULT_INI_PATH "gui_default_layout.ini";
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     std::string font_file = MX_FONTS_PATH + std::string("DroidSans.ttf");
     font_global = io.Fonts->AddFontFromFileTTF(font_file.c_str(), 15.0f);
-    // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
@@ -80,6 +79,7 @@ namespace MX
     colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
+    /*
     if (MX_WORLD.m_ExistingScenes.size() == 0 || MX_WORLD.m_ActiveScene == nullptr || MX_WORLD.m_ActiveScene->m_Sg.m_Root == nullptr)
     {
       Application::get().m_Running = 0;
@@ -95,12 +95,14 @@ namespace MX
 
     // reserve memory for incoming mx-logger messages
     logger_messages_for_gui.reserve(5000);
+    */
 
     GUI_ImGui::initialize();
   }
 
   void GUI_Editor::update()
   {
+    /*
     if (global_cool_down)
     {
       MX_INFO("MX: GUI: Update: Setting new active scene");
@@ -117,6 +119,7 @@ namespace MX
 
     all_objects.clear();
     current_scene->m_Sg.getAllObjects(all_objects, current_scene->m_Sg.m_Root);
+    */
 
     GUI_ImGui::update();
   }
@@ -127,6 +130,7 @@ namespace MX
     ImGui::PushFont(font_global);
     ImGui::PopFont();
 
+    /*
     renderDockSpace();
     renderViewport();
 
@@ -145,15 +149,18 @@ namespace MX
     if (!global_cool_down && file_inspector_enabled)          renderFileInspectorWindow();
 
     cool_down = 0;
+    */
  
     GUI_ImGui::render();
   }
 
   void GUI_Editor::clean()
   {
+    /*
     // delete allocated chars
     for (std::vector<const char*>::iterator iter = all_models.begin() + 1; iter != all_models.end(); ++iter)
       delete* iter;
+    */
 
     GUI_ImGui::clean();
   }
