@@ -37,8 +37,7 @@ namespace MX
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    io.IniFilename = "C:\\Repos\\matrix\\resourcesresources\\gui_default_layout.ini";
-
+    io.IniFilename = MX_IMGUI_DEFAULT_INI_PATH "gui_default_layout.ini";
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     std::string font_file = MX_FONTS_PATH + std::string("DroidSans.ttf");

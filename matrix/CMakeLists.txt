@@ -1,6 +1,19 @@
 cmake_minimum_required(VERSION 3.14.0)
 message("MX: Configuring Framework")
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(LIB_PATH Debug)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(LIB_PATH Release)
+  
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  set(LIB_PATH RelWithDebInfo)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+  set(LIB_PATH MinSizeRel)
+endif()
+
 # include project files
 include_directories(${CMAKE_SOURCE_DIR}/matrix)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src)
@@ -17,6 +30,7 @@ add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/texture
 add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
 add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")
 add_compile_definitions(MX_FONTS_PATH="${PROJECT_SOURCE_DIR}/external/imgui/misc/fonts/")
+add_compile_definitions(MX_IMGUI_DEFAULT_INI_PATH="${PROJECT_SOURCE_DIR}/resources/imgui_init/")
 
 ####################################################################################################
 #############################         windowing         ############################################
@@ -29,7 +43,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY})
 include_directories(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY}/include)
 
 if(WIN32 AND CMAKE_CL_64)
-  link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY})
+  link_directories(${PROJECT_SOURCE_DIR}/build/external/${SDL_DIRECTORY}/${LIB_PATH})
 endif()
 
 # sdl image
@@ -85,7 +99,7 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/include
   )
 
-link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code)
+link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code/${LIB_PATH})
 
 if(UNIX)
   set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
@@ -109,7 +123,7 @@ if(USE_OPENGL)
 
   add_subdirectory(${PROJECT_SOURCE_DIR}/external/glew-cmake)
   include_directories(${PROJECT_SOURCE_DIR}/external/glew-cmake/include)
-  link_directories(${PROJECT_SOURCE_DIR}/build/lib)
+  link_directories(${PROJECT_SOURCE_DIR}/build/lib/${LIB_PATH})
 
 endif(USE_OPENGL)
 
@@ -132,9 +146,10 @@ elseif(USE_OPENGL)
   message("MX: Using OpenGL")
   add_compile_definitions(MX_OPENGL_ACTIVE)
 
+  message("MX: Linking Glew")
   if(WIN32)
     set(SHARED_GLEW ${SHARED_GLEW}
-      libglew_sharedd
+      "libglew_sharedd"
     )
   
   elseif(UNIX)

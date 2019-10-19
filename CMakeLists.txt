@@ -32,7 +32,3 @@ include(${PROJECT_SOURCE_DIR}/matrix/CMakeLists.txt)
 
 # config for your application
 include(${PROJECT_SOURCE_DIR}/application/CMakeLists.txt)
-
-# config for test
-add_subdirectory(${PROJECT_SOURCE_DIR}/tests)
-#include(${PROJECT_SOURCE_DIR}/tests/CMakeLists.txt)

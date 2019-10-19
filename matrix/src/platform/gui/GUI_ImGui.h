@@ -14,16 +14,16 @@ namespace MX
   {
   public: 
     MX_API GUI_ImGui() = default;
-    MX_API ~GUI_ImGui() = default;
+    MX_API virtual ~GUI_ImGui() = default;
 
     MX_API GUI_ImGui(const GUI_ImGui&) = default;
-    MX_API GUI_ImGui &operator=(const GUI_ImGui&) = default;
+    MX_API virtual GUI_ImGui &operator=(const GUI_ImGui&) = default;
 
-    MX_API void initialize() override;
-    MX_API void update() override;
-    MX_API void render() override;
-    MX_API void clean() override;
-    MX_API void clear() override;
+    MX_API virtual void initialize() override;
+    MX_API virtual void update() override;
+    MX_API virtual void render() override;
+    MX_API virtual void clean() override;
+    MX_API virtual void clear() override;
   };
 
   // GUI_ImGui_Editor.cpp

@@ -2,8 +2,32 @@ cmake_minimum_required(VERSION 3.14.0)
 
 message("MX: Configuring Application")
 
+# set build paths
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  set(BUILD_PATH debug)
+  set(ASSIMP_BUILD_PATH Debug)
+  set(SDL_BUILD_PATH Debug)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(BUILD_PATH release)
+  set(ASSIMP_BUILD_PATH Release)
+  set(SDL_BUILD_PATH Release)
+  
+elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  set(BUILD_PATH relWithDebInfo)
+  set(ASSIMP_BUILD_PATH Relwithbebinfo)
+  set(SDL_BUILD_PATH Relwithbebinfo)
+
+elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
+  set(BUILD_PATH minSizeRel)
+  set(ASSIMP_BUILD_PATH Minsizerel)
+  set(SDL_BUILD_PATH Minsizerel)
+endif()
+
 # include headers
 include_directories(application/src)
+
+link_directories(${PROJECT_SOURCE_DIR}/build/lib/${BUILD_PATH})
 
 # all implementation files
 file(GLOB FILES_EXE
@@ -38,29 +62,6 @@ set_target_properties(MatrixLib Sandbox
   RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${PROJECT_SOURCE_DIR}/build/bin/relwithbebinfo"
   )
 
-# set build paths
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(BUILD_PATH debug)
-  set(ASSIMP_BUILD_PATH Debug)
-  set(SDL_BUILD_PATH Debug)
-
-elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(BUILD_PATH release)
-  set(ASSIMP_BUILD_PATH Release)
-  set(SDL_BUILD_PATH Release)
-  
-elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-  set(BUILD_PATH relWithDebInfo)
-  set(ASSIMP_BUILD_PATH Relwithbebinfo)
-  set(SDL_BUILD_PATH Relwithbebinfo)
-
-elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-  set(BUILD_PATH minSizeRel)
-  set(ASSIMP_BUILD_PATH Minsizerel)
-  set(SDL_BUILD_PATH Minsizerel)
-
-endif()
-
 ## copy dlls to binary location in post build
 if(NOT UNIX)
   message("MX: Copying SDL2.dll to binary location")
@@ -85,5 +86,6 @@ if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
     COMMAND ${CMAKE_COMMAND} -E copy
             ${PROJECT_SOURCE_DIR}/build/external/assimp/code/${ASSIMP_BUILD_PATH}/assimp-vc142-mtd.dll
             ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/assimp-vc142-mtd.dll
-  )
+    COMMENT "Running POST_BUILD action: Copying assimp-vc142-mtd.dll to binary location"
+    )
 endif()
