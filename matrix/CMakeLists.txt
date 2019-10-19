@@ -23,6 +23,7 @@ include_directories(${CMAKE_SOURCE_DIR}/matrix/src/event)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/layers)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/api)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui/editor)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/window)
 
 # resource directories
@@ -305,6 +306,7 @@ file(GLOB FILES_LIB
   "${PROJECT_SOURCE_DIR}/matrix/src/pch/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/api/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/editor/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/window/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/*.cpp" 
   )

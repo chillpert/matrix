@@ -7,11 +7,9 @@ namespace MX
     MX_INFO_LOG("MX: Application: Constructor");
 
     m_API = std::make_unique<MX_API_TYPE>();
-    m_GUI = std::make_unique<MX_GUI_TYPE>();
+    m_active_gui = std::make_unique<GUI_Editor>();
 
     m_Window =  std::make_unique<Window_SDL2>();
-
-    m_World = World::get_default_world();
   }
 
   Application::~Application()
@@ -27,7 +25,7 @@ namespace MX
 
   void Application::initialize(void (*initialize_func)())
   {
-    // set up window 
+    // set up window
     m_Running = m_Window->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: Window");
 
@@ -39,7 +37,7 @@ namespace MX
     MX_SUCCESS_LOG("MX: Application: Initialization: Func");
 
     // set up GUI
-    m_GUI->initialize();
+    m_active_gui->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: GUI");
 
     if (m_Running)
@@ -54,7 +52,7 @@ namespace MX
 
     m_API->update();
 
-    m_GUI->update();
+    m_active_gui->update();
 
     update_func();
   }
@@ -65,14 +63,14 @@ namespace MX
 
     m_API->render();
 
-    m_GUI->render();
+    m_active_gui->render();
     
     m_Window->render();
   }
 
   void Application::clean()
   {
-    m_GUI->clean();
+    m_active_gui->clean();
 
     m_Window->close();
 

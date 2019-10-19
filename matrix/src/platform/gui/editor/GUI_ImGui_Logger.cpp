@@ -1,4 +1,4 @@
-#include <GUI_ImGui.h>
+#include <GUI_Editor.h>
 #include <GUI_ImGui_Flags.h>
 #include <Application.h>
 
@@ -81,7 +81,7 @@ namespace MX
     }
   }
 
-  void renderLoggerWindow()
+  void GUI_Editor::renderLoggerWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
     if (no_titlebar)        window_flags |= ImGuiWindowFlags_NoTitleBar;

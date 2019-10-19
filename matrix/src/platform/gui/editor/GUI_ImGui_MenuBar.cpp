@@ -1,4 +1,4 @@
-#include <GUI_ImGui.h>
+#include <GUI_Editor.h>
 #include <Application.h>
 #include <WindowEvent.h>
 
@@ -25,7 +25,7 @@ namespace MX
   static void render_about_popup();
   static void render_set_resolution_popup();
 
-  void renderMenuBar()
+  void GUI_Editor::renderMenuBar()
   {
   #ifdef MX_IMGUI_ACTIVE
     if (popup_no_titlebar)        popup_flags |= ImGuiWindowFlags_NoTitleBar;

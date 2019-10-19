@@ -2,7 +2,6 @@
 #define GUI_IMGUI_H
 
 #include <GUI.h>
-#include <GUI_ImGui_Flags.h>
 
 #include <imgui.h>
 #include <World.h>
@@ -25,28 +24,6 @@ namespace MX
     MX_API virtual void clean() override;
     MX_API virtual void clear() override;
   };
-
-  // GUI_ImGui_Editor.cpp
-  void renderFileInspectorWindow();
-  void renderScenesMenu();
-  void renderAssestsMenu();
-  void renderTransformMenu();
-  void renderSpawnMenu();
-  void renderViewportSettingsMenu();
-
-  // GUI_ImGui_Hierarchy.cpp
-  void renderOutline();
-  void renderSceneGraph();
-  // GUI_ImGui_MenuBar.cpp
-  void renderMenuBar();
-
-  // GUI_ImGui_Viewport.cpp
-  void renderViewport();
-  void renderDockSpace();
-  void renderPerformanceMonitor();
-
-  // GUI_ImGui_Logger.cpp
-  void renderLoggerWindow();
 }
 
 #endif // GUI_IMGUI_H

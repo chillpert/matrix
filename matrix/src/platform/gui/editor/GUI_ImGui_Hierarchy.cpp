@@ -1,4 +1,4 @@
-#include <GUI_ImGui.h>
+#include <GUI_Editor.h>
 #include <Application.h>
 #include <World.h>
 
@@ -6,7 +6,7 @@ namespace MX
 {
   static void draw_scene_graph_menu(Node &it);
 
-  void renderSceneGraph()
+  void GUI_Editor::renderSceneGraph()
   {
     static bool no_titlebar = 0;
     static bool no_scrollbar = 0;
@@ -36,7 +36,7 @@ namespace MX
     ImGui::End();
   }
 
-  void renderOutline()
+  void GUI_Editor::renderOutline()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;

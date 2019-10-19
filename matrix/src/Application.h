@@ -14,6 +14,7 @@
 #include <API_OpenGL.h>
 #include <GUI.h>
 #include <GUI_ImGui.h>
+#include <GUI_Editor.h>
 #include <LayerStack.h>
 #include <World.h>
 
@@ -30,8 +31,8 @@ namespace MX
     MX_API void clean();
 
     std::unique_ptr<API> m_API;
-    std::unique_ptr<GUI> m_GUI;
     std::unique_ptr<Window> m_Window;
+    std::unique_ptr<GUI> m_active_gui;
 
     LayerStack m_LayerStack;
     World m_World;

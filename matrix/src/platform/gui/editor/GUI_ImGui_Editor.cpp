@@ -1,5 +1,5 @@
 #include <Utils.h>
-#include <GUI_ImGui.h>
+#include <GUI_Editor.h>
 #include <Application.h>
 #include <WindowEvent.h>
 #include <Controller.h>
@@ -29,7 +29,7 @@ namespace MX
   static void render_load_scene_popup();
   static void render_delete_scene_popup();
 
-  void renderFileInspectorWindow()
+  void GUI_Editor::renderFileInspectorWindow()
   {
   #ifdef MX_IMGUI_ACTIVE
     if (ImGui::Begin("File Inspector", &file_inspector_enabled))
@@ -47,7 +47,7 @@ namespace MX
   #endif
   }
 
-  void renderViewportSettingsMenu()
+  void GUI_Editor::renderViewportSettingsMenu()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
@@ -94,7 +94,7 @@ namespace MX
   #endif
   }
 
-  void renderSpawnMenu()
+  void GUI_Editor::renderSpawnMenu()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
@@ -202,7 +202,7 @@ namespace MX
   #endif
   }
 
-  void renderAssestsMenu()
+  void GUI_Editor::renderAssestsMenu()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
@@ -873,7 +873,7 @@ namespace MX
       vec.z += z_vec_translate;
   }
 
-  void renderTransformMenu()
+  void GUI_Editor::renderTransformMenu()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
@@ -941,7 +941,7 @@ namespace MX
   #endif
   }
 
-  void renderScenesMenu()
+  void GUI_Editor::renderScenesMenu()
   {
   #ifdef MX_IMGUI_ACTIVE
     if (popup_no_titlebar)        popup_flags |= ImGuiWindowFlags_NoTitleBar;

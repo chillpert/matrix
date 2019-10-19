@@ -1,4 +1,4 @@
-#include <GUI_ImGui.h>
+#include <GUI_Editor.h>
 #include <Application.h>
 #include <World.h>
 
@@ -8,7 +8,7 @@ namespace MX
   static bool dockspace_p_open = 1;
   static int current_frame = 0;
 
-  void renderDockSpace()
+  void GUI_Editor::renderDockSpace()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool opt_fullscreen_persistant = true;
@@ -52,7 +52,7 @@ namespace MX
 
   static ImVec2 prev_window_size;
 
-  void renderViewport()
+  void GUI_Editor::renderViewport()
   {
   #ifdef MX_IMGUI_ACTIVE
     static ImGuiWindowFlags window_flags = 0;
@@ -177,7 +177,7 @@ namespace MX
   #endif
   }
 
-  void renderPerformanceMonitor()
+  void GUI_Editor::renderPerformanceMonitor()
   {
   #ifdef MX_IMGUI_ACTIVE
     static bool no_titlebar = 0;
