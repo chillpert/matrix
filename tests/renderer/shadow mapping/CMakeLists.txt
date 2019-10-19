@@ -53,40 +53,41 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
 
 endif()
 
-# copy dlls to binary location in post build
-if(NOT UNIX)
-  message("MX: Copying SDL2.dll to binary location")
-
-  add_custom_command(
-    TARGET ShadowMapping
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-            ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/SDL2d.dll
-            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/SDL2d.dll
-    COMMENT "Running POST_BUILD action: Copying SDL2d.dll to binary location"
-    )
-endif()
-
-# copy dlls to binary location in post build
-if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
-  message("MX: Copying glewd.dll to binary location")
-
-  add_custom_command(
-    TARGET ShadowMapping
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-            ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll
-            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/glewd.dll
-    COMMENT "Running POST_BUILD action: Copying glewd.dll to binary location"
-    )
-
-    message("MX: Copying assimp-vc141-mtd.dll to binary location")
-
-    add_custom_command(
-      TARGET ShadowMapping
-      POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy
-              ${PROJECT_SOURCE_DIR}/build/external/assimp/code/assimp-vc141-mtd.dll
-              ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/assimp-vc141-mtd.dll
-    )
-endif()
+## copy dlls to binary location in post build
+#if(NOT UNIX)
+#  message("MX: Copying SDL2.dll to binary location")
+#
+#  add_custom_command(
+#    TARGET Sandbox
+#    POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy
+#            ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/${SDL_BUILD_PATH}/SDL2d.dll
+#            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/SDL2d.dll
+#    COMMENT "Running POST_BUILD action: Copying SDL2d.dll to binary location"
+#    )
+#endif()
+#
+## copy dlls to binary location in post build
+#if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
+#  message("MX: Copying glewd.dll to binary location")
+#
+#  add_custom_command(
+#    TARGET Sandbox
+#    POST_BUILD
+#    COMMAND ${CMAKE_COMMAND} -E copy
+#            ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll
+#            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/glewd.dll
+#    COMMENT "Running POST_BUILD action: Copying glewd.dll to binary location"
+#    )
+#
+#    message("MX: Copying assimp-vc142-mtd.dll to binary location")
+#
+#    add_custom_command(
+#      TARGET Sandbox
+#      POST_BUILD
+#      COMMAND ${CMAKE_COMMAND} -E copy
+#              ${PROJECT_SOURCE_DIR}/build/external/assimp/code/${ASSIMP_BUILD_PATH}/assimp-vc142-mtd.dll
+#              ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/assimp-vc142-mtd.dll
+#    )
+#endif()
+#

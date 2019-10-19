@@ -93,7 +93,7 @@ if(UNIX)
   )
 elseif(WIN32 AND CMAKE_CL_64)
   set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
-    assimp-vc141-mtd
+    assimp-vc142-mtd
   )
 endif()
 
@@ -171,7 +171,7 @@ if(WIN32)
     link_directories(${PROJECT_SOURCE_DIR}/external/${BOOST_DIRECTORY})
 
     set(BOOST_LIB ${BOOST_LIB}
-      "libboost_filesystem-vc141-mt-gd-x64-1_70"
+      "libboost_filesystem-vc142-mt-gd-x64-1_71"
       )
   
   endif()

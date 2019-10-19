@@ -1,7 +1,9 @@
+.vs/
 .vscode/
 .exe/
 
 build/
+out/
 
 log.txt
 changelog.txt

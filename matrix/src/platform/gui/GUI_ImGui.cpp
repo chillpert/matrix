@@ -37,7 +37,7 @@ namespace MX
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    io.IniFilename = "resources/gui_default_layout.ini";
+    io.IniFilename = "C:\\Repos\\matrix\\resourcesresources\\gui_default_layout.ini";
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 

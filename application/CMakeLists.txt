@@ -41,19 +41,27 @@ set_target_properties(MatrixLib Sandbox
 # set build paths
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(BUILD_PATH debug)
+  set(ASSIMP_BUILD_PATH Debug)
+  set(SDL_BUILD_PATH Debug)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
   set(BUILD_PATH release)
+  set(ASSIMP_BUILD_PATH Release)
+  set(SDL_BUILD_PATH Release)
   
 elseif(CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-  set(BUILD_PATH relwithbebinfo)
+  set(BUILD_PATH relWithDebInfo)
+  set(ASSIMP_BUILD_PATH Relwithbebinfo)
+  set(SDL_BUILD_PATH Relwithbebinfo)
 
 elseif(CMAKE_BUILD_TYPE STREQUAL "MinSizeRel")
-  set(BUILD_PATH minsizerel)
+  set(BUILD_PATH minSizeRel)
+  set(ASSIMP_BUILD_PATH Minsizerel)
+  set(SDL_BUILD_PATH Minsizerel)
 
 endif()
 
-# copy dlls to binary location in post build
+## copy dlls to binary location in post build
 if(NOT UNIX)
   message("MX: Copying SDL2.dll to binary location")
 
@@ -61,32 +69,21 @@ if(NOT UNIX)
     TARGET Sandbox
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-            ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/SDL2d.dll
+            ${PROJECT_SOURCE_DIR}/build/external/SDL-mirror/${SDL_BUILD_PATH}/SDL2d.dll
             ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/SDL2d.dll
     COMMENT "Running POST_BUILD action: Copying SDL2d.dll to binary location"
     )
 endif()
 
-# copy dlls to binary location in post build
+## copy dlls to binary location in post build
 if(USE_OPENGL AND WIN32 AND CMAKE_CL_64)
-  message("MX: Copying glewd.dll to binary location")
+  message("MX: Copying assimp-vc142-mtd.dll to binary location")
 
   add_custom_command(
     TARGET Sandbox
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-            ${PROJECT_SOURCE_DIR}/build/bin/glewd.dll
-            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/glewd.dll
-    COMMENT "Running POST_BUILD action: Copying glewd.dll to binary location"
-    )
-
-    message("MX: Copying assimp-vc141-mtd.dll to binary location")
-
-    add_custom_command(
-      TARGET Sandbox
-      POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy
-              ${PROJECT_SOURCE_DIR}/build/external/assimp/code/assimp-vc141-mtd.dll
-              ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/assimp-vc141-mtd.dll
-    )
+            ${PROJECT_SOURCE_DIR}/build/external/assimp/code/${ASSIMP_BUILD_PATH}/assimp-vc142-mtd.dll
+            ${PROJECT_SOURCE_DIR}/build/bin/${BUILD_PATH}/assimp-vc142-mtd.dll
+  )
 endif()
