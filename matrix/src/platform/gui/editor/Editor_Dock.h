@@ -1,21 +1,19 @@
 #ifndef EDITOR_DOCK_H
 #define EDITOR_DOCK_H
 
-#include "stdafx.h"
-#include "imgui.h"
 #include "GUI_ImGui_Window.h"
 
 namespace MX
 {
-  class Editor_Dock
+  class Editor_Dock : public ImGui_Window, public ImGui_DockNode
   {
   public:
-    MX_API Editor_Dock() = default;
+    MX_API Editor_Dock();
 
     MX_API void initialize();
     MX_API void render();
 
-    ImGui_Window m_window;
+    bool m_opt_fullscreen;
   };
 }
 

@@ -21,6 +21,7 @@ namespace MX
     ImGuiStyle& style = ImGui::GetStyle();
 
     style.WindowBorderSize = 0.0f;
+    style.WindowBorderSize = 1.0f;
     style.WindowRounding = 0.0f;
     style.FrameRounding = 4.0f;
     style.GrabRounding = 4.0f;
@@ -30,9 +31,9 @@ namespace MX
     ImVec4* colors = ImGui::GetStyle().Colors;
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
-    colors[ImGuiCol_WindowBg] = ImVec4(0.11f, 0.11f, 0.11f, 0.00f);
-    colors[ImGuiCol_ChildBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-    colors[ImGuiCol_PopupBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+    colors[ImGuiCol_WindowBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
+    colors[ImGuiCol_ChildBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
+    colors[ImGuiCol_PopupBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
     colors[ImGuiCol_Border] = ImVec4(0.22f, 0.22f, 0.22f, 1.00f);
     colors[ImGuiCol_BorderShadow] = ImVec4(0.22f, 0.22f, 0.22f, 1.00f);
     colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
@@ -130,6 +131,10 @@ namespace MX
     ImGui::PushFont(font_global);
     ImGui::PopFont();
 
+    m_dock.render();
+    m_viewport.render();
+
+    ImGui::ShowDemoWindow();
     /*
     renderDockSpace();
     renderViewport();

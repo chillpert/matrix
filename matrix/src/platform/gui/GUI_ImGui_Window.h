@@ -6,29 +6,17 @@
 
 namespace MX
 {
-  // all flags are enabled by default
-  class ImGui_Window
+  struct ImGui_Window
   {
-  public:
-    MX_API ImGui_Window();
+    bool p_open = true;
+    bool p_enabled = true;
 
-    MX_API void no_titlebar();
-    MX_API void no_scrollbar();
-    MX_API void no_menu();
-    MX_API void no_move();
-    MX_API void no_resize();
-    MX_API void no_collapse();
-    MX_API void no_navigation();
-    MX_API void no_background();
-    MX_API void no_bring_to_front();
+    ImGuiWindowFlags window_flags;
+  };
 
-    MX_API inline ImGuiWindowFlags get_flag() const { return flags; }
-
-    bool p_open;
-    bool p_enabled;
-
-  private:
-    ImGuiWindowFlags flags;
+  struct ImGui_DockNode
+  {
+    ImGuiDockNodeFlags dock_flags = ImGuiDockNodeFlags_None;
   };
 }
 
