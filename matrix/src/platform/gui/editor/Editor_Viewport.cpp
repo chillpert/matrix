@@ -24,6 +24,7 @@ namespace MX
     static bool flag = false;
     static bool first_iteration = true;
     
+    // check for window resizing
     static ImVec2 prev_window_size;
     if (window_size.x != prev_window_size.x || window_size.y != prev_window_size.y)
     {
@@ -55,6 +56,7 @@ namespace MX
 
     prev_window_size = window_size;
 
+    // update viewport for api
     Window::WindowProps::ViewPort* app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
 
     app_viewport->m_Viewport_min_x = window_pos.x;
@@ -65,6 +67,20 @@ namespace MX
 
     auto window_size_avail = ImGui::GetContentRegionAvail();
 
+    // refresh when viewport gets docked or undocked
+    bool docked = ImGui::IsWindowDocked();
+    static bool prev_docked = false;
+
+    if (docked != prev_docked)
+    {
+      Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+      is_black = false;
+      flag = false;
+    }
+
+    prev_docked = docked;
+
+    // draw render preview while window size doesn't change
     if (!is_black)
     {
       m_id = (void*) Application::get().m_API->m_framebuffer.m_tex;
