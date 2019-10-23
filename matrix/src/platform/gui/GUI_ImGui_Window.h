@@ -11,14 +11,22 @@ namespace MX
   public:
     ImGui_Window() = default;
 
+    MX_API bool initialize(char* name, ImGuiWindowFlags flags = 0);
     MX_API void update();
 
-    bool p_open = true;
+    MX_API void begin();
+    MX_API void end();
+
+    MX_API void add_flags(ImGuiWindowFlags flags);
+    MX_API void set_flags(ImGuiWindowFlags flags);
+
+  private:
     bool p_enabled = true;
+    bool p_open = true;
 
+    ImGuiWindowFlags m_window_flags;
+  
     char* m_name = "undef";
-
-    ImGuiWindowFlags window_flags;
   };
 
   struct ImGui_DockNode

@@ -3,6 +3,13 @@
 
 namespace MX
 {
+  bool ImGui_Window::initialize(char* name, ImGuiWindowFlags flags)
+  {
+    m_name = name;
+    m_window_flags |= flags;
+    return true;
+  }
+
   void ImGui_Window::update()
   {
     ImGui::Begin(m_name);
@@ -26,5 +33,26 @@ namespace MX
       ImGui::SetWindowSize(ImVec2(x_win_size, y_win_pos_fix));
 
     ImGui::End();
+  }
+
+  void ImGui_Window::begin()
+  {
+    ImGui::Begin(m_name, &p_open, m_window_flags);
+  }
+
+  void ImGui_Window::end()
+  {
+    ImGui::End();
+  }
+
+  void ImGui_Window::add_flags(ImGuiWindowFlags flags)
+  {
+    m_window_flags |= flags;
+  }
+
+  void ImGui_Window::set_flags(ImGuiWindowFlags flags)
+  {
+    m_window_flags = 0;
+    m_window_flags = flags;
   }
 }

@@ -8,7 +8,7 @@ namespace MX
 
   void Editor_Dock::initialize()
   {
-    m_name = "Dockspace";
+    ImGui_Window::initialize("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
   }
 
   void Editor_Dock::update()
@@ -21,7 +21,6 @@ namespace MX
     static bool opt_fullscreen_persistent = true;
     m_opt_fullscreen = opt_fullscreen_persistent;
 
-    window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
     if (m_opt_fullscreen)
     {
       ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -32,17 +31,21 @@ namespace MX
       ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
       ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 
-      window_flags |=
-        ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | 
-        ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+      add_flags(
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoNavFocus
+      );
     }
 
     if (dock_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-      window_flags |= ImGuiWindowFlags_NoBackground;
+      add_flags(ImGuiWindowFlags_NoBackground);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin(m_name, &p_open, window_flags);
+    ImGui_Window::begin();
     ImGui::PopStyleVar();
 
     if (m_opt_fullscreen)
@@ -63,6 +66,7 @@ namespace MX
       }
       ImGui::EndMenuBar();
     }
-    ImGui::End();
+
+    ImGui_Window::end();
   }
 }

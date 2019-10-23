@@ -10,7 +10,7 @@ namespace MX
 
   void Editor_Viewport::initialize()
   {
-    m_name = "EditorViewport";
+    ImGui_Window::initialize("EditorViewport");
   }
 
   void Editor_Viewport::update()
@@ -20,7 +20,7 @@ namespace MX
 
   void Editor_Viewport::render()
   {
-    ImGui::Begin(m_name, &p_open, window_flags);
+    ImGui_Window::begin();
 
     auto window_size = ImGui::GetWindowSize();
     auto window_pos = ImGui::GetWindowPos();
@@ -92,6 +92,6 @@ namespace MX
       ImGui::Image(m_id, ImVec2(window_size_avail.x, window_size_avail.y), ImVec2(0, 1), ImVec2(1, 0), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
     }
 
-    ImGui::End();
+    ImGui_Window::end();
   }
 }
