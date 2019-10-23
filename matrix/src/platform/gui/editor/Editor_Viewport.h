@@ -8,9 +8,9 @@ namespace MX
   class Editor_Viewport : public ImGui_Window
   {
   public:
-    MX_API Editor_Viewport();
+    MX_API Editor_Viewport() = default;
 
-    MX_API void initialize();
+    MX_API bool initialize();
     MX_API void update();
     MX_API void render();
 

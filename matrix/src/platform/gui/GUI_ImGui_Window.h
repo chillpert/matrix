@@ -9,12 +9,16 @@ namespace MX
   class ImGui_Window
   {
   public:
-    ImGui_Window() = default;
+    MX_API ImGui_Window() = default;
 
     MX_API bool initialize(char* name, ImGuiWindowFlags flags = 0);
+
+    // updates window size if too big
     MX_API void update();
 
+    // invokes imgui begin
     MX_API void begin();
+    // invokes imgui end
     MX_API void end();
 
     MX_API void add_flags(ImGuiWindowFlags flags);

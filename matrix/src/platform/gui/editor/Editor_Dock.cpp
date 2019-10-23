@@ -6,14 +6,14 @@ namespace MX
     : m_opt_fullscreen(false)
   { }
 
-  void Editor_Dock::initialize()
+  bool Editor_Dock::initialize()
   {
-    ImGui_Window::initialize("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+    return ImGui_Window::initialize("Dockspace##MatrixEditor", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
   }
 
   void Editor_Dock::update()
   {
-    // ImGui_Window::update();
+    
   }
 
   void Editor_Dock::render()

@@ -3,14 +3,9 @@
 
 namespace MX
 {
-  Editor_Viewport::Editor_Viewport()
+  bool Editor_Viewport::initialize()
   {
-    
-  }
-
-  void Editor_Viewport::initialize()
-  {
-    ImGui_Window::initialize("EditorViewport");
+    return ImGui_Window::initialize("Viewport##MatrixEditor");
   }
 
   void Editor_Viewport::update()
