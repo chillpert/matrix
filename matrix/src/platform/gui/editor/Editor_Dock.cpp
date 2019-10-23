@@ -8,7 +8,12 @@ namespace MX
 
   void Editor_Dock::initialize()
   {
-  
+    m_name = "Dockspace";
+  }
+
+  void Editor_Dock::update()
+  {
+    // ImGui_Window::update();
   }
 
   void Editor_Dock::render()
@@ -37,7 +42,7 @@ namespace MX
       window_flags |= ImGuiWindowFlags_NoBackground;
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("Dockspace", &p_open, window_flags);
+    ImGui::Begin(m_name, &p_open, window_flags);
     ImGui::PopStyleVar();
 
     if (m_opt_fullscreen)

@@ -99,6 +99,9 @@ namespace MX
     */
 
     GUI_ImGui::initialize();
+
+    m_dock.initialize();
+    m_viewport.initialize();
   }
 
   void GUI_Editor::update()
@@ -123,6 +126,9 @@ namespace MX
     */
 
     GUI_ImGui::update();
+
+    m_dock.update();
+    m_viewport.update();
   }
 
   void GUI_Editor::render()

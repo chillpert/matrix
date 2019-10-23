@@ -10,12 +10,17 @@ namespace MX
 
   void Editor_Viewport::initialize()
   {
-    
+    m_name = "EditorViewport";
+  }
+
+  void Editor_Viewport::update()
+  {
+    ImGui_Window::update();
   }
 
   void Editor_Viewport::render()
   {
-    ImGui::Begin("EditorViewport", &p_open, window_flags);
+    ImGui::Begin(m_name, &p_open, window_flags);
 
     auto window_size = ImGui::GetWindowSize();
     auto window_pos = ImGui::GetWindowPos();

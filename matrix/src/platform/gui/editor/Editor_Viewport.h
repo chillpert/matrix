@@ -1,7 +1,6 @@
 #ifndef EDITOR_VIEWPORT_H
 #define EDITOR_VIEWPORT_H
 
-
 #include "GUI_ImGui_Window.h"
 
 namespace MX
@@ -12,6 +11,7 @@ namespace MX
     MX_API Editor_Viewport();
 
     MX_API void initialize();
+    MX_API void update();
     MX_API void render();
 
     // ID and dimensions of framebuffer

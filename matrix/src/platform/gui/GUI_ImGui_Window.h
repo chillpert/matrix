@@ -6,10 +6,17 @@
 
 namespace MX
 {
-  struct ImGui_Window
+  class ImGui_Window
   {
+  public:
+    ImGui_Window() = default;
+
+    MX_API void update();
+
     bool p_open = true;
     bool p_enabled = true;
+
+    char* m_name = "undef";
 
     ImGuiWindowFlags window_flags;
   };

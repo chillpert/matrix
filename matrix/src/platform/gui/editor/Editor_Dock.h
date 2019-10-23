@@ -11,6 +11,7 @@ namespace MX
     MX_API Editor_Dock();
 
     MX_API void initialize();
+    MX_API void update();
     MX_API void render();
 
     bool m_opt_fullscreen;
