@@ -102,6 +102,7 @@ namespace MX
 
     m_dock.initialize();
     m_viewport.initialize();
+    m_profiler.initialize();
   }
 
   void GUI_Editor::update()
@@ -126,9 +127,10 @@ namespace MX
     */
 
     GUI_ImGui::update();
-
+    
     m_dock.update();
     m_viewport.update();
+    m_profiler.update();
   }
 
   void GUI_Editor::render()
@@ -139,6 +141,7 @@ namespace MX
 
     m_dock.render();
     m_viewport.render();
+    m_profiler.render();
 
     ImGui::ShowDemoWindow();
     /*

@@ -9,28 +9,28 @@ namespace MX
   class ImGui_Window
   {
   public:
-    MX_API ImGui_Window() = default;
+    MX_API ImGui_Window();
 
-    MX_API bool initialize(char* name, ImGuiWindowFlags flags = 0);
+    MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);
 
     // updates window size if too big
     MX_API void update();
 
     // invokes imgui begin
-    MX_API void begin();
+    MX_API bool begin();
     // invokes imgui end
     MX_API void end();
 
     MX_API void add_flags(ImGuiWindowFlags flags);
     MX_API void set_flags(ImGuiWindowFlags flags);
 
-  private:
-    bool p_enabled = true;
-    bool p_open = true;
-
+    bool m_p_enabled;
+    bool m_p_open;
+    std::string m_name = "undef";
     ImGuiWindowFlags m_window_flags;
+  private:
+
   
-    char* m_name = "undef";
   };
 
   struct ImGui_DockNode

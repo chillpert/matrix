@@ -8,7 +8,7 @@ namespace MX
 
   bool Editor_Dock::initialize()
   {
-    return ImGui_Window::initialize("Dockspace##MatrixEditor", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+    return ImGui_Window::initialize("Dockspace##DockspaceMatrixEditor", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
   }
 
   void Editor_Dock::update()

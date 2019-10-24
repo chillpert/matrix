@@ -3,8 +3,7 @@
 
 #include "GUI_ImGui.h"
 #include "GUI_ImGui_Flags.h"
-#include "Editor_Dock.h"
-#include "Editor_Viewport.h"
+#include "Editor_Modules.h"
 
 namespace MX
 {
@@ -22,7 +21,7 @@ namespace MX
   private:
     Editor_Dock m_dock;
     Editor_Viewport m_viewport;
-
+    Editor_Profiler m_profiler;
 
     // GUI_ImGui_Editor.cpp
     void renderFileInspectorWindow();
