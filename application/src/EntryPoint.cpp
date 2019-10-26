@@ -145,8 +145,6 @@ void initialize()
   MX_WORLD.initialize();
   MX_WORLD.push(std::make_shared<Scene>("Debug"));
 
-  MX_SCENE->push_container("test");
-
 #ifdef MX_DEBUG
   init_debug_scene();
 #endif

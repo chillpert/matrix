@@ -100,7 +100,13 @@ include_directories(
   ${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/include
   )
 
-link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code/${LIB_PATH})
+if(UNIX)
+  link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code)
+elseif(WIN32 AND CMAKE_CL_64)
+  link_directories(${PROJECT_SOURCE_DIR}/build/external/${ASSIMP_DIRECTORY}/code/${LIB_PATH})
+else()
+  message("MX: Assimp: no linking directory defined for your operating system")
+endif()
 
 if(UNIX)
   set(MODEL_LOADING_LIB ${MODEL_LOADING_LIB}
@@ -124,7 +130,14 @@ if(USE_OPENGL)
 
   add_subdirectory(${PROJECT_SOURCE_DIR}/external/glew-cmake)
   include_directories(${PROJECT_SOURCE_DIR}/external/glew-cmake/include)
+
+if(UNIX)
+  link_directories(${PROJECT_SOURCE_DIR}/build/lib)
+elseif(WIN32 AND CMAKE_CL_64)
   link_directories(${PROJECT_SOURCE_DIR}/build/lib/${LIB_PATH})
+else()
+  message("MX: Glew: no linking directory defined for your operating system")
+endif()
 
 endif(USE_OPENGL)
 
