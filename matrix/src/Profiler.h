@@ -9,9 +9,9 @@ namespace MX
   {
   public:
     // total virtual memory (installed RAM + SWAP file)
-    MX_API unsigned int get_tvm();
+    unsigned int get_tvm();
     // current virtual memory
-    MX_API unsigned int get_cvm();
+    unsigned int get_cvm();
   };
 
 }

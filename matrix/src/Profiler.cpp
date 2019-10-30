@@ -29,7 +29,7 @@ namespace MX
     totalVirtualMem += memInfo.totalswap;
     totalVirtualMem *= memInfo.mem_unit;
 
-    return totoalVirtualMem
+    return totalVirtualMem;
 
 #endif
   }
@@ -46,6 +46,9 @@ namespace MX
 
 #elif MX_PLATFORM_UNIX_X64
 
+    struct sysinfo memInfo;
+
+    sysinfo (&memInfo);
     long long virtualMemUsed = memInfo.totalram - memInfo.freeram;
     // add other values in next statement to avoid int overflow on right hand side
     virtualMemUsed += memInfo.totalswap - memInfo.freeswap;
