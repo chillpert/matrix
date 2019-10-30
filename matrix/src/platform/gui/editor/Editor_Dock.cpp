@@ -6,9 +6,9 @@ namespace MX
     : m_opt_fullscreen(false)
   { }
 
-  bool Editor_Dock::initialize()
+  bool Editor_Dock::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
-    return ImGui_Window::initialize("Dockspace##DockspaceMatrixEditor", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+    return ImGui_Window::initialize(name, flags);
   }
 
   void Editor_Dock::update()

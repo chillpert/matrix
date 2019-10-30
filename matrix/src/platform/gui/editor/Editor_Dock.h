@@ -10,7 +10,7 @@ namespace MX
   public:
     MX_API Editor_Dock();
 
-    MX_API bool initialize();
+    MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);
     MX_API void update();
     MX_API void render();
 

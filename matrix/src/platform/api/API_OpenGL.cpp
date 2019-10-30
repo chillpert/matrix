@@ -70,7 +70,7 @@ namespace MX
     if (m_framebuffer.m_needs_refresh || (viewport_x != initial_window_width && !m_framebuffer.m_initialized))
       initialize_framebuffer();
 
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
     clear();
 
     if (m_framebuffer.m_initialized)

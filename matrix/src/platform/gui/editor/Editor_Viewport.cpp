@@ -3,90 +3,192 @@
 
 namespace MX
 {
-  bool Editor_Viewport::initialize()
+  bool Editor_Viewport::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
-    return ImGui_Window::initialize("Viewport##ViewportMatrixEditor");
+    return ImGui_Window::initialize(name, flags);
   }
 
   void Editor_Viewport::update()
   {
     ImGui_Window::update();
   }
-
+  
   void Editor_Viewport::render()
   {
-    ImGui_Window::begin();
-
-    auto window_size = ImGui::GetWindowSize();
-    auto window_pos = ImGui::GetWindowPos();
-    
-    static bool is_black = false;
-    static bool flag = false;
-    static bool first_iteration = true;
-    
-    // check for window resizing
-    static ImVec2 prev_window_size;
-    if (window_size.x != prev_window_size.x || window_size.y != prev_window_size.y)
+    if (ImGui_Window::begin())
     {
-      Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+      auto window_size = ImGui::GetWindowSize();
+      auto window_pos = ImGui::GetWindowPos();
 
-      if (first_iteration)
-      {
-        first_iteration = false;
-      }
-      else
-      {
-        flag = true;
-        is_black = true;
-      }
-    }
+      static bool is_black = false;
+      static bool flag = false;
+      static bool first_iteration = true;
 
-    if (flag)
-    {
-      if (!ImGui::IsMouseReleased(0))
+      static bool aspect_free = true;
+      static bool aspect_4_3 = false;
+      static bool aspect_16_9 = false;
+      static bool aspect_21_9 = false;
+
+      static bool temp = true;
+
+      if (ImGui::BeginMenuBar())
       {
-        is_black = true;
+        if (ImGui::BeginMenu("Aspect"))
+        {
+          if (ImGui::MenuItem("Fit",  NULL, &aspect_free, !aspect_free)) 
+          {
+            aspect_free = true; aspect_4_3 = false; aspect_16_9 = false; aspect_21_9 = false;
+            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+          }
+          if (ImGui::MenuItem("4:3",  NULL, &aspect_4_3,  !aspect_4_3 ))
+          {
+            aspect_free = false; aspect_4_3 = true; aspect_16_9 = false; aspect_21_9 = false;
+            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+          }
+          if (ImGui::MenuItem("16:9", NULL, &aspect_16_9, !aspect_16_9))
+          {
+            aspect_free = false; aspect_4_3 = false; aspect_16_9 = true; aspect_21_9 = false;
+            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+          }
+          if (ImGui::MenuItem("21:9", NULL, &aspect_21_9, !aspect_21_9))
+          {
+            aspect_free = false; aspect_4_3 = false; aspect_16_9 = false; aspect_21_9 = true;
+            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+          }
+
+          ImGui::EndMenu();
+        }
+
+        ImGui::EndMenuBar();
       }
-      else
+
+      // check for window resizing
+      static ImVec2 prev_window_size;
+      if (window_size.x != prev_window_size.x || window_size.y != prev_window_size.y)
       {
+        Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+
+        if (first_iteration)
+        {
+          first_iteration = false;
+        }
+        else
+        {
+          flag = true;
+          is_black = true;
+        }
+      }
+
+      if (flag)
+      {
+        if (!ImGui::IsMouseReleased(0))
+        {
+          is_black = true;
+        }
+        else
+        {
+          is_black = false;
+          flag = false;
+        }
+      }
+
+      auto window_size_avail = ImGui::GetContentRegionAvail();
+
+      prev_window_size = window_size;
+
+      // update viewport for api
+      Window::WindowProps::ViewPort* app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
+
+      if (aspect_free)
+      {
+        app_viewport->m_Viewport_min_x = window_pos.x;
+        app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
+
+        app_viewport->m_Viewport_max_x = window_size.x;
+        app_viewport->m_Viewport_max_y = window_size.y;
+      }
+      else if (aspect_4_3)
+      {
+        app_viewport->m_Viewport_min_x = window_pos.x;
+        app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
+
+        int max_y = static_cast<int>((window_size.x / 4.0f) * 3.0f);
+        
+        // viewport can not be maximized on x axis because window height is too small
+        if (max_y > window_size_avail.y)
+        {
+          app_viewport->m_Viewport_max_x = static_cast<int>((window_size_avail.y / 3.0f) * 4.0f);
+          app_viewport->m_Viewport_max_y = window_size.y;
+          window_size_avail.x = app_viewport->m_Viewport_max_x;
+        }
+        else
+        {
+          app_viewport->m_Viewport_max_y = max_y;
+          window_size_avail.y = max_y;
+        }
+      }
+      else if (aspect_16_9)
+      {
+        app_viewport->m_Viewport_min_x = window_pos.x;
+        app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
+
+        int max_y = static_cast<int>((window_size.x / 16.0f) * 9.0f);
+
+        // viewport can not be maximized on x axis because window height is too small
+        if (max_y > window_size_avail.y)
+        {
+          app_viewport->m_Viewport_max_x = static_cast<int>((window_size_avail.y / 9.0f) * 16.0f);
+          app_viewport->m_Viewport_max_y = window_size.y;
+          window_size_avail.x = app_viewport->m_Viewport_max_x;
+        }
+        else
+        {
+          app_viewport->m_Viewport_max_y = max_y;
+          window_size_avail.y = max_y;
+        }
+      }
+      else if (aspect_21_9)
+      {
+        app_viewport->m_Viewport_min_x = window_pos.x;
+        app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
+
+        int max_y = static_cast<int>((window_size.x / 21.0f) * 9.0f);
+
+        // viewport can not be maximized on x axis because window height is too small
+        if (max_y > window_size_avail.y)
+        {
+          app_viewport->m_Viewport_max_x = static_cast<int>((window_size_avail.y / 9.0f) * 21.0f);
+          app_viewport->m_Viewport_max_y = window_size.y;
+          window_size_avail.x = app_viewport->m_Viewport_max_x;
+        }
+        else
+        {
+          app_viewport->m_Viewport_max_y = max_y;
+          window_size_avail.y = max_y;
+        }
+      }
+
+      // refresh when viewport gets docked or undocked
+      bool docked = ImGui::IsWindowDocked();
+      static bool prev_docked = false;
+
+      if (docked != prev_docked)
+      {
+        Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
         is_black = false;
         flag = false;
       }
+
+      prev_docked = docked;
+
+      // draw render preview while window size doesn't change
+      if (!is_black)
+      {
+        m_id = (void*)Application::get().m_API->m_framebuffer.m_tex;
+        ImGui::Image(m_id, ImVec2(window_size_avail.x, window_size_avail.y), ImVec2(0, 1), ImVec2(1, 0), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+      }
+
     }
-
-    prev_window_size = window_size;
-
-    // update viewport for api
-    Window::WindowProps::ViewPort* app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
-
-    app_viewport->m_Viewport_min_x = window_pos.x;
-    app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
-
-    app_viewport->m_Viewport_max_x = window_size.x;
-    app_viewport->m_Viewport_max_y = window_size.y;
-
-    auto window_size_avail = ImGui::GetContentRegionAvail();
-
-    // refresh when viewport gets docked or undocked
-    bool docked = ImGui::IsWindowDocked();
-    static bool prev_docked = false;
-
-    if (docked != prev_docked)
-    {
-      Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
-      is_black = false;
-      flag = false;
-    }
-
-    prev_docked = docked;
-
-    // draw render preview while window size doesn't change
-    if (!is_black)
-    {
-      m_id = (void*) Application::get().m_API->m_framebuffer.m_tex;
-      ImGui::Image(m_id, ImVec2(window_size_avail.x, window_size_avail.y), ImVec2(0, 1), ImVec2(1, 0), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
-    }
-
     ImGui_Window::end();
   }
 }

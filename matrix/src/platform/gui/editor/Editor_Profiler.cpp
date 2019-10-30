@@ -8,9 +8,9 @@ namespace MX
       m_max_fps(0),
       m_average_fps(0) { }
 
-  bool Editor_Profiler::initialize()
+  bool Editor_Profiler::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
-    return ImGui_Window::initialize(std::string("Profiler##ProfilerEditorMatrix"), ImGuiWindowFlags_MenuBar);
+    return ImGui_Window::initialize(name, flags);
   }
 
   void Editor_Profiler::update()
