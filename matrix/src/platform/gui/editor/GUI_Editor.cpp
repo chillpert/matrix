@@ -104,9 +104,15 @@ namespace MX
     m_viewport.push_style(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
     // initialize modules
-    m_dock.initialize("Dockspace##DockspaceMatrixEditor", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
-    m_viewport.initialize("Viewport##ViewportMatrixEditor", ImGuiWindowFlags_MenuBar);
-    m_profiler.initialize("Profiler##ProfilerEditorMatrix", ImGuiWindowFlags_MenuBar);
+    m_viewport.initialize("Viewport", ImGuiWindowFlags_MenuBar);
+    m_profiler.initialize("Profiler", ImGuiWindowFlags_MenuBar);
+    m_dock.initialize("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+  
+    
+    //push_back(m_viewport.visibilty());
+    //push_back(m_profiler.visibilty());
+    
+    m_dock.set_visibilities({m_viewport.visibilty(), m_profiler.visibilty()});
   }
 
   void GUI_Editor::update()
@@ -133,9 +139,10 @@ namespace MX
     GUI_ImGui::update();
     
     // update modules
-    m_dock.update();
     m_viewport.update();
     m_profiler.update();
+    m_dock.update();
+    
   }
 
   void GUI_Editor::render()
@@ -145,9 +152,9 @@ namespace MX
     ImGui::PopFont();
 
     // render modules
-    m_dock.render();
     m_viewport.render();
     m_profiler.render();
+    m_dock.render();
 
     ImGui::ShowDemoWindow();
     /*

@@ -11,7 +11,7 @@ namespace MX
     MX_API Editor_Viewport() = default;
 
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);
-    MX_API void update();
+    MX_API bool update();
     MX_API void render();
 
     // ID and dimensions of framebuffer

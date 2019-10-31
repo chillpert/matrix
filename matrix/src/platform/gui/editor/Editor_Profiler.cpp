@@ -13,9 +13,9 @@ namespace MX
     return ImGui_Window::initialize(name, flags);
   }
 
-  void Editor_Profiler::update()
+  bool Editor_Profiler::update()
   {
-    ImGui_Window::update();
+    return ImGui_Window::update();
   }
 
   void Editor_Profiler::render()
@@ -45,9 +45,9 @@ namespace MX
       ImGui::Text("TVM: %u", m_data.get_tvm());
       ImGui::Text("CVM: %u", m_data.get_cvm());
 
-      auto current_fps = Application::get().m_Window->m_Props.m_Frames;
+      // auto current_fps = Application::get().m_Window->m_Props.m_Frames;
+    
+      ImGui_Window::end();
     }
-
-    ImGui_Window::end();
   }
 }

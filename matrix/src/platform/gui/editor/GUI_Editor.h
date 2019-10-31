@@ -21,6 +21,7 @@ namespace MX
   private:
     Editor_Dock m_dock;
     Editor_Viewport m_viewport;
+    Editor_Viewport m_game_viewport;
     Editor_Profiler m_profiler;
 
     // GUI_ImGui_Editor.cpp

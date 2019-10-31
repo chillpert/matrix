@@ -6,14 +6,29 @@ namespace MX
     : m_opt_fullscreen(false)
   { }
 
+  std::pair<std::string, bool*> Editor_Dock::visibilty()
+  {
+    auto temp = ImGui_Window::visibilty();
+    // ensure dock is always visible
+    *temp.second = true;
+    return temp;
+  }
+
+  void Editor_Dock::set_visibilities(std::initializer_list<std::pair<std::string, bool*>> list)
+  {
+    for (auto &it : list)
+      m_visibilities.push_back(it);
+  }
+
+
   bool Editor_Dock::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }
 
-  void Editor_Dock::update()
+  bool Editor_Dock::update()
   {
-    
+    return true;
   }
 
   void Editor_Dock::render()
@@ -45,28 +60,52 @@ namespace MX
       add_flags(ImGuiWindowFlags_NoBackground);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui_Window::begin();
-    ImGui::PopStyleVar();
 
-    if (m_opt_fullscreen)
-      ImGui::PopStyleVar(2);
-
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    if (ImGui_Window::begin())
     {
-      ImGuiID dockspace_id = ImGui::GetID("EditorDockspace");
-      ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dock_flags);
-    }
+      ImGui::PopStyleVar();
 
-    if (ImGui::BeginMenuBar())
-    {
-      if (ImGui::BeginMenu("Docking"))
+      if (m_opt_fullscreen)
+        ImGui::PopStyleVar(2);
+
+      ImGuiIO& io = ImGui::GetIO();
+      if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
       {
-        ImGui::EndMenu();
+        ImGuiID dockspace_id = ImGui::GetID("EditorDockspace");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dock_flags);
       }
-      ImGui::EndMenuBar();
-    }
 
-    ImGui_Window::end();
+      if (ImGui::BeginMenuBar())
+      {
+        if (ImGui::BeginMenu("Window"))
+        {
+          for (auto &it : m_visibilities)
+          {
+            if (ImGui::MenuItem(it.first.c_str(), NULL, it.second))
+            {
+              if (it.second)
+                MX_INFO_LOG("MX: Editor: Dock: " + it.first + " closed");
+              else
+                MX_INFO_LOG("MX: Editor: Dock: " + it.first + " opened");
+            }
+          }
+
+          if (ImGui::BeginMenu("Layout"))
+          {
+            if (ImGui::MenuItem("Default"))
+            {
+              // reset layout by loading ini
+            }
+
+            ImGui::EndMenu();
+          }
+
+          ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+      }
+
+      ImGui_Window::end();
+    }
   }
 }

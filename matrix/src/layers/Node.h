@@ -53,7 +53,7 @@ namespace MX
 
   public:
     std::string m_Name;
-
+    
     std::shared_ptr<Shader> m_Shader;
 
     Node *m_Parent = nullptr;

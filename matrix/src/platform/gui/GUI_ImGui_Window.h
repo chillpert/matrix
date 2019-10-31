@@ -11,19 +11,20 @@ namespace MX
   public:
     MX_API ImGui_Window();
 
-    MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);
-    MX_API void update();
+    MX_API virtual std::pair<std::string, bool*> visibilty() { return {m_name, &m_p_enabled}; }
+    MX_API virtual bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);
+    MX_API virtual bool update();
 
     // invokes imgui begin
-    MX_API bool begin();
+    MX_API virtual bool begin();
     // invokes imgui end
-    MX_API void end();
+    MX_API virtual void end();
 
-    MX_API void add_flags(ImGuiWindowFlags flags);
-    MX_API void set_flags(ImGuiWindowFlags flags);
+    MX_API virtual void add_flags(ImGuiWindowFlags flags);
+    MX_API virtual void set_flags(ImGuiWindowFlags flags);
 
-    MX_API void push_style(ImGuiStyleVar idx, const ImVec2& val);
-    MX_API void push_style(ImGuiStyleVar idx, float val);
+    MX_API virtual void push_style(ImGuiStyleVar idx, const ImVec2& val);
+    MX_API virtual void push_style(ImGuiStyleVar idx, float val);
 
   private:
     MX_API void activate_styles();

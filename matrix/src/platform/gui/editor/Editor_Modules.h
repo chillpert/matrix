@@ -4,5 +4,6 @@
 #include "Editor_Dock.h"
 #include "Editor_Viewport.h"
 #include "Editor_Profiler.h"
+#include "Editor_Hierarchy.h"
 
 #endif // EDITOR_MODULES_H

@@ -8,9 +8,9 @@ namespace MX
     return ImGui_Window::initialize(name, flags);
   }
 
-  void Editor_Viewport::update()
+  bool Editor_Viewport::update()
   {
-    ImGui_Window::update();
+    return ImGui_Window::update();
   }
   
   void Editor_Viewport::render()
@@ -28,8 +28,6 @@ namespace MX
       static bool aspect_4_3 = false;
       static bool aspect_16_9 = false;
       static bool aspect_21_9 = false;
-
-      static bool temp = true;
 
       if (ImGui::BeginMenuBar())
       {
@@ -184,11 +182,11 @@ namespace MX
       // draw render preview while window size doesn't change
       if (!is_black)
       {
-        m_id = (void*)Application::get().m_API->m_framebuffer.m_tex;
+        m_id = (void*) Application::get().m_API->m_framebuffer.m_tex;
         ImGui::Image(m_id, ImVec2(window_size_avail.x, window_size_avail.y), ImVec2(0, 1), ImVec2(1, 0), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
       }
 
+      ImGui_Window::end();
     }
-    ImGui_Window::end();
   }
 }

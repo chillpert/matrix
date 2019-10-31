@@ -4,9 +4,9 @@
 namespace MX
 {
   ImGui_Window::ImGui_Window()
-    : m_window_flags(0),
-      m_p_enabled(true),
-      m_p_open(true) { }
+    : m_p_enabled(true),
+      m_p_open(true),
+      m_window_flags(0) { }
 
   bool ImGui_Window::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
@@ -15,17 +15,31 @@ namespace MX
     return true;
   }
 
-  void ImGui_Window::update()
+  bool ImGui_Window::update()
   {
+    if (!m_p_enabled)
+      return false;
+
     if (begin())
     {
       resize_on_max_size();
     }
     end();
+
+    return m_p_enabled;
   }
 
+  /* 
+  Requirements:
+    begin has to be encapsuled in an if statement
+    end has to be inside the same if statement in the last line  
+  */
   bool ImGui_Window::begin()
   {
+    // don't show window if it isn't enabled
+    if (!m_p_enabled)
+      return false;
+
     activate_styles();
     bool flag = ImGui::Begin(m_name.c_str(), &m_p_open, m_window_flags);
     remove_styles();

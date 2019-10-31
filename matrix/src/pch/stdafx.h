@@ -53,6 +53,7 @@
 #include <map>
 #include <exception>
 #include <typeinfo>
+#include <initializer_list>
 
 // project files
 #include <Utils.h>
