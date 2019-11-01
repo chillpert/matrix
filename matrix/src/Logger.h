@@ -30,11 +30,11 @@
 #include <Core.h>
 #include <Utils.h>
 #include <string>
+#include <imgui.h>
 
 namespace MX
 {
-  enum logger_message_type
-  {
+  enum logger_message_type {
     mx_warn,
     mx_info,
     mx_success,
@@ -58,6 +58,8 @@ namespace MX
     static void p_Warn_log(const std::string &message);
     static void p_Info_log(const std::string &message);
     static void p_Success_log(const std::string &message);
+    
+    static std::vector<std::tuple<std::string, ImVec4, logger_message_type>>& get_messages_gui();
   };
 }
 

@@ -23,6 +23,7 @@ namespace MX
     Editor_Viewport m_viewport;
     Editor_Viewport m_game_viewport;
     Editor_Profiler m_profiler;
+    Editor_Console m_console;
 
     // GUI_ImGui_Editor.cpp
     void renderFileInspectorWindow();

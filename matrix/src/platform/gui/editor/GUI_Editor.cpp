@@ -106,13 +106,14 @@ namespace MX
     // initialize modules
     m_viewport.initialize("Viewport", ImGuiWindowFlags_MenuBar);
     m_profiler.initialize("Profiler", ImGuiWindowFlags_MenuBar);
+    m_console.initialize("Console", ImGuiWindowFlags_MenuBar);
     m_dock.initialize("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
-  
+
     
     //push_back(m_viewport.visibilty());
     //push_back(m_profiler.visibilty());
     
-    m_dock.set_visibilities({m_viewport.visibilty(), m_profiler.visibilty()});
+    m_dock.set_visibilities({m_viewport.visibilty(), m_profiler.visibilty(), m_console.visibilty()});
   }
 
   void GUI_Editor::update()
@@ -141,6 +142,7 @@ namespace MX
     // update modules
     m_viewport.update();
     m_profiler.update();
+    m_console.update();
     m_dock.update();
     
   }
@@ -154,6 +156,7 @@ namespace MX
     // render modules
     m_viewport.render();
     m_profiler.render();
+    m_console.render();
     m_dock.render();
 
     ImGui::ShowDemoWindow();

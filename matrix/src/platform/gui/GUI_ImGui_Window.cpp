@@ -29,6 +29,11 @@ namespace MX
     return m_p_enabled;
   }
 
+  void ImGui_Window::render()
+  {
+    
+  }
+
   /* 
   Requirements:
     begin has to be encapsuled in an if statement
