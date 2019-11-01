@@ -7,7 +7,7 @@
   #define LOGEVENT
 #endif
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 namespace MX
 {

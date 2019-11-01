@@ -1,7 +1,7 @@
 #ifndef MESH_OPENGL_H
 #define MESH_OPENGL_H
 
-#include <Mesh.h>
+#include "Mesh.h"
 
 namespace MX
 {

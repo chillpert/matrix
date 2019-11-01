@@ -1,10 +1,10 @@
 #include "Profiler.h"
 
 #ifdef MX_PLATFORM_WINDOWS_X64
-  #include "windows.h"
+  #include <windows.h>
 #elif MX_PLATFORM_UNIX_X64
-  #include "sys/types.h"
-  #include "sys/sysinfo.h"
+  #include <sys/types.h>
+  #include <sys/sysinfo.h>
 #endif
 
 namespace MX

@@ -1,7 +1,7 @@
 #ifndef GeometryNode_H
 #define GeometryNode_H
 
-#include <Node.h>
+#include "Node.h"
 
 namespace MX
 {

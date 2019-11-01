@@ -1,8 +1,8 @@
 #ifndef GUI_IMGUI_FLAGS_H
 #define GUI_IMGUI_FLAGS_H
 
-#include <stdafx.h>
-#include <Scene.h>
+#include "stdafx.h"
+#include "Scene.h"
 
 #include <imgui.h>
 

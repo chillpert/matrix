@@ -1,4 +1,4 @@
-#include <GeometryNode.h>
+#include "GeometryNode.h"
 
 namespace MX
 {

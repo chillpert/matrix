@@ -1,7 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 #ifdef MX_DEBUG
   #define MX_SET_EVENT_TYPE(x) setEventType(x);

@@ -56,9 +56,9 @@
 #include <initializer_list>
 
 // project files
-#include <Utils.h>
-#include <Logger.h>
-#include <API_ErrorHandling.h>
-#include <MatrixExceptions.h>
+#include "Utils.h"
+#include "Logger.h"
+#include "API_ErrorHandling.h"
+#include "MatrixExceptions.h"
 
 #endif // STDAFX_H

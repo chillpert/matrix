@@ -1,7 +1,7 @@
 #ifndef Window_SDL2_H
 #define Window_SDL2_H
 
-#include <Window.h>
+#include "Window.h"
 
 namespace MX
 {

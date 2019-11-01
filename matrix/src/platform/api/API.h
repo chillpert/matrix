@@ -9,10 +9,10 @@
   #error "Matrix Framework only supports OpenGL and DirectX for now"
 #endif
 
-#include <stdafx.h>
+#include "stdafx.h"
 
-#include <Framebuffer.h>
-#include <Framebuffer_OpenGL.h>
+#include "Framebuffer.h"
+#include "Framebuffer_OpenGL.h"
 
 namespace MX
 {

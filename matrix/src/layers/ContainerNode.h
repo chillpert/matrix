@@ -1,7 +1,7 @@
 #ifndef CONTAINERNODE_H
 #define CONTAINERNODE_H
 
-#include <Node.h>
+#include "Node.h"
 
 namespace MX
 {

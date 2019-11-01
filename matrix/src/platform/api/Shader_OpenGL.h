@@ -1,7 +1,7 @@
 #ifndef SHADER_OPENGL_H
 #define SHADER_OPENGL_H
 
-#include <Shader.h>
+#include "Shader.h"
 
 namespace MX
 {

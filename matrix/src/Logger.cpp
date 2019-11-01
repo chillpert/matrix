@@ -1,4 +1,4 @@
-#include <Logger.h>
+#include "Logger.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 #ifdef MX_PLATFORM_WINDOWS_X64
@@ -6,7 +6,7 @@
 #endif
 
 #ifdef MX_IMGUI_ACTIVE
-  #include <GUI_ImGui_Flags.h>
+  #include "GUI_ImGui_Flags.h"
 #endif
 
 // global macros for debugging

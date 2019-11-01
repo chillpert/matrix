@@ -6,11 +6,11 @@
 #define MX_GET_TEXTURE(name) MX::MX_WORLD.getTexture(name)
 #define MX_GET_TEXTURE_PROFILE(diffuse, normal, bump, height) MX::MX_WORLD.getTextureProfile(diffuse, normal, bump, height)
 
-#include <stdafx.h>
-#include <Scene.h>
-#include <Shader.h>
-#include <Model.h>
-#include <Texture.h>
+#include "stdafx.h"
+#include "Scene.h"
+#include "Shader.h"
+#include "Model.h"
+#include "Texture.h"
 
 namespace MX
 {

@@ -1,8 +1,8 @@
-#include <Utils.h>
-#include <GUI_Editor.h>
-#include <Application.h>
-#include <WindowEvent.h>
-#include <Controller.h>
+#include "Utils.h"
+#include "GUI_Editor.h"
+#include "Application.h"
+#include "WindowEvent.h"
+#include "Controller.h"
 
 namespace MX
 {

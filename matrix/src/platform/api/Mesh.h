@@ -1,12 +1,12 @@
 #ifndef MESH_H
 #define MESH_H
 
-#include <stdafx.h>
+#include "stdafx.h"
 
-#include <Shader.h>
-#include <Shader_OpenGL.h>
-#include <Texture.h>
-#include <Texture_OpenGL.h>
+#include "Shader.h"
+#include "Shader_OpenGL.h"
+#include "Texture.h"
+#include "Texture_OpenGL.h"
 
 namespace MX
 {

@@ -1,13 +1,12 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <Transform.h>
-
-#include <Shader.h>
-#include <Model.h>
-#include <Texture.h>
-#include <Shader_OpenGL.h>
-#include <Texture_OpenGL.h>
+#include "Transform.h"
+#include "Shader.h"
+#include "Model.h"
+#include "Texture.h"
+#include "Shader_OpenGL.h"
+#include "Texture_OpenGL.h"
 
 namespace MX
 {

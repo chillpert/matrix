@@ -24,11 +24,12 @@
   #define MX_SUCCESS_LOG(x)
 #endif
 
+#include "Core.h"
+#include "Utils.h"
+
 #include <iostream>
-#include <ostream>
 #include <fstream>
-#include <Core.h>
-#include <Utils.h>
+#include <ostream>
 #include <string>
 #include <imgui.h>
 

@@ -1,7 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 #ifdef MX_OPENGL_ACTIVE
   #define MX_TEXTURE MX::Texture_OpenGL

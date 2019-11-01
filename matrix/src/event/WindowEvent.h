@@ -1,7 +1,7 @@
 #ifndef WINDOWEVENT_H
 #define WINDOWEVENT_H
 
-#include <Event.h>
+#include "Event.h"
 
 namespace MX
 {

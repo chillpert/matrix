@@ -1,10 +1,10 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 
-#include <stdafx.h>
-#include <Model.h>
-#include <Shader.h>
-#include <Shader_OpenGL.h>
+#include "stdafx.h"
+#include "Model.h"
+#include "Shader.h"
+#include "Shader_OpenGL.h"
 
 #ifdef MX_PLATFORM_WINDOWS_X64
   #define MX_FRAMEBUFFER Framebuffer_OpenGL

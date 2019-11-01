@@ -1,18 +1,17 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include <stdafx.h>
+#include "stdafx.h"
+#include "Mesh.h"
+#include "Mesh_OpenGL.h"
+#include "Shader.h"
+#include "Shader_OpenGL.h"
+#include "Texture.h"
+#include "Texture_OpenGL.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-
-#include <Mesh.h>
-#include <Mesh_OpenGL.h>
-#include <Shader.h>
-#include <Shader_OpenGL.h>
-#include <Texture.h>
-#include <Texture_OpenGL.h>
 
 #ifdef MX_OPENGL_ACTIVE
   #define MX_MESH Mesh_OpenGL

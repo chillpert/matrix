@@ -1,11 +1,11 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include <Camera.h>
-#include <SceneGraph.h>
-#include <Shader.h>
-#include <Model.h>
-#include <Texture.h>
+#include "Camera.h"
+#include "SceneGraph.h"
+#include "Shader.h"
+#include "Model.h"
+#include "Texture.h"
 
 namespace MX
 {

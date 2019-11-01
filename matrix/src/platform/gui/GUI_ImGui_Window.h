@@ -2,7 +2,7 @@
 #define GUI_IMGUI_WINDOW_H
 
 #include "stdafx.h"
-#include "imgui.h"
+#include <imgui.h>
 
 namespace MX
 {

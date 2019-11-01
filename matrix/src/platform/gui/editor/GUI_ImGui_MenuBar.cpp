@@ -1,6 +1,6 @@
-#include <GUI_Editor.h>
-#include <Application.h>
-#include <WindowEvent.h>
+#include "GUI_Editor.h"
+#include "Application.h"
+#include "WindowEvent.h"
 
 namespace MX
 {

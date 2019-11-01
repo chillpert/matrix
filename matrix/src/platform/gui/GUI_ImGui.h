@@ -1,11 +1,11 @@
 #ifndef GUI_IMGUI_H
 #define GUI_IMGUI_H
 
-#include <GUI.h>
+#include "GUI.h"
+#include "World.h"
+#include "Scene.h"
 
 #include <imgui.h>
-#include <World.h>
-#include <Scene.h>
 
 namespace MX
 {

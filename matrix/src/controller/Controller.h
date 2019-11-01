@@ -1,7 +1,7 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 namespace MX 
 {

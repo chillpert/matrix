@@ -1,7 +1,7 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <stdafx.h>
+#include "stdafx.h"
 
 namespace MX
 {

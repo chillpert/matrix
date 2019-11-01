@@ -1,10 +1,10 @@
 #ifndef SCENEGRAPH_HPP
 #define SCENEGRAPH_HPP
 
-#include <Node.h>
-#include <ContainerNode.h>
-#include <LightNode.h>
-#include <GeometryNode.h>
+#include "Node.h"
+#include "ContainerNode.h"
+#include "LightNode.h"
+#include "GeometryNode.h"
 
 namespace MX
 {
