@@ -6,7 +6,8 @@ Runs on both Linux and Windows with OpenGL and DirectX [not implemented yet] res
 ##### Requires Cmake Version 3.14.0 or higher
 
 ```sh
-$ git clone https://github.com/03NN30/Matrix-Framework --recursive
+$ git clone https://github.com/03NN30/matrix --recursive
+$ cd matrix
 $ mkdir build
 $ cd build
 $ cmake ..
