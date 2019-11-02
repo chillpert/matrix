@@ -22,28 +22,8 @@ namespace MX
   {
     if (ImGui_Window::begin())
     {
-      if (ImGui::BeginMenuBar())
-      {
-        if (ImGui::MenuItem("Reset"))
-        {
-
-        }
-
-        if (ImGui::MenuItem("Pause"))
-        {
-
-        }
-
-        if (ImGui::MenuItem("Continue"))
-        {
-
-        }
-
-        ImGui::EndMenuBar();
-      }
-
-      ImGui::Text("TVM: %u", m_data.get_tvm());
-      ImGui::Text("CVM: %u", m_data.get_cvm());
+      // ImGui::Text("TVM: %u", m_data.get_tvm());
+      // ImGui::Text("CVM: %u", m_data.get_cvm());
 
       // auto current_fps = Application::get().m_Window->m_Props.m_Frames;
     

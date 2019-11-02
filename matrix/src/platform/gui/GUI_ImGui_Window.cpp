@@ -26,7 +26,7 @@ namespace MX
 
   void ImGui_Window::render()
   {
-
+    
   }
 
   /*

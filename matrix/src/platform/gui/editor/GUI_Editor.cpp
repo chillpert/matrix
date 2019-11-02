@@ -5,6 +5,12 @@ namespace MX
 {
   ImFont* font_global;
 
+  GUI_Editor::GUI_Editor()
+  {
+    // allocate space for 20 windows
+    m_modules.reserve(20);
+  }
+
   void GUI_Editor::initialize()
   {
     IMGUI_CHECKVERSION();
@@ -108,8 +114,14 @@ namespace MX
     m_viewport.initialize("Viewport", ImGuiWindowFlags_MenuBar);
     m_profiler.initialize("Profiler", ImGuiWindowFlags_MenuBar);
     m_console.initialize("Console", ImGuiWindowFlags_MenuBar);
+    m_object_viewer.initialize("Object");
     
-    m_dock.set_visibilities({m_viewport.visibilty(), m_profiler.visibilty(), m_console.visibilty()});
+    m_dock.set_visibilities({
+      m_viewport.visibilty(),
+      m_profiler.visibilty(),
+      m_console.visibilty(),
+      m_object_viewer.visibilty()
+    });
   }
 
   void GUI_Editor::update()
@@ -140,6 +152,7 @@ namespace MX
     m_viewport.update();
     m_profiler.update();
     m_console.update();
+    m_object_viewer.update();
   }
 
   void GUI_Editor::render()
@@ -153,6 +166,7 @@ namespace MX
     m_viewport.render();
     m_profiler.render();
     m_console.render();
+    m_object_viewer.render();
 
     ImGui::ShowDemoWindow();
 

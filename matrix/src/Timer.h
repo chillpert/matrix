@@ -9,10 +9,6 @@ namespace MX
   {
   public:
     Timer();
-    ~Timer() = default;
-
-    Timer(const Timer&) = default;
-    Timer &operator=(const Timer&) = default;
 
     void start();
     void stop();

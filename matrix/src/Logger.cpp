@@ -203,6 +203,13 @@ namespace MX
   std::vector<std::pair<std::string, logger_message_type>>& Logger::get_messages_gui()
   {
     static std::vector<std::pair<std::string, logger_message_type>> m_messages_gui;
+    static bool first_run = true;
+    if (first_run)
+    {
+      first_run = false;
+      m_messages_gui.reserve(10000);
+    }
+
     return m_messages_gui;
   }
 }

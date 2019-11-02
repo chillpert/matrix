@@ -10,7 +10,7 @@ namespace MX
   class GUI_Editor : public GUI_ImGui
   {
   public:
-    MX_API GUI_Editor() = default;
+    MX_API GUI_Editor();
 
     MX_API void initialize() override;
     MX_API void update() override;
@@ -21,9 +21,11 @@ namespace MX
   private:
     Editor_Dock m_dock;
     Editor_Viewport m_viewport;
-    Editor_Viewport m_game_viewport;
     Editor_Profiler m_profiler;
     Editor_Console m_console;
+    Editor_Object m_object_viewer;
+
+    std::vector<std::shared_ptr<ImGui_Window>> m_modules; 
 
     // GUI_ImGui_Editor.cpp
     void renderFileInspectorWindow();

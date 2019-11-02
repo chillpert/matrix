@@ -6,5 +6,6 @@
 #include "Editor_Profiler.h"
 #include "Editor_Hierarchy.h"
 #include "Editor_Console.h"
+#include "Editor_Object.h"
 
 #endif // EDITOR_MODULES_H
