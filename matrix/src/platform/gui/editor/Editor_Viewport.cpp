@@ -186,7 +186,8 @@ namespace MX
         ImGui::Image(m_id, ImVec2(window_size_avail.x, window_size_avail.y), ImVec2(0, 1), ImVec2(1, 0), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
       }
 
-      ImGui_Window::end();
     }
+
+    ImGui_Window::end();
   }
 }

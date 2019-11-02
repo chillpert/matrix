@@ -6,6 +6,7 @@ namespace MX
   ImGui_Window::ImGui_Window()
     : m_p_enabled(true),
       m_p_open(true),
+      m_called_begin(false),
       m_window_flags(0) { }
 
   bool ImGui_Window::initialize(const std::string& name, ImGuiWindowFlags flags)
@@ -20,24 +21,18 @@ namespace MX
     if (!m_p_enabled)
       return false;
 
-    if (begin())
-    {
-      resize_on_max_size();
-    }
-    end();
-
     return m_p_enabled;
   }
 
   void ImGui_Window::render()
   {
-    
+
   }
 
-  /* 
-  Requirements:
-    begin has to be encapsuled in an if statement
-    end has to be inside the same if statement in the last line  
+  /*
+  Usage:
+    1. if (ImGui_Window::begin()) { *run code* }
+    2. ImGui_Window::end();
   */
   bool ImGui_Window::begin()
   {
@@ -46,14 +41,20 @@ namespace MX
       return false;
 
     activate_styles();
-    bool flag = ImGui::Begin(m_name.c_str(), &m_p_open, m_window_flags);
+    m_called_begin = ImGui::Begin(m_name.c_str(), &m_p_open, m_window_flags);
     remove_styles();
 
-    return flag;
+    if (m_called_begin)
+      resize_on_max_size();
+
+    return m_called_begin; 
   }
 
   void ImGui_Window::end()
-  {
+  {  
+    if (!m_p_enabled)
+      return;
+
     ImGui::End();
   }
 

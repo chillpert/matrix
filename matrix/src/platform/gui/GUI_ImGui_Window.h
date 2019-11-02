@@ -27,7 +27,7 @@ namespace MX
     MX_API virtual void push_style(ImGuiStyleVar idx, const ImVec2& val);
     MX_API virtual void push_style(ImGuiStyleVar idx, float val);
 
-  private:
+  public:
     MX_API void activate_styles();
     MX_API void remove_styles();
 
@@ -36,6 +36,7 @@ namespace MX
 
     bool m_p_enabled;
     bool m_p_open;
+    bool m_called_begin;
 
     std::string m_name = "undef";
     ImGuiWindowFlags m_window_flags;

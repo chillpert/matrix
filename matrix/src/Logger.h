@@ -60,7 +60,7 @@ namespace MX
     static void p_Info_log(const std::string &message);
     static void p_Success_log(const std::string &message);
     
-    static std::vector<std::tuple<std::string, ImVec4, logger_message_type>>& get_messages_gui();
+    static std::vector<std::pair<std::string, logger_message_type>>& get_messages_gui();
   };
 }
 

@@ -61,51 +61,50 @@ namespace MX
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
-    if (ImGui_Window::begin())
+    ImGui_Window::begin();
+
+    ImGui::PopStyleVar();
+
+    if (m_opt_fullscreen)
+      ImGui::PopStyleVar(2);
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
     {
-      ImGui::PopStyleVar();
+      ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+      ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dock_flags);
+    }
 
-      if (m_opt_fullscreen)
-        ImGui::PopStyleVar(2);
-
-      ImGuiIO& io = ImGui::GetIO();
-      if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    if (ImGui::BeginMenuBar())
+    {
+      if (ImGui::BeginMenu("Window"))
       {
-        ImGuiID dockspace_id = ImGui::GetID("EditorDockspace");
-        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dock_flags);
-      }
-
-      if (ImGui::BeginMenuBar())
-      {
-        if (ImGui::BeginMenu("Window"))
+        for (auto &it : m_visibilities)
         {
-          for (auto &it : m_visibilities)
+          if (ImGui::MenuItem(it.first.c_str(), NULL, it.second))
           {
-            if (ImGui::MenuItem(it.first.c_str(), NULL, it.second))
-            {
-              if (it.second)
-                MX_INFO_LOG("MX: Editor: Dock: " + it.first + " closed");
-              else
-                MX_INFO_LOG("MX: Editor: Dock: " + it.first + " opened");
-            }
+            if (it.second)
+              MX_INFO_LOG("MX: Editor: Dock: " + it.first + " closed");
+            else
+              MX_INFO_LOG("MX: Editor: Dock: " + it.first + " opened");
           }
+        }
 
-          if (ImGui::BeginMenu("Layout"))
+        if (ImGui::BeginMenu("Layout"))
+        {
+          if (ImGui::MenuItem("Default"))
           {
-            if (ImGui::MenuItem("Default"))
-            {
-              // reset layout by loading ini
-            }
-
-            ImGui::EndMenu();
+            // reset layout by loading ini
           }
 
           ImGui::EndMenu();
         }
-        ImGui::EndMenuBar();
-      }
 
-      ImGui_Window::end();
+        ImGui::EndMenu();
+      }
+      ImGui::EndMenuBar();
     }
+
+    ImGui_Window::end();
   }
 }

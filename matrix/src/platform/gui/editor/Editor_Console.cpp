@@ -17,6 +17,8 @@ namespace MX
   {
     if (ImGui_Window::begin())
     {
+      static bool fully_colored = false;
+
       static bool messages_info = true;
       static bool messages_warn = true;
       static bool messages_fatal = true;
@@ -42,6 +44,13 @@ namespace MX
           ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Color"))
+        {
+          ImGui::MenuItem("All", NULL, &fully_colored);
+
+          ImGui::EndMenu();
+        }
+
         ImGui::EndMenuBar();
       }
 
@@ -52,23 +61,64 @@ namespace MX
       
       for (auto &it : Logger::get_messages_gui())
       {
-        if (std::get<2>(it) == mx_info && !messages_info)
-          continue;
-
-        if (std::get<2>(it) == mx_warn && !messages_warn)
-          continue;
-
-        if (std::get<2>(it) == mx_fatal && !messages_fatal)
-          continue;
-
-        if (std::get<2>(it) == mx_success && !messages_success)
-          continue;
-        
-        if (filter.PassFilter(std::get<0>(it).c_str()))
-          ImGui::TextColored(std::get<1>(it), std::get<0>(it).c_str());
+        switch (it.second)
+        {
+          case mx_info: 
+          {
+            if (!messages_info)
+              break;
+            else
+            {
+              if (fully_colored)
+                ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), it.first.c_str());
+              else
+                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());              
+              break;
+            }
+          }
+          case mx_warn:
+          {
+            if (!messages_warn)
+              break;
+            else
+            {
+              if (fully_colored)
+                ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), it.first.c_str());
+              else
+                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());                            
+              break;
+            }            
+          }
+          case mx_fatal:
+          {
+            if (!messages_fatal)
+              break;
+            else
+            {
+              if (fully_colored)
+                ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), it.first.c_str());
+              else
+                ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), it.first.c_str());
+              break;
+            }
+          }
+          case mx_success:
+          {
+            if (!messages_success)
+              break;
+            else
+            {
+              if (fully_colored)
+                ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), it.first.c_str());
+              else
+                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());        
+              break;
+            }
+          }
+        }
       }
-
-      ImGui_Window::end();
     }
+
+    ImGui_Window::end();
   }
 }

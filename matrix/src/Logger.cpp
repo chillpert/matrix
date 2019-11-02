@@ -95,25 +95,7 @@ namespace MX
   void Logger::writeToGUI(const std::string &message, const logger_message_type &t)
   {
   #ifdef MX_IMGUI_ACTIVE
-    ImVec4 color(0.7f, 0.7f, 0.7f, 1.0f);
-
-    switch (t)
-    {
-      case mx_fatal:
-      {
-        color = {1.0f, 0.0f, 0.0f, 1.0f};
-        break;
-      }
-      case mx_info:
-      case mx_warn:
-      case mx_success:
-      default:
-      {
-        break;
-      }
-    }
-
-    get_messages_gui().push_back(std::make_tuple(message, color, t));
+    get_messages_gui().push_back(std::make_pair(message, t));
   #endif
   }
 
@@ -218,9 +200,9 @@ namespace MX
     MX_WRITE_TO_GUI(MX_GUI_SUCCESS, mx_success);
   }
 
-  std::vector<std::tuple<std::string, ImVec4, logger_message_type>>& Logger::get_messages_gui()
+  std::vector<std::pair<std::string, logger_message_type>>& Logger::get_messages_gui()
   {
-    static std::vector<std::tuple<std::string, ImVec4, logger_message_type>> m_messages_gui;
+    static std::vector<std::pair<std::string, logger_message_type>> m_messages_gui;
     return m_messages_gui;
   }
 }

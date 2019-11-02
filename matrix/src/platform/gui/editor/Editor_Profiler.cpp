@@ -47,7 +47,7 @@ namespace MX
 
       // auto current_fps = Application::get().m_Window->m_Props.m_Frames;
     
-      ImGui_Window::end();
     }
+      ImGui_Window::end();
   }
 }
