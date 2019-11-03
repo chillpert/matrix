@@ -10,6 +10,7 @@ namespace MX
   {
   public:
     MX_API ImGui_Window();
+    MX_API virtual ~ImGui_Window() = default;
 
     MX_API virtual std::pair<std::string, bool*> visibilty() { return {m_name, &m_p_enabled}; }
     MX_API virtual bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);

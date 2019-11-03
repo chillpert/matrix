@@ -5,6 +5,7 @@ namespace MX
 {
   bool Editor_Console::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
+    //m_clear_popup.initialize("Confirm");
     return ImGui_Window::initialize(name, flags);
   }
 
@@ -51,6 +52,12 @@ namespace MX
           ImGui::EndMenu();
         }
 
+        if (ImGui::MenuItem("Clear"))
+        {
+          ImGui::OpenPopup("Confirm");
+          //m_clear_popup.open();
+        }
+
         ImGui::EndMenuBar();
       }
 
@@ -61,63 +68,89 @@ namespace MX
       
       for (auto &it : Logger::get_messages_gui())
       {
-        switch (it.second)
+        if (filter.PassFilter(it.first.c_str()))
         {
-          case mx_info: 
+          switch (it.second)
           {
-            if (!messages_info)
-              break;
-            else
+            case mx_info:
             {
-              if (fully_colored)
-                ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), it.first.c_str());
+              if (!messages_info)
+                break;
               else
-                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());              
-              break;
+              {
+                if (fully_colored)
+                  ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), it.first.c_str());
+                else
+                  ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());              
+                break;
+              }
             }
-          }
-          case mx_warn:
-          {
-            if (!messages_warn)
-              break;
-            else
+            case mx_warn:
             {
-              if (fully_colored)
-                ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), it.first.c_str());
+              if (!messages_warn)
+                break;
               else
-                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());                            
-              break;
-            }            
-          }
-          case mx_fatal:
-          {
-            if (!messages_fatal)
-              break;
-            else
-            {
-              if (fully_colored)
-                ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), it.first.c_str());
-              else
-                ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), it.first.c_str());
-              break;
+              {
+                if (fully_colored)
+                  ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), it.first.c_str());
+                else
+                  ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());                            
+                break;
+              }            
             }
-          }
-          case mx_success:
-          {
-            if (!messages_success)
-              break;
-            else
+            case mx_fatal:
             {
-              if (fully_colored)
-                ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), it.first.c_str());
+              if (!messages_fatal)
+                break;
               else
-                ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());        
-              break;
+              {
+                if (fully_colored)
+                  ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), it.first.c_str());
+                else
+                  ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), it.first.c_str());
+                break;
+              }
             }
+            case mx_success:
+            {
+              if (!messages_success)
+                break;
+              else
+              {
+                if (fully_colored)
+                  ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), it.first.c_str());
+                else
+                  ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), it.first.c_str());        
+                break;
+              }
+            }
+            default:
+            break;
           }
         }
       }
     }
+
+/*
+    if (m_clear_popup.begin())
+    {
+      if (ImGui::Button("Dango is pretty tasty!"))
+      {
+        ImGui::CloseCurrentPopup();
+      }
+
+      m_clear_popup.end();
+    }
+*/
+    if (ImGui::BeginPopupModal("Confirm"))
+    {
+      if (ImGui::Button("Dango is pretty tasty!"))
+      {
+        ImGui::CloseCurrentPopup();
+      } 
+      ImGui::EndPopup();
+    }
+    //if (ImGui::BeginPopupModal())
 
     ImGui_Window::end();
   }
