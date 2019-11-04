@@ -9,9 +9,11 @@ namespace MX
   {
   public:
     MX_API Editor_Dock();
+    MX_API Editor_Dock(const std::string& name, ImGuiWindowFlags flags = 0);
 
     MX_API std::pair<std::string, bool*> visibilty() override;
     MX_API void set_visibilities(std::initializer_list<std::pair<std::string, bool*>> list);
+    MX_API void set_visibilities(std::pair<std::string, bool*> item);
 
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;

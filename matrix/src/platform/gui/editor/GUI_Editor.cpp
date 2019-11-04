@@ -35,6 +35,7 @@ namespace MX
     style.ScrollbarRounding = 4.0f;
 
     ImVec4* colors = ImGui::GetStyle().Colors;
+
     colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
     colors[ImGuiCol_WindowBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
@@ -42,28 +43,24 @@ namespace MX
     colors[ImGuiCol_PopupBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
     colors[ImGuiCol_Border] = ImVec4(0.22f, 0.22f, 0.22f, 1.00f);
     colors[ImGuiCol_BorderShadow] = ImVec4(0.22f, 0.22f, 0.22f, 1.00f);
-    colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
+    colors[ImGuiCol_FrameBg] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
     colors[ImGuiCol_FrameBgHovered] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
     colors[ImGuiCol_FrameBgActive] = ImVec4(0.41f, 0.41f, 0.41f, 0.31f);
     colors[ImGuiCol_TitleBg] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    //colors[ImGuiCol_TitleBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
-    colors[ImGuiCol_TitleBgActive] = ImVec4(0.38f, 0.38f, 0.38f, 1.00f);
-    //colors[ImGuiCol_TitleBgActive] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
+    colors[ImGuiCol_TitleBgActive] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    //colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.08f, 0.08f, 0.08f, 1.00f);
-    colors[ImGuiCol_MenuBarBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.00f);
-    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
+    colors[ImGuiCol_MenuBarBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
+    colors[ImGuiCol_ScrollbarBg] = ImVec4(0.21f, 0.21f, 0.21f, 1.00f);
     colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
     colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
     colors[ImGuiCol_CheckMark] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_SliderGrab] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
     colors[ImGuiCol_SliderGrabActive] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
-    colors[ImGuiCol_Button] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
+    colors[ImGuiCol_Button] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
     colors[ImGuiCol_ButtonHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_ButtonActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_Header] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-    //colors[ImGuiCol_Header] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
     colors[ImGuiCol_HeaderHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_HeaderActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_Separator] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
@@ -72,11 +69,11 @@ namespace MX
     colors[ImGuiCol_ResizeGrip] = ImVec4(1.00f, 1.00f, 1.00f, 0.59f);
     colors[ImGuiCol_ResizeGripHovered] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     colors[ImGuiCol_ResizeGripActive] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
-    colors[ImGuiCol_Tab] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+    colors[ImGuiCol_Tab] = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);
     colors[ImGuiCol_TabHovered] = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
-    colors[ImGuiCol_TabActive] = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
-    colors[ImGuiCol_TabUnfocused] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+    colors[ImGuiCol_TabActive] = ImVec4(0.36f, 0.35f, 0.35f, 1.00f);
+    colors[ImGuiCol_TabUnfocused] = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
+    colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_DockingPreview] = ImVec4(0.59f, 0.59f, 0.59f, 1.00f);
     colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
     colors[ImGuiCol_PlotLines] = ImVec4(0.59f, 0.59f, 0.59f, 1.00f);
@@ -90,91 +87,31 @@ namespace MX
     colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
     colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 
-    colors[ImGuiCol_FrameBg]                = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    colors[ImGuiCol_TitleBg]                = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    colors[ImGuiCol_TitleBgActive]          = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    colors[ImGuiCol_TitleBgCollapsed]       = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    colors[ImGuiCol_MenuBarBg]              = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-    colors[ImGuiCol_ScrollbarBg]            = ImVec4(0.21f, 0.21f, 0.21f, 1.00f);
-    colors[ImGuiCol_Button]                 = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    colors[ImGuiCol_Header]                 = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-    colors[ImGuiCol_Tab]                    = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);
-    colors[ImGuiCol_TabActive]              = ImVec4(0.36f, 0.35f, 0.35f, 1.00f);
-    colors[ImGuiCol_TabUnfocused]           = ImVec4(0.23f, 0.23f, 0.23f, 1.00f);
-    colors[ImGuiCol_TabUnfocusedActive]     = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-
-
-
-
-
-
-    /*
-    if (MX_WORLD.m_ExistingScenes.size() == 0 || MX_WORLD.m_ActiveScene == nullptr || MX_WORLD.m_ActiveScene->m_Sg.m_Root == nullptr)
-    {
-      Application::get().m_Running = 0;
-      MX_FATAL("MX: GUI: ImGui: World Editor can not be started, because there are no scenes available.");
-      return;
-    }
-
-    all_scenes = &MX_WORLD.m_ExistingScenes;
-    current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
-    current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
-    current_scene = MX_WORLD.m_ActiveScene;
-    current_node = current_root;
-
-    // reserve memory for incoming mx-logger messages
-    logger_messages_for_gui.reserve(5000);
-    */
-
     GUI_ImGui::initialize();
 
-    // set style variables for modules
-    m_viewport.push_style(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    auto dockspace = std::make_shared<Editor_Dock>("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+    auto viewport = std::make_shared<Editor_Viewport>("Viewport", ImGuiWindowFlags_MenuBar);
+    auto profiler = std::make_shared<Editor_Profiler>("Profiler", ImGuiWindowFlags_MenuBar);
+    auto console = std::make_shared<Editor_Console>("Console", ImGuiWindowFlags_MenuBar);
+    auto object = std::make_shared<Editor_Object>("Object");
 
-    // initialize modules
-    m_dock.initialize("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
-    m_viewport.initialize("Viewport", ImGuiWindowFlags_MenuBar);
-    m_profiler.initialize("Profiler", ImGuiWindowFlags_MenuBar);
-    m_console.initialize("Console", ImGuiWindowFlags_MenuBar);
-    m_object_viewer.initialize("Object");
-    
-    m_dock.set_visibilities({
-      m_viewport.visibilty(),
-      m_profiler.visibilty(),
-      m_console.visibilty(),
-      m_object_viewer.visibilty()
-    });
+    // toggle window visibility
+    dockspace->set_visibilities({viewport->visibilty(), profiler->visibilty(), console->visibilty(), object->visibilty()});
+
+    // set style variables for modules
+    viewport->push_style(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+
+    // add single modules to vector
+    m_modules = {dockspace, viewport, profiler, console, object};
   }
 
   void GUI_Editor::update()
   {
-    /*
-    if (global_cool_down)
-    {
-      MX_INFO("MX: GUI: Update: Setting new active scene");
-      current_node = current_root;
-
-      all_scenes = &MX_WORLD.m_ExistingScenes;
-      current_root = MX_WORLD.m_ActiveScene->m_Sg.m_Root;
-      current_scenegraph = &MX_WORLD.m_ActiveScene->m_Sg;
-      current_scene = MX_WORLD.m_ActiveScene;
-      current_node = current_root;
-    }
-
-    global_cool_down = 0;
-
-    all_objects.clear();
-    current_scene->m_Sg.getAllObjects(all_objects, current_scene->m_Sg.m_Root);
-    */
-
     GUI_ImGui::update();
     
     // update modules
-    m_dock.update();
-    m_viewport.update();
-    m_profiler.update();
-    m_console.update();
-    m_object_viewer.update();
+    for (auto it : m_modules)
+      it->update();
   }
 
   void GUI_Editor::render()
@@ -184,47 +121,16 @@ namespace MX
     ImGui::PopFont();
 
     // render modules
-    m_dock.render();
-    m_viewport.render();
-    m_profiler.render();
-    m_console.render();
-    m_object_viewer.render();
-
+    for (auto it : m_modules)
+      it->render();
 
     ImGui::ShowDemoWindow();
 
-    /*
-    renderDockSpace();
-    renderViewport();
-
-    if (demo_window_enabled)                                  ImGui::ShowDemoWindow();
-
-    if (!global_cool_down && menubar_enabled)                 renderMenuBar();
-    if (!global_cool_down && spawn_window_enabled)            renderSpawnMenu();
-    if (!global_cool_down && viewport_settings_window_enabled) renderViewportSettingsMenu();
-    if (!global_cool_down && scenegraph_enabled)              renderSceneGraph();
-    if (!global_cool_down && outline_enabled)                 renderOutline();
-    if (!global_cool_down && scenes_window_enabled)           renderScenesMenu();
-    if (!global_cool_down && assets_window_enabled)           renderAssestsMenu();
-    if (!global_cool_down && logger_window_enabled)           renderLoggerWindow();
-    if (!global_cool_down && transform_window_enabled)        renderTransformMenu();
-    if (!global_cool_down && performance_monitor_enabled)     renderPerformanceMonitor();
-    if (!global_cool_down && file_inspector_enabled)          renderFileInspectorWindow();
-
-    cool_down = 0;
-    */
- 
     GUI_ImGui::render();
   }
 
   void GUI_Editor::clean()
   {
-    /*
-    // delete allocated chars
-    for (std::vector<const char*>::iterator iter = all_models.begin() + 1; iter != all_models.end(); ++iter)
-      delete* iter;
-    */
-
     GUI_ImGui::clean();
   }
 

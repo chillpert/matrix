@@ -3,8 +3,13 @@
 namespace MX
 {
   Editor_Dock::Editor_Dock()
+    : m_opt_fullscreen(false) { }
+
+  Editor_Dock::Editor_Dock(const std::string& name, ImGuiWindowFlags flags)
     : m_opt_fullscreen(false)
-  { }
+  {
+    initialize(name, flags);
+  }
 
   std::pair<std::string, bool*> Editor_Dock::visibilty()
   {
@@ -20,6 +25,10 @@ namespace MX
       m_visibilities.push_back(it);
   }
 
+  void Editor_Dock::set_visibilities(std::pair<std::string, bool*> item)
+  {
+    m_visibilities.push_back(item);
+  }
 
   bool Editor_Dock::initialize(const std::string& name, ImGuiWindowFlags flags)
   {

@@ -9,6 +9,7 @@ namespace MX
   {
   public:
     MX_API Editor_Console() = default;
+    MX_API Editor_Console(const std::string& name, ImGuiWindowFlags flags);
 
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;

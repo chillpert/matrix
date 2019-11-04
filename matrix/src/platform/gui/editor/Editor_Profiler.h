@@ -10,6 +10,7 @@ namespace MX
   {
   public:
     MX_API Editor_Profiler();
+    MX_API Editor_Profiler(const std::string& name, ImGuiWindowFlags flags = 0);
 
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;

@@ -2,6 +2,11 @@
 
 namespace MX
 {
+  Editor_Hierachy::Editor_Hierachy(const std::string& name, ImGuiWindowFlags flags)
+  {
+    initialize(name, flags);
+  }
+
   bool Editor_Hierachy::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);

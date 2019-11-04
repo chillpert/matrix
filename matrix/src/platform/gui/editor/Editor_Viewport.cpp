@@ -3,6 +3,11 @@
 
 namespace MX
 {
+  Editor_Viewport::Editor_Viewport(const std::string& name, ImGuiWindowFlags flags)
+  {
+    initialize(name, flags);
+  }
+
   bool Editor_Viewport::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
