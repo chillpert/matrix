@@ -84,12 +84,15 @@ namespace MX
 
       if (flag)
       {
-        if (!ImGui::IsMouseReleased(0))
+        // makes content of viewport appear on screen when started (fix)
+        static bool fix_mouse_click = false;
+        if (!ImGui::IsMouseReleased(0) && fix_mouse_click)
         {
           is_black = true;
         }
         else
         {
+          fix_mouse_click = true;
           is_black = false;
           flag = false;
         }
