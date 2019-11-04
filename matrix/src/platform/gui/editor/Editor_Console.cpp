@@ -5,7 +5,7 @@ namespace MX
 {
   bool Editor_Console::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
-    //m_clear_popup.initialize("Confirm");
+    m_clear_popup.initialize("Warning##Clear Console", ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
     return ImGui_Window::initialize(name, flags);
   }
 
@@ -52,17 +52,16 @@ namespace MX
           ImGui::EndMenu();
         }
 
-        if (ImGui::MenuItem("Clear"))
-        {
-          ImGui::OpenPopup("Confirm");
-          //m_clear_popup.open();
-        }
-
         ImGui::EndMenuBar();
       }
 
       static ImGuiTextFilter filter;
-      filter.Draw("##console filter label", ImGui::GetContentRegionAvailWidth());
+      float avail_width = ImGui::GetContentRegionAvailWidth();
+      filter.Draw("##console filter label", avail_width * 4.0f / 5.0f);
+
+      ImGui::SameLine();
+      if (ImGui::Button("Confirm##Confirm Clear Console Button", ImVec2(avail_width / 5.0f - 8.0f, 0.0f)))
+        m_clear_popup.open();
 
       ImGui::Separator();
       
@@ -131,26 +130,29 @@ namespace MX
       }
     }
 
-/*
+    // clear console confirmation popup
     if (m_clear_popup.begin())
     {
-      if (ImGui::Button("Dango is pretty tasty!"))
+      ImGui::Text("Do you really want to clear the console?");
+
+      ImGui::Spacing();
+      ImGui::Separator();
+      ImGui::Spacing();
+
+      float avail_width = ImGui::GetContentRegionAvailWidth();
+      if (ImGui::Button("No", ImVec2(avail_width / 2.0f - 5.0f, 0.0f)))
+        ImGui::CloseCurrentPopup();
+
+      ImGui::SameLine();
+
+      if (ImGui::Button("Yes", ImVec2(avail_width / 2.0f - 5.0f, 0.0f)))
       {
         ImGui::CloseCurrentPopup();
+        Logger::get_messages_gui().clear();
       }
 
       m_clear_popup.end();
     }
-*/
-    if (ImGui::BeginPopupModal("Confirm"))
-    {
-      if (ImGui::Button("Dango is pretty tasty!"))
-      {
-        ImGui::CloseCurrentPopup();
-      } 
-      ImGui::EndPopup();
-    }
-    //if (ImGui::BeginPopupModal())
 
     ImGui_Window::end();
   }

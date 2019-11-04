@@ -23,31 +23,43 @@ namespace MX
       if (ImGui::CollapsingHeader("Transform"))
       {
         ImGui::Text("Translate");
-        ImGui::SameLine();
 
-        static float slider_width = 3.5f;
-        // 5 cm
-        static float distance = 0.05f;
-        float spacing = ImGui::GetContentRegionAvailWidth() / slider_width;
-        std::cout << ImGui::GetContentRegionAvailWidth() << std::endl;
+        static float step = 0.02f; // 2 cm
+        float spacing = ImGui::GetContentRegionAvailWidth() / 3.0f - 16.0f;
 
         ImGui::SetNextItemWidth(spacing);
-        ImGui::DragFloat("x", &translation[0], distance);
+        ImGui::DragFloat("x##x translate", &translation[0], step);
         ImGui::SameLine();
         ImGui::SetNextItemWidth(spacing);
-        ImGui::DragFloat("y", &translation[1], distance);
+        ImGui::DragFloat("y##y translate", &translation[1], step);
         ImGui::SameLine();
         ImGui::SetNextItemWidth(spacing);
-        ImGui::DragFloat("z", &translation[2], distance);
+        ImGui::DragFloat("z##z translate", &translation[2], step);
 
-        ImGui::DragFloat("DEBUG: slider width", &slider_width, 0.05f);
+        ImGui::Text("Rotate");
 
-        // 3.4 - 382
-        // 4.05 - 167
+        ImGui::SetNextItemWidth(spacing);
+        ImGui::DragFloat("x##x rotate", &rotation[0], step);
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(spacing);
+        ImGui::DragFloat("y##y rotate", &rotation[1], step);
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(spacing);
+        ImGui::DragFloat("z##z rotate", &rotation[2], step);
 
+        ImGui::Text("Scale");
+
+        ImGui::SetNextItemWidth(spacing);
+        ImGui::DragFloat("x##x scale", &scale[0], step);
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(spacing);
+        ImGui::DragFloat("y##y scale", &scale[1], step);
+        ImGui::SameLine();
+        ImGui::SetNextItemWidth(spacing);
+        ImGui::DragFloat("z##z scale", &scale[2], step);
       }
-
     }
+
     ImGui_Window::end();
   }
 }
