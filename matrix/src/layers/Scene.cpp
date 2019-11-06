@@ -115,6 +115,7 @@ namespace MX
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
     MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
+    m_objects.emplace(temp->m_Name, temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -138,6 +139,7 @@ namespace MX
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
     MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
+    m_objects.emplace(temp->m_Name, temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -161,6 +163,7 @@ namespace MX
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
     MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
+    m_objects.emplace(temp->m_Name, temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -185,6 +188,7 @@ namespace MX
 
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(object_node);
     MX_SCENEGRAPH.search<Node>(node_to_attach_to)->addChild(temp);
+    m_objects.emplace(temp->m_Name, temp);
     MX_SUCCESS("MX: Scene: "  + m_Name + " Push Object: " + name);
     return 1;
   }
@@ -269,6 +273,8 @@ namespace MX
   // delete object from scene graph
   bool Scene::pop(const std::string &name)
   {
+    m_objects.erase(name);
+
     std::shared_ptr<Node> temp_node = m_Sg.search<Node>(name);
 
   #ifdef MX_DEBUG

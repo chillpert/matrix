@@ -58,10 +58,12 @@ namespace MX
     colors[ImGuiCol_SliderGrab] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
     colors[ImGuiCol_SliderGrabActive] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
     colors[ImGuiCol_Button] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-    colors[ImGuiCol_ButtonHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-    colors[ImGuiCol_ButtonActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-    colors[ImGuiCol_Header] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-    colors[ImGuiCol_HeaderHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
+    colors[ImGuiCol_ButtonHovered] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+    colors[ImGuiCol_ButtonActive] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+    colors[ImGuiCol_Header]                 = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
+    colors[ImGuiCol_HeaderHovered]          = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
+    //colors[ImGuiCol_Header] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
+    //colors[ImGuiCol_HeaderHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_HeaderActive] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_Separator] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
     colors[ImGuiCol_SeparatorHovered] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
@@ -89,20 +91,30 @@ namespace MX
 
     GUI_ImGui::initialize();
 
+    // create modules
     auto dockspace = std::make_shared<Editor_Dock>("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
     auto viewport = std::make_shared<Editor_Viewport>("Viewport", ImGuiWindowFlags_MenuBar);
     auto profiler = std::make_shared<Editor_Profiler>("Profiler", ImGuiWindowFlags_MenuBar);
     auto console = std::make_shared<Editor_Console>("Console", ImGuiWindowFlags_MenuBar);
     auto object = std::make_shared<Editor_Object>("Object");
+    auto hierarchy = std::make_shared<Editor_Hierachy>("Hierarchy");
+    auto explorer = std::make_shared<Editor_Explorer>("Explorer");
 
     // toggle window visibility
-    dockspace->set_visibilities({viewport->visibilty(), profiler->visibilty(), console->visibilty(), object->visibilty()});
+    dockspace->set_visibilities({
+      viewport->visibilty(),
+      profiler->visibilty(),
+      console->visibilty(),
+      object->visibilty(),
+      hierarchy->visibilty(),
+      explorer->visibilty()
+    });
 
     // set style variables for modules
     viewport->push_style(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
     // add single modules to vector
-    m_modules = {dockspace, viewport, profiler, console, object};
+    m_modules = {dockspace, viewport, profiler, console, object, hierarchy, explorer};
   }
 
   void GUI_Editor::update()

@@ -19,12 +19,6 @@ namespace MX
     MX_API void clear() override;
 
   private:
-    Editor_Dock m_dock;
-    Editor_Viewport m_viewport;
-    Editor_Profiler m_profiler;
-    Editor_Console m_console;
-    Editor_Object m_object_viewer;
-
     std::vector<std::shared_ptr<ImGui_Window>> m_modules; 
 
     // GUI_ImGui_Editor.cpp

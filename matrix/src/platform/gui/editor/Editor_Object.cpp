@@ -25,6 +25,7 @@ namespace MX
 
     if (ImGui_Window::begin())
     {
+      ImGui::SetNextItemOpen(true, ImGuiCond_Once);
       if (ImGui::CollapsingHeader("Transform"))
       {
         ImGui::Text("Translate");

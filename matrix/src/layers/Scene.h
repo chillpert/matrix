@@ -86,6 +86,7 @@ namespace MX
     std::string m_Name;
     
     std::vector<std::string> m_ExistingObjects;
+    std::map<std::string, std::shared_ptr<Node>> m_objects;
   };
 }
 
