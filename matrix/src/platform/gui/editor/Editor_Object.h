@@ -2,10 +2,11 @@
 #define EDITOR_OBJECT_H
 
 #include "GUI_ImGui_Window.h"
+#include "Editor_Global.h"
 
 namespace MX
 {
-  class Editor_Object : public ImGui_Window
+  class Editor_Object : public ImGui_Window, public Editor_Global
   {
   public:
     MX_API Editor_Object() = default;

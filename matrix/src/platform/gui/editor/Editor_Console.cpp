@@ -65,7 +65,7 @@ namespace MX
       filter.Draw("##console filter label", avail_width * 4.0f / 5.0f);
 
       ImGui::SameLine();
-      if (ImGui::Button("Confirm##Confirm Clear Console Button", ImVec2(avail_width / 5.0f - 8.0f, 0.0f)))
+      if (ImGui::Button("Clear##Confirm Clear Console Button", ImVec2(avail_width / 5.0f - 8.0f, 0.0f)))
         m_clear_popup.open();
 
       ImGui::Separator();
@@ -145,16 +145,17 @@ namespace MX
       ImGui::Spacing();
 
       float avail_width = ImGui::GetContentRegionAvailWidth();
-      if (ImGui::Button("No", ImVec2(avail_width / 2.0f - 5.0f, 0.0f)))
-        ImGui::CloseCurrentPopup();
-
-      ImGui::SameLine();
-
       if (ImGui::Button("Yes", ImVec2(avail_width / 2.0f - 5.0f, 0.0f)))
       {
         ImGui::CloseCurrentPopup();
         Logger::get_messages_gui().clear();
       }
+
+      ImGui::SameLine();
+
+      if (ImGui::Button("No", ImVec2(avail_width / 2.0f - 5.0f, 0.0f)))
+        ImGui::CloseCurrentPopup();
+
 
       m_clear_popup.end();
     }

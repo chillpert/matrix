@@ -36,7 +36,7 @@ namespace MX
   // traverse through all children of the given node recursively
   void Editor_Hierachy::traverse(const std::shared_ptr<Node> node, int counter)
   {
-    int flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+    int flags = ImGuiTreeNodeFlags_OpenOnArrow;
 
     if (node != nullptr)
     {
