@@ -10,7 +10,7 @@ namespace MX
   void Node::upload_uniforms()
   {
     m_Shader->use();
-    m_Shader->setfMat4("model", getWorldTransform());
+    m_Shader->setfMat4("model", m_Trans.m_world);
     m_Shader->setfMat4("view", MX_CAMERA.getViewMatrix());
     m_Shader->setfMat4("projection", MX_CAMERA.getProjectionMatrix());
     m_Shader->setfVec3("viewPosition", MX_CAMERA.m_Position);
@@ -60,21 +60,6 @@ namespace MX
 
     MX_FATAL("MX: Node: Get Child: " + name + " is not a child of " + m_Name);
     throw mx_entity_not_found(name);
-  }
-
-  void Node::setLocalTransform(const glm::fmat4& mat)
-  {
-    m_Trans.m_local = mat * m_Trans.m_local;
-  }
-
-  void Node::setWorldTransform(const glm::fmat4& mat)
-  {
-    m_Trans.m_world = mat * m_Trans.update();
-  }
-
-  void Node::setTransform(const Trans &t, float factor, bool is_animated)
-  {
-    m_Trans.push(t, factor, is_animated);
   }
 
   void Node::setShader(std::shared_ptr<Shader> shader)

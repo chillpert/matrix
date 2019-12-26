@@ -28,59 +28,115 @@ namespace MX
         {
           auto current = get_selection().at(0);
 
-          static bool first_run = true;
-          static glm::vec3 scale;
-          static glm::quat rotation;
-          static glm::vec3 translation;
-          static glm::vec3 skew;
-          static glm::vec4 perspective;
-          
-          glm::decompose(current->m_Trans.m_world, scale, rotation, translation, skew, perspective);
-          first_run = false;
+          static float speed_translation = 0.005f; // 5 mm;
+          static float speed_rotation = 0.5f;
+          static float speed_scale = 0.005f; // 5 mm;
 
           ImGui::SetNextItemOpen(true, ImGuiCond_Once);
           if (ImGui::CollapsingHeader("Transform"))
           {
-            ImGui::Text("Translate");
+            glm::vec3* translation = &current->m_Trans.m_translation;
+            glm::vec3* rotation = &current->m_Trans.m_rotation; 
+            glm::vec3* scale = &current->m_Trans.m_scale;
 
-            static float step = 0.02f; // 2 cm
-            float spacing = ImGui::GetContentRegionAvailWidth() / 3.0f - 16.0f;
+            ImGuiIO& io = ImGui::GetIO();
+            ImVec2 pos = ImGui::GetCursorScreenPos();
 
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("x##x translate", &translation.x, step);
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("y##y translate", &translation.y, step);
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("z##z translate", &translation.z, step);
+            static bool show_properties = false;
 
-            ImGui::Text("Rotate");
+            if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+              show_properties = !show_properties;
 
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("x##x rotate", &rotation.x, step);
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("y##y rotate", &rotation.y, step);
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("z##z rotate", &rotation.z, step);
+            if (show_properties)
+            {
+              /*
+              quite ugly right now, so redo this shit
+              */
 
-            ImGui::Text("Scale");
+              ImGui::Text("Drag Speed:");
+              ImGui::SetNextItemWidth(90.0f);
+              ImGui::InputFloat("Translation", &speed_translation, 0.001f);
+              ImGui::SetNextItemWidth(90.0f);
+              ImGui::InputFloat("Rotation", &speed_rotation, 0.5f);
+              ImGui::SetNextItemWidth(90.0f);
+              ImGui::InputFloat("Scale", &speed_scale, 0.001f);
 
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("x##x scale", &scale.x, step);
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("y##y scale", &scale.y, step);
-            ImGui::SameLine();
-            ImGui::SetNextItemWidth(spacing);
-            ImGui::DragFloat("z##z scale", &scale.z, step);
+              if (ImGui::Button("Reset"))
+              {
+                translation->x = 0.0f;
+                translation->y = 0.0f;
+                translation->z = 0.0f;
 
-            auto temp = glm::mat4(1.0f);
-            temp = glm::scale(temp, scale);
-            temp *= glm::toMat4(rotation);
-            temp = glm::translate(temp, translation);
+                rotation->x = 0.0f;
+                rotation->y = 0.0f;
+                rotation->z = 0.0f;
+
+                scale->x = 1.0f;
+                scale->y = 1.0f;
+                scale->z = 1.0f;
+              }
+            }
+            else
+            {
+              float spacing = ImGui::GetContentRegionAvailWidth() / 3.0f - 16.0f;
+
+              ImGui::Text("Translate");
+
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("x##x translate", &translation->x, speed_translation); 
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                translation->x = 0.0f;
+              ImGui::SameLine();
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("y##y translate", &translation->y, speed_translation);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                translation->y = 0.0f;
+              ImGui::SameLine();
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("z##z translate", &translation->z, speed_translation);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                translation->z = 0.0f;
+
+              ImGui::Text("Rotate");
+
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("x##x rotate", &rotation->x, speed_rotation);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                rotation->x = 0.0f;
+              ImGui::SameLine();
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("y##y rotate", &rotation->y, speed_rotation);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                rotation->y = 0.0f;
+              ImGui::SameLine();
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("z##z rotate", &rotation->z, speed_rotation);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                rotation->z = 0.0f;
+
+              ImGui::Text("Scale");
+
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("x##x scale", &scale->x, speed_scale);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                scale->x = 1.0f;
+              ImGui::SameLine();
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("y##y scale", &scale->y, speed_scale);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                scale->y = 1.0f;
+              ImGui::SameLine();
+              ImGui::SetNextItemWidth(spacing);
+              ImGui::DragFloat("z##z scale", &scale->z, speed_scale);
+              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+                scale->z = 1.0f;
+            
+              // NEEDS TO BE FIXED
+              for (std::shared_ptr<Node> it : get_selection())
+              {
+                it->m_Trans.translate(*translation);
+              }
+            }
           }
         }
       }

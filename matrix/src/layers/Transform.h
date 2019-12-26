@@ -5,39 +5,40 @@
 
 namespace MX
 {
-  enum Trans
-  {
-    FORWARDS, LEFT, BACKWARDS, RIGHT, DOWN, UP, 
-    X, Y, Z,
-    SCALE
-  };
-
-  struct Transform_Props
-  {
-    Trans t;
-    float factor;
-    bool is_animated = 0;
-  };
-
   class Transform
   {
   public:
-    Transform() = default;
-    ~Transform() = default;
+    MX_API Transform();
 
-    Transform(const Transform&) = default;
-    Transform &operator=(const Transform&) = default;
+    MX_API void update(const glm::mat4 mat = glm::mat4(1.0f));
 
-    glm::fmat4 update();
-    void push(const Trans &t, float factor, bool is_animated);
-    float get_time() const;
+    MX_API void translateX(float factor);
+    MX_API void translateY(float factor);
+    MX_API void translateZ(float factor);
+    MX_API void translate(float x, float y, float z);
+    MX_API void translate(const glm::vec3& translate);
+    MX_API void translate(const glm::mat4& translate);
 
-  public:
+    MX_API void rotateX(float rad);
+    MX_API void rotateY(float rad);
+    MX_API void rotateZ(float rad);
+    MX_API void rotate(float x, float y, float z);
+    MX_API void rotate(const glm::vec3& rotation);
+    MX_API void rotate(const glm::mat4& rotation);
+
+    MX_API void scaleX(float factor);
+    MX_API void scaleY(float factor);
+    MX_API void scaleZ(float factor);
+    MX_API void scale(float x, float y, float z);
+    MX_API void scale(const glm::vec3& scale);
+    MX_API void scale(const glm::mat4& scale);
+
     glm::fmat4 m_local = glm::fmat4(1.0f);
     glm::fmat4 m_world = glm::fmat4(1.0f);
 
-    std::vector<Transform_Props> m_transforms;
-    bool m_moving = 1;
+    glm::vec3 m_translation;
+    glm::vec3 m_rotation;
+    glm::vec3 m_scale;
   };
 }
 

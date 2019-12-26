@@ -35,6 +35,8 @@
   #include <glm/gtc/matrix_transform.hpp>
   #include <glm/gtx/quaternion.hpp>
   #include <glm/gtc/type_ptr.hpp>
+  #include <glm/gtx/euler_angles.hpp>
+  #include <glm/gtx/intersect.hpp>
 
   // texture loading
   #include <stb_image.h>

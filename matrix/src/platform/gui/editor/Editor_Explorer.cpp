@@ -43,6 +43,7 @@ namespace MX
       }
 
       ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
+      
       ImGui::SameLine();
       ImGui::Button("Resources");
       

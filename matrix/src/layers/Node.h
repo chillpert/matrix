@@ -39,16 +39,7 @@ namespace MX
     MX_API virtual std::shared_ptr<Node> getChild(const std::string &name);
 
     MX_API virtual void setParent(Node *node);
-
-    MX_API void setLocalTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
-    MX_API void setWorldTransform(const glm::fmat4& mat = glm::fmat4(1.0f));
-
     MX_API virtual void setShader(std::shared_ptr<Shader> shader);
-
-    MX_API void setTransform(const Trans &t, float factor, bool is_animated);
-
-    MX_API glm::fmat4 &getLocalTransform() { return m_Trans.m_local; }
-    MX_API glm::fmat4 &getWorldTransform() { return m_Trans.m_world; }
 
   public:
     std::string m_Name;

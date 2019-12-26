@@ -3,107 +3,122 @@
 
 namespace MX
 {
-  static float last_time = 0.0f;
+  // return m_local * trans;
+  Transform::Transform() : 
+    m_local(glm::fmat4(1.0f)), 
+    m_world(glm::fmat4(1.0f)),
+    m_rotation(glm::vec3()),
+    m_translation(glm::vec3()),
+    m_scale(glm::vec3(1.0f))
+    { }
 
-  float Transform::get_time() const
+  void Transform::update(const glm::mat4 mat)
   {
-    if (!m_moving)
-      return last_time;
-
-    last_time = Application::get().m_Window->m_Props.m_Time;
-    return last_time;
+    glm::mat4 temp = glm::mat4(1.0f);
+    
+    m_local = 
+      glm::translate(temp, m_translation) *
+      glm::rotate(temp, glm::radians(m_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
+      glm::rotate(temp, glm::radians(m_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *
+      glm::rotate(temp, glm::radians(m_rotation.z), glm::vec3(0.0f, 0.0f, 1.0f)) *
+      glm::scale(temp, m_scale);
+    
+    m_world = mat * m_local;
   }
 
-  glm::fmat4 Transform::update()
+  void Transform::translateX(float factor)
   {
-    glm::fmat4 trans = glm::fmat4(1.0f);
-
-    std::vector<Transform_Props>::iterator iter = m_transforms.begin();
-
-    while (iter != m_transforms.end())
-    {
-      if (iter->t == X)
-      {
-        if (!iter->is_animated)
-          m_local = glm::rotate(m_local, glm::radians(iter->factor), glm::vec3(iter->factor, 0.0f, 0.0f));
-        else
-          trans = glm::rotate(trans, get_time() * iter->factor, glm::vec3(get_time() * iter->factor, 0.0f, 0.0f));
-      }
-      else if (iter->t == Y)
-      {
-        if (!iter->is_animated)
-          m_local = glm::rotate(m_local, iter->factor, glm::vec3(0.0f, iter->factor, 0.0f));
-        else
-          trans = glm::rotate(trans, get_time() * iter->factor, glm::vec3(0.0f, get_time() * iter->factor, 0.0f));
-      }
-      else if (iter->t == Z)
-      {
-        if (!iter->is_animated)
-          m_local = glm::rotate(m_local, iter->factor, glm::vec3(0.0f, 0.0f, iter->factor));
-        else
-          trans = glm::rotate(trans, get_time() * iter->factor, glm::vec3(0.0f, 0.0f, get_time() * iter->factor));
-      }
-      else if (iter->t == FORWARDS)
-      {
-        if (!iter->is_animated)
-          m_local = glm::translate(m_local, glm::vec3(0.0f, 0.0f, iter->factor * -1.0f));
-        else
-          trans = glm::translate(trans, glm::vec3(0.0f, 0.0f, get_time() * iter->factor * -1.0f));
-      }
-      else if (iter->t == BACKWARDS)
-      {
-        if (!iter->is_animated)
-          m_local = glm::translate(m_local, glm::vec3(0.0f, 0.0f, iter->factor * 1.0f));
-        else
-          trans = glm::translate(trans, glm::vec3(0.0f, 0.0f, get_time() * iter->factor * 1.0f));
-      }
-      else if (iter->t == LEFT)
-      {
-        if (!iter->is_animated)
-          m_local = glm::translate(m_local, glm::vec3(iter->factor * -1.0f, 0.0f, 0.0f));
-        else
-          trans = glm::translate(trans, glm::vec3(get_time() * iter->factor * -1.0f, 0.0f, 0.0f));
-      }
-      else if (iter->t == RIGHT)
-      {
-        if (!iter->is_animated)
-          m_local = glm::translate(m_local, glm::vec3(iter->factor * 1.0f, 0.0f, 0.0f));
-        else
-          trans = glm::translate(trans, glm::vec3(get_time() * iter->factor * 1.0f, 0.0f, 0.0f));
-      }
-      else if (iter->t == UP)
-      {
-        if (!iter->is_animated)
-          m_local = glm::translate(m_local, glm::vec3(0.0f, iter->factor * 1.0f, 0.0f));
-        else
-          trans = glm::translate(trans, glm::vec3(0.0f, get_time() * iter->factor * 1.0f, 0.0f));
-      }
-      else if (iter->t == DOWN)
-      {
-        if (!iter->is_animated)
-          m_local = glm::translate(m_local, glm::vec3(0.0f, iter->factor * -1.0f, 0.0f));
-        else
-          trans = glm::translate(trans, glm::vec3(0.0f, get_time() * iter->factor * -1.0f, 0.0f));
-      }
-      else if (iter->t == SCALE)
-      {
-        if (!iter->is_animated)
-          m_local = glm::scale(m_local, glm::vec3(iter->factor, iter->factor, iter->factor));
-        else
-          trans = glm::scale(trans, glm::vec3(get_time() * iter->factor, get_time() * iter->factor, get_time() * iter->factor));
-      }
-
-      if (!iter->is_animated)
-        iter = m_transforms.erase(iter);
-      else
-        ++iter;
-    }
-
-    return m_local * trans;
+    m_translation.x = factor;
   }
 
-  void Transform::push(const Trans &t, float factor, bool is_animated)
+  void Transform::translateY(float factor)
   {
-    m_transforms.push_back(Transform_Props{t, factor, is_animated});
+    m_translation.y = factor;
+  }
+
+  void Transform::translateZ(float factor)
+  {
+    m_translation.z = factor;
+  }
+
+  void Transform::translate(float x, float y, float z)
+  {
+    m_translation.x = x;
+    m_translation.y = y;
+    m_translation.z = z;
+  }
+
+  void Transform::translate(const glm::vec3& translate)
+  {
+    m_translation = translate;
+  }
+
+  void Transform::translate(const glm::mat4& translate)
+  {
+    
+  }
+
+  void Transform::rotateX(float rad)
+  {
+    m_rotation.x = rad;
+  }
+
+  void Transform::rotateY(float rad)
+  {
+    m_rotation.y = rad;
+  }
+
+  void Transform::rotateZ(float rad)
+  {
+    m_rotation.z = rad;
+  }
+
+  void Transform::rotate(float x, float y, float z)
+  {
+    m_rotation.x = x;
+    m_rotation.y = y;
+    m_rotation.z = z;
+  }
+
+  void Transform::rotate(const glm::vec3& rotation)
+  {
+    m_rotation = rotation;
+  }
+
+  void Transform::rotate(const glm::mat4& rotation)
+  {
+
+  }
+
+  void Transform::scaleX(float factor)
+  {
+    m_scale.x = factor;
+  }
+
+  void Transform::scaleY(float factor)
+  {
+    m_scale.y = factor;
+  }
+
+  void Transform::scaleZ(float factor)
+  {
+    m_scale.z = factor;
+  }
+
+  void Transform::scale(float x, float y, float z)
+  {
+    m_scale.x = x;
+    m_scale.y = y;
+    m_scale.z = z;
+  }
+
+  void Transform::scale(const glm::vec3& scale)
+  {
+    m_scale = scale;
+  }
+
+  void Transform::scale(const glm::mat4& scale)
+  {
+
   }
 }

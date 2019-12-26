@@ -766,7 +766,9 @@ namespace MX
     static float x_rotate_drag = 0;
     static float y_rotate_drag = 0;
     static float z_rotate_drag = 0;
-        
+    /* 
+    Does not work since Transform update
+
     ImGui::SetNextItemWidth(-10);
     if (ImGui::DragFloat("xr##x_rotate_slider", &x_rotate_drag, grab_speed))
     {
@@ -784,6 +786,7 @@ namespace MX
     {
       node->setTransform(Z, x_rotate_drag / transform_factor, 0);
     }
+    */
   }
 
   void translate_node(std::shared_ptr<Node> node)
@@ -797,7 +800,7 @@ namespace MX
     static float prev_z_translate_drag = 0;
 
     prev_x_translate_drag = x_translate_drag;
-        
+    /*   
     ImGui::SetNextItemWidth(-10);
     if (ImGui::DragFloat("x##x_slider", &x_translate_drag, grab_speed))
     {
@@ -831,18 +834,20 @@ namespace MX
         0
       );
     }
+    */
   }
 
   void scale_node(std::shared_ptr<Node> node)
   {
     static float complete_scale_drag = 0;
     static float prev_complete_scale_drag = 0;
-    
+    /*
     ImGui::SetNextItemWidth(-10);
     ImGui::InputFloat("s##complete_scale_drag", &complete_scale_drag, 0.05f, 2.0f, "%.3f");
 
     if (complete_scale_drag != prev_complete_scale_drag && complete_scale_drag >= 0.01f)
       node->setTransform(SCALE, complete_scale_drag, 0);
+    */
   }
 
   void translate_vector(glm::vec3 &vec)

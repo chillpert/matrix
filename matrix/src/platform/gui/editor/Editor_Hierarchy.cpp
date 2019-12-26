@@ -25,7 +25,7 @@ namespace MX
   void Editor_Hierachy::render()
   {
     if (ImGui_Window::begin())
-    {
+    {   
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
       traverse(m_root, 0);
     }

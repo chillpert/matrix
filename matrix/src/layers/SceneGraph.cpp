@@ -1,6 +1,7 @@
 #include "SceneGraph.h"
 #include "World.h"
 #include "Application.h"
+#include "MousePicker.h"
 
 namespace MX
 {
@@ -101,12 +102,7 @@ namespace MX
 
   void SceneGraph::recursive_render(std::shared_ptr<Node> it, glm::fmat4 mat)
   {
-    if (is_paused)
-      it->m_Trans.m_moving = 0;
-    else
-      it->m_Trans.m_moving = 1;
-
-    it->setWorldTransform(mat);
+    it->m_Trans.update(mat);
 
     if (it->m_Shader != nullptr && it->m_visible)
     {
@@ -121,7 +117,7 @@ namespace MX
     {
       for (auto itChild : it->m_Children)
       {
-        recursive_render(itChild, it->getWorldTransform());
+        recursive_render(itChild, it->m_Trans.m_world);
       }
     }
   }
