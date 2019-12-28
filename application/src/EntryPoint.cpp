@@ -111,8 +111,9 @@ void init_material_test_scene()
 void initialize()
 {
   using namespace MX;
-
   MX_WORLD.initialize();
+  
+/*
   MX_WORLD.push(std::make_shared<Scene>("Debug"));
 
 #ifdef MX_DEBUG
@@ -124,7 +125,7 @@ void initialize()
 #ifdef MX_DEBUG
   init_material_test_scene();
 #endif
-
+*/
   MX_WORLD.push(std::make_shared<Scene>("Room"));
 
 #ifdef MX_DEBUG

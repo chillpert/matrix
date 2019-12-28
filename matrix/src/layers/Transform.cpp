@@ -16,7 +16,7 @@ namespace MX
   {
     glm::mat4 temp = glm::mat4(1.0f);
     
-    m_local = 
+    m_local =
       glm::translate(temp, m_translation) *
       glm::rotate(temp, glm::radians(m_rotation.x), glm::vec3(1.0f, 0.0f, 0.0f)) *
       glm::rotate(temp, glm::radians(m_rotation.y), glm::vec3(0.0f, 1.0f, 0.0f)) *

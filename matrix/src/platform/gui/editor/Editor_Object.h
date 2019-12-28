@@ -15,6 +15,10 @@ namespace MX
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;
     MX_API void render() override;
+
+  private:
+    // creates three drag sliders for all three axes
+    MX_API void transformDrag(const std::string& label, glm::vec3* vec, float drag_speed, float spacing, float reset_value);
   };
 }
 

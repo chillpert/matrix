@@ -45,97 +45,77 @@ namespace MX
             static bool show_properties = false;
 
             if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-              show_properties = !show_properties;
+              show_properties = true;
 
+            // opens a window with additional settings for the transform component, just right click the header
             if (show_properties)
             {
-              /*
-              quite ugly right now, so redo this shit
-              */
+              static ImGuiWindowFlags transform_settings_flags = 
+                ImGuiWindowFlags_AlwaysAutoResize |
+                ImGuiWindowFlags_NoMove |
+                ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_NoCollapse |
+                ImGuiWindowFlags_NoTitleBar;
 
-              ImGui::Text("Drag Speed:");
-              ImGui::SetNextItemWidth(90.0f);
-              ImGui::InputFloat("Translation", &speed_translation, 0.001f);
-              ImGui::SetNextItemWidth(90.0f);
-              ImGui::InputFloat("Rotation", &speed_rotation, 0.5f);
-              ImGui::SetNextItemWidth(90.0f);
-              ImGui::InputFloat("Scale", &speed_scale, 0.001f);
-
-              if (ImGui::Button("Reset"))
+              // make sure the window always appears where you right clicked at
+              static bool update_mouse_pos = true;
+              static ImVec2 mouse_pos;
+              if (update_mouse_pos)
               {
-                translation->x = 0.0f;
-                translation->y = 0.0f;
-                translation->z = 0.0f;
-
-                rotation->x = 0.0f;
-                rotation->y = 0.0f;
-                rotation->z = 0.0f;
-
-                scale->x = 1.0f;
-                scale->y = 1.0f;
-                scale->z = 1.0f;
+                mouse_pos = ImGui::GetMousePos();
+                update_mouse_pos = false;
               }
+
+
+              if (ImGui::Begin("Transform Settings", NULL, transform_settings_flags))
+              {
+                ImGui::SetWindowPos(mouse_pos);
+
+                // on first right click on header set window to being focused to avoid it being deactivated
+                static bool first_run = true;
+                if (first_run)
+                {
+                  ImGui::SetWindowFocus();
+                  first_run = false;
+                }
+
+                if (!ImGui::IsWindowFocused())
+                {
+                  show_properties = false;
+                  first_run = true;
+                  update_mouse_pos = true;
+                }
+
+                ImGui::Text("Drag Speed:");
+                ImGui::SetNextItemWidth(90.0f);
+                ImGui::InputFloat("Translation", &speed_translation, 0.001f);
+                ImGui::SetNextItemWidth(90.0f);
+                ImGui::InputFloat("Rotation", &speed_rotation, 0.5f);
+                ImGui::SetNextItemWidth(90.0f);
+                ImGui::InputFloat("Scale", &speed_scale, 0.001f);
+
+                ImGui::Separator();
+                ImGui::SetNextItemWidth(-1.0f);
+                if (ImGui::Button("Reset"))
+                {
+                  *translation = glm::vec3(0.0f);
+                  *rotation = glm::vec3(0.0f);
+                  *scale = glm::vec3(1.0f);
+                }
+              }
+              ImGui::End();
             }
-            else
+   
+            float spacing = ImGui::GetContentRegionAvailWidth() / 3.0f - 16.0f;
+
+            transformDrag("Translate", translation, speed_translation, spacing, 0.0f);
+            transformDrag("Rotate", rotation, speed_rotation, spacing, 0.0f);
+            transformDrag("Scale", scale, speed_scale, spacing, 1.0f);
+          
+            // NEEDS TO BE FIXED
+            for (std::shared_ptr<Node> it : get_selection())
             {
-              float spacing = ImGui::GetContentRegionAvailWidth() / 3.0f - 16.0f;
-
-              ImGui::Text("Translate");
-
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("x##x translate", &translation->x, speed_translation); 
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                translation->x = 0.0f;
-              ImGui::SameLine();
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("y##y translate", &translation->y, speed_translation);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                translation->y = 0.0f;
-              ImGui::SameLine();
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("z##z translate", &translation->z, speed_translation);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                translation->z = 0.0f;
-
-              ImGui::Text("Rotate");
-
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("x##x rotate", &rotation->x, speed_rotation);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                rotation->x = 0.0f;
-              ImGui::SameLine();
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("y##y rotate", &rotation->y, speed_rotation);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                rotation->y = 0.0f;
-              ImGui::SameLine();
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("z##z rotate", &rotation->z, speed_rotation);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                rotation->z = 0.0f;
-
-              ImGui::Text("Scale");
-
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("x##x scale", &scale->x, speed_scale);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                scale->x = 1.0f;
-              ImGui::SameLine();
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("y##y scale", &scale->y, speed_scale);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                scale->y = 1.0f;
-              ImGui::SameLine();
-              ImGui::SetNextItemWidth(spacing);
-              ImGui::DragFloat("z##z scale", &scale->z, speed_scale);
-              if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-                scale->z = 1.0f;
-            
-              // NEEDS TO BE FIXED
-              for (std::shared_ptr<Node> it : get_selection())
-              {
-                it->m_Trans.translate(*translation);
-              }
+              it->m_Trans.translate(*translation);
             }
           }
         }
@@ -143,5 +123,30 @@ namespace MX
     }
 
     ImGui_Window::end();
+  }
+
+  void Editor_Object::transformDrag(const std::string& label, glm::vec3* vec, float drag_speed, float spacing, float reset_value)
+  {
+    ImGui::Text(label.c_str());
+
+    ImGui::SetNextItemWidth(spacing);
+    std::string full_label = "x##x" + label;
+    ImGui::DragFloat(full_label.c_str(), &vec->x, drag_speed); 
+    if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+      vec->x = reset_value;
+
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(spacing);
+    full_label = "y##y" + label;
+    ImGui::DragFloat(full_label.c_str(), &vec->y, drag_speed);
+    if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+      vec->y = reset_value;
+
+    ImGui::SameLine();
+    ImGui::SetNextItemWidth(spacing);
+    full_label = "z##z" + label;
+    ImGui::DragFloat(full_label.c_str(), &vec->z, drag_speed);
+    if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+      vec->z = reset_value;
   }
 }
