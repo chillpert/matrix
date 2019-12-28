@@ -11,8 +11,10 @@ namespace MX
   {
   public:
     // if user did not set a custom size, use maximum size
-    MX_API ImGui_Icon(char* path, float size_x = -1.0f, float size_y = -1.0f);
-  
+    MX_API ImGui_Icon() = default;
+    MX_API ImGui_Icon(const std::string& name, const std::string& path, float size_x = -1.0f, float size_y = -1.0f);
+    MX_API ImGui_Icon(const std::string& path, float size_x = -1.0f, float size_y = -1.0f);
+
     MX_API void render();
 
     MX_API void set_corners(const ImVec2& uv0, const ImVec2& uv1);
@@ -33,7 +35,8 @@ namespace MX
     ImVec4 m_border_col;
 
   public:
-    char* m_path;
+    std::string m_name;
+    std::string m_path;
     float m_size_x;
     float m_size_y;
 

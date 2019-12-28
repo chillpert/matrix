@@ -5,12 +5,19 @@
 
 namespace MX
 {
+  enum Action
+  {
+    E_LEFT_CLICK, E_RIGHT_CLICK, E_DOUBLE_CLICK, E_NONE
+  };
+
+  // call object of this class right the imgui item that you want to bind a context menu to
   class ImGui_ContextMenu
   {
   public:
-    MX_API ImGui_ContextMenu(const char* name);
+    MX_API ImGui_ContextMenu(const char* name, const Action& action = E_RIGHT_CLICK);
 
     MX_API bool begin();
+    MX_API bool begin(bool& show);
     MX_API void end();
 
     ImGuiWindowFlags m_flags;
@@ -18,6 +25,7 @@ namespace MX
   private:
     MX_API bool is_clicked();
 
+    Action m_action;
     bool m_update_mouse;
     bool m_show;
     ImVec2 m_mouse_pos;
