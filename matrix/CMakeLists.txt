@@ -23,12 +23,14 @@ include_directories(${CMAKE_SOURCE_DIR}/matrix/src/event)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/layers)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/api)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui/utility)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui/editor)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/window)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/intersections)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/math)
 
 # resource directories
+add_compile_definitions(MX_RESOURCES="${PROJECT_SOURCE_DIR}/resources/")
 add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")
 add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
 add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")
@@ -321,6 +323,7 @@ file(GLOB FILES_LIB
   "${PROJECT_SOURCE_DIR}/matrix/src/pch/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/api/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/utility/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/editor/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/window/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/intersections/*.cpp"

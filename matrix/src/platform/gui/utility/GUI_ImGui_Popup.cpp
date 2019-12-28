@@ -4,7 +4,6 @@ namespace MX
 {
   void ImGui_Popup::open()
   {
-    MX_WARN("OPEN");
     ImGui::OpenPopup(m_name.c_str());
   }
 

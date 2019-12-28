@@ -81,7 +81,7 @@ namespace MX
 
   void ImGui_Window::activate_styles()
   {
-    int amount = m_style_vector.size() + m_style_float.size();
+    size_t amount = m_style_vector.size() + m_style_float.size();
     if (amount > 0)
     {
       for (auto it : m_style_vector)
@@ -94,7 +94,7 @@ namespace MX
 
   void ImGui_Window::remove_styles()
   {
-    int amount = m_style_vector.size() + m_style_float.size();
+    size_t amount = m_style_vector.size() + m_style_float.size();
     if (amount > 0)
       ImGui::PopStyleVar();
   }

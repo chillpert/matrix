@@ -96,7 +96,7 @@ namespace MX
     auto console = std::make_shared<Editor_Console>("Console", ImGuiWindowFlags_MenuBar);
     auto object = std::make_shared<Editor_Object>("Object");
     auto hierarchy = std::make_shared<Editor_Hierachy>("Hierarchy");
-    auto explorer = std::make_shared<Editor_Explorer>("Explorer");
+    auto explorer = std::make_shared<Editor_Explorer>("Explorer", ImGuiWindowFlags_MenuBar);
 
     // toggle window visibility
     dockspace->set_visibilities({

@@ -1,4 +1,5 @@
 #include "Editor_Object.h"
+#include "GUI_ImGui_ContextMenu.h"
 
 namespace MX
 {
@@ -39,75 +40,32 @@ namespace MX
             glm::vec3* rotation = &current->m_Trans.m_rotation; 
             glm::vec3* scale = &current->m_Trans.m_scale;
 
-            ImGuiIO& io = ImGui::GetIO();
-            ImVec2 pos = ImGui::GetCursorScreenPos();
+            static ImGui_ContextMenu transform_context_menu("Context Menu Transform");
 
-            static bool show_properties = false;
-
-            if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
-              show_properties = true;
-
-            // opens a window with additional settings for the transform component, just right click the header
-            if (show_properties)
+            if (transform_context_menu.begin())
             {
-              static ImGuiWindowFlags transform_settings_flags = 
-                ImGuiWindowFlags_AlwaysAutoResize |
-                ImGuiWindowFlags_NoMove |
-                ImGuiWindowFlags_NoResize |
-                ImGuiWindowFlags_NoCollapse |
-                ImGuiWindowFlags_NoTitleBar;
+              ImGui::Text("Drag Speed:");
+              ImGui::SetNextItemWidth(90.0f);
+              ImGui::InputFloat("Translation", &speed_translation, 0.001f);
+              ImGui::SetNextItemWidth(90.0f);
+              ImGui::InputFloat("Rotation", &speed_rotation, 0.5f);
+              ImGui::SetNextItemWidth(90.0f);
+              ImGui::InputFloat("Scale", &speed_scale, 0.001f);
 
-              // make sure the window always appears where you right clicked at
-              static bool update_mouse_pos = true;
-              static ImVec2 mouse_pos;
-              if (update_mouse_pos)
+              ImGui::Separator();
+              ImGui::SetNextItemWidth(-1.0f);
+              if (ImGui::Button("Reset"))
               {
-                mouse_pos = ImGui::GetMousePos();
-                update_mouse_pos = false;
+                *translation = glm::vec3(0.0f);
+                *rotation = glm::vec3(0.0f);
+                *scale = glm::vec3(1.0f);
               }
-
-
-              if (ImGui::Begin("Transform Settings", NULL, transform_settings_flags))
-              {
-                ImGui::SetWindowPos(mouse_pos);
-
-                // on first right click on header set window to being focused to avoid it being deactivated
-                static bool first_run = true;
-                if (first_run)
-                {
-                  ImGui::SetWindowFocus();
-                  first_run = false;
-                }
-
-                if (!ImGui::IsWindowFocused())
-                {
-                  show_properties = false;
-                  first_run = true;
-                  update_mouse_pos = true;
-                }
-
-                ImGui::Text("Drag Speed:");
-                ImGui::SetNextItemWidth(90.0f);
-                ImGui::InputFloat("Translation", &speed_translation, 0.001f);
-                ImGui::SetNextItemWidth(90.0f);
-                ImGui::InputFloat("Rotation", &speed_rotation, 0.5f);
-                ImGui::SetNextItemWidth(90.0f);
-                ImGui::InputFloat("Scale", &speed_scale, 0.001f);
-
-                ImGui::Separator();
-                ImGui::SetNextItemWidth(-1.0f);
-                if (ImGui::Button("Reset"))
-                {
-                  *translation = glm::vec3(0.0f);
-                  *rotation = glm::vec3(0.0f);
-                  *scale = glm::vec3(1.0f);
-                }
-              }
-              ImGui::End();
+            
+              transform_context_menu.end();
             }
    
+            // calculate width of drag fields so that three fields and their labels fit next to each other 
             float spacing = ImGui::GetContentRegionAvailWidth() / 3.0f - 16.0f;
-
             transformDrag("Translate", translation, speed_translation, spacing, 0.0f);
             transformDrag("Rotate", rotation, speed_rotation, spacing, 0.0f);
             transformDrag("Scale", scale, speed_scale, spacing, 1.0f);
@@ -117,6 +75,41 @@ namespace MX
             {
               it->m_Trans.translate(*translation);
             }
+          }
+
+          ImGui::Spacing();
+          ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+          if (ImGui::CollapsingHeader("Model"))
+          {
+
+          }
+
+          ImGui::Spacing();
+          ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+          if (ImGui::CollapsingHeader("Shader"))
+          {
+
+          }
+
+          ImGui::Spacing();
+          ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+          if (ImGui::CollapsingHeader("Material"))
+          {
+
+          }
+
+          ImGui::Spacing();
+          ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+          if (ImGui::CollapsingHeader("Logics"))
+          {
+
+          }
+
+          ImGui::Spacing();
+          ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+          if (ImGui::CollapsingHeader("Physics"))
+          {
+
           }
         }
       }

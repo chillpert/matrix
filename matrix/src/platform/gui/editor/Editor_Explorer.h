@@ -1,7 +1,7 @@
 #ifndef EDITOR_EXPLORER_H
 #define EDITOR_EXPLORER_H
 
-#include "GUI_ImGui_Window.h"
+#include "GUI_ImGui_Utility.h"
 
 namespace MX
 {
@@ -14,6 +14,9 @@ namespace MX
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;
     MX_API void render() override; 
+
+  private:
+    ImGui_Popup m_popup_delete;
   };
 }
 
