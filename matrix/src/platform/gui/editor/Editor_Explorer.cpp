@@ -34,27 +34,10 @@ namespace MX
   {
     static ImGui_Icon folder_icon("icons/folder2.png", 20.0f, 20.0f);
     static ImGui_Icon txt_icon("icons/txt.png", 20.0f, 20.0f);
-    /*
-    // setup icon for directories
-    static int first_iteration = 1;
-    static ImTextureID my_tex_id;
-    static float my_tex_w;
-    static float my_tex_h;
-    static MX_TEXTURE *derived_tex_ptr;
+    static ImGui_Icon png_icon("icons/png.png", 20.0f, 20.0f);
+    static ImGui_Icon jpg_icon("icons/jpg.png", 20.0f, 20.0f);
+    static ImGui_Icon unknown_icon("icons/unkown.png", 20.0f, 20.0f);
 
-    if (first_iteration)
-    {
-      first_iteration = false;
-
-      static std::unique_ptr<Texture> play_button(std::make_unique<MX_TEXTURE>("icons/folder2.png"));
-      play_button->initialize();
-      derived_tex_ptr = static_cast<MX_TEXTURE*>(play_button.get());
-
-      my_tex_id = (void*)derived_tex_ptr->getID();
-      my_tex_w = 20.0f;
-      my_tex_h = 20.0f;
-    }
-    */
     boost::filesystem::path p(path);
 
     if (boost::filesystem::is_directory(p))
@@ -78,7 +61,6 @@ namespace MX
         {
           // render folder icon
           folder_icon.render();
-          //ImGui::Image(my_tex_id, ImVec2(my_tex_w, my_tex_h), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
           ImGui::SameLine(0.0f, 2.0f);
 
           if (ImGui::Button(file_name.c_str()))
@@ -93,10 +75,15 @@ namespace MX
           std::string file_extension = file_name.substr(found_extension);
 
           if (file_extension == ".txt")
-          {
             txt_icon.render();
-            ImGui::SameLine(0.0f, 2.0f);
-          }
+          else if (file_extension == ".png")
+            png_icon.render();
+          else if (file_extension == ".jpg")
+            jpg_icon.render();
+          else
+            unknown_icon.render();
+
+          ImGui::SameLine(0.0f, 2.0f);
 
           if (ImGui::Button(file_name.c_str()))
           {
