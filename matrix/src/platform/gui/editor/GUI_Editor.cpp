@@ -134,8 +134,6 @@ namespace MX
     for (auto it : m_modules)
       it->render();
 
-    ImGui::ShowDemoWindow();
-
     GUI_ImGui::render();
   }
 

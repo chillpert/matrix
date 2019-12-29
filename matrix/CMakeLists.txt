@@ -25,6 +25,7 @@ include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/api)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui/utility)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui/editor)
+include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/gui/editor/legacy)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/platform/window)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/intersections)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/math)
@@ -34,6 +35,7 @@ add_compile_definitions(MX_RESOURCES="${PROJECT_SOURCE_DIR}/resources/")
 add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")
 add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
 add_compile_definitions(MX_SHADER_PATH="${PROJECT_SOURCE_DIR}/resources/shaders/")
+add_compile_definitions(MX_SCENES_PATH="${PROJECT_SOURCE_DIR}/resources/scenes/")
 add_compile_definitions(MX_FONTS_PATH="${PROJECT_SOURCE_DIR}/external/imgui/misc/fonts/")
 add_compile_definitions(MX_IMGUI_DEFAULT_INI_PATH="${PROJECT_SOURCE_DIR}/resources/imgui_init/")
 
@@ -325,6 +327,7 @@ file(GLOB FILES_LIB
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/utility/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/editor/*.cpp"
+  "${PROJECT_SOURCE_DIR}/matrix/src/platform/gui/editor/legacy/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/platform/window/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/intersections/*.cpp"
   "${PROJECT_SOURCE_DIR}/matrix/src/math/*.cpp" 

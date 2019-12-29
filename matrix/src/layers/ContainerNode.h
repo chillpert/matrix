@@ -18,6 +18,8 @@ namespace MX
     MX_API ContainerNode *getNode() override { return this; }
 
     MX_API std::string getIdentifier() { return "Container"; }
+
+    MX_API std::string to_string() const;
   };
 }
 

@@ -41,7 +41,7 @@ namespace MX
     static std::string clicked_file_name;
     static std::string clicked_full_path;
     static bool show_explorer_context_menu = false;
-    static bool show_file_enlarger_context_menu = false;
+    static bool show_file_inspector_context_menu = false;
     static bool can_be_displayed = false;
     static bool enlarged_picture_update = false;
 
@@ -113,7 +113,7 @@ namespace MX
           if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
           {
             show_explorer_context_menu = true;
-            show_file_enlarger_context_menu = false;
+            show_file_inspector_context_menu = false;
             clicked_file_name = file_name;
             clicked_full_path = full_path;
           }
@@ -122,7 +122,7 @@ namespace MX
           if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
           {
             enlarged_picture_update = true;
-            show_file_enlarger_context_menu = true;
+            show_file_inspector_context_menu = true;
             show_explorer_context_menu = false;
             clicked_file_name = file_name;
             clicked_full_path = full_path;
@@ -132,11 +132,18 @@ namespace MX
 
       if (clicked_file_name.length() > 0)
       {
-        static ImGui_ContextMenu file_enlarger("File Enlarger");
+        // render double click context menu (file inspector)
+        static ImGuiWindowFlags flags_context_menu = 
+          ImGuiWindowFlags_AlwaysAutoResize |
+          ImGuiWindowFlags_NoCollapse |
+          ImGuiWindowFlags_NoTitleBar;
+          
+        static ImGui_ContextMenu file_inspector("File Inspector", flags_context_menu);
         if (can_be_displayed)
         {
-          if (file_enlarger.begin(show_file_enlarger_context_menu))
+          if (file_inspector.begin(show_file_inspector_context_menu))
           {
+            // remove file name from full path temporarily since texture class does weird things with the naming
             static ImGui_Icon enlarged_picture(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
 
             if (enlarged_picture_update)
@@ -146,11 +153,13 @@ namespace MX
             }
 
             enlarged_picture.render();
-            file_enlarger.end();
+            file_inspector.end();
           }
         }
 
+        // render right click context menu (properties)
         static ImGui_ContextMenu explorer_context_menu("Explorer Context Menu");
+
         if (explorer_context_menu.begin(show_explorer_context_menu))
         {
           static char buffer[128];
@@ -237,7 +246,7 @@ namespace MX
         // make sure user can not press back button to get out of resources folder
         if (current_path.length() > lowest_path.length())
         {
-          if (ImGui::BeginMenu("Back"))
+          if (ImGui::BeginMenu("Root"))
           {
             auto found = current_path.find_last_of('/');
             current_path = current_path.substr(0, found);
@@ -248,13 +257,18 @@ namespace MX
         
         ImGui::EndMenuBar();
       }
-      /*
-      TODO:
-        add boost directory function that gets all files and directories
-      */
+
+      static ImGui_Icon home_button("icons/back.png", 15.0f, 15.0f);
+      if (current_path.length() > lowest_path.length())
+      {
+        if (home_button.render_as_button())
+        {
+          auto found = current_path.find_last_of('/');
+          current_path = current_path.substr(0, found);
+        }
+      }
 
       load_directory(current_path.c_str());
-      
     }
 
     ImGui_Window::end();

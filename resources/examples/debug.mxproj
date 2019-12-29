@@ -1,6 +1,0 @@
-MXPROJ
-SCENE "debug"
-CONTAINER "Lighting"
-DIR_LIGHT "Directional Light 1" "Lighting"
-POINT_LIGHT "Spot Light 1" "Lighting"
-CONTAINER "Characters"

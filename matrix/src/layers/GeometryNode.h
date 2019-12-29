@@ -36,6 +36,8 @@ namespace MX
 
     MX_API virtual void setModel(std::shared_ptr<Model> model);
 
+    MX_API virtual std::string to_string() const;
+
     std::shared_ptr<Model> m_Model = nullptr;
     std::shared_ptr<TextureProfile> m_textures;
     MaterialProfile m_material;

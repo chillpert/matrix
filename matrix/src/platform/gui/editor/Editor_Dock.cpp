@@ -1,4 +1,5 @@
 #include "Editor_Dock.h"
+#include "Application.h"
 
 namespace MX
 {
@@ -42,6 +43,10 @@ namespace MX
 
   void Editor_Dock::render()
   {
+    static bool render_demo = false;
+    if (render_demo)
+      ImGui::ShowDemoWindow();
+
     static bool opt_fullscreen_persistent = true;
     m_opt_fullscreen = opt_fullscreen_persistent;
 
@@ -86,6 +91,26 @@ namespace MX
 
     if (ImGui::BeginMenuBar())
     {
+      if (ImGui::BeginMenu("File"))
+      {
+        if (ImGui::MenuItem("Save"))
+        {
+          Application::get().m_World.m_ActiveScene->save();
+        }
+
+        if (ImGui::MenuItem("Open"))
+        {
+
+        }
+
+        if (ImGui::MenuItem("Delete"))
+        {
+          Application::get().m_World.m_ActiveScene->remove();
+        }
+
+        ImGui::EndMenu();
+      }
+
       if (ImGui::BeginMenu("Window"))
       {
         for (auto &it : m_visibilities)
@@ -111,6 +136,10 @@ namespace MX
 
         ImGui::EndMenu();
       }
+
+      if (ImGui::MenuItem("Demo"))
+          render_demo = !render_demo;
+
       ImGui::EndMenuBar();
     }
 

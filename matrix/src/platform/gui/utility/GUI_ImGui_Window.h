@@ -6,6 +6,8 @@
 
 namespace MX
 {
+  MX_API void resize_on_max_size();
+
   class ImGui_Window
   {
   public:

@@ -297,4 +297,45 @@ namespace MX
     MX_FATAL("MX: Scene: " + m_Name + "Pop: Node: " + temp_node->m_Name + ": Address: " + address_s);
     return 0;
   }
+
+  void Scene::save()
+  {
+    std::stringstream ss;
+
+    // name @Name
+    std::string name = "Scene";
+    ss << name << "\n@Name{" << m_Name << "}" << std::endl;
+    name = ss.str();
+    ss.str("");
+
+    // camera @Position @Front
+    std::string camera = "\nCamera ";
+    ss << camera << "\n@Position{" << glm::to_string(m_Cam.m_Position) << "} @Front{" << glm::to_string(m_Cam.m_Front) << "}" << std::endl;;
+    camera = ss.str();
+    ss.str("");
+
+    std::vector<std::shared_ptr<Node>> all_objects;
+    all_objects.reserve(100);
+    m_Sg.get_all_objects(all_objects, m_Sg.m_Root);
+
+    std::string nodes = "Nodes\n";
+    
+    for (const std::shared_ptr<Node> it : all_objects)
+      ss << it->to_string();
+
+    ss << std::endl;
+    nodes = ss.str();
+    ss.str("");
+
+    // write to file
+    std::ofstream file;
+    file.open(MX_SCENES_PATH "save_scene_test.txt");
+    file << name << camera << nodes;
+    file.close();
+  }
+
+  void Scene::remove()
+  {
+
+  }
 }

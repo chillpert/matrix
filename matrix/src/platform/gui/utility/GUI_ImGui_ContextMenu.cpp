@@ -1,20 +1,18 @@
 #include "GUI_ImGui_ContextMenu.h"
+#include "GUI_ImGui_Window.h"
 
 namespace MX
 {
-  ImGui_ContextMenu::ImGui_ContextMenu(const char* name, const Action& action) :
-    m_flags(ImGuiWindowFlags_AlwaysAutoResize |
-          ImGuiWindowFlags_NoMove |
-          ImGuiWindowFlags_NoResize |
-          ImGuiWindowFlags_NoCollapse |
-          ImGuiWindowFlags_NoTitleBar),
+  ImGui_ContextMenu::ImGui_ContextMenu(const char* name, ImGuiWindowFlags flags, const Action& action) :
+    m_flags(flags),
     m_action(action),
     m_update_mouse(true),
     m_show(false),
     m_mouse_pos(ImGui::GetMousePos()),
     m_name(name),
     m_invoked_begin(false),
-    m_force_focus(true) { }
+    m_force_focus(true),
+    m_set_pos(true) { }
 
   /* 
     Every call of begin() requires call of end().
@@ -63,8 +61,12 @@ namespace MX
       {
         m_invoked_begin = true;
         
-        // move window to where you clicked
-        ImGui::SetWindowPos(m_mouse_pos);
+        // move window to where you clicked once
+        if (m_set_pos)
+        {
+          ImGui::SetWindowPos(m_mouse_pos);
+          m_set_pos = false;
+        }
 
         // on first right click on header set window to being focused to avoid it being deactivated
         if (m_force_focus)
@@ -78,7 +80,10 @@ namespace MX
           m_show = false;
           m_force_focus = true;
           m_update_mouse = true;
+          m_set_pos = true;
         }
+
+        resize_on_max_size();
 
         return true;
       }
@@ -102,8 +107,12 @@ namespace MX
       {
         m_invoked_begin = true;
 
-        // move window to where you clicked
-        ImGui::SetWindowPos(m_mouse_pos);
+        // move window to where you clicked once
+        if (m_set_pos)
+        {
+          ImGui::SetWindowPos(m_mouse_pos);
+          m_set_pos = false;
+        }
 
         // on first right click on header set window to being focused to avoid it being deactivated
         if (m_force_focus)
@@ -118,7 +127,16 @@ namespace MX
           m_show = false;
           m_force_focus = true;
           m_update_mouse = true;
+          m_set_pos = true;
         }
+
+        // always auto resize is disabled, set window size manually
+        if ((ImGuiWindowFlags_AlwaysAutoResize & m_flags) == 0)
+        {
+          
+        }
+
+        //resize_on_max_size();
 
         return true;
       }

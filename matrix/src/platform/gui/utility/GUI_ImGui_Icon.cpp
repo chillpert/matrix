@@ -1,4 +1,5 @@
 #include "GUI_ImGui_Icon.h"
+#include "Application.h"
 
 namespace MX
 {
@@ -40,14 +41,37 @@ namespace MX
 
     if (m_size_x == -1.0f && m_size_y == -1.0f)
     {
-      m_size_x = static_cast<float>(m_derived_tex_ptr->m_Stb.width);
-      m_size_y = static_cast<float>(m_derived_tex_ptr->m_Stb.height);
+      auto window_pos = ImGui::GetWindowPos();
+      auto application_window_size = ImVec2(
+        static_cast<float>(Application::get().m_Window->m_Props.m_Width),
+        static_cast<float>(Application::get().m_Window->m_Props.m_Height)
+      );
+
+      auto max_size = ImVec2(
+        application_window_size.x - window_pos.x,
+        application_window_size.y - window_pos.y
+      );
+
+      if (m_derived_tex_ptr->m_Stb.width > max_size.x)
+        m_size_x = max_size.x;
+      else
+        m_size_x = static_cast<float>(m_derived_tex_ptr->m_Stb.width);
+
+      if (m_derived_tex_ptr->m_Stb.height > max_size.y)
+        m_size_y = max_size.y;
+      else
+        m_size_y = static_cast<float>(m_derived_tex_ptr->m_Stb.height);
     }
   }
 
   void ImGui_Icon::render()
   {
     ImGui::Image(m_tex_id, ImVec2(m_size_x, m_size_y), m_uv0, m_uv1, m_tint_col, m_border_col);
+  }
+
+  bool ImGui_Icon::render_as_button(int frame_padding, const ImVec4& bg_col)
+  {
+    return ImGui::ImageButton(m_tex_id, ImVec2(m_size_x, m_size_y), m_uv0, m_uv1, frame_padding, bg_col, m_tint_col);
   }
 
   void ImGui_Icon::set_corners(const ImVec2& uv0, const ImVec2& uv1)

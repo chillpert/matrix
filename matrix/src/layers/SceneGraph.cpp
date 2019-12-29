@@ -44,25 +44,36 @@ namespace MX
     }
   }
 
-  void SceneGraph::getAllObjects(std::vector<std::string> *vec, std::shared_ptr<Node> it)
+  void SceneGraph::get_all_objects(std::vector<std::string> *vec, std::shared_ptr<Node> it)
   {
     vec->push_back(it->m_Name);
 
     if (!it->m_Children.empty())
     {
       for (auto itChild : it->m_Children)
-        getAllObjects(vec, std::shared_ptr<Node>(itChild));
+        get_all_objects(vec, std::shared_ptr<Node>(itChild));
     }
   }
 
-  void SceneGraph::getAllObjects(std::vector<const char*> &vec, std::shared_ptr<Node> it)
+  void SceneGraph::get_all_objects(std::vector<const char*> &vec, std::shared_ptr<Node> it)
   {
     vec.push_back(it->m_Name.c_str());
 
     if (!it->m_Children.empty())
     {
       for (auto itChild : it->m_Children)
-        getAllObjects(vec, std::shared_ptr<Node>(itChild));
+        get_all_objects(vec, std::shared_ptr<Node>(itChild));
+    }
+  }
+
+  void SceneGraph::get_all_objects(std::vector<std::shared_ptr<Node>> &vec, std::shared_ptr<Node> it)
+  {
+    vec.push_back(it);
+
+    if (!it->m_Children.empty())
+    {
+      for (auto itChild : it->m_Children)
+        get_all_objects(vec, std::shared_ptr<Node>(itChild));
     }
   }
 

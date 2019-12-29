@@ -3,10 +3,7 @@
 namespace MX
 {
   GeometryNode::GeometryNode(const std::string &name)
-    : Node(name)
-  {
-    m_textures = std::make_shared<TextureProfile>();
-  }
+    : Node(name, NodeType::type_geometry), m_textures(std::make_shared<TextureProfile>()) { }
 
   void GeometryNode::upload_uniforms()
   {
@@ -171,5 +168,42 @@ namespace MX
     }
     else
       m_Model = nullptr;
+  }
+
+  std::string GeometryNode::to_string() const
+  {
+    std::stringstream ss;
+    ss << Node::to_string();
+
+    if (m_Model != nullptr)
+      ss << "\n@Model{" << m_Model->m_name << "} ";
+
+    if (m_textures != nullptr)
+    {
+      ss << "\n@TextureProfile{";
+      if (m_textures->diffuse != nullptr)
+        ss << "Diffuse{" << m_textures->diffuse->m_Name << "} ";
+      
+      if (m_textures->specular != nullptr)
+        ss << "Specular{" << m_textures->specular->m_Name << "} ";
+
+      if (m_textures->normal != nullptr)
+        ss << "Normal{" << m_textures->normal->m_Name << "} ";
+
+      if (m_textures->bump != nullptr)
+        ss << "Bump{" << m_textures->bump->m_Name << "} ";
+
+      if (m_textures->height != nullptr)
+        ss << "Height{" << m_textures->height->m_Name << "} ";
+
+      ss << "} ";
+    }
+
+    ss << "\n@MaterialProfile{Ambient{"    << glm::to_string(m_material.ambient) <<
+                          "} Diffuse{"   << glm::to_string(m_material.diffuse) <<
+                          "} Specular{"  << glm::to_string(m_material.specular) <<
+                          "} Shininess{" << std::to_string(m_material.shininess) << "}}\n";
+
+    return ss.str();
   }
 }

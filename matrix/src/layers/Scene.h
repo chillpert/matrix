@@ -75,10 +75,13 @@ namespace MX
     MX_API bool push_point_light(const std::string &name, const std::string &node_to_attach_to = default_root_name);
     MX_API bool push_spot_light(const std::string &name, const std::string &node_to_attach_to = default_root_name);
 
-    MX_API bool pop(const std::string &name);
+    MX_API bool pop(const std::string& name);
+
+    MX_API void save();
+    MX_API void remove();
 
   private:
-    MX_API bool object_already_exists(const std::string &name);
+    MX_API bool object_already_exists(const std::string& name);
 
   public:
     Camera m_Cam;

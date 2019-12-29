@@ -22,8 +22,9 @@ namespace MX
   class Node
   {
   public:
-    MX_API Node() = default;
+    MX_API Node() = delete;
     MX_API Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader = nullptr);
+    MX_API Node(const std::string &node_name, const NodeType& type = type_node, std::shared_ptr<MX_SHADER> shader = nullptr);
     MX_API virtual ~Node() = default;
 
     MX_API Node(const Node&) = default;
@@ -41,9 +42,11 @@ namespace MX
     MX_API virtual void setParent(Node *node);
     MX_API virtual void setShader(std::shared_ptr<Shader> shader);
 
+    MX_API virtual std::string to_string() const;
+
   public:
     std::string m_Name;
-    
+
     std::shared_ptr<Shader> m_Shader;
 
     Node *m_Parent = nullptr;
@@ -51,7 +54,11 @@ namespace MX
 
     Transform m_Trans;
     bool m_visible;
+    NodeType m_type;
   };
+
+  MX_API std::ostream& operator<<(std::ostream& os, std::shared_ptr<Node> node);
+
 }
 
 #endif // NODE_HPP

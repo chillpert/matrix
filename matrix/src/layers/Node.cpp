@@ -5,7 +5,10 @@
 namespace MX
 {
   Node::Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader)
-    : m_Name(node_name), m_Shader(shader), m_visible(true) { }
+    : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(NodeType::type_node) { }
+
+  Node::Node(const std::string &node_name, const NodeType& type, std::shared_ptr<MX_SHADER> shader)
+    : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(type) { }
 
   void Node::upload_uniforms()
   {
@@ -73,5 +76,81 @@ namespace MX
     }
     else
       m_Shader = nullptr;
+  }
+
+  std::string Node::to_string() const
+  {
+    std::stringstream ss;
+    ss << "\nNode\n@Name{" << m_Name << "} ";
+    
+    if (m_Shader != nullptr)
+      ss << "\n@Shader{" << m_Shader->m_Name << "} ";
+
+    if (m_Parent != nullptr)
+      ss << "\n@Parent{" << m_Parent->m_Name << "} ";
+
+    if (!m_Children.empty())
+    {
+      ss << "\n@Children{";
+      for (const std::shared_ptr<Node> it : m_Children)
+        ss << "{" << it->m_Name << "}";
+      ss << "} ";
+    }
+
+    ss << "\n@Transform{T{"  << glm::to_string(m_Trans.m_translation) << 
+                    "} R{" << glm::to_string(m_Trans.m_rotation) << 
+                    "} S{" << glm::to_string(m_Trans.m_scale) << "}} ";
+
+    ss << "\n@Visible{" << std::to_string(m_visible) << "} ";
+
+    std::string type = "type_node";
+    switch (m_type)
+    {
+      case type_node:
+      {
+        type = "type_node";
+        break;
+      }
+      case type_geometry:
+      {
+        type = "type_geometry";
+        break;
+      }
+      case type_container:
+      {
+        type = "type_container";
+        break;
+      }
+      case type_light:
+      {
+        type = "type_light";
+        break;
+      }
+      case type_directionalLight:
+      {
+        type = "type_directionalLight";
+        break;
+      }
+      case type_spotLight:
+      {
+        type = "type_spotLight";
+        break;
+      }
+      case type_pointLight:
+      {
+        type = "type_pointLight";
+        break;
+      }
+    }
+
+    ss << "\n@Type{" << type << "}\n";
+
+    return ss.str();
+  }
+
+  std::ostream& operator<<(std::ostream& os, std::shared_ptr<Node> node)
+  {
+    os << node->to_string();
+    return os;
   }
 }
