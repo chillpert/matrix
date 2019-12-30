@@ -14,6 +14,17 @@ namespace MX
     m_force_focus(true),
     m_set_pos(true) { }
 
+  ImGui_ContextMenu::ImGui_ContextMenu(const char* name, const Action& action) :
+    m_flags(ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar),
+    m_action(action),
+    m_update_mouse(true),
+    m_show(false),
+    m_mouse_pos(ImGui::GetMousePos()),
+    m_name(name),
+    m_invoked_begin(false),
+    m_force_focus(true),
+    m_set_pos(true) { }
+
   /* 
     Every call of begin() requires call of end().
     Write the actual content of this menu in between
@@ -40,6 +51,11 @@ namespace MX
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
           m_show = true;
         break;
+      }
+      case E_HOVERED:
+      {
+        if (ImGui::IsItemHovered())
+          m_show = !m_show;
       }
       case E_NONE:
       {

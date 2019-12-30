@@ -15,8 +15,14 @@ namespace MX
     MX_API bool update() override;
     MX_API void render() override; 
 
+    MX_API void load_directory(const char* path);
+    MX_API void setup_drag_drop_source(const std::string& file_name, const std::string& file_path);
+
   private:
     ImGui_Popup m_popup_delete;
+
+    std::string current_path = MX_RESOURCES;
+    const std::string lowest_path = MX_RESOURCES;
   };
 }
 

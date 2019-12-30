@@ -95,14 +95,30 @@ namespace MX
       ImGui::Text(Application::get().m_World.m_ActiveScene->m_Name.c_str());
       ImGui::PopStyleColor();
 
-      if (ImGui::BeginMenu("File"))
+      if (ImGui::BeginMenu("Project"))
       {
-        if (ImGui::MenuItem("Save"))
+        if (ImGui::MenuItem("Save##SaveProject"))
+        {
+          for (std::shared_ptr<Scene> it : Application::get().m_World.m_ExistingScenes)
+            it->save();
+        }
+
+        if (ImGui::MenuItem("Open##OpenProject"))
+        {
+
+        }
+
+        ImGui::EndMenu();
+      }
+
+      if (ImGui::BeginMenu("Scene"))
+      {
+        if (ImGui::MenuItem("Save##SaveScene"))
         {
           Application::get().m_World.m_ActiveScene->save();
         }
 
-        if (ImGui::MenuItem("Open"))
+        if (ImGui::MenuItem("Open##OpenScene"))
         {
 
         }

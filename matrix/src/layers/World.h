@@ -34,6 +34,10 @@ namespace MX
     MX_API std::shared_ptr<Model> getModel(const std::string &name) const;
     MX_API std::shared_ptr<Shader> getShader(const std::string &name) const;
     MX_API std::shared_ptr<Texture> getTexture(const std::string &name) const;
+    
+    MX_API std::shared_ptr<Model> getModelByPath(const std::string& path) const;
+    MX_API std::shared_ptr<Shader> getShaderByPath(const std::string& path) const;
+    MX_API std::shared_ptr<Texture> getTextureByPath(const std::string& path) const;
 
     MX_API bool load_scene(const std::string &name);
 

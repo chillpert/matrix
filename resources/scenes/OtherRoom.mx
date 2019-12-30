@@ -2,8 +2,12 @@ Scene
 @Name{OtherRoom}
 
 Camera
-@Position{vec3(0.000000, 1.000000, 4.000000)}
-@Front{vec3(-0.000000, 0.000000, -1.000000)}
+@Position{vec3(-2.730779, 1.165278, 2.934203)}
+@Front{vec3(0.651108, -0.204838, -0.730822)}
+@Yaw{311.698669}
+@Pitch{-11.820016}
+@FOV{45.000000}
+@Sensitivity{0.060000}
 
 
 Node
@@ -45,11 +49,11 @@ Node
 @Specular{vec3(1.000000, 1.000000, 1.000000)}
 @Strength{0.700000}
 -
-@Position{vec3(0.000000, 5.000000, 0.000000)}
-@Direction{vec3(1.000000, 1.000000, 1.000000)}
-@Constant{1.000000}
-@Linear{0.090000}
-@Quadratic{0.032000}
+@SpotPosition{vec3(0.000000, 5.000000, 0.000000)}
+@SpotDirection{vec3(1.000000, 1.000000, 1.000000)}
+@SpotConstant{1.000000}
+@SpotLinear{0.090000}
+@SpotQuadratic{0.032000}
 @CutOff{0.976296}
 @OuterCutOff{0.953717}
 -
@@ -67,10 +71,10 @@ Node
 @Specular{vec3(1.000000, 1.000000, 1.000000)}
 @Strength{0.700000}
 -
-@Position{vec3(1.000000, 1.000000, 1.000000)}
-@Constant{1.000000}
-@Linear{0.090000}
-@Quadratic{0.032000}
+@PointPosition{vec3(1.000000, 1.000000, 1.000000)}
+@PointConstant{1.000000}
+@PointLinear{0.090000}
+@PointQuadratic{0.032000}
 -
 
 Node

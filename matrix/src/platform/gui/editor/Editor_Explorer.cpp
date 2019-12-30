@@ -28,17 +28,79 @@ namespace MX
     return ImGui_Window::update();
   }
 
-  std::string current_path = MX_RESOURCES;
-  const std::string lowest_path = MX_RESOURCES;
+  void Editor_Explorer::render()
+  {
+    if (ImGui_Window::begin())
+    {
+      if (ImGui::BeginMenuBar())
+      {
+        if (ImGui::BeginMenu("Sort"))
+        {
+          if (ImGui::MenuItem("Name"))
+          {
 
-  void load_directory(const char* path)
+          }
+
+          if (ImGui::MenuItem("File"))
+          {
+
+          }
+
+          ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("New"))
+        {
+          if (ImGui::MenuItem("File")) { }
+
+          if (ImGui::MenuItem("Folder")) { }
+
+          if (ImGui::MenuItem("Material")) { }
+
+          if (ImGui::MenuItem("Shader")) { }
+
+          ImGui::EndMenu();
+        }
+
+        // make sure user can not press back button to get out of resources folder
+        if (current_path.length() > lowest_path.length())
+        {
+          if (ImGui::BeginMenu("Root"))
+          {
+            auto found = current_path.find_last_of('/');
+            current_path = current_path.substr(0, found);
+            
+            ImGui::EndMenu();
+          }
+        }
+        
+        ImGui::EndMenuBar();
+      }
+
+      static ImGui_Icon home_button("icons/back.png", 15.0f, 15.0f);
+      if (current_path.length() > lowest_path.length())
+      {
+        if (home_button.render_as_button())
+        {
+          auto found = current_path.find_last_of('/');
+          current_path = current_path.substr(0, found);
+        }
+      }
+
+      load_directory(current_path.c_str());
+    }
+
+    ImGui_Window::end();
+  }
+
+  void Editor_Explorer::load_directory(const char* path)
   {
     static ImGui_Icon folder_icon("icons/folder2.png", 20.0f, 20.0f);
     static ImGui_Icon txt_icon("icons/txt.png", 20.0f, 20.0f);
     static ImGui_Icon png_icon("icons/png.png", 20.0f, 20.0f);
     static ImGui_Icon jpg_icon("icons/jpg.png", 20.0f, 20.0f);
     static ImGui_Icon unknown_icon("icons/unkown.png", 20.0f, 20.0f);
-    static ImGui_Icon mx_icon("icons/locator.png", 20.0f, 20.0f);
+    static ImGui_Icon mx_icon("icons/matrix_movie.png", 20.0f, 20.0f);
 
     static std::string clicked_file_name;
     static std::string clicked_full_path;
@@ -111,11 +173,10 @@ namespace MX
 
           ImGui::SameLine(0.0f, 2.0f);
 
-          if (ImGui::Button(file_name.c_str()))
-          {
-            
-          }
+          if (ImGui::Button(file_name.c_str())) { }
 
+          setup_drag_drop_source(file_name, current_path);
+          
           // right click file to rename, copy, cut or delete it
           if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
           {
@@ -225,69 +286,36 @@ namespace MX
     }
   }
 
-  void Editor_Explorer::render()
+  void Editor_Explorer::setup_drag_drop_source(const std::string& file_name, const std::string& file_path)
   {
-    if (ImGui_Window::begin())
+    static std::string data_type_to_send = "";
+
+    if (ImGui::IsMouseDown(0) && ImGui::IsItemClicked(0))
     {
-      if (ImGui::BeginMenuBar())
-      {
-        if (ImGui::BeginMenu("Sort"))
-        {
-          if (ImGui::MenuItem("Name"))
-          {
+      auto tag_vert = file_name.find(".vert");
+      auto tag_frag = file_name.find(".frag");
+      auto tag_png = file_name.find(".png");
+      auto tag_jpg = file_name.find(".jpg");
+      auto tag_jpeg = file_name.find(".jpeg");
+      auto tag_obj = file_name.find(".obj");
 
-          }
-
-          if (ImGui::MenuItem("File"))
-          {
-
-          }
-
-          ImGui::EndMenu();
-        }
-
-        if (ImGui::BeginMenu("New"))
-        {
-          if (ImGui::MenuItem("File")) { }
-
-          if (ImGui::MenuItem("Folder")) { }
-
-          if (ImGui::MenuItem("Material")) { }
-
-          if (ImGui::MenuItem("Shader")) { }
-
-          ImGui::EndMenu();
-        }
-
-        // make sure user can not press back button to get out of resources folder
-        if (current_path.length() > lowest_path.length())
-        {
-          if (ImGui::BeginMenu("Root"))
-          {
-            auto found = current_path.find_last_of('/');
-            current_path = current_path.substr(0, found);
-            
-            ImGui::EndMenu();
-          }
-        }
-        
-        ImGui::EndMenuBar();
-      }
-
-      static ImGui_Icon home_button("icons/back.png", 15.0f, 15.0f);
-      if (current_path.length() > lowest_path.length())
-      {
-        if (home_button.render_as_button())
-        {
-          auto found = current_path.find_last_of('/');
-          current_path = current_path.substr(0, found);
-        }
-      }
-
-      load_directory(current_path.c_str());
+      if (tag_vert != std::string::npos || tag_frag != std::string::npos)
+        data_type_to_send = "SHADER";
+      else if (tag_png != std::string::npos || tag_jpg != std::string::npos || tag_jpeg != std::string::npos)
+        data_type_to_send = "IMAGE";
+      else if (tag_obj != std::string::npos)
+        data_type_to_send = "OBJECT";
+      else
+        data_type_to_send = "UNDEF";
     }
 
-    ImGui_Window::end();
+    // allows file to be dragged somewhere
+    if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+    {
+      std::string send_tag = data_type_to_send + "_FE"; // FE = File Explorer
+      std::string send_message = file_path + "/" + file_name;
+      ImGui::SetDragDropPayload(send_tag.c_str(), send_message.c_str(), sizeof(char) * 200);    // Set payload to carry the index of our item (could be anything)
+      ImGui::EndDragDropSource();
+    }
   }
-
 }

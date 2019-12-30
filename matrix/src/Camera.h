@@ -11,14 +11,14 @@ namespace MX
     MX_API Camera()
       : 
         m_worldUp(glm::vec3(0.0f, 1.0f, 0.0f)),
-        m_Yaw(-90.0f),
-        m_Pitch(0.0f),
-        m_Sensitivity(0.06f),
-        m_Fov(45.0f),
         m_ScreenWidth(initial_window_width),
         m_ScreenHeight(initial_window_height),
         m_Position(glm::vec3(0.0f, 0.0f, 3.0f)),
-        m_Front(glm::vec3(0.0f, 0.0f, -1.0f))
+        m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+        m_Yaw(-90.0f),
+        m_Pitch(0.0f),
+        m_Sensitivity(0.06f),
+        m_Fov(45.0f)
     {
       updateVectors();
     }
@@ -43,11 +43,6 @@ namespace MX
     glm::fvec3 m_Up;
     glm::fvec3 m_Right;
 
-    float m_Yaw;
-    float m_Pitch;
-    float m_Sensitivity;
-    float m_Fov;
-
     float m_ScreenWidth;
     float m_ScreenHeight;
 
@@ -56,6 +51,11 @@ namespace MX
   public:
     glm::fvec3 m_Position;
     glm::fvec3 m_Front;
+
+    float m_Yaw;
+    float m_Pitch;
+    float m_Sensitivity;
+    float m_Fov;
   };
 }
 

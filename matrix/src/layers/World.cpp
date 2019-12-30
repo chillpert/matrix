@@ -136,6 +136,111 @@ namespace MX
     return nullptr;
   }
 
+  std::shared_ptr<Model> World::getModelByPath(const std::string& path) const
+  {
+    try
+    {
+      for (auto it : m_Models)
+      {
+        if (it->m_full_path == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      throw mx_entity_not_found(path);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
+
+    return nullptr;
+  }
+
+  std::shared_ptr<Shader> World::getShaderByPath(const std::string& path) const
+  {
+    try
+    {
+      for (auto it : m_Shaders)
+      {
+        if (it->m_VsPath == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      throw mx_entity_not_found(path);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
+
+    return nullptr;
+  }
+
+  std::shared_ptr<Texture> World::getTextureByPath(const std::string& path) const
+  {
+    try
+    {
+      for (auto it : m_diffuse_maps)
+      {
+        if (it->m_path == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_specular_maps)
+      {
+        if (it->m_path == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_normal_maps)
+      {
+        if (it->m_path == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_bump_maps)
+      {
+        if (it->m_path == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      for (auto it : m_height_maps)
+      {
+        if (it->m_path == path)
+        {
+          if (!it->m_initialized) it->initialize();
+          return it;
+        }
+      }
+
+      throw mx_entity_not_found(path);
+    }
+    catch (const mx_entity_not_found &e)
+    {
+      MX_FATAL(e.what());
+    }
+
+    return nullptr;
+  } 
+
   void World::initialize()
   {
     set_resource_files(MX_SHADER_PATH);
@@ -548,6 +653,10 @@ namespace MX
         {
           auto tag_position = line_temp.find("@Position");
           auto tag_front = line_temp.find("@Front");
+          auto tag_yaw = line_temp.find("@Yaw");
+          auto tag_pitch = line_temp.find("@Pitch");
+          auto tag_fov = line_temp.find("@FOV");
+          auto tag_sensitivity = line_temp.find("@Sensitivity");
 
           if (tag_position != std::string::npos)
           {
@@ -558,6 +667,26 @@ namespace MX
           {
             auto bracket_l = line_temp.find("{");  
             scene->m_Cam.m_Front = parse_vec3(line_temp.substr(bracket_l + 1, line_temp.length() - bracket_l - 2));
+          }
+          else if (tag_yaw != std::string::npos)
+          {
+            auto bracket_l = line_temp.find("{");  
+            scene->m_Cam.m_Yaw = stof(line_temp.substr(bracket_l + 1, line_temp.length() - bracket_l - 2));
+          }
+          else if (tag_pitch != std::string::npos)
+          {
+            auto bracket_l = line_temp.find("{");  
+            scene->m_Cam.m_Pitch = stof(line_temp.substr(bracket_l + 1, line_temp.length() - bracket_l - 2));
+          }
+          else if (tag_fov != std::string::npos)
+          {
+            auto bracket_l = line_temp.find("{");  
+            scene->m_Cam.m_Fov = stof(line_temp.substr(bracket_l + 1, line_temp.length() - bracket_l - 2));
+          }
+          else if (tag_sensitivity != std::string::npos)
+          {
+            auto bracket_l = line_temp.find("{");  
+            scene->m_Cam.m_Sensitivity = stof(line_temp.substr(bracket_l + 1, line_temp.length() - bracket_l - 2));
           }
           else
             parsing_camera = false;

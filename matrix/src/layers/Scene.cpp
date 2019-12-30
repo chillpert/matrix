@@ -310,7 +310,9 @@ namespace MX
 
     // camera @Position @Front
     std::string camera = "\nCamera";
-    ss << camera << "\n@Position{" << glm::to_string(m_Cam.m_Position) << "}\n@Front{" << glm::to_string(m_Cam.m_Front) << "}" << std::endl;;
+    ss << camera << "\n@Position{" << glm::to_string(m_Cam.m_Position) << "}\n@Front{" << glm::to_string(m_Cam.m_Front) << "}\n@Yaw{" <<
+    std::to_string(m_Cam.m_Yaw) << "}\n@Pitch{" << std::to_string(m_Cam.m_Pitch) << "}\n@FOV{" << std::to_string(m_Cam.m_Fov) << 
+    "}\n@Sensitivity{" << std::to_string(m_Cam.m_Sensitivity) << "}" << std::endl;
     camera = ss.str();
     ss.str("");
 

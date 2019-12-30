@@ -7,7 +7,7 @@ namespace MX
 {
   enum Action
   {
-    E_LEFT_CLICK, E_RIGHT_CLICK, E_DOUBLE_CLICK, E_NONE
+    E_LEFT_CLICK, E_RIGHT_CLICK, E_DOUBLE_CLICK, E_HOVERED, E_NONE
   };
 
   // call object of this class right after the imgui item that you want to bind a context menu to
@@ -19,6 +19,8 @@ namespace MX
       ImGuiWindowFlags flags = ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar, 
       const Action& action = E_RIGHT_CLICK
     );
+
+    MX_API ImGui_ContextMenu(const char* name, const Action& action);
 
     MX_API bool begin();
     MX_API bool begin(bool& show);
