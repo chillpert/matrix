@@ -24,8 +24,8 @@ namespace MX
 
   bool Framebuffer_OpenGL::initialize()
   {
-    m_quad_shader = MX_GET_SHADER("screen_buffer");
-    m_depth_shader = MX_GET_SHADER("simple_depth");
+    m_quad_shader = MX_GET_SHADER(MX_MATRIX_SHADERS "screen_buffer");
+    m_depth_shader = MX_GET_SHADER(MX_MATRIX_SHADERS "simple_depth");
 
     m_quad_shader->use();
     m_quad_shader->setInt("screen_texture", 0);

@@ -7,7 +7,7 @@ namespace MX
   Model::Model(const std::string &path, bool instant_init, bool gamma)
     : m_name(path), m_gamma_correction(gamma)
   {
-    m_full_path = MX_MODEL_PATH + path;
+    m_full_path = path;
     m_directory = m_full_path.substr(0, m_full_path.find_last_of('/'));
 
     if (instant_init)
@@ -144,7 +144,9 @@ namespace MX
       }
       if (!skip)
       {
-        std::shared_ptr<MX_TEXTURE> texture = std::make_shared<MX_TEXTURE>(str.C_Str(), m_directory + '/');
+        //std::shared_ptr<MX_TEXTURE> texture = std::make_shared<MX_TEXTURE>(str.C_Str(), m_directory + '/');
+        MX_WARN(std::string("HERE: ") + str.C_Str());
+        std::shared_ptr<MX_TEXTURE> texture = std::make_shared<MX_TEXTURE>(str.C_Str());
         texture->m_type = typeName;
         texture->initialize();
 

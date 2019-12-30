@@ -8,8 +8,9 @@ namespace MX
   class Texture_OpenGL : public Texture
   {
   public:
-    MX_API Texture_OpenGL() = default;
-    MX_API Texture_OpenGL(const std::string &name, const std::string &path = MX_TEXTURE_PATH, bool instant_init = 0);
+    MX_API Texture_OpenGL() = delete;
+    MX_API Texture_OpenGL(const std::string &path, bool instant_init = false);
+
     MX_API ~Texture_OpenGL();
 
     MX_API Texture_OpenGL(const Texture_OpenGL&) = default;

@@ -15,7 +15,7 @@ namespace MX
   {
   public:
     MX_API Shader() = default;
-    MX_API Shader(const std::string &name);
+    MX_API Shader(const std::string &path);
     MX_API virtual ~Shader() = default;
 
     MX_API Shader(const Shader&) = default;
@@ -39,12 +39,10 @@ namespace MX
     MX_API virtual void setfMat3(const std::string &name, const glm::fmat3 &mat) const = 0;
     MX_API virtual void setfMat4(const std::string &name, const glm::fmat4 &mat) const = 0;
 
-    MX_API void setPath(const std::string &name);
-    MX_API std::string getName() { return m_Name; }
-
     std::string m_Name;
-    std::string m_VsPath = MX_SHADER_PATH;
-    std::string m_FsPath = MX_SHADER_PATH;
+    std::string m_path;
+    std::string m_VsPath;
+    std::string m_FsPath;
     std::string m_VsSource;
     std::string m_FsSource;
     std::string m_Profile;

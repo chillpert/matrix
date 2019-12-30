@@ -14,6 +14,11 @@ namespace MX
 {
   class Texture;
 
+  enum TextureType
+  {
+    E_DIFFUSE, E_SPECULAR, E_NORMAL, E_BUMP, E_HEIGHT
+  };
+
   struct MaterialProfile
   {
     glm::vec3 ambient = {1.0f, 1.0f, 1.0f};
@@ -42,8 +47,9 @@ namespace MX
   class Texture
   {
   public:
-    MX_API Texture() = default;
-    MX_API Texture(const std::string &name, const std::string &path = MX_TEXTURE_PATH);
+    MX_API Texture() = delete;
+    MX_API Texture(const std::string &path);
+
     MX_API virtual ~Texture() = default;
 
     MX_API Texture(const Texture&) = default;

@@ -37,6 +37,7 @@ namespace MX
   void Scene::update()
   {
     m_Cam.update();
+    m_Sg.update();
   }
 
   void Scene::render()
@@ -210,7 +211,7 @@ namespace MX
     }
 
     std::shared_ptr<DirectionalLightNode> light_node = std::make_shared<DirectionalLightNode>(name);
-    light_node->setShader(MX_GET_SHADER("blinn_phong"));
+    light_node->setShader(MX_GET_SHADER(MX_MATRIX_SHADERS "blinn_phong"));
 
     MX_SCENEGRAPH.m_directional_light_nodes.push_back(light_node);
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
@@ -233,7 +234,7 @@ namespace MX
     }
 
     std::shared_ptr<PointLightNode> light_node = std::make_shared<PointLightNode>(name);
-    light_node->setShader(MX_GET_SHADER("blinn_phong"));
+    light_node->setShader(MX_GET_SHADER(MX_MATRIX_SHADERS "blinn_phong"));
 
     MX_SCENEGRAPH.m_point_light_nodes.push_back(light_node);
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);
@@ -256,7 +257,7 @@ namespace MX
     }
 
     std::shared_ptr<SpotLightNode> light_node = std::make_shared<SpotLightNode>(name);
-    light_node->setShader(MX_GET_SHADER("blinn_phong"));
+    light_node->setShader(MX_GET_SHADER(MX_MATRIX_SHADERS "blinn_phong"));
 
     MX_SCENEGRAPH.m_spot_light_nodes.push_back(light_node);
     std::shared_ptr<Node> temp = std::static_pointer_cast<Node>(light_node);

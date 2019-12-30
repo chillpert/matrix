@@ -77,7 +77,7 @@ namespace MX
         ImGui::EndMenuBar();
       }
 
-      static ImGui_Icon home_button("icons/back.png", 15.0f, 15.0f);
+      static ImGui_Icon home_button("back.png", 15.0f, 15.0f);
       if (current_path.length() > lowest_path.length())
       {
         if (home_button.render_as_button())
@@ -95,12 +95,12 @@ namespace MX
 
   void Editor_Explorer::load_directory(const char* path)
   {
-    static ImGui_Icon folder_icon("icons/folder2.png", 20.0f, 20.0f);
-    static ImGui_Icon txt_icon("icons/txt.png", 20.0f, 20.0f);
-    static ImGui_Icon png_icon("icons/png.png", 20.0f, 20.0f);
-    static ImGui_Icon jpg_icon("icons/jpg.png", 20.0f, 20.0f);
-    static ImGui_Icon unknown_icon("icons/unkown.png", 20.0f, 20.0f);
-    static ImGui_Icon mx_icon("icons/matrix_movie.png", 20.0f, 20.0f);
+    static ImGui_Icon folder_icon("folder2.png", 20.0f, 20.0f);
+    static ImGui_Icon txt_icon("txt.png", 20.0f, 20.0f);
+    static ImGui_Icon png_icon("png.png", 20.0f, 20.0f);
+    static ImGui_Icon jpg_icon("jpg.png", 20.0f, 20.0f);
+    static ImGui_Icon unknown_icon("unkown.png", 20.0f, 20.0f);
+    static ImGui_Icon mx_icon("matrix_movie.png", 20.0f, 20.0f);
 
     static std::string clicked_file_name;
     static std::string clicked_full_path;
@@ -220,16 +220,21 @@ namespace MX
         {
           if (file_inspector.begin(show_file_inspector_context_menu))
           {
+            /*
+              TODO:
+                - this should not be an icon but instead an actual texture (use ImGui::Image) (maybe write utility class for this)
+            */
+
             // remove file name from full path temporarily since texture class does weird things with the naming
-            static ImGui_Icon enlarged_picture(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
+            //static ImGui_Icon enlarged_picture(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
 
             if (enlarged_picture_update)
             {
-              enlarged_picture = ImGui_Icon(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
+              //enlarged_picture = ImGui_Icon(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
               enlarged_picture_update = false;
             }
 
-            enlarged_picture.render();
+            //enlarged_picture.render();
             file_inspector.end();
           }
         }

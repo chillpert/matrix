@@ -2,9 +2,9 @@
 
 namespace MX
 {
-  Texture::Texture(const std::string &name, const std::string &path)
+  Texture::Texture(const std::string& path)
   {
-    m_Name = name;
-    m_path = path + name;
+    m_Name = path.substr(path.find_last_of("/") + 1);
+    m_path = path;
   }
 }

@@ -12,7 +12,6 @@ namespace MX
 
   void Node::upload_uniforms()
   {
-    //std::cout << "Node Base: " << m_Name << std::endl;
     m_Shader->use();
     m_Shader->setfMat4("model", m_Trans.m_world);
     m_Shader->setfMat4("view", MX_CAMERA.getViewMatrix());
@@ -138,7 +137,7 @@ namespace MX
     ss << "\n@Type{" << type << "}";
 
     if (m_Shader != nullptr)
-      ss << "\n@Shader{" << m_Shader->m_Name << "}";
+      ss << "\n@Shader{" << m_Shader->m_path << "}";
 
     ss << "\n@Transform{T{"  << glm::to_string(m_Trans.m_translation) << 
                     "}R{" << glm::to_string(m_Trans.m_rotation) << 

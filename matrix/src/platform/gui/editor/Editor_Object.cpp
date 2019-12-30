@@ -29,7 +29,7 @@ namespace MX
   {
     if (ImGui_Window::begin())
     {
-      static ImGui_Icon info_icon("icons/info.png", 15.0f, 15.0f);
+      static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
 
       // only ever show components if an object is selected
       if (get_selection().size() > 0)
@@ -86,6 +86,10 @@ namespace MX
             }
           }
 
+          /*
+            TODO:
+              - since names are static, they don't update when clicked on another node
+          */
           
           if (dynamic_cast<GeometryNode*>(current.get()))
           {
@@ -96,8 +100,9 @@ namespace MX
               auto current_ptr = std::dynamic_pointer_cast<GeometryNode>(current);
               static std::string model_name = current_ptr->m_Model->m_name;
 
+              ImGui::Spacing();
               ImGui::Text("Model "); ImGui::SameLine();
-              ImGui::Button(model_name.c_str());
+              ImGui::Button(model_name.c_str(), ImVec2(-1.0f, 0.0f));
 
               if (ImGui::BeginDragDropTarget())
               {
@@ -105,8 +110,42 @@ namespace MX
                 {
                   IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                   std::string temp = (char*)payload->Data;
-                  current_ptr->m_Model = Application::get().m_World.getModelByPath(temp);
+                  current_ptr->m_Model = Application::get().m_World.getModel(temp);
                   model_name = temp.substr(temp.find_last_of("/") + 1);
+                }
+                ImGui::EndDragDropTarget();
+              }
+
+              static std::string diffuse_name = current_ptr->m_textures->diffuse->m_Name;
+              static std::string specular_name = current_ptr->m_textures->specular->m_Name;
+
+              ImGui::Text("Textures");
+              ImGui::Text("Diffuse "); ImGui::SameLine();
+              ImGui::Button(diffuse_name.c_str() , ImVec2(-1.0f, 0.0f));
+
+              if (ImGui::BeginDragDropTarget())
+              {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMAGE_FE"))
+                {
+                  IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+                  std::string temp = (char*)payload->Data;
+                  current_ptr->m_textures->diffuse = Application::get().m_World.getTexture(temp, std::string("texture_diffuse"));
+                  diffuse_name = temp.substr(temp.find_last_of("/") + 1);
+                }
+                ImGui::EndDragDropTarget();
+              }
+
+              ImGui::Text("Specular "); ImGui::SameLine();
+              ImGui::Button(specular_name.c_str() , ImVec2(-1.0f, 0.0f));
+
+              if (ImGui::BeginDragDropTarget())
+              {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMAGE_FE"))
+                {
+                  IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+                  std::string temp = (char*)payload->Data;
+                  current_ptr->m_textures->specular = Application::get().m_World.getTexture(temp, std::string("texture_specular"));
+                  specular_name = temp.substr(temp.find_last_of("/") + 1);
                 }
                 ImGui::EndDragDropTarget();
               }

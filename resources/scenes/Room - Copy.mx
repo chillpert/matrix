@@ -14,12 +14,12 @@ Node
 @Name{Chair Wood}
 @Parent{Root}
 @Type{type_geometry}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{blinn_phong}
 @Transform{T{vec3(-1.245000, -0.050000, -0.635000)}R{vec3(0.000000, -61.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
-@Model{C:/Repos/matrix/resources/models/simple_chair/Chair.obj}
-@TextureProfile{D{C:/Repos/matrix/resources/textures/diffuse/wood dark.jpg}S{C:/Repos/matrix/resources/textures/specular/wood_specular.jpg}} 
+@Model{C:/Repos/matrix/resources/models/C:/Repos/matrix/resources/models/simple_chair/Chair.obj}
+@TextureProfile{D{diffuse/wood dark.jpg}S{specular/wood_specular.jpg}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
@@ -27,12 +27,12 @@ Node
 @Name{Box}
 @Parent{Root}
 @Type{type_geometry}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{blinn_phong}
 @Transform{T{vec3(1.075000, 0.495000, -0.605000)}R{vec3(0.000000, -37.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
-@Model{C:/Repos/matrix/resources/models/cube.obj}
-@TextureProfile{D{C:/Repos/matrix/resources/textures/diffuse/box.png}S{C:/Repos/matrix/resources/textures/specular/box_specular.png}} 
+@Model{C:/Repos/matrix/resources/models/C:/Repos/matrix/resources/models/cube.obj}
+@TextureProfile{D{diffuse/box.png}S{specular/box_specular.png}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
@@ -40,12 +40,12 @@ Node
 @Name{Floor}
 @Parent{Root}
 @Type{type_geometry}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{blinn_phong}
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(-90.000000, 0.000000, 0.000000)}S{vec3(2.000000, 2.000000, 2.000000)}}
 @Visible{1}
 -
-@Model{C:/Repos/matrix/resources/models/quad.obj}
-@TextureProfile{D{C:/Repos/matrix/resources/textures/diffuse/wood.png}S{C:/Repos/matrix/resources/textures/specular/wood_specular.jpg}} 
+@Model{C:/Repos/matrix/resources/models/C:/Repos/matrix/resources/models/quad.obj}
+@TextureProfile{D{diffuse/wood.png}S{specular/wood_specular.jpg}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
@@ -53,7 +53,7 @@ Node
 @Name{Spot Light 1}
 @Parent{Root}
 @Type{type_spotLight}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{blinn_phong}
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
@@ -75,7 +75,7 @@ Node
 @Name{Point Light 1}
 @Parent{Root}
 @Type{type_pointLight}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{blinn_phong}
 @Transform{T{vec3(1.440000, -0.015000, 0.000000)}R{vec3(64.500000, -114.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -

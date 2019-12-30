@@ -11,8 +11,7 @@ namespace MX
   {
   public:
     // if user did not set a custom size, use maximum size
-    MX_API ImGui_Icon(const std::string& name, const std::string& path, float size_x = -1.0f, float size_y = -1.0f);
-    MX_API ImGui_Icon(const std::string& path, float size_x = -1.0f, float size_y = -1.0f);
+    MX_API ImGui_Icon(const std::string& name, float size_x = -1.0f, float size_y = -1.0f);
 
     MX_API void render();
     MX_API bool render_as_button(int frame_padding = 3, const ImVec4& bg_col = ImVec4(1.0f, 1.0f, 1.0f, 0.0f));

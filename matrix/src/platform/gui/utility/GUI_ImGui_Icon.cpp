@@ -3,26 +3,12 @@
 
 namespace MX
 {
-  ImGui_Icon::ImGui_Icon(const std::string& name, const std::string& path, float size_x, float size_y) :
+  ImGui_Icon::ImGui_Icon(const std::string& name, float size_x, float size_y) :
     m_uv0(ImVec2(0, 0)),
     m_uv1(ImVec2(1, 1)),
     m_tint_col(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)),
     m_border_col(ImVec4(1.0f, 1.0f, 1.0f, 0.0f)),
-    m_name(name),
-    m_path(path),
-    m_size_x(size_x),
-    m_size_y(size_y),
-    m_texture(std::make_unique<MX_TEXTURE>(m_name, m_path))
-  {
-    initialize();
-  }
-
-  ImGui_Icon::ImGui_Icon(const std::string& path, float size_x, float size_y) :
-    m_uv0(ImVec2(0, 0)),
-    m_uv1(ImVec2(1, 1)),
-    m_tint_col(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)),
-    m_border_col(ImVec4(1.0f, 1.0f, 1.0f, 0.0f)),
-    m_path(path),
+    m_path(MX_MATRIX_ICONS + name),
     m_size_x(size_x),
     m_size_y(size_y),
     m_texture(std::make_unique<MX_TEXTURE>(m_path))
