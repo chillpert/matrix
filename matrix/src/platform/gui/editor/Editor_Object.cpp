@@ -22,7 +22,8 @@ namespace MX
 
   bool Editor_Object::update()
   {
-    //std::cout << selection_has_changed() << std::endl;
+    if (Editor_Global::field_has_changed())
+      m_selection_has_changed = true;
 
     return ImGui_Window::update();
   }
@@ -34,11 +35,11 @@ namespace MX
       static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
 
       // only ever show components if an object is selected
-      if (get_selection().size() > 0)
+      if (Editor_Global::get_selection().size() > 0)
       {
-        if (get_selection().at(0) != nullptr)
+        if (Editor_Global::get_selection().at(0) != nullptr)
         {
-          auto current = get_selection().at(0);
+          auto current = Editor_Global::get_selection().at(0);
 
           static float speed_translation = 0.005f; // 5 mm;
           static float speed_rotation = 0.5f;
@@ -83,7 +84,7 @@ namespace MX
           
             // NEEDS TO BE FIXED
             /*
-            for (std::shared_ptr<Node> it : get_selection())
+            for (std::shared_ptr<Node> it : Editor_Global::get_selection())
             {
               it->m_Trans.translate(*translation);
             }
@@ -103,6 +104,9 @@ namespace MX
             {
               auto current_ptr = std::dynamic_pointer_cast<GeometryNode>(current);
               static std::string model_name = current_ptr->m_Model->m_name;
+              
+              if (m_selection_has_changed)
+                model_name = current_ptr->m_Model->m_name;
 
               ImGui::Spacing();
               ImGui::Text("Model "); ImGui::SameLine();
@@ -122,6 +126,12 @@ namespace MX
 
               static std::string diffuse_name = current_ptr->m_textures->diffuse->m_Name;
               static std::string specular_name = current_ptr->m_textures->specular->m_Name;
+
+              if (m_selection_has_changed)
+                diffuse_name = current_ptr->m_textures->diffuse->m_Name;
+
+              if (m_selection_has_changed)
+                specular_name = current_ptr->m_textures->specular->m_Name;
 
               ImGui::Text("Textures");
               ImGui::Text("Diffuse "); ImGui::SameLine();
@@ -169,6 +179,9 @@ namespace MX
             {
               static bool show_shader_info = false;
               static std::string shader_name = current->m_Shader->m_Name;
+
+              if (m_selection_has_changed)
+                shader_name = current->m_Shader->m_Name;
 
               ImGui::Text("Shader"); ImGui::SameLine();
 
@@ -228,6 +241,9 @@ namespace MX
         }
       }
     }
+
+    if (m_selection_has_changed)
+      m_selection_has_changed = false;
 
     ImGui_Window::end();
   }

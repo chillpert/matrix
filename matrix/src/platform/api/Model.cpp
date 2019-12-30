@@ -144,9 +144,7 @@ namespace MX
       }
       if (!skip)
       {
-        //std::shared_ptr<MX_TEXTURE> texture = std::make_shared<MX_TEXTURE>(str.C_Str(), m_directory + '/');
-        MX_WARN(std::string("HERE: ") + str.C_Str());
-        std::shared_ptr<MX_TEXTURE> texture = std::make_shared<MX_TEXTURE>(str.C_Str());
+        std::shared_ptr<MX_TEXTURE> texture = std::make_shared<MX_TEXTURE>(m_directory + '/' + str.C_Str());
         texture->m_type = typeName;
         texture->initialize();
 

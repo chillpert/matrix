@@ -6,7 +6,7 @@
 
 namespace MX
 {
-  class Editor_Object : public ImGui_Window, public Editor_Global
+  class Editor_Object : public ImGui_Window
   {
   public:
     MX_API Editor_Object() = default;
@@ -19,6 +19,8 @@ namespace MX
   private:
     // creates three drag sliders for all three axes
     MX_API void transformDrag(const std::string& label, glm::vec3* vec, float drag_speed, float spacing, float reset_value);
+
+    bool m_selection_has_changed = false;
   };
 }
 

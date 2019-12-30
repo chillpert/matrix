@@ -45,7 +45,7 @@ namespace MX
         flags |= ImGuiTreeNodeFlags_Leaf;
 
       std::vector<std::shared_ptr<Node>>::iterator selected;
-      for (auto it = get_selection().begin(); it != get_selection().end(); ++it)
+      for (auto it = Editor_Global::get_selection().begin(); it != Editor_Global::get_selection().end(); ++it)
       {
         if (node->m_Name == (*it)->m_Name)
         {
@@ -66,18 +66,18 @@ namespace MX
           if (flags % 2 == 1)
           {
             // deselect by deleting its name from the current selection
-            get_selection().erase(selected);
+            Editor_Global::get_selection().erase(selected);
           }
           else
           {
             // add to vector
-            get_selection().push_back(node);
+            Editor_Global::get_selection().push_back(node);
           }
         }
         else if (ImGui::IsItemClicked())
         {
-          get_selection().clear();
-          get_selection().push_back(node);
+          Editor_Global::get_selection().clear();
+          Editor_Global::get_selection().push_back(node);
         }
 
         ImGui::TreePop();

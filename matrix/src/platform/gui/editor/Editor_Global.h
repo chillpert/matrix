@@ -9,25 +9,29 @@ namespace MX
   class Editor_Global
   {
   public:
-    std::vector<std::shared_ptr<Node>> &get_selection()
+    static std::vector<std::shared_ptr<Node>> &Editor_Global::get_selection()
     {
       static std::vector<std::shared_ptr<Node>> selection;
       return selection;
     }
 
-    bool selection_has_changed()
+    static bool field_has_changed()
     {
-      if (!get_selection().empty())
+      static bool has_changed = false;
+
+      if (!Editor_Global::get_selection().empty())
       {
-        static std::shared_ptr<Node> prev = get_selection().at(0);
+        static std::shared_ptr<Node> prev = Editor_Global::get_selection().at(0);
 
-        if (prev != get_selection().at(0))
-          return true;
+        if (prev != Editor_Global::get_selection().at(0))
+          has_changed = true;
+        else
+          has_changed = false;
 
-        prev = get_selection().at(0);
+        prev = Editor_Global::get_selection().at(0);
       }
 
-      return false;
+      return has_changed;
     }
   };
 }
