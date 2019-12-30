@@ -20,11 +20,12 @@ namespace MX
   void SceneGraph::initialize()
   {
     recursive_initialize(m_Root);
+    upload_lighting_uniforms();
   }
 
   void SceneGraph::update()
   {
-
+    upload_lighting_uniforms();
   }
 
   void SceneGraph::render()
@@ -97,17 +98,13 @@ namespace MX
   {
     if (it->m_Shader != nullptr && it->m_visible)
     {
-      if (!dynamic_cast<LightNode*>(it.get()) && !dynamic_cast<DirectionalLightNode*>(it.get()) && !dynamic_cast<PointLightNode*>(it.get()) && !dynamic_cast<SpotLightNode*>(it.get()))
-      {
-        upload_lighting_uniforms();
-        it->upload_uniforms();
-      }
+      it->upload_uniforms();
     }
 
     if (!it->m_Children.empty())
     {
       for (auto itChild : it->m_Children)
-        recursive_render(itChild);
+        recursive_initialize(itChild);
     }
   }
 
@@ -117,11 +114,7 @@ namespace MX
 
     if (it->m_Shader != nullptr && it->m_visible)
     {
-      if (!dynamic_cast<LightNode*>(it.get()) && !dynamic_cast<DirectionalLightNode*>(it.get()) && !dynamic_cast<PointLightNode*>(it.get()) && !dynamic_cast<SpotLightNode*>(it.get()))
-      {
-        upload_lighting_uniforms();
-        it->upload_uniforms();
-      }
+      it->upload_uniforms();
     }
 
     if (!it->m_Children.empty())

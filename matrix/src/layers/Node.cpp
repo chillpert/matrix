@@ -12,6 +12,7 @@ namespace MX
 
   void Node::upload_uniforms()
   {
+    //std::cout << "Node Base: " << m_Name << std::endl;
     m_Shader->use();
     m_Shader->setfMat4("model", m_Trans.m_world);
     m_Shader->setfMat4("view", MX_CAMERA.getViewMatrix());

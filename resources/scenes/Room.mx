@@ -2,8 +2,8 @@ Scene
 @Name{Room}
 
 Camera
-@Position{vec3(0.040953, 1.024156, 4.166262)}
-@Front{vec3(0.006057, -0.265893, -0.963984)}
+@Position{vec3(-0.227943, 2.450085, 3.975322)}
+@Front{vec3(0.001860, -0.458649, -0.888615)}
 
 
 Node
@@ -11,12 +11,12 @@ Node
 @Parent{Root}
 @Type{type_geometry}
 @Shader{blinn_phong}
-@Transform{T{vec3(1.150000, 0.130000, 0.000000)}R{vec3(0.000000, -61.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
+@Transform{T{vec3(-1.245000, -0.050000, -0.635000)}R{vec3(0.000000, -61.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
 @Model{simple_chair/Chair.obj}
 @TextureProfile{D{diffuse/wood dark.jpg}S{specular/wood_specular.jpg}} 
-@MaterialProfile{A{vec3(32.000000, 32.000000, 32.000000)}D{vec3(4.000000, 4.000000, 4.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
+@MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
 Node
@@ -24,12 +24,12 @@ Node
 @Parent{Root}
 @Type{type_geometry}
 @Shader{blinn_phong}
-@Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
+@Transform{T{vec3(1.075000, 0.495000, -0.605000)}R{vec3(0.000000, -37.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
 @Model{cube.obj}
 @TextureProfile{D{diffuse/box.png}S{specular/box_specular.png}} 
-@MaterialProfile{A{vec3(32.000000, 32.000000, 32.000000)}D{vec3(32.000000, 32.000000, 32.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
+@MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
 Node
@@ -37,12 +37,12 @@ Node
 @Parent{Root}
 @Type{type_geometry}
 @Shader{blinn_phong}
-@Transform{T{vec3(-1.425000, 0.000000, 0.000000)}R{vec3(-1.000000, 122.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
+@Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(-90.000000, 0.000000, 0.000000)}S{vec3(2.000000, 2.000000, 2.000000)}}
 @Visible{1}
 -
 @Model{quad.obj}
 @TextureProfile{D{diffuse/wood.png}S{specular/wood_specular.jpg}} 
-@MaterialProfile{A{vec3(32.000000, 32.000000, 32.000000)}D{vec3(32.000000, 32.000000, 32.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
+@MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
 Node
@@ -72,7 +72,7 @@ Node
 @Parent{Root}
 @Type{type_pointLight}
 @Shader{blinn_phong}
-@Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
+@Transform{T{vec3(1.440000, -0.015000, 0.000000)}R{vec3(64.500000, -114.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
 @Ambient{vec3(0.200000, 0.200000, 0.200000)}

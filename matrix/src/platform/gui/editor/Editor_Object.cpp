@@ -1,6 +1,11 @@
 #include "Editor_Object.h"
 #include "GUI_ImGui_ContextMenu.h"
 
+#include "Node.h"
+#include "GeometryNode.h"
+#include "LightNode.h"
+#include "ContainerNode.h"
+
 namespace MX
 {
   Editor_Object::Editor_Object(const std::string& name, ImGuiWindowFlags flags)
@@ -111,6 +116,124 @@ namespace MX
           {
 
           }
+
+          ImGui::Text(get_selection().at(0)->to_string().c_str());
+
+          /*
+          ImGui::Text("Shader: ");
+          if (get_selection().at(0)->m_Shader != nullptr)
+          {
+            ImGui::SameLine();
+            ImGui::Text(get_selection().at(0)->m_Shader->m_Name.c_str());
+            ImGui::Text("Initialized: "); ImGui::SameLine();
+            ImGui::Text("%i", get_selection().at(0)->m_Shader->m_initialized);
+          }
+          */
+          /*
+          ImGui::Text("Node: ");
+          ImGui::Text("Name: "); ImGui::SameLine();
+          ImGui::Text(get_selection().at(0)->m_Name.c_str());
+
+          ImGui::Text("Shader: ");
+          if (get_selection().at(0)->m_Shader != nullptr)
+          {
+            ImGui::SameLine();
+            ImGui::Text(get_selection().at(0)->m_Shader->m_Name.c_str());
+            ImGui::Text("Initialized: "); ImGui::SameLine();
+            ImGui::Text("%i", get_selection().at(0)->m_Shader->m_initialized);
+          }
+
+          ImGui::Text("Parent: ");
+          if (get_selection().at(0)->m_Parent != nullptr)
+          {
+            ImGui::SameLine();
+            ImGui::Text(get_selection().at(0)->m_Parent->m_Name.c_str());
+          }
+
+          ImGui::Text("Visible: "); ImGui::SameLine();
+          ImGui::Text("%i", get_selection().at(0)->m_Parent->m_visible);
+          ImGui::Text("Type: "); ImGui::SameLine();
+          
+          if (dynamic_cast<GeometryNode*>(get_selection().at(0).get()))
+          {
+            auto geometry_node_ptr = std::static_pointer_cast<GeometryNode>(get_selection().at(0));
+
+            ImGui::Text("Geometry Node: ");
+            ImGui::Text("Name: "); ImGui::SameLine();
+            ImGui::Text(geometry_node_ptr->m_Model->m_name.c_str());
+            ImGui::Text("Directory: "); ImGui::SameLine();
+            ImGui::Text(geometry_node_ptr->m_Model->m_directory.c_str());
+            ImGui::Text("Full Path:"); ImGui::SameLine();
+            ImGui::Text(geometry_node_ptr->m_Model->m_full_path.c_str());
+            ImGui::Text("Gamma Correction: "); ImGui::SameLine();
+            ImGui::Text("%i", geometry_node_ptr->m_Model->m_gamma_correction);
+            ImGui::Text("Initialized: "); ImGui::SameLine();
+            ImGui::Text("%i", geometry_node_ptr->m_Model->m_initialized);
+          }
+
+          if (dynamic_cast<LightNode*>(get_selection().at(0).get()))
+          {
+            auto light_node_ptr = std::static_pointer_cast<LightNode>(get_selection().at(0));
+
+            ImGui::Text("Point Light Node");
+            ImGui::Text("Ambient: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(light_node_ptr->ambient).c_str());
+            ImGui::Text("Diffuse: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(light_node_ptr->diffuse).c_str());
+            ImGui::Text("Specular: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(light_node_ptr->specular).c_str());
+            ImGui::Text("Ambient Strength: "); ImGui::SameLine();
+            ImGui::Text("%f", light_node_ptr->ambient_strength);
+            
+          }
+
+          if (dynamic_cast<DirectionalLightNode*>(get_selection().at(0).get()))
+          {
+            auto directional_light_node_ptr = std::static_pointer_cast<DirectionalLightNode>(get_selection().at(0));
+
+            ImGui::Text("Directional Light Node");
+            ImGui::Text("Direction: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(directional_light_node_ptr->direction).c_str());
+          }
+
+          if (dynamic_cast<PointLightNode*>(get_selection().at(0).get()))
+          {
+            auto point_light_node_ptr = std::static_pointer_cast<PointLightNode>(get_selection().at(0));
+
+            ImGui::Text("Point Light Node");
+            ImGui::Text("Position: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(point_light_node_ptr->position).c_str());
+            ImGui::Text("Constant: "); ImGui::SameLine();
+            ImGui::Text("%f", point_light_node_ptr->constant);
+            ImGui::Text("Linear: "); ImGui::SameLine();
+            ImGui::Text("%f", point_light_node_ptr->linear);
+            ImGui::Text("Quadratic: "); ImGui::SameLine();
+            ImGui::Text("%f", point_light_node_ptr->quadratic);
+          }
+
+          if (dynamic_cast<SpotLightNode*>(get_selection().at(0).get()))
+          {
+            auto spot_light_node_ptr = std::static_pointer_cast<SpotLightNode>(get_selection().at(0));
+
+            ImGui::Text("Spot Light Node");
+            ImGui::Text("Position: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(spot_light_node_ptr->position).c_str());
+            ImGui::Text("Direction: "); ImGui::SameLine();
+            ImGui::Text(glm::to_string(spot_light_node_ptr->direction).c_str());
+            ImGui::Text("Constant: "); ImGui::SameLine();
+            ImGui::Text("%f", spot_light_node_ptr->constant);
+            ImGui::Text("Linear: "); ImGui::SameLine();
+            ImGui::Text("%f", spot_light_node_ptr->linear);
+            ImGui::Text("Quadratic: "); ImGui::SameLine();
+            ImGui::Text("%f", spot_light_node_ptr->quadratic);
+            ImGui::Text("Cut Off: "); ImGui::SameLine();
+            ImGui::Text("%f", spot_light_node_ptr->cut_off);
+            ImGui::Text("Outer Cut Off: "); ImGui::SameLine();
+            ImGui::Text("%f", spot_light_node_ptr->outer_cut_off);
+          }
+          
+          */
+          
         }
       }
     }

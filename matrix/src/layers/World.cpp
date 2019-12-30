@@ -159,7 +159,16 @@ namespace MX
 
   void World::push(std::shared_ptr<Scene> scene)
   {
-    m_ExistingScenes.push_back(scene);
+    bool already_exists = false;
+    for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+    {
+      if (it->m_Name == scene->m_Name)
+        already_exists = true;
+    }
+
+    if (!already_exists)
+      m_ExistingScenes.push_back(scene);
+
     m_ActiveScene = scene;
     scene->initialize();
     MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
@@ -636,12 +645,20 @@ namespace MX
         }
         case NodeType::type_geometry:
         {
-          nodes.push_back(std::make_shared<GeometryNode>(std::get<0>(it)));
+          auto temp = std::make_shared<GeometryNode>(std::get<0>(it));
+          nodes.push_back(temp);
+          scene->m_objects.emplace(temp->m_Name, temp);
+          scene->m_ExistingObjects.push_back(temp->m_Name);
+          scene->m_Sg.m_object_nodes.push_back(temp);
           break;
         }
         case NodeType::type_container:
         {
-          nodes.push_back(std::make_shared<ContainerNode>(std::get<0>(it)));
+          auto temp = std::make_shared<ContainerNode>(std::get<0>(it));
+          nodes.push_back(temp);
+          scene->m_objects.emplace(temp->m_Name, temp);
+          scene->m_ExistingObjects.push_back(temp->m_Name);
+          scene->m_Sg.m_container_nodes.push_back(temp);
           break;
         }
         case NodeType::type_light:
@@ -651,17 +668,26 @@ namespace MX
         }
         case NodeType::type_directionalLight:
         {
-          nodes.push_back(std::make_shared<DirectionalLightNode>(std::get<0>(it)));
+          auto temp = std::make_shared<DirectionalLightNode>(std::get<0>(it));
+          nodes.push_back(temp);
+          scene->m_ExistingObjects.push_back(temp->m_Name);
+          scene->m_Sg.m_directional_light_nodes.push_back(temp);
           break;
         }
         case NodeType::type_spotLight:
         {
-          nodes.push_back(std::make_shared<SpotLightNode>(std::get<0>(it)));
+          auto temp = std::make_shared<SpotLightNode>(std::get<0>(it));
+          nodes.push_back(temp);
+          scene->m_ExistingObjects.push_back(temp->m_Name);
+          scene->m_Sg.m_spot_light_nodes.push_back(temp);
           break;
         }
         case NodeType::type_pointLight:
         {
-          nodes.push_back(std::make_shared<PointLightNode>(std::get<0>(it)));
+          auto temp = std::make_shared<PointLightNode>(std::get<0>(it));
+          nodes.push_back(temp);
+          scene->m_ExistingObjects.push_back(temp->m_Name);
+          scene->m_Sg.m_point_light_nodes.push_back(temp);
           break;
         }
         default:
@@ -745,7 +771,7 @@ namespace MX
           {
             node->setShader(getShader(parse_single_string(line_temp)));
           }
-          else if (tag_transform != std::string::npos
+          else if (tag_transform != std::string::npos)
           {
             std::string temp = parse_single_string(line_temp);
 
@@ -796,16 +822,31 @@ namespace MX
               size_t difference = str.length() + 3; // +3 because of X, { and }
               temp = temp.substr(difference);
 
-              if (temp_.find("D{"))
+              if (temp_.at(0) == 'D' && temp_.at(1) == '{')
+              {
                 textures.diffuse = getTexture(str);
-              else if (temp_.find("S{"))
+                continue;
+              }
+              else if (temp_.at(0) == 'S' && temp_.at(1) == '{')
+              {
                 textures.specular = getTexture(str);
-              else if (temp_.find("N{"))
+                continue;
+              }
+              else if (temp_.at(0) == 'N' && temp_.at(1) == '{')
+              {
                 textures.normal = getTexture(str);
-              else if (temp_.find("B{"))
+                continue;
+              }
+              else if (temp_.at(0) == 'B' && temp_.at(1) == '{')
+              {
                 textures.bump = getTexture(str);
-              else if (temp_.find("H{"))
+                continue;
+              }
+              else if (temp_.at(0) == 'H' && temp_.at(1) == '{')
+              {
                 textures.height = getTexture(str);
+                continue;
+              }
             }
 
             geometry_node_ptr->setTextureProfile(textures);
@@ -822,13 +863,15 @@ namespace MX
               size_t difference = str.length() + 3;
               temp = temp.substr(difference);
 
-              if (temp_.find("A{"))
+              std::cout << str << std::endl;
+
+              if (temp_.at(0) == 'A' && temp_.at(1) == '{')
                 geometry_node_ptr->m_material.ambient = parse_vec3(str);
-              else if (temp_.find("D{"))
+              else if (temp_.at(0) == 'D' && temp_.at(1) == '{')
                 geometry_node_ptr->m_material.diffuse = parse_vec3(str);
-              else if (temp_.find("S{"))
+              else if (temp_.at(0) == 'S' && temp_.at(1) == '{')
                 geometry_node_ptr->m_material.specular = parse_vec3(str);
-              else if (temp_.find("s{"))
+              else if (temp_.at(0) == 's' && temp_.at(1) == '{')
                 geometry_node_ptr->m_material.shininess = stof(str);
             }
           } 
@@ -955,6 +998,7 @@ namespace MX
       return false;
 
     push(scene);
+
     MX_SUCCESS("MX: World: Load Scene: " + scene->m_Name + " Completed");
     return true;
   }
