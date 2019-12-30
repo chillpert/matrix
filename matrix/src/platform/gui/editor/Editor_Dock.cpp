@@ -91,6 +91,10 @@ namespace MX
 
     if (ImGui::BeginMenuBar())
     {
+      ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
+      ImGui::Text(Application::get().m_World.m_ActiveScene->m_Name.c_str());
+      ImGui::PopStyleColor();
+
       if (ImGui::BeginMenu("File"))
       {
         if (ImGui::MenuItem("Save"))

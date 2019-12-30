@@ -1,6 +1,7 @@
 #include "Editor_Explorer.h"
 #include "Texture.h"
 #include "Texture_OpenGL.h"
+#include "Application.h"
 
 #ifdef MX_PLATFORM_UNIX_X64
   #include <boost/filesystem.hpp>
@@ -36,7 +37,8 @@ namespace MX
     static ImGui_Icon txt_icon("icons/txt.png", 20.0f, 20.0f);
     static ImGui_Icon png_icon("icons/png.png", 20.0f, 20.0f);
     static ImGui_Icon jpg_icon("icons/jpg.png", 20.0f, 20.0f);
-    static ImGui_Icon unknown_icon("icons/unkown.png", 20.0f, 20.0f); 
+    static ImGui_Icon unknown_icon("icons/unkown.png", 20.0f, 20.0f);
+    static ImGui_Icon mx_icon("icons/locator.png", 20.0f, 20.0f);
 
     static std::string clicked_file_name;
     static std::string clicked_full_path;
@@ -96,6 +98,11 @@ namespace MX
             jpg_icon.render();
             can_be_displayed = true;
           }
+          else if (file_extension == ".mx")
+          {
+            mx_icon.render();
+            can_be_displayed = false;
+          }
           else
           {
             unknown_icon.render();
@@ -121,11 +128,20 @@ namespace MX
           // double click on e.g. images to see what is inside
           if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
           {
-            enlarged_picture_update = true;
-            show_file_inspector_context_menu = true;
-            show_explorer_context_menu = false;
-            clicked_file_name = file_name;
-            clicked_full_path = full_path;
+            // load scene
+            if (file_extension == ".mx")
+            {
+              MX_INFO("MX: GUI: World: Loading scene: " + file_name);
+              Application::get().m_World.load_scene(file_name);
+            }
+            else
+            {
+              enlarged_picture_update = true;
+              show_file_inspector_context_menu = true;
+              show_explorer_context_menu = false;
+              clicked_file_name = file_name;
+              clicked_full_path = full_path;
+            }
           }
         }
       }

@@ -81,27 +81,18 @@ namespace MX
   std::string Node::to_string() const
   {
     std::stringstream ss;
-    ss << "\nNode\n@Name{" << m_Name << "} ";
+    ss << "\n\nNode\n@Name{" << m_Name << "}";
     
-    if (m_Shader != nullptr)
-      ss << "\n@Shader{" << m_Shader->m_Name << "} ";
-
     if (m_Parent != nullptr)
-      ss << "\n@Parent{" << m_Parent->m_Name << "} ";
+      ss << "\n@Parent{" << m_Parent->m_Name << "}";
 
     if (!m_Children.empty())
     {
       ss << "\n@Children{";
       for (const std::shared_ptr<Node> it : m_Children)
         ss << "{" << it->m_Name << "}";
-      ss << "} ";
+      ss << "}";
     }
-
-    ss << "\n@Transform{T{"  << glm::to_string(m_Trans.m_translation) << 
-                    "} R{" << glm::to_string(m_Trans.m_rotation) << 
-                    "} S{" << glm::to_string(m_Trans.m_scale) << "}} ";
-
-    ss << "\n@Visible{" << std::to_string(m_visible) << "} ";
 
     std::string type = "type_node";
     switch (m_type)
@@ -143,7 +134,16 @@ namespace MX
       }
     }
 
-    ss << "\n@Type{" << type << "}\n";
+    ss << "\n@Type{" << type << "}";
+
+    if (m_Shader != nullptr)
+      ss << "\n@Shader{" << m_Shader->m_Name << "}";
+
+    ss << "\n@Transform{T{"  << glm::to_string(m_Trans.m_translation) << 
+                    "}R{" << glm::to_string(m_Trans.m_rotation) << 
+                    "}S{" << glm::to_string(m_Trans.m_scale) << "}}";
+
+    ss << "\n@Visible{" << std::to_string(m_visible) << "}\n-";
 
     return ss.str();
   }

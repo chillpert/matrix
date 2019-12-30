@@ -27,7 +27,7 @@ namespace MX
     if (ImGui_Window::begin())
     {   
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-      traverse(m_root, 0);
+      traverse(Application::get().m_World.m_ActiveScene->m_Sg.m_Root, 0);
     }
 
     ImGui_Window::end();

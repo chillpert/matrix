@@ -28,10 +28,10 @@ namespace MX
     std::stringstream ss;
     ss << Node::to_string();
 
-    ss << "\n@Ambient{" << glm::to_string(ambient) << "} ";
-    ss << "\n@Diffuse{" << glm::to_string(diffuse) << "} ";
-    ss << "\n@Specular{" << glm::to_string(specular) << "} ";
-    ss << "\n@AmbientStrength{" << std::to_string(ambient_strength) << "}\n";
+    ss << "\n@Ambient{" << glm::to_string(ambient) << "}";
+    ss << "\n@Diffuse{" << glm::to_string(diffuse) << "}";
+    ss << "\n@Specular{" << glm::to_string(specular) << "}";
+    ss << "\n@Strength{" << std::to_string(ambient_strength) << "}\n-";
 
     return ss.str();
   }
@@ -54,7 +54,7 @@ namespace MX
     std::stringstream ss;
     ss << LightNode::to_string();
 
-    ss << "\n@Direction{" << glm::to_string(direction) << "}\n";
+    ss << "\n@DirectionalDirection{" << glm::to_string(direction) << "}\n-";
 
     return ss.str();
   }
@@ -81,10 +81,10 @@ namespace MX
     std::stringstream ss;
     ss << LightNode::to_string();
 
-    ss << "\n@Position{" << glm::to_string(position) << "} ";
-    ss << "\n@Constant{" << std::to_string(constant) << "} ";
-    ss << "\n@Linear{" << std::to_string(linear) << "} ";
-    ss << "\n@Quadratic{" << std::to_string(quadratic) << "}\n";
+    ss << "\n@PointPosition{" << glm::to_string(position) << "}";
+    ss << "\n@PointConstant{" << std::to_string(constant) << "}";
+    ss << "\n@PointLinear{" << std::to_string(linear) << "}";
+    ss << "\n@PointQuadratic{" << std::to_string(quadratic) << "}\n-";
 
     return ss.str();
   }
@@ -115,13 +115,13 @@ namespace MX
     std::stringstream ss;
     ss << LightNode::to_string();
 
-    ss << "\n@Position{" << glm::to_string(position) << "} ";
-    ss << "\n@Direction{" << glm::to_string(direction) << "} ";
-    ss << "\n@Constant{" << std::to_string(constant) << "} ";
-    ss << "\n@Linear{" << std::to_string(linear) << "} ";
-    ss << "\n@Quadratic{" << std::to_string(quadratic) << "} ";
-    ss << "\n@CutOff{" << std::to_string(cut_off) << "} ";
-    ss << "\n@OuterCutOff{" << std::to_string(outer_cut_off) << "}\n";
+    ss << "\n@SpotPosition{" << glm::to_string(position) << "}";
+    ss << "\n@SpotDirection{" << glm::to_string(direction) << "}";
+    ss << "\n@SpotConstant{" << std::to_string(constant) << "}";
+    ss << "\n@SpotLinear{" << std::to_string(linear) << "}";
+    ss << "\n@SpotQuadratic{" << std::to_string(quadratic) << "}";
+    ss << "\n@CutOff{" << std::to_string(cut_off) << "}";
+    ss << "\n@OuterCutOff{" << std::to_string(outer_cut_off) << "}\n-";
 
     return ss.str();
   }

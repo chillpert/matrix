@@ -10,13 +10,19 @@
 
 namespace MX
 {
-  class Node;
+  class Node; 
 
   typedef std::shared_ptr<Node> MX_Node;
 
   enum NodeType
   {
-    type_node, type_geometry, type_container, type_light, type_directionalLight, type_spotLight, type_pointLight
+    type_node, 
+    type_geometry,
+    type_container,
+    type_light,
+    type_directionalLight,
+    type_spotLight,
+    type_pointLight
   };
 
   class Node

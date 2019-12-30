@@ -309,14 +309,15 @@ namespace MX
     ss.str("");
 
     // camera @Position @Front
-    std::string camera = "\nCamera ";
-    ss << camera << "\n@Position{" << glm::to_string(m_Cam.m_Position) << "} @Front{" << glm::to_string(m_Cam.m_Front) << "}" << std::endl;;
+    std::string camera = "\nCamera";
+    ss << camera << "\n@Position{" << glm::to_string(m_Cam.m_Position) << "}\n@Front{" << glm::to_string(m_Cam.m_Front) << "}" << std::endl;;
     camera = ss.str();
     ss.str("");
 
     std::vector<std::shared_ptr<Node>> all_objects;
     all_objects.reserve(100);
     m_Sg.get_all_objects(all_objects, m_Sg.m_Root);
+    std::reverse(all_objects.begin(), all_objects.end());
 
     std::string nodes = "Nodes\n";
     
@@ -329,7 +330,7 @@ namespace MX
 
     // write to file
     std::ofstream file;
-    file.open(MX_SCENES_PATH "save_scene_test.txt");
+    file.open(MX_SCENES_PATH + m_Name + ".mx");
     file << name << camera << nodes;
     file.close();
   }

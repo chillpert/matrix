@@ -126,10 +126,10 @@ void initialize()
   init_material_test_scene();
 #endif
 */
-  MX_WORLD.push(std::make_shared<Scene>("Room"));
+  MX_WORLD.push(std::make_shared<Scene>("My First Scene"));
 
 #ifdef MX_DEBUG
-  init_floor_scene();
+  //init_floor_scene();
 #endif
 }
 
