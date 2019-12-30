@@ -863,8 +863,6 @@ namespace MX
               size_t difference = str.length() + 3;
               temp = temp.substr(difference);
 
-              std::cout << str << std::endl;
-
               if (temp_.at(0) == 'A' && temp_.at(1) == '{')
                 geometry_node_ptr->m_material.ambient = parse_vec3(str);
               else if (temp_.at(0) == 'D' && temp_.at(1) == '{')
