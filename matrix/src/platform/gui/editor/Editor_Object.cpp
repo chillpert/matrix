@@ -22,6 +22,8 @@ namespace MX
 
   bool Editor_Object::update()
   {
+    //std::cout << selection_has_changed() << std::endl;
+
     return ImGui_Window::update();
   }
 
@@ -80,10 +82,12 @@ namespace MX
             transformDrag("Scale", scale, speed_scale, spacing, 1.0f);
           
             // NEEDS TO BE FIXED
+            /*
             for (std::shared_ptr<Node> it : get_selection())
             {
               it->m_Trans.translate(*translation);
             }
+            */
           }
 
           /*
@@ -161,37 +165,40 @@ namespace MX
             ImGui::Text("Visible "); ImGui::SameLine();
             ImGui::Checkbox("##NodeVisibilityToggle", &current->m_visible);
             
-            static bool show_shader_info = false;
-            static std::string shader_name = current->m_Shader->m_Name;
-
-            ImGui::Text("Shader"); ImGui::SameLine();
-
-            // if hovered over text ("Shader") display info window
-            if (ImGui::IsItemHovered())
-              show_shader_info = true;
-            else
-              show_shader_info = false;
-
-            static ImGui_ContextMenu shader_info("Info##Shader Info");
-            if (shader_info.begin(show_shader_info))
+            if (current->m_Shader != nullptr)
             {
-              ImGui::Text("Drag and drop any shader file (.vert or .frag) onto this field");
-              shader_info.end();
-            }
+              static bool show_shader_info = false;
+              static std::string shader_name = current->m_Shader->m_Name;
 
-            if (ImGui::Button(shader_name.c_str(), ImVec2(-1.0f, 0.0f))) { }
+              ImGui::Text("Shader"); ImGui::SameLine();
 
-            if (ImGui::BeginDragDropTarget())
-            {
-              if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SHADER_FE"))
+              // if hovered over text ("Shader") display info window
+              if (ImGui::IsItemHovered())
+                show_shader_info = true;
+              else
+                show_shader_info = false;
+
+              static ImGui_ContextMenu shader_info("Info##Shader Info");
+              if (shader_info.begin(show_shader_info))
               {
-                IM_ASSERT(payload->DataSize == sizeof(char) * 200);
-                std::string temp = (char*)payload->Data;
-                temp = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
-                current->m_Shader = Application::get().m_World.getShader(temp);
-                shader_name = temp;
+                ImGui::Text("Drag and drop any shader file (.vert or .frag) onto this field");
+                shader_info.end();
               }
-              ImGui::EndDragDropTarget();
+
+              if (ImGui::Button(shader_name.c_str(), ImVec2(-1.0f, 0.0f))) { }
+
+              if (ImGui::BeginDragDropTarget())
+              {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("SHADER_FE"))
+                {
+                  IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+                  std::string temp = (char*)payload->Data;
+                  temp = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
+                  current->m_Shader = Application::get().m_World.getShader(temp);
+                  shader_name = temp;
+                }
+                ImGui::EndDragDropTarget();
+              }
             }
           }
 
@@ -217,7 +224,7 @@ namespace MX
 
           }
 
-          ImGui::Text(get_selection().at(0)->to_string().c_str());          
+          ImGui::Text(current->to_string().c_str());          
         }
       }
     }

@@ -19,7 +19,7 @@ namespace MX
 
     MX_API std::string getIdentifier() { return "Container"; }
 
-    MX_API std::string to_string() const;
+    MX_API std::string to_string() const override;
   };
 }
 
