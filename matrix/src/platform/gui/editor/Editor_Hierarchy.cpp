@@ -71,7 +71,8 @@ namespace MX
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
       // magic number (why IMGUI WHYY?!)
-      ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 23.0f);
+      //ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 23.0f);
+      ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 10.0f);
       if (traverse(Application::get().m_World.m_ActiveScene->m_Sg.m_Root, 0))
         m_break_out = false;
       ImGui::PopStyleVar();
@@ -127,7 +128,7 @@ namespace MX
       }
 
       if (node->m_Parent != nullptr)
-        ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
+        ImGui::Indent(10.0f);//ImGui::GetTreeNodeToLabelSpacing());
 
       if (ImGui::TreeNodeEx(node->m_Name.c_str(), flags))
       {
