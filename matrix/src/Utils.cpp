@@ -71,5 +71,11 @@ namespace MX
 
     return name;
   }
+
+  uint64_t generate_id()
+  {
+    static uint64_t id = 0;
+    return ++id;
+  }
 }
 

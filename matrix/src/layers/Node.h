@@ -54,6 +54,7 @@ namespace MX
 
   public:
     std::string m_Name;
+    uint64_t m_id;
 
     std::shared_ptr<Shader> m_Shader;
 

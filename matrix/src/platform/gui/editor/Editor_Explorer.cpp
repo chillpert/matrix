@@ -51,7 +51,8 @@ namespace MX
 
         if (ImGui::BeginMenu("New"))
         {
-          if (ImGui::MenuItem("File")) { }
+          if (ImGui::MenuItem("Scene"))
+            Application::get().m_World.push(std::make_shared<Scene>("New Scene"));
 
           if (ImGui::MenuItem("Folder")) { }
 

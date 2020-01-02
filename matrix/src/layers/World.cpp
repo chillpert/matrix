@@ -14,12 +14,6 @@
 
 namespace MX
 {
-  World &World::get_default_world()
-  {
-    static World instance;
-    return instance;
-  }
-
   World::~World()
   {
     MX_INFO_LOG("MX: World: Destructor");
@@ -102,19 +96,56 @@ namespace MX
 
   void World::push(std::shared_ptr<Scene> scene)
   {
-    bool already_exists = false;
-    for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+    if (scene != nullptr)
     {
-      if (it->m_Name == scene->m_Name)
-        already_exists = true;
-    }
+      bool accepted = true;
+      for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+      {
+        if (it->m_Name == scene->m_Name)
+          accepted = false;
+      }
 
-    if (!already_exists)
+      if (accepted)
+      {
+        m_ExistingScenes.push_back(scene);
+        scene->initialize();
+        m_ActiveScene = scene;
+        MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+        return;
+      }
+      
+      uint64_t counter = 0;
+      accepted = false;
+      std::string current_name = scene->m_Name;
+      std::string appendix = "";
+
+      while (!accepted)
+      {
+        bool already_exists = false;
+        for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+        {
+          if (it->m_Name == current_name)
+          {
+            ++counter;
+            appendix = "_" + std::to_string(counter);
+            already_exists = true;
+            break;
+          }
+        }
+
+        if (!already_exists)
+        {
+          accepted = true;
+        }
+      }
+
+      scene->m_Name += appendix;
+      scene->initialize();
+      m_ActiveScene = scene;
       m_ExistingScenes.push_back(scene);
-
-    m_ActiveScene = scene;
-    scene->initialize();
-    MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+      MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+      return;
+    }
   }
 
   void World::pop(const std::string &name)

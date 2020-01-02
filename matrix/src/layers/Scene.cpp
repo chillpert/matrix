@@ -9,7 +9,7 @@ namespace MX
 
   Scene::~Scene()
   {
-    MX_INFO_LOG("MX: Scene: Destructor");
+    MX_INFO("MX: Scene: Destructor: " + m_Name);
   }
 
   bool Scene::object_already_exists(const std::string &name)
@@ -333,7 +333,6 @@ namespace MX
 
     // write to file
     std::ofstream file;
-    MX_FATAL(MX_SCENES_PATH + m_Name + ".mx");
     file.open(MX_SCENES_PATH + m_Name + ".mx");
     file << name << camera << nodes;
     file.close();

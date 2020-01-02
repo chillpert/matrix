@@ -123,11 +123,6 @@ namespace MX
 
         }
 
-        if (ImGui::MenuItem("Delete"))
-        {
-          Application::get().m_World.m_ActiveScene->remove();
-        }
-
         ImGui::EndMenu();
       }
 

@@ -35,29 +35,34 @@ namespace MX
         {
           if (ImGui::MenuItem("Geometry"))
           {
-
+            std::shared_ptr<GeometryNode> node = std::make_shared<GeometryNode>("Object");
+            Application::get().m_World.m_ActiveScene->m_Sg.push(node);
           }
 
           if (ImGui::MenuItem("Container"))
           {
-
+            std::shared_ptr<ContainerNode> node = std::make_shared<ContainerNode>("Container");
+            Application::get().m_World.m_ActiveScene->m_Sg.push(node);
           }
 
           if (ImGui::BeginMenu("Light"))
           {
             if (ImGui::MenuItem("Directional Light"))
             {
-
+              std::shared_ptr<DirectionalLightNode> node = std::make_shared<DirectionalLightNode>("DirectionalLight");
+              Application::get().m_World.m_ActiveScene->m_Sg.push(node);
             }
 
             if (ImGui::MenuItem("Point Light"))
             {
-
+              std::shared_ptr<PointLightNode> node = std::make_shared<PointLightNode>("PointLight");
+              Application::get().m_World.m_ActiveScene->m_Sg.push(node);
             }
 
             if (ImGui::MenuItem("Spot Light"))
             {
-
+              std::shared_ptr<SpotLightNode> node = std::make_shared<SpotLightNode>("SpotLight");
+              Application::get().m_World.m_ActiveScene->m_Sg.push(node);
             }
 
             ImGui::EndMenu();
@@ -71,7 +76,6 @@ namespace MX
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
       // magic number (why IMGUI WHYY?!)
-      //ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 23.0f);
       ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 10.0f);
       if (traverse(Application::get().m_World.m_ActiveScene->m_Sg.m_Root, 0))
         m_break_out = false;
@@ -158,8 +162,6 @@ namespace MX
           m_right_clicked = true;
         }
 
-        ImGui::TreePop();
-
         // set up drap and drop source
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
         {
@@ -167,25 +169,8 @@ namespace MX
           ImGui::SetDragDropPayload(send_tag.c_str(), node->m_Name.c_str(), sizeof(char) * 200);
           ImGui::EndDragDropSource();
         }
-
-        if (ImGui::BeginDragDropTarget())
-        {
-          if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("NODE_H"))
-          {
-            IM_ASSERT(payload->DataSize == sizeof(char) * 200);
-            std::string temp = (char*)payload->Data;
-
-            if (node != nullptr)
-            {
-              std::shared_ptr<Node> new_parent = Application::get().m_World.m_ActiveScene->m_Sg.search<Node>(temp);  
-              node->addChild(new_parent);
-              
-              m_break_out = true;              
-            }
-          }
-          ImGui::EndDragDropTarget();
-          return m_break_out;
-        }
+        
+        ImGui::TreePop();
 
         if (!m_break_out)
         {
@@ -200,6 +185,25 @@ namespace MX
               return m_break_out;
           }
         }
+      }
+
+      if (ImGui::BeginDragDropTarget())
+      {
+        if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("NODE_H"))
+        {
+          IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+          std::string temp = (char*)payload->Data;
+
+          if (node != nullptr)
+          {
+            std::shared_ptr<Node> new_parent = Application::get().m_World.m_ActiveScene->m_Sg.search<Node>(temp);  
+            node->addChild(new_parent);
+            
+            m_break_out = true;              
+          }
+        }
+        ImGui::EndDragDropTarget();
+        return m_break_out;
       }
 
       if (node->m_Parent != nullptr)

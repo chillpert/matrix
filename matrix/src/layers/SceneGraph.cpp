@@ -78,6 +78,42 @@ namespace MX
     }
   }
 
+  void SceneGraph::push(const std::shared_ptr<Node> node)
+  {
+    if (node != nullptr)
+    {
+      node->setShader(MX_GET_SHADER(MX_MATRIX_SHADERS + default_shader_name));
+      node->upload_uniforms();
+
+      if (search<Node>(node->m_Name) == nullptr)
+      {
+        m_Root->addChild(node);
+        return;
+      }
+      
+      uint64_t counter = 0;
+      bool accepted = false;
+      std::string current_name = node->m_Name;
+      std::string appendix = "";
+
+      while (!accepted)
+      {
+        std::shared_ptr<Node> temp = search<Node>(current_name + appendix);
+        
+        if (temp != nullptr)
+        {
+          ++counter;
+          appendix = "_" + std::to_string(counter);
+        }
+        else
+          accepted = true;
+      }
+
+      node->m_Name += appendix;
+      m_Root->addChild(node);
+    }
+  }
+
   void SceneGraph::upload_lighting_uniforms()
   {
     // lights

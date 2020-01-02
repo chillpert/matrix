@@ -5,10 +5,16 @@
 namespace MX
 {
   Node::Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader)
-    : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(NodeType::type_node) { }
+    : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(NodeType::type_node)
+  {
+    m_id = generate_id();
+  }
 
   Node::Node(const std::string &node_name, const NodeType& type, std::shared_ptr<MX_SHADER> shader)
-    : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(type) { }
+    : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(type)
+  {
+    m_id = generate_id();
+  }
 
   Node::~Node()
   {
@@ -17,11 +23,14 @@ namespace MX
 
   void Node::upload_uniforms()
   {
-    m_Shader->use();
-    m_Shader->setfMat4("model", m_Trans.m_world);
-    m_Shader->setfMat4("view", MX_CAMERA.getViewMatrix());
-    m_Shader->setfMat4("projection", MX_CAMERA.getProjectionMatrix());
-    m_Shader->setfVec3("viewPosition", MX_CAMERA.m_Position);
+    if (m_Shader != nullptr)
+    {
+      m_Shader->use();
+      m_Shader->setfMat4("model", m_Trans.m_world);
+      m_Shader->setfMat4("view", MX_CAMERA.getViewMatrix());
+      m_Shader->setfMat4("projection", MX_CAMERA.getProjectionMatrix());
+      m_Shader->setfVec3("viewPosition", MX_CAMERA.m_Position);
+    }
   }
 
   void Node::addChild(std::shared_ptr<Node> node)

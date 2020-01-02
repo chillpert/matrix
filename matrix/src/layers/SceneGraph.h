@@ -32,7 +32,7 @@ namespace MX
         recursive_search(name, it);
 
       if (hidden_search_holder == nullptr)
-        throw mx_entity_not_found(name + " (SceneGraph::search)");
+        return nullptr;
 
       return std::static_pointer_cast<T>(hidden_search_holder);
     }
@@ -40,6 +40,8 @@ namespace MX
     MX_API void get_all_objects(std::vector<std::string> *vec, std::shared_ptr<Node> it);
     MX_API void get_all_objects(std::vector<const char*> &vec, std::shared_ptr<Node> it);
     MX_API void get_all_objects(std::vector<std::shared_ptr<Node>> &vec, std::shared_ptr<Node> it);
+
+    MX_API void push(const std::shared_ptr<Node> node);
 
   private:
     MX_API void upload_lighting_uniforms();

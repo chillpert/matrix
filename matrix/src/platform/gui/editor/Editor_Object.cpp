@@ -22,9 +22,7 @@ namespace MX
 
   bool Editor_Object::update()
   {
-    if (Editor_Global::field_has_changed())
-      m_selection_has_changed = true;
-
+    Editor_Global::field_has_changed();
     return ImGui_Window::update();
   }
 
@@ -40,7 +38,7 @@ namespace MX
         if (Editor_Global::get_selection().at(0) != nullptr)
         {
           auto current = Editor_Global::get_selection().at(0);
-
+          
           static float speed_translation = 0.005f; // 5 mm;
           static float speed_rotation = 0.5f;
           static float speed_scale = 0.005f; // 5 mm;
@@ -81,7 +79,7 @@ namespace MX
             transformDrag("Translate", translation, speed_translation, spacing, 0.0f);
             transformDrag("Rotate", rotation, speed_rotation, spacing, 0.0f);
             transformDrag("Scale", scale, speed_scale, spacing, 1.0f);
-          
+
             // NEEDS TO BE FIXED
             /*
             for (std::shared_ptr<Node> it : Editor_Global::get_selection())
@@ -97,6 +95,7 @@ namespace MX
           */
 
           ImGui::Spacing();
+          ImGui::SetNextItemOpen(true, ImGuiCond_Once);
           if (ImGui::CollapsingHeader("Relations"))
           {
             ImGui::Spacing();
@@ -104,11 +103,8 @@ namespace MX
             if (current->m_Parent != nullptr)
             {
               ImGui::Text("Parent "); ImGui::SameLine();
-              static std::string current_parent_name = current->m_Parent->m_Name;
+              std::string current_parent_name = current->m_Parent->m_Name;
               ImGui::Button(current_parent_name.c_str(), ImVec2(-1, 0));
-
-              if (m_selection_has_changed)
-                current_parent_name = current->m_Parent->m_Name;
 
               if (ImGui::BeginDragDropTarget())
               {
@@ -132,10 +128,13 @@ namespace MX
             if (ImGui::CollapsingHeader("Model"))
             {
               auto current_ptr = std::dynamic_pointer_cast<GeometryNode>(current);
-              static std::string model_name = current_ptr->m_Model->m_name;
-              
-              if (m_selection_has_changed)
+
+              static std::string model_name = "undef";
+
+              if (current_ptr->m_Model != nullptr)
                 model_name = current_ptr->m_Model->m_name;
+              else
+                model_name = "undef";
 
               ImGui::Spacing();
               ImGui::Text("Model "); ImGui::SameLine();
@@ -153,44 +152,52 @@ namespace MX
                 ImGui::EndDragDropTarget();
               }
 
-              static std::string diffuse_name = current_ptr->m_textures->diffuse->m_Name;
-              static std::string specular_name = current_ptr->m_textures->specular->m_Name;
-
-              if (m_selection_has_changed)
-                diffuse_name = current_ptr->m_textures->diffuse->m_Name;
-
-              if (m_selection_has_changed)
-                specular_name = current_ptr->m_textures->specular->m_Name;
-
-              ImGui::Text("Textures");
-              ImGui::Text("Diffuse "); ImGui::SameLine();
-              ImGui::Button(diffuse_name.c_str() , ImVec2(-1.0f, 0.0f));
-
-              if (ImGui::BeginDragDropTarget())
+              if (current_ptr->m_textures != nullptr)
               {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMAGE_FE"))
-                {
-                  IM_ASSERT(payload->DataSize == sizeof(char) * 200);
-                  std::string temp = (char*)payload->Data;
-                  current_ptr->m_textures->diffuse = Application::get().m_World.getTexture(temp, std::string("texture_diffuse"));
-                  diffuse_name = temp.substr(temp.find_last_of("/") + 1);
-                }
-                ImGui::EndDragDropTarget();
-              }
+                static std::string diffuse_name = "undef";
 
-              ImGui::Text("Specular "); ImGui::SameLine();
-              ImGui::Button(specular_name.c_str() , ImVec2(-1.0f, 0.0f));
+                if (current_ptr->m_textures->diffuse != nullptr)
+                  diffuse_name = current_ptr->m_textures->diffuse->m_Name;
+                else
+                  diffuse_name = "undef";
 
-              if (ImGui::BeginDragDropTarget())
-              {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMAGE_FE"))
+                ImGui::Text("Textures");
+                ImGui::Text("Diffuse "); ImGui::SameLine();
+                ImGui::Button(diffuse_name.c_str() , ImVec2(-1.0f, 0.0f));
+
+                if (ImGui::BeginDragDropTarget())
                 {
-                  IM_ASSERT(payload->DataSize == sizeof(char) * 200);
-                  std::string temp = (char*)payload->Data;
-                  current_ptr->m_textures->specular = Application::get().m_World.getTexture(temp, std::string("texture_specular"));
-                  specular_name = temp.substr(temp.find_last_of("/") + 1);
+                  if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMAGE_FE"))
+                  {
+                    IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+                    std::string temp = (char*)payload->Data;
+                    current_ptr->m_textures->diffuse = Application::get().m_World.getTexture(temp, std::string("texture_diffuse"));
+                    diffuse_name = temp.substr(temp.find_last_of("/") + 1);
+                  }
+                  ImGui::EndDragDropTarget();
                 }
-                ImGui::EndDragDropTarget();
+
+                static std::string specular_name = "undef";
+                
+                if (current_ptr->m_textures->specular != nullptr)
+                  specular_name = current_ptr->m_textures->specular->m_Name;
+                else
+                  specular_name = "undef";
+
+                ImGui::Text("Specular "); ImGui::SameLine();
+                ImGui::Button(specular_name.c_str() , ImVec2(-1.0f, 0.0f));
+
+                if (ImGui::BeginDragDropTarget())
+                {
+                  if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("IMAGE_FE"))
+                  {
+                    IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+                    std::string temp = (char*)payload->Data;
+                    current_ptr->m_textures->specular = Application::get().m_World.getTexture(temp, std::string("texture_specular"));
+                    specular_name = temp.substr(temp.find_last_of("/") + 1);
+                  }
+                  ImGui::EndDragDropTarget();
+                }
               }
             }
           }
@@ -207,11 +214,10 @@ namespace MX
             if (current->m_Shader != nullptr)
             {
               static bool show_shader_info = false;
-              static std::string shader_name = current->m_Shader->m_Name;
 
-              if (m_selection_has_changed)
-                shader_name = current->m_Shader->m_Name;
-
+              std::string temp = current->m_Shader->m_Name;
+              std::string shader_name = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
+            
               ImGui::Text("Shader"); ImGui::SameLine();
 
               // if hovered over text ("Shader") display info window
@@ -235,15 +241,13 @@ namespace MX
                 {
                   IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                   std::string temp = (char*)payload->Data;
-                  temp = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
-                  current->m_Shader = Application::get().m_World.getShader(temp);
-                  shader_name = temp;
+                  current->m_Shader = Application::get().m_World.getShader(temp.substr(0, temp.find_last_of(".")));
+                  shader_name = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
                 }
                 ImGui::EndDragDropTarget();
               }
             }
           }
-
 
           ImGui::Spacing();
           ImGui::SetNextItemOpen(true, ImGuiCond_Once);
@@ -270,9 +274,6 @@ namespace MX
         }
       }
     }
-
-    if (m_selection_has_changed)
-      m_selection_has_changed = false;
 
     ImGui_Window::end();
   }

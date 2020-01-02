@@ -54,7 +54,7 @@ namespace MX
 
   void Shader_OpenGL::update()
   {
-    MX_FATAL("THIS IS Shader_OpenGL update | this function should not be called. WADDUHEK");
+    
   }
 
 

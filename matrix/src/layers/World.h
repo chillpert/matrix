@@ -20,8 +20,6 @@ namespace MX
     MX_API World() = default;
     MX_API ~World();
 
-    MX_API static World &get_default_world();
-
     MX_API World &operator=(const World&) = default;
 
     MX_API void initialize();
