@@ -31,7 +31,7 @@ namespace MX
     MX_API Node() = delete;
     MX_API Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader = nullptr);
     MX_API Node(const std::string &node_name, const NodeType& type = type_node, std::shared_ptr<MX_SHADER> shader = nullptr);
-    MX_API virtual ~Node() = default;
+    MX_API virtual ~Node();
 
     MX_API Node(const Node&) = default;
     MX_API Node &operator=(const Node&) = default;
@@ -47,6 +47,8 @@ namespace MX
 
     MX_API virtual void setParent(Node *node);
     MX_API virtual void setShader(std::shared_ptr<Shader> shader);
+
+    MX_API virtual void destroy();
 
     MX_API virtual std::string to_string() const;
 

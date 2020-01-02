@@ -6,20 +6,23 @@
 
 namespace MX
 {
-  class Editor_Hierachy : public ImGui_Window, public Editor_Global
+  class Editor_Hierarchy : public ImGui_Window, public Editor_Global
   {
   public:
-    MX_API Editor_Hierachy();
-    MX_API Editor_Hierachy(const std::string& name, ImGuiWindowFlags flags = 0);
+    MX_API Editor_Hierarchy();
+    MX_API Editor_Hierarchy(const std::string& name, ImGuiWindowFlags flags = 0);
 
     MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;
     MX_API void render() override; 
   
   private:
-    MX_API void traverse(const std::shared_ptr<Node> node, int counter);
+    MX_API bool traverse(const std::shared_ptr<Node> node, int counter);
 
-    std::shared_ptr<Node> m_root;    
+    std::shared_ptr<Node> m_root;
+    bool m_break_out = false;
+    bool m_right_clicked = false;
+    std::shared_ptr<Node> m_rc_node = nullptr;
   };
 }
 

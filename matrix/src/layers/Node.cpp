@@ -10,6 +10,11 @@ namespace MX
   Node::Node(const std::string &node_name, const NodeType& type, std::shared_ptr<MX_SHADER> shader)
     : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(type) { }
 
+  Node::~Node()
+  {
+    MX_WARN("MX: Node: Destroyed Node: " + m_Name);
+  }
+
   void Node::upload_uniforms()
   {
     m_Shader->use();
@@ -21,35 +26,60 @@ namespace MX
 
   void Node::addChild(std::shared_ptr<Node> node)
   {
-    m_Children.push_back(node);
+    if (node != nullptr)
+    {
+      if (node->m_Parent != nullptr)
+      {
+        // if new child has a parent, remove new child from parent's children list
+        std::list<std::shared_ptr<Node>>::iterator iter;
+        for (iter = node->m_Parent->m_Children.begin(); iter != node->m_Parent->m_Children.end(); ++iter)
+        {
+          if ((*iter)->m_Name == node->m_Name)
+          {
+            node->m_Parent->m_Children.erase(iter);
+            break;
+          }
+        }
+      }
 
-    // the following line causes the segmentation fault
-    node->setParent(this);
-    //node->m_Parent = this;
+      node->m_Parent = this;
+      m_Children.push_back(node);
 
-    MX_INFO_LOG("MX: Node: " + node->m_Name + " added to parent: " + this->m_Name);
+      MX_INFO_LOG("MX: Node: " + node->m_Name + " added to parent: " + this->m_Name);
+    }
+
   }
 
   void Node::setParent(Node *node)
   {
-    if (m_Parent == nullptr)
-      m_Parent = node;
-    else
+    // if this node is the root, return because the root must not have a parent
+    if (m_Name == default_root_name)
     {
-      Node *old_parent = m_Parent;
+      MX_WARN("MX: Node: Root Node must not have a parent");
+      return;
+    }
 
-      node->m_Children.push_back(std::shared_ptr<Node>(this));
-      m_Parent = node;
-
-      std::list<std::shared_ptr<Node>>::iterator iter;
-      for (iter = old_parent->m_Children.begin(); iter != old_parent->m_Children.end(); ++iter)
+    if (node != nullptr)
+    {
+      // delete this node from its parent's children list
+      if (m_Parent != nullptr)
       {
-        if ((*iter)->m_Name == this->m_Name)
+        std::list<std::shared_ptr<Node>>::iterator iter;
+        for (iter = m_Parent->m_Children.begin(); iter != m_Parent->m_Children.end(); ++iter)
         {
-          old_parent->m_Children.erase(iter);
-          break;
+          if ((*iter)->m_Name == m_Name)
+          {
+            m_Parent->m_Children.erase(iter);
+            break;
+          }
         }
       }
+
+      // add this node to new parent's children list
+      node->m_Children.push_back(std::shared_ptr<Node>(this));
+
+      // set node to this node's parent
+      m_Parent = node;
     }
   }
 
@@ -76,6 +106,28 @@ namespace MX
     }
     else
       m_Shader = nullptr;
+  }
+
+  void Node::destroy()
+  {
+    if (m_Name == default_root_name)
+      return;
+
+    if (m_Parent != nullptr)
+    {
+      std::list<std::shared_ptr<Node>>::iterator iter;
+      for (iter = m_Parent->m_Children.begin(); iter != m_Parent->m_Children.end(); ++iter)
+      {
+        if ((*iter)->m_Name == m_Name)
+        {
+          m_Parent->m_Children.erase(iter);
+          break;
+        }
+      }
+    }
+
+    for (std::shared_ptr<Node> it : m_Children)
+      it->m_Parent = nullptr;
   }
 
   std::string Node::to_string() const

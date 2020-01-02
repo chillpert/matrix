@@ -3,40 +3,109 @@
 
 namespace MX
 {
-  Editor_Hierachy::Editor_Hierachy()
+  Editor_Hierarchy::Editor_Hierarchy()
     : m_root(Application::get().m_World.m_ActiveScene->m_Sg.m_Root) { }
 
-  Editor_Hierachy::Editor_Hierachy(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Hierarchy::Editor_Hierarchy(const std::string& name, ImGuiWindowFlags flags)
     : m_root(Application::get().m_World.m_ActiveScene->m_Sg.m_Root)
   {
     initialize(name, flags);
   }
 
-  bool Editor_Hierachy::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Hierarchy::initialize(const std::string& name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }
 
-  bool Editor_Hierachy::update()
+  bool Editor_Hierarchy::update()
   {
     return ImGui_Window::update();
   }
 
-  void Editor_Hierachy::render()
+  void Editor_Hierarchy::render()
   {
     if (ImGui_Window::begin())
-    {   
+    {
+      if (ImGui::Button("Unselect"))
+        Editor_Global::get_selection().clear();
+
+      if (ImGui::BeginMenuBar())
+      {
+        if (ImGui::BeginMenu("New##NewObject"))
+        {
+          if (ImGui::MenuItem("Geometry"))
+          {
+
+          }
+
+          if (ImGui::MenuItem("Container"))
+          {
+
+          }
+
+          if (ImGui::BeginMenu("Light"))
+          {
+            if (ImGui::MenuItem("Directional Light"))
+            {
+
+            }
+
+            if (ImGui::MenuItem("Point Light"))
+            {
+
+            }
+
+            if (ImGui::MenuItem("Spot Light"))
+            {
+
+            }
+
+            ImGui::EndMenu();
+          }
+
+          ImGui::EndMenu();
+        }
+        ImGui::EndMenuBar();
+      }
+
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
-      traverse(Application::get().m_World.m_ActiveScene->m_Sg.m_Root, 0);
+
+      // magic number (why IMGUI WHYY?!)
+      ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 23.0f);
+      if (traverse(Application::get().m_World.m_ActiveScene->m_Sg.m_Root, 0))
+        m_break_out = false;
+      ImGui::PopStyleVar();
+    }
+
+    static ImGui_ContextMenu hierarchy_context_menu("Hierarchy Context Menu");
+    if (hierarchy_context_menu.begin(m_right_clicked))
+    {
+      if (ImGui::Button("Delete##Delete Node in Hierarchy"))
+      {
+        if (m_rc_node != nullptr)
+        {
+          m_rc_node->destroy();
+          m_rc_node = nullptr;
+          m_right_clicked = false;
+        }
+        Editor_Global::get_selection().clear();
+      }
+
+      hierarchy_context_menu.end();
     }
 
     ImGui_Window::end();
   }
 
   // traverse through all children of the given node recursively
-  void Editor_Hierachy::traverse(const std::shared_ptr<Node> node, int counter)
+  bool Editor_Hierarchy::traverse(const std::shared_ptr<Node> node, int counter)
   {
-    int flags = ImGuiTreeNodeFlags_OpenOnArrow;
+    static std::string prev_node;
+
+    if (m_break_out)
+      return m_break_out;
+
+    int flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_SpanAvailWidth;
 
     if (node != nullptr)
     {
@@ -56,6 +125,9 @@ namespace MX
           break;
         }
       }
+
+      if (node->m_Parent != nullptr)
+        ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
 
       if (ImGui::TreeNodeEx(node->m_Name.c_str(), flags))
       {
@@ -78,13 +150,61 @@ namespace MX
         {
           Editor_Global::get_selection().clear();
           Editor_Global::get_selection().push_back(node);
+        }     
+        else if (ImGui::IsItemClicked(1))
+        {
+          m_rc_node = node;
+          m_right_clicked = true;
         }
 
         ImGui::TreePop();
 
-        for (auto it : node->m_Children)
-          traverse(it, ++counter);
+        // set up drap and drop source
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+        {
+          std::string send_tag = "NODE_H"; // H = Hierarchy
+          ImGui::SetDragDropPayload(send_tag.c_str(), node->m_Name.c_str(), sizeof(char) * 200);
+          ImGui::EndDragDropSource();
+        }
+
+        if (ImGui::BeginDragDropTarget())
+        {
+          if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("NODE_H"))
+          {
+            IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+            std::string temp = (char*)payload->Data;
+
+            if (node != nullptr)
+            {
+              std::shared_ptr<Node> new_parent = Application::get().m_World.m_ActiveScene->m_Sg.search<Node>(temp);  
+              node->addChild(new_parent);
+              
+              m_break_out = true;              
+            }
+          }
+          ImGui::EndDragDropTarget();
+          return m_break_out;
+        }
+
+        if (!m_break_out)
+        {
+          for (auto it : node->m_Children)
+          {
+            if (m_break_out)
+              return m_break_out;
+
+            traverse(it, ++counter);
+
+            if (m_break_out)
+              return m_break_out;
+          }
+        }
       }
+
+      if (node->m_Parent != nullptr)
+        ImGui::Unindent();
     }
+
+    return m_break_out;
   }
 }

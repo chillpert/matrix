@@ -333,6 +333,7 @@ namespace MX
 
     // write to file
     std::ofstream file;
+    MX_FATAL(MX_SCENES_PATH + m_Name + ".mx");
     file.open(MX_SCENES_PATH + m_Name + ".mx");
     file << name << camera << nodes;
     file.close();

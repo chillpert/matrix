@@ -43,6 +43,7 @@ namespace MX
 
   private:
     MX_API void upload_lighting_uniforms();
+
     MX_API void recursive_initialize(std::shared_ptr<Node> it);
     MX_API void recursive_render(std::shared_ptr<Node> it, glm::fmat4 mat = glm::fmat4(1.0f));
     MX_API void recursive_search(const std::string &name, std::shared_ptr<Node> it);

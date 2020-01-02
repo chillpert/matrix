@@ -95,7 +95,7 @@ namespace MX
     auto profiler = std::make_shared<Editor_Profiler>("Profiler", ImGuiWindowFlags_MenuBar);
     auto console = std::make_shared<Editor_Console>("Console", ImGuiWindowFlags_MenuBar);
     auto object = std::make_shared<Editor_Object>("Object");
-    auto hierarchy = std::make_shared<Editor_Hierachy>("Hierarchy");
+    auto hierarchy = std::make_shared<Editor_Hierarchy>("Hierarchy", ImGuiWindowFlags_MenuBar);
     auto explorer = std::make_shared<Editor_Explorer>("Explorer", ImGuiWindowFlags_MenuBar);
 
     // toggle window visibility

@@ -1,11 +1,11 @@
 Scene
-@Name{Room}
+@Name{OtherRoom}
 
 Camera
-@Position{vec3(-2.129229, 1.884397, 3.615695)}
-@Front{vec3(0.514146, -0.292038, -0.806454)}
-@Yaw{302.519104}
-@Pitch{-16.980017}
+@Position{vec3(0.088667, 1.349381, 3.611457)}
+@Front{vec3(-0.005109, -0.220187, -0.975444)}
+@Yaw{269.699951}
+@Pitch{-12.720014}
 @FOV{45.000000}
 @Sensitivity{0.060000}
 
@@ -15,7 +15,7 @@ Node
 @Parent{Root}
 @Type{type_geometry}
 @Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
-@Transform{T{vec3(-1.245000, -0.050000, -0.635000)}R{vec3(0.000000, -61.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
+@Transform{T{vec3(0.000000, -0.005000, -0.355000)}R{vec3(0.000000, 266.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
 @Model{C:/Repos/matrix/resources/models/simple_chair/Chair.obj}

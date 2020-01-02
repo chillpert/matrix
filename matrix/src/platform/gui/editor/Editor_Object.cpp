@@ -95,6 +95,35 @@ namespace MX
             TODO:
               - since names are static, they don't update when clicked on another node
           */
+
+          ImGui::Spacing();
+          if (ImGui::CollapsingHeader("Relations"))
+          {
+            ImGui::Spacing();
+
+            if (current->m_Parent != nullptr)
+            {
+              ImGui::Text("Parent "); ImGui::SameLine();
+              static std::string current_parent_name = current->m_Parent->m_Name;
+              ImGui::Button(current_parent_name.c_str(), ImVec2(-1, 0));
+
+              if (m_selection_has_changed)
+                current_parent_name = current->m_Parent->m_Name;
+
+              if (ImGui::BeginDragDropTarget())
+              {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("NODE_H"))
+                {
+                  IM_ASSERT(payload->DataSize == sizeof(char) * 200);
+                  std::string temp = (char*)payload->Data;
+
+                  std::shared_ptr<Node> new_parent = Application::get().m_World.m_ActiveScene->m_Sg.search<Node>(temp);          
+                  current->setParent(new_parent.get());
+                }
+                ImGui::EndDragDropTarget();
+              }
+            }
+          }
           
           if (dynamic_cast<GeometryNode*>(current.get()))
           {
