@@ -125,18 +125,18 @@ namespace MX
         {
           app_viewport->m_Viewport_max_x = static_cast<int>((window_size_avail.y / 3.0f) * 4.0f);
           app_viewport->m_Viewport_max_y = static_cast<int>(window_size.y);
-          window_size_avail.x = static_cast<int>(app_viewport->m_Viewport_max_x);
+          window_size_avail.x = static_cast<float>(app_viewport->m_Viewport_max_x);
         }
         else
         {
           app_viewport->m_Viewport_max_y = max_y;
-          window_size_avail.y = max_y;
+          window_size_avail.y = static_cast<float>(max_y);
         }
       }
       else if (aspect_16_9)
       {
-        app_viewport->m_Viewport_min_x = window_pos.x;
-        app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
+        app_viewport->m_Viewport_min_x = static_cast<int>(window_pos.x);
+        app_viewport->m_Viewport_min_y = static_cast<int>(Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y));
 
         int max_y = static_cast<int>((window_size.x / 16.0f) * 9.0f);
 
@@ -144,19 +144,19 @@ namespace MX
         if (max_y > window_size_avail.y)
         {
           app_viewport->m_Viewport_max_x = static_cast<int>((window_size_avail.y / 9.0f) * 16.0f);
-          app_viewport->m_Viewport_max_y = window_size.y;
-          window_size_avail.x = app_viewport->m_Viewport_max_x;
+          app_viewport->m_Viewport_max_y = static_cast<int>(window_size.y);
+          window_size_avail.x = static_cast<float>(app_viewport->m_Viewport_max_x);
         }
         else
         {
           app_viewport->m_Viewport_max_y = max_y;
-          window_size_avail.y = max_y;
+          window_size_avail.y = static_cast<float>(max_y);
         }
       }
       else if (aspect_21_9)
       {
-        app_viewport->m_Viewport_min_x = window_pos.x;
-        app_viewport->m_Viewport_min_y = Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y);
+        app_viewport->m_Viewport_min_x = static_cast<int>(window_pos.x);
+        app_viewport->m_Viewport_min_y = static_cast<int>(Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y));
 
         int max_y = static_cast<int>((window_size.x / 21.0f) * 9.0f);
 
@@ -164,13 +164,13 @@ namespace MX
         if (max_y > window_size_avail.y)
         {
           app_viewport->m_Viewport_max_x = static_cast<int>((window_size_avail.y / 9.0f) * 21.0f);
-          app_viewport->m_Viewport_max_y = window_size.y;
-          window_size_avail.x = app_viewport->m_Viewport_max_x;
+          app_viewport->m_Viewport_max_y = static_cast<int>(window_size.y);
+          window_size_avail.x = static_cast<float>(app_viewport->m_Viewport_max_x);
         }
         else
         {
           app_viewport->m_Viewport_max_y = max_y;
-          window_size_avail.y = max_y;
+          window_size_avail.y = static_cast<float>(max_y);
         }
       }
 

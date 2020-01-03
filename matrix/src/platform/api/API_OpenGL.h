@@ -6,18 +6,18 @@
 
 namespace MX
 {
-  class MX_API API_OpenGL : public API
+  class API_OpenGL : public API
   {
   public:
-    API_OpenGL() = default;
+    MX_API API_OpenGL() = default;
 
-    bool initialize() override;
-    void update() override;
-    void render() override;
-    void clear() override;
+    MX_API bool initialize() override;
+    MX_API void update() override;
+    MX_API void render() override;
+    MX_API void clear() override;
 
   private:
-    void initialize_framebuffer();
+    MX_API void initialize_framebuffer();
   };
 }
 

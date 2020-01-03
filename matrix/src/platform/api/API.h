@@ -16,19 +16,19 @@
 
 namespace MX
 {
-  class MX_API API
+  class API
   {
   public:
-    API() = default;
-    virtual ~API() = default;
+    MX_API API() = default;
+    MX_API virtual ~API() = default;
 
-    API(const API&) = default;
-    API &operator=(const API&) = default;
+    MX_API API(const API&) = default;
+    MX_API API &operator=(const API&) = default;
 
-    virtual bool initialize() { return false; }
-    virtual void update() {}
-    virtual void render() {}
-    virtual void clear() {}
+    MX_API virtual bool initialize() { return false; }
+    MX_API virtual void update() {}
+    MX_API virtual void render() {}
+    MX_API virtual void clear() {}
 
     int m_test;
     MX_FRAMEBUFFER m_framebuffer;
