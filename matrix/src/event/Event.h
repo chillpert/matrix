@@ -9,46 +9,79 @@
   #define MX_SET_EVENT_TYPE(x)
 #endif
 
-enum EventType 
+enum class EventType
 {
-  e_Default = 1, e_DefaultKeyboard = 2, e_DefaultMouse = 3,
-  e_KeyboardButtonPressed = 4, e_KeyboardButtonReleased = 5,
-  e_MouseButtonPressed = 6, e_MouseButtonReleased = 7,
-  e_MouseMoved = 8,
-  e_MouseScrolled = 9,
-  e_DefaultWindow = 10, e_WindowClosed = 11, e_WindowResized = 12
+  None = 0,
+
+  KeyboardButtonPressed, KeyboardButtonReleased,
+
+  MouseButtonPressed, MouseButtonReleased,
+  MouseMoved,
+  MouseScrolled,
+  
+  WindowClosed, WindowResized
 };
+
+// uses bit field
+enum EventCategory
+{
+  None = 0,
+  Application = (1 << 0),
+  Input = (1 << 1),
+  Keyboard = (1 << 2),
+  Mouse = (1 << 3),
+  MouseButton = (1 << 4)
+};
+
+#define EVENT_CLASS_TYPE(type) static EventType getStaticType() { return EventType::##type; }\
+	virtual EventType getEventType() const override { return getStaticType(); }
+
+#define EVENT_CLASS_CATEGORY(category) virtual int getCategoryFlags() const override { return category; }
 
 namespace MX 
 {
   class MX_API Event 
   {
+    friend class EventDispatcher;
   public:
-    Event() 
-    {
-      m_Event = e_Default;
-    }
-    ~Event() {}
+    virtual EventType getEventType() const = 0;
+    virtual int getCategoryFlags() const = 0;
 
-    virtual void handle();
-    virtual void printEventType() const;
+    virtual void handle() = 0;
+    virtual std::string toString() const = 0;
 
-    int getKeyCode() { return m_KeyCode; }
-    EventType getEventType() { return m_Event; }
-
-    void setCoordinates(int xPos, int yPos);
-    void setAxis(int xAxis, int yAxis);
-    void setKeyCode(int aKeyCode);
-    void setEventType(EventType event);
-    void setSize(int width, int height);
+    inline bool isInCategory(EventCategory category) { return getCategoryFlags() & category; }
 
   protected:
-    EventType m_Event;
-    int m_X, m_Y;
-    int m_KeyCode;
-    int m_Xaxis, m_Yaxis;
-    int m_Width, m_Height;
+    bool m_handled = false;
   };
+
+  
+  class EventDispatcher
+  {
+    template<typename T>
+    using EventFn = std::function<bool(T&)>;
+  
+  public:
+    EventDispatcher(Event& event)
+      : m_event(event) { }
+
+    template<typename T>
+    bool dispatch(EventFn<T> func)
+    {
+      if (m_event.getEventType() == T::getStaticType())
+      {
+        m_event.m_handled = func(*(T*)&m_event);
+        return true;
+      }
+      return false;
+    }
+
+  private:
+    Event& m_event;
+  };
+
+  inline std::ostream& operator<<(std::ostream& os, const Event& e) { return os << e.toString(); }
 }
 
 #endif // EVENT_H

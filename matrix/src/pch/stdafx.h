@@ -59,6 +59,7 @@
 #include <typeinfo>
 #include <initializer_list>
 #include <tuple>
+#include <functional>
 
 // project files
 #include "Utils.h"

@@ -5,69 +5,77 @@
 
 namespace MX 
 {
-
-  class MX_API MouseEvent : public Event
+  class MX_API MouseMoved : public Event
   {
   public:
-    MouseEvent() 
-    {
-      MX_SET_EVENT_TYPE(e_DefaultMouse);
-    }
-    ~MouseEvent() {}
+    MouseMoved(float x, float y);
 
-    void handle() override {};
-  };
+    EVENT_CLASS_TYPE(MouseMoved)
+    EVENT_CLASS_CATEGORY(Mouse | Input)
 
-  class MX_API MouseButtonPressed : public MouseEvent
-  {
-  public:
-    MouseButtonPressed(int button)
-    {
-      setKeyCode(button);
-      MX_SET_EVENT_TYPE(e_MouseButtonPressed);
-    }
-    ~MouseButtonPressed() {}
+    float getX() const { return m_mouse_x; }
+    float getY() const { return m_mouse_y; }
 
     void handle() override;
+    std::string toString() const;
+  
+  private:
+    float m_mouse_x;
+    float m_mouse_y;
   };
 
-  class MX_API MouseButtonReleased : public MouseEvent
+  class MX_API MouseScrolled : public Event
   {
   public:
-    MouseButtonReleased(int button)
-    {
-      setKeyCode(button);
-      MX_SET_EVENT_TYPE(e_MouseButtonReleased);
-    }
-    ~MouseButtonReleased() {}
+    MouseScrolled(float offset_x, float offset_y);
+
+    EVENT_CLASS_TYPE(MouseScrolled)
+    EVENT_CLASS_CATEGORY(Mouse | Input)
+
+    float getOffsetX() const { return m_offset_x; }
+    float getOffsetY() const { return m_offset_y; }
 
     void handle() override;
+    std::string toString() const;
+
+  private:
+    float m_offset_x;
+    float m_offset_y;
   };
 
-  class MX_API MouseMoved : public MouseEvent
+  class MX_API MouseButtonEvent : public Event
   {
   public:
-    MouseMoved(int x, int y)
-    {
-      setCoordinates(x, y);
-      MX_SET_EVENT_TYPE(e_MouseMoved);
-    }
-    ~MouseMoved() {}
+    EVENT_CLASS_CATEGORY(Mouse | Input)
 
-    void handle() override;
+    int getMouseButton() const { return m_button; }
+  
+  protected:
+    MouseButtonEvent(int button);
+
+    int m_button;
   };
 
-  class MX_API MouseScrolled : public MouseEvent
+  class MX_API MouseButtonPressed : public MouseButtonEvent
   {
   public:
-    MouseScrolled(int xAxis, int yAxis)
-    {
-      setAxis(xAxis, yAxis);
-      MX_SET_EVENT_TYPE(e_MouseScrolled);
-    }
-    ~MouseScrolled() {}
+    MouseButtonPressed(int button);
+
+    EVENT_CLASS_TYPE(MouseButtonPressed)
 
     void handle() override;
+    std::string toString() const;
+  };
+
+  class MX_API MouseButtonReleased : public MouseButtonEvent
+  {
+  public:
+    MouseButtonReleased(int button);
+
+    EVENT_CLASS_TYPE(MouseButtonReleased)
+
+    void handle() override;
+    std::string toString() const;
   };
 }
 

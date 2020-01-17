@@ -5,40 +5,32 @@
 
 namespace MX
 {
-  class MX_API WindowEvent : public Event
+  class MX_API WindowResized : public Event
   {
   public:
-    WindowEvent()
-    {
-      MX_SET_EVENT_TYPE(e_DefaultWindow);
-    }
-    ~WindowEvent() {}
+    WindowResized(unsigned int width, unsigned int height);
 
-    void handle() override {}
-  };
+    EVENT_CLASS_TYPE(WindowResized)
+    EVENT_CLASS_CATEGORY(Application)
 
-  class MX_API WindowClosed : public WindowEvent
-  {
-  public:
-    WindowClosed()
-    {
-      MX_SET_EVENT_TYPE(e_WindowClosed);
-    }
-    ~WindowClosed() {}
+    unsigned int getWidth() const { return m_width; }
+    unsigned int getHeight() const { return m_height; }
 
     void handle() override;
+    std::string toString() const;
+
+  private:
+    unsigned int m_width;
+    unsigned int m_height;
   };
 
-  class MX_API WindowResized : public WindowEvent
+  class MX_API WindowClosed : public Event
   {
   public:
-    WindowResized(int width, int height)
-    {
-      setSize(width, height);
-      MX_SET_EVENT_TYPE(e_WindowResized);
-    }
-    ~WindowResized() {}
+    EVENT_CLASS_TYPE(WindowClosed)
+    EVENT_CLASS_CATEGORY(Application)
 
+    std::string toString() const;
     void handle() override;
   };
 }
