@@ -115,7 +115,7 @@ namespace MX
       {
         int x, y;
         SDL_GetMouseState(&x, &y);
-        MouseMoved event(x, y);
+        MouseMoved event(static_cast<float>(x), static_cast<float>(y));
         event.handle();
       }
       if (SDLevent.type == SDL_MOUSEBUTTONDOWN)
@@ -130,7 +130,7 @@ namespace MX
       }
       if (SDLevent.type == SDL_MOUSEWHEEL)
       {
-        MouseScrolled event(SDLevent.wheel.x, SDLevent.wheel.y);
+        MouseScrolled event(static_cast<float>(SDLevent.wheel.x), static_cast<float>(SDLevent.wheel.y));
         event.handle();
       }
       if (SDLevent.type == SDL_WINDOWEVENT)
