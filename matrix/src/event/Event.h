@@ -3,22 +3,17 @@
 
 #include "stdafx.h"
 
-#ifdef MX_DEBUG
-  #define MX_SET_EVENT_TYPE(x) setEventType(x);
+#ifdef MX_LOG_EVENTS
+  #define MX_LOG_EVENT(event) MX_INFO_LOG(event.toString());
 #else
-  #define MX_SET_EVENT_TYPE(x)
+  #define MX_LOG_EVENT(event)
 #endif
 
 enum class EventType
 {
   None = 0,
-
   KeyboardButtonPressed, KeyboardButtonReleased,
-
-  MouseButtonPressed, MouseButtonReleased,
-  MouseMoved,
-  MouseScrolled,
-  
+  MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled,
   WindowClosed, WindowResized
 };
 

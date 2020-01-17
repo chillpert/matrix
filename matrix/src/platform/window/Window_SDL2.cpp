@@ -105,11 +105,13 @@ namespace MX
       {
         KeyboardButtonPressed event(SDLevent.key.keysym.sym);
         event.handle();
+        MX_LOG_EVENT(event)
       }
       if (SDLevent.type == SDL_KEYUP)
       {
         KeyboardButtonReleased event(SDLevent.key.keysym.sym);
         event.handle();
+        MX_LOG_EVENT(event)
       }
       if (SDLevent.type == SDL_MOUSEMOTION)
       {
@@ -117,21 +119,25 @@ namespace MX
         SDL_GetMouseState(&x, &y);
         MouseMoved event(static_cast<float>(x), static_cast<float>(y));
         event.handle();
+        MX_LOG_EVENT(event)
       }
       if (SDLevent.type == SDL_MOUSEBUTTONDOWN)
       { 
         MouseButtonPressed event(SDLevent.button.button);
         event.handle();
+        MX_LOG_EVENT(event)
       }
       if (SDLevent.type == SDL_MOUSEBUTTONUP)
       {
         MouseButtonReleased event(SDLevent.button.button);
         event.handle();
+        MX_LOG_EVENT(event)
       }
       if (SDLevent.type == SDL_MOUSEWHEEL)
       {
         MouseScrolled event(static_cast<float>(SDLevent.wheel.x), static_cast<float>(SDLevent.wheel.y));
         event.handle();
+        MX_LOG_EVENT(event)
       }
       if (SDLevent.type == SDL_WINDOWEVENT)
       {
@@ -141,12 +147,14 @@ namespace MX
           {
             WindowClosed event;
             event.handle();
+            MX_LOG_EVENT(event)
             break;
           }
           case SDL_WINDOWEVENT_RESIZED:
           {
             WindowResized event(SDLevent.window.data1, SDLevent.window.data2);
             event.handle();
+            MX_LOG_EVENT(event)
             break;
           }
         }
