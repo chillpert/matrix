@@ -597,27 +597,32 @@ namespace MX
 
               if (temp_.at(0) == 'D' && temp_.at(1) == '{')
               {
-                textures.diffuse = getTexture(str, std::string("texture_diffuse"));
+                std::string texture_type = "texture_diffuse";
+                textures.diffuse = getTexture(str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'S' && temp_.at(1) == '{')
               {
-                textures.specular = getTexture(str, std::string("texture_specular"));
+                std::string texture_type = "texture_specular";
+                textures.specular = getTexture(str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'N' && temp_.at(1) == '{')
               {
-                textures.normal = getTexture(str, std::string("texture_normal"));
+                std::string texture_type = "texture_normal";
+                textures.normal = getTexture(str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'B' && temp_.at(1) == '{')
               {
-                textures.bump = getTexture(str, std::string("texture_bump"));
+                std::string texture_type = "texture_bump";
+                textures.bump = getTexture(str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'H' && temp_.at(1) == '{')
               {
-                textures.height = getTexture(str, std::string("texture_height"));
+                std::string texture_type = "texture_height";
+                textures.height = getTexture(str, texture_type);
                 continue;
               }
             }

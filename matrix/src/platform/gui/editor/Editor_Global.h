@@ -9,7 +9,7 @@ namespace MX
   class Editor_Global
   {
   public:
-    static std::vector<std::shared_ptr<Node>> &Editor_Global::get_selection()
+    static std::vector<std::shared_ptr<Node>> &get_selection()
     {
       static std::vector<std::shared_ptr<Node>> selection;
       return selection;
