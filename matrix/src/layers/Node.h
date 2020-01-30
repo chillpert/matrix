@@ -54,7 +54,6 @@ namespace MX
 
   public:
     std::string m_Name;
-    uint64_t m_id;
 
     std::shared_ptr<Shader> m_Shader;
 
@@ -63,7 +62,10 @@ namespace MX
 
     Transform m_Trans;
     bool m_visible;
+  
+  private:
     NodeType m_type;
+    uint64_t m_id;
   };
 
   MX_API std::ostream& operator<<(std::ostream& os, std::shared_ptr<Node> node);
