@@ -8,6 +8,7 @@ namespace MX
     : m_name(path), m_gamma_correction(gamma)
   {
     m_full_path = path;
+    m_relative_path = path.substr(path.find(std::string("matrix")) + 7); // 7 = m + a + t + r + i + x + /
     m_directory = m_full_path.substr(0, m_full_path.find_last_of('/'));
 
     if (instant_init)

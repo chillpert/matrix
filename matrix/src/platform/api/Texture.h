@@ -67,6 +67,7 @@ namespace MX
 
     std::string m_Name;
     std::string m_path;
+    std::string m_relative_path;
     std::string m_type = "texture_diffuse";
 
     bool m_initialized = 0;

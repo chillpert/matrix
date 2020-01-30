@@ -31,6 +31,7 @@ include_directories(${CMAKE_SOURCE_DIR}/matrix/src/intersections)
 include_directories(${CMAKE_SOURCE_DIR}/matrix/src/math)
 
 # resource directories
+add_compile_definitions(MX_ROOT_PATH="${PROJECT_SOURCE_DIR}/")
 add_compile_definitions(MX_RESOURCES="${PROJECT_SOURCE_DIR}/resources/")
 add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/textures/")
 add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")

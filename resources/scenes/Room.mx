@@ -2,24 +2,37 @@ Scene
 @Name{Room}
 
 Camera
-@Position{vec3(-3.620222, 1.107126, 1.118052)}
-@Front{vec3(0.944679, -0.138827, -0.297167)}
-@Yaw{342.538025}
-@Pitch{-7.979990}
+@Position{vec3(-0.349329, 0.998028, 3.055841)}
+@Front{vec3(0.046913, -0.077415, -0.995895)}
+@Yaw{272.697021}
+@Pitch{-4.439973}
 @FOV{45.000000}
 @Sensitivity{0.060000}
 
 
 Node
+@Name{Object}
+@Parent{Root}
+@Type{type_geometry}
+@Shader{resources/matrix/shaders/blinn_phong}
+@Transform{T{vec3(-1.250000, 0.810000, -0.445000)}R{vec3(-38.000000, -9.000000, -20.000000)}S{vec3(0.200000, 0.200000, 0.200000)}}
+@Visible{1}
+-
+@Model{resources/models/monkey.obj}
+@TextureProfile{D{resources/textures/diffuse/metal.png}S{resources/textures/specular/plastic_specular.png}} 
+@MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
+-
+
+Node
 @Name{Chair Wood}
 @Parent{Root}
 @Type{type_geometry}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{resources/matrix/shaders/blinn_phong}
 @Transform{T{vec3(-1.245000, -0.050000, -0.635000)}R{vec3(0.000000, -61.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
-@Model{C:/Repos/matrix/resources/models/simple_chair/Chair.obj}
-@TextureProfile{D{C:/Repos/matrix/resources/textures/diffuse/wood dark.jpg}S{C:/Repos/matrix/resources/textures/specular/wood_specular.jpg}} 
+@Model{resources/models/simple_chair/Chair.obj}
+@TextureProfile{D{resources/textures/diffuse/wood dark.jpg}S{resources/textures/specular/wood_specular.jpg}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
@@ -27,12 +40,12 @@ Node
 @Name{Box}
 @Parent{Root}
 @Type{type_geometry}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{resources/matrix/shaders/blinn_phong}
 @Transform{T{vec3(1.075000, 0.495000, -0.605000)}R{vec3(0.000000, -37.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
-@Model{C:/Repos/matrix/resources/models/cube.obj}
-@TextureProfile{D{C:/Repos/matrix/resources/textures/diffuse/box.png}S{C:/Repos/matrix/resources/textures/specular/box_specular.png}} 
+@Model{resources/models/cube.obj}
+@TextureProfile{D{resources/textures/diffuse/box.png}S{resources/textures/specular/box_specular.png}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
@@ -40,12 +53,12 @@ Node
 @Name{Floor}
 @Parent{Root}
 @Type{type_geometry}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{resources/matrix/shaders/blinn_phong}
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(-90.000000, 0.000000, 0.000000)}S{vec3(2.000000, 2.000000, 2.000000)}}
 @Visible{1}
 -
-@Model{C:/Repos/matrix/resources/models/quad.obj}
-@TextureProfile{D{C:/Repos/matrix/resources/textures/diffuse/wood.png}S{C:/Repos/matrix/resources/textures/specular/wood_specular.jpg}} 
+@Model{resources/models/quad.obj}
+@TextureProfile{D{resources/textures/diffuse/wood.png}S{resources/textures/specular/wood_specular.jpg}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 
@@ -53,7 +66,7 @@ Node
 @Name{Spot Light 1}
 @Parent{Root}
 @Type{type_spotLight}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{resources/matrix/shaders/blinn_phong}
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
@@ -75,7 +88,7 @@ Node
 @Name{Point Light 1}
 @Parent{Root}
 @Type{type_pointLight}
-@Shader{C:/Repos/matrix/resources/matrix/shaders/blinn_phong}
+@Shader{resources/matrix/shaders/blinn_phong}
 @Transform{T{vec3(1.440000, -0.015000, 0.000000)}R{vec3(64.500000, -114.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
@@ -92,7 +105,7 @@ Node
 
 Node
 @Name{Root}
-@Children{{Point Light 1}{Spot Light 1}{Floor}{Box}{Chair Wood}}
+@Children{{Point Light 1}{Spot Light 1}{Floor}{Box}{Chair Wood}{Object}}
 @Type{type_container}
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}

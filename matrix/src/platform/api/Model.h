@@ -47,6 +47,7 @@ namespace MX
 
     std::string m_directory;
     std::string m_full_path;
+    std::string m_relative_path;
     std::string m_name;
     bool m_gamma_correction;
     bool m_initialized = 0;

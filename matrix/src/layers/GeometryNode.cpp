@@ -176,25 +176,25 @@ namespace MX
     ss << Node::to_string();
 
     if (m_Model != nullptr)
-      ss << "\n@Model{" << m_Model->m_full_path << "}";
+      ss << "\n@Model{" << m_Model->m_relative_path << "}";
 
     if (m_textures != nullptr)
     {
       ss << "\n@TextureProfile{";
       if (m_textures->diffuse != nullptr)
-        ss << "D{" << m_textures->diffuse->m_path << "}";
+        ss << "D{" << m_textures->diffuse->m_relative_path << "}";
 
       if (m_textures->specular != nullptr)
-        ss << "S{" << m_textures->specular->m_path << "}";
+        ss << "S{" << m_textures->specular->m_relative_path << "}";
 
       if (m_textures->normal != nullptr)
-        ss << "N{" << m_textures->normal->m_path << "}";
+        ss << "N{" << m_textures->normal->m_relative_path << "}";
 
       if (m_textures->bump != nullptr)
-        ss << "B{" << m_textures->bump->m_path << "}";
+        ss << "B{" << m_textures->bump->m_relative_path << "}";
 
       if (m_textures->height != nullptr)
-        ss << "H{" << m_textures->height->m_path << "}";
+        ss << "H{" << m_textures->height->m_relative_path << "}";
 
       ss << "} ";
     }

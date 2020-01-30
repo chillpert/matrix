@@ -198,7 +198,7 @@ namespace MX
     ss << "\n@Type{" << type << "}";
 
     if (m_Shader != nullptr)
-      ss << "\n@Shader{" << m_Shader->m_path << "}";
+      ss << "\n@Shader{" << m_Shader->m_relative_path << "}";
 
     ss << "\n@Transform{T{"  << glm::to_string(m_Trans.m_translation) << 
                     "}R{" << glm::to_string(m_Trans.m_rotation) << 

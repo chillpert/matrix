@@ -542,7 +542,7 @@ namespace MX
           }
           else if (tag_shader != std::string::npos)
           {
-            node->setShader(getShader(parse_single_string(line_temp)));
+            node->setShader(getShader(MX_ROOT_PATH + parse_single_string(line_temp)));
           }
           else if (tag_transform != std::string::npos)
           {
@@ -577,7 +577,7 @@ namespace MX
           else if (tag_model != std::string::npos)
           {
             auto geometry_node_ptr = dynamic_cast<GeometryNode*>(node.get());
-            geometry_node_ptr->m_Model = getModel(parse_single_string(line_temp));
+            geometry_node_ptr->m_Model = getModel(MX_ROOT_PATH + parse_single_string(line_temp));
           }
           else if (tag_texture != std::string::npos)
           {
@@ -598,31 +598,31 @@ namespace MX
               if (temp_.at(0) == 'D' && temp_.at(1) == '{')
               {
                 std::string texture_type = "texture_diffuse";
-                textures.diffuse = getTexture(str, texture_type);
+                textures.diffuse = getTexture(MX_ROOT_PATH + str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'S' && temp_.at(1) == '{')
               {
                 std::string texture_type = "texture_specular";
-                textures.specular = getTexture(str, texture_type);
+                textures.specular = getTexture(MX_ROOT_PATH + str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'N' && temp_.at(1) == '{')
               {
                 std::string texture_type = "texture_normal";
-                textures.normal = getTexture(str, texture_type);
+                textures.normal = getTexture(MX_ROOT_PATH + str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'B' && temp_.at(1) == '{')
               {
                 std::string texture_type = "texture_bump";
-                textures.bump = getTexture(str, texture_type);
+                textures.bump = getTexture(MX_ROOT_PATH + str, texture_type);
                 continue;
               }
               else if (temp_.at(0) == 'H' && temp_.at(1) == '{')
               {
                 std::string texture_type = "texture_height";
-                textures.height = getTexture(str, texture_type);
+                textures.height = getTexture(MX_ROOT_PATH + str, texture_type);
                 continue;
               }
             }

@@ -41,6 +41,7 @@ namespace MX
 
     std::string m_Name;
     std::string m_path;
+    std::string m_relative_path;
     std::string m_VsPath;
     std::string m_FsPath;
     std::string m_VsSource;
