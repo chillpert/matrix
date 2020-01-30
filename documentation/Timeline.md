@@ -1,5 +1,6 @@
-# Roadmap
+# Timeline
 This is an overview of planned and currently worked on features as well as issues that need to be fixed. 
+
 ##### Core features
 + fully ray-trace based renderer (and many traditional rendering techniques)
 + support for Direct3D and Vulkan
