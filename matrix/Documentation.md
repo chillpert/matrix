@@ -21,7 +21,7 @@ Building on Windows should be just as self-explanatory.
 ## General
 All public functions provided by Matrix need to accessed using the ```MX::``` namespace. There are a bunch of macros that you can use to address core parts that you might want to use frequently. 
 | Macro | Function | Type |
-| ------ | ------ | ----- |
+| :------ | :------: | -----: |
 | MX_WORLD | Returns an object that holds all scenes of your loaded project | Object |
 | MX_SCENE | Returns the currently active scene | Shared pointer |
 | MX_SCENEGRAPH | Returns the scene graph of the currently active scene | Object |
