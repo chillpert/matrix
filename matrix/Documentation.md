@@ -20,6 +20,7 @@ Building on Windows should be just as self-explanatory.
 
 ## General
 All public functions provided by Matrix need to accessed using the ```MX::``` namespace. There are a bunch of macros that you can use to address core parts that you might want to use frequently. 
+
 Member | Function | Type
 ------ | -------- | ----
 MX_WORLD | Returns an object that holds all scenes of your loaded project | Object 
@@ -32,6 +33,7 @@ Each scene has its own scene graph. At this moment in time there are a total of 
 
 #### Node
 A node is an object of the base class. Most functions require a pointer to an object of this exact type. This class is pure virtual, therefore no instances can be created.
+
 Member | Meaning | Type
 ------ | ------- | ----
 m_name | An unique name | std::string
@@ -43,6 +45,7 @@ m_visible | If set to false, object will not be rendered | bool
 
 #### Geometry Node
 A geometry node is the only node that is actually visible, since it can hold any type of model that Matrix can handle.
+
 Member | Meaning | Type
 ------ | ------- | ----
 m_model | The model of this node | std::shared_ptr<Model> m_Model
@@ -56,6 +59,7 @@ A container node should be used to structure the scene graph by encapsulating no
 
 #### Light Node
 A light node is a pure virtual function, therefore no instances can be created. Use any inherited type below to illuminate your scene.
+
 Member | Meaning | Type
 ------ | ------- | ----
 m_ambient | Ambient lighting property | glm::vec3
@@ -65,12 +69,14 @@ m_ambient_strength | Intensity of ambient lighting | float
 
 #### Directional Light Node
 A directional light node is a light source that uniformly illuminates your entire scene with equal intensity from one direction.
+
 Member | Meaning | Type
 ------ | ------- | ----
 m_direction | Direction the light is coming from | glm::vec3
 
 #### Point Light Node
 A point light node is a light source that illuminates everything around it. It features light attenuation.
+
 Member | Meaning | Type
 ------ | ------- | ----
 m_position | Position of light in world space | glm::vec3
@@ -80,6 +86,7 @@ m_quadratic | Quadratic parameter of light attenuation | float
 
 #### Spot Light Node
 A spot light node is a light source that creates a beam of light, similiar to a flashlight . It features light attenuation.
+
 Member | Meaning | Type
 ------ | ------- | ----
 m_position | Position of light in world space | glm::vec3
