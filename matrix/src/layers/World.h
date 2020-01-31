@@ -34,6 +34,8 @@ namespace MX
     MX_API std::shared_ptr<Texture> getTexture(const std::string& path, std::string& type);
     
     MX_API bool load_scene(const std::string &name);
+    MX_API bool remove_scene(const std::string &name);
+    MX_API bool remove_scene(const std::shared_ptr<Scene> scene);
 
   private:
     MX_API World(const World&) = delete;

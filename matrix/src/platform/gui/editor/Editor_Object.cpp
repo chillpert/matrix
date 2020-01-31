@@ -28,6 +28,7 @@ namespace MX
 
   void Editor_Object::render()
   {
+    /*
     if (ImGui_Window::begin())
     {
       static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
@@ -81,18 +82,12 @@ namespace MX
             transformDrag("Scale", scale, speed_scale, spacing, 1.0f);
 
             // NEEDS TO BE FIXED
-            /*
-            for (std::shared_ptr<Node> it : Editor_Global::get_selection())
-            {
-              it->m_Trans.translate(*translation);
-            }
-            */
+            //
+            //for (std::shared_ptr<Node> it : Editor_Global::get_selection())
+            //{
+            //  it->m_Trans.translate(*translation);
+            //}
           }
-
-          /*
-            TODO:
-              - since names are static, they don't update when clicked on another node
-          */
 
           ImGui::Spacing();
           ImGui::SetNextItemOpen(true, ImGuiCond_Once);
@@ -278,6 +273,7 @@ namespace MX
     }
 
     ImGui_Window::end();
+    */
   }
 
   void Editor_Object::transformDrag(const std::string& label, glm::vec3* vec, float drag_speed, float spacing, float reset_value)

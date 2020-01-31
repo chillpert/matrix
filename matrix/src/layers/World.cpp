@@ -1,16 +1,8 @@
 #include "World.h"
-
 #include "Application.h"
 
-#define MX_INSTANT_MODEL_INIT
-
-#ifdef MX_PLATFORM_UNIX_X64
-  #include <boost/filesystem.hpp>
-  #include <boost/range/iterator_range.hpp>
-#elif MX_PLATFORM_WINDOWS_X64
-  #include <boost/filesystem.hpp>
-  #include <boost/range/iterator_range.hpp>
-#endif
+#include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
 
 namespace MX
 {
@@ -212,6 +204,8 @@ namespace MX
   
   bool World::load_scene(const std::string &name)
   {
+    //remove_scene(name);
+
     // load scene for the first time
     std::ifstream file;
     file.open(MX_SCENES_PATH + name);
@@ -236,6 +230,7 @@ namespace MX
           - parse scene name
           - parse camera
       */
+
       while (std::getline(file, line))
       {
         std::string line_temp = line;
@@ -279,7 +274,7 @@ namespace MX
           std::shared_ptr<Scene> new_scene = nullptr;
           for (const std::shared_ptr<Scene> it : m_ExistingScenes)
           {
-            if (it->m_Name == name)
+            if (it->m_Name + ".mx" == name)
             {
               already_exists = true;
               new_scene = it;
@@ -741,6 +736,10 @@ namespace MX
       }
     }
 
+    // reset file
+    file.clear();
+    file.seekg(0, file.beg);
+
     /*
       Third Pass:
         - create relations
@@ -768,8 +767,6 @@ namespace MX
       }
     }
 
-    
-
     if (scene->m_Name == "__UNDEF__")
       return false;
 
@@ -777,5 +774,33 @@ namespace MX
 
     MX_SUCCESS("MX: World: Load Scene: " + scene->m_Name + " Completed");
     return true;
+  }
+
+  bool World::remove_scene(const std::string &name)
+  {
+    for (std::vector<std::shared_ptr<Scene>>::iterator it = m_ExistingScenes.begin(); it != m_ExistingScenes.begin(); ++it)
+    {
+      if ((*it)->m_Name + ".mx" == name)
+      {
+        m_ExistingScenes.erase(it);
+        return true; 
+      }
+    }
+
+    return false;
+  }
+
+  bool World::remove_scene(const std::shared_ptr<Scene> scene)
+  {
+    for (std::vector<std::shared_ptr<Scene>>::iterator it = m_ExistingScenes.begin(); it != m_ExistingScenes.begin(); ++it)
+    {
+      if ((*it) == scene)
+      {
+        m_ExistingScenes.erase(it);
+        return true;
+      }
+    }
+
+    return false;
   }
 }

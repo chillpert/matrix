@@ -340,6 +340,6 @@ namespace MX
 
   void Scene::remove()
   {
-
+    
   }
 }
