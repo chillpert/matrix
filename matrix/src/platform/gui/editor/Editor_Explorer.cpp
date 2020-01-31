@@ -253,10 +253,7 @@ namespace MX
           {
             // load scene
             if (file_extension == ".mx")
-            {
-              MX_INFO("MX: GUI: World: Loading scene: " + file_name);
               Application::get().m_World.load_scene(file_name);
-            }
             else
             {
               enlarged_picture_update = true;

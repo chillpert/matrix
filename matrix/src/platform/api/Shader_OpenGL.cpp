@@ -23,7 +23,7 @@ namespace MX
 
   void Shader_OpenGL::initialize()
   {
-    MX_INFO("MX: API: OpenGL: Shader: Initialization: " + m_Name);
+    MX_INFO_LOG("MX: API: OpenGL: Shader: Initialization: " + m_Name);
     m_ID = glCreateProgram();
 
     m_VsSource = parseFile(m_VsPath);
@@ -49,7 +49,7 @@ namespace MX
     glDetachShader(m_ID, fs);
 
     m_initialized = 1;
-    MX_SUCCESS("MX: API: OpenGL: Shader: " + m_Name);
+    MX_SUCCESS_LOG("MX: API: OpenGL: Shader: " + m_Name);
   }
 
   void Shader_OpenGL::update()
