@@ -7,8 +7,8 @@ namespace MX
   Transform::Transform() : 
     m_local(glm::fmat4(1.0f)), 
     m_world(glm::fmat4(1.0f)),
-    m_rotation(glm::vec3()),
     m_translation(glm::vec3()),
+    m_rotation(glm::vec3()),
     m_scale(glm::vec3(1.0f))
     { }
 

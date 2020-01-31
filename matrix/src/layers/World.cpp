@@ -599,7 +599,7 @@ namespace MX
             std::string temp = parse_single_string(line_temp);
       
             size_t amount = std::count(temp.begin(), temp.end(), '{');
-            for (int i = 0; i < amount; ++i)
+            for (size_t i = 0; i < amount; ++i)
             {            
               std::string temp_ = temp;
               std::string str = parse_single_string(temp, true);
