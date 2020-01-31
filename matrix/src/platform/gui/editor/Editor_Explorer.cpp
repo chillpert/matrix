@@ -251,6 +251,7 @@ namespace MX
           ImGui::SameLine();
           if (ImGui::Button("Rename") && clicked_file_name.length() > 0)
           {
+            std::string original_file_name = clicked_file_name; 
             // check if new file name has a point in it
             std::string buffer_str = buffer;
             auto found_point = buffer_str.find('.');
@@ -272,6 +273,13 @@ namespace MX
                   clicked_file_name = buffer;
                   
                   boost::filesystem::rename(old_full_path, clicked_full_path);
+
+                  // make sure that name of scene inside file will get changed as well
+                  if (clicked_file_name.find(".mx") != std::string::npos)
+                  {
+                    MX_FATAL(original_file_name + " to " + clicked_file_name);            
+                    MX_WORLD.getScene(original_file_name)->rename(clicked_file_name);
+                  }
                 }
               }
             }

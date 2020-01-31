@@ -333,13 +333,13 @@ namespace MX
 
     // write to file
     std::ofstream file;
-    file.open(MX_SCENES_PATH + m_Name + ".mx");
+    file.open(MX_SCENES_PATH + m_Name);
     file << name << camera << nodes;
     file.close();
   }
 
-  void Scene::remove()
+  void Scene::rename(const std::string& name)
   {
-    
+    m_Name = name;
   }
 }

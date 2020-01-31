@@ -78,7 +78,7 @@ namespace MX
     MX_API bool pop(const std::string& name);
 
     MX_API void save();
-    MX_API void remove();
+    MX_API void rename(const std::string& name);
 
   private:
     MX_API bool object_already_exists(const std::string& name);

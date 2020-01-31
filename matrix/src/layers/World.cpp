@@ -201,6 +201,17 @@ namespace MX
 
     return nullptr;
   }
+
+  std::shared_ptr<Scene> World::getScene(const std::string& name)
+  {
+    for (std::shared_ptr<Scene> it : m_ExistingScenes)
+    {
+      if (it->m_Name == name)
+        return it;
+    }
+
+    return nullptr;
+  }
   
   bool World::load_scene(const std::string &name)
   {
@@ -274,7 +285,7 @@ namespace MX
           std::shared_ptr<Scene> new_scene = nullptr;
           for (const std::shared_ptr<Scene> it : m_ExistingScenes)
           {
-            if (it->m_Name + ".mx" == name)
+            if (it->m_Name == name)
             {
               already_exists = true;
               new_scene = it;
@@ -780,7 +791,7 @@ namespace MX
   {
     for (std::vector<std::shared_ptr<Scene>>::iterator it = m_ExistingScenes.begin(); it != m_ExistingScenes.begin(); ++it)
     {
-      if ((*it)->m_Name + ".mx" == name)
+      if ((*it)->m_Name == name)
       {
         m_ExistingScenes.erase(it);
         return true; 

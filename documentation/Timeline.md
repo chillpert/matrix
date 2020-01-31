@@ -14,16 +14,18 @@ This is an overview of planned and currently worked on features as well as issue
 
 ##### Features
 + (GUI) add preview for all common file types to ```Explorer Window``` 
-+ (Transform) review rotation component
-+ (Renderer) ray intersection algorithm for general meshes
 + (GUI) display axes for selected node
 + (GUI) clickable elements in render preview
++ (Transform) review rotation component
++ (Renderer) ray intersection algorithm for general meshes
 
 ##### Important Issues
 + 
 
 ##### Issues
 + freeze on loading another scene
++ (Scene) make sure that file name and internal scene name are the same, or that only the correct names will be used 
++ (Scene) make sure scenes with same names are not possible to create
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types 
