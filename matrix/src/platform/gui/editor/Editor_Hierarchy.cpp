@@ -89,9 +89,9 @@ namespace MX
 
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
-      // magic number (why IMGUI WHYY?!)
       if (MX_SCENE != nullptr)
       {
+        // magic number (why IMGUI WHYY?!)
         ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 10.0f);
         if (traverse(MX_ROOT, 0))
           m_break_out = false;
@@ -168,10 +168,21 @@ namespace MX
             Editor_Global::get_selection().push_back(node);
           }
         }
-        else if (ImGui::IsItemClicked())
+        else if (ImGui::IsItemClicked(0))
         {
+          //ImGui::IsMouseDown(0);&& !ImGui::IsMouseDragging()
+          if (ImGui::IsMouseReleased(0))
+          {
+            MX_WARN("ok");
+          }
+          else
+          {
+            MX_FATAL("ok");
+          }
+
           Editor_Global::get_selection().clear();
           Editor_Global::get_selection().push_back(node);
+
         }     
         else if (ImGui::IsItemClicked(1))
         {

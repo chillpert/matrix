@@ -29,8 +29,8 @@ namespace MX
     {
       auto window_pos = ImGui::GetWindowPos();
       auto application_window_size = ImVec2(
-        static_cast<float>(Application::get().m_Window->m_Props.m_Width),
-        static_cast<float>(Application::get().m_Window->m_Props.m_Height)
+        static_cast<float>(MX_WINDOW->m_Props.m_Width),
+        static_cast<float>(MX_WINDOW->m_Props.m_Height)
       );
 
       auto max_size = ImVec2(

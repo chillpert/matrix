@@ -1,8 +1,9 @@
 #include "Matrix.h"
 
+using namespace MX;
+
 void initialize()
 {
-  using namespace MX;
   MX_WORLD.initialize();
   
   //MX_WORLD.push(std::make_shared<Scene>("My First Scene"));
@@ -10,28 +11,26 @@ void initialize()
 
 void update()
 {
-  using namespace MX;
   MX_WORLD.update();
 }
 
 void render()
 {
-  using namespace MX;
   MX_WORLD.render();
 }
 
 int main()
 {
   // application testing
-  MX::Application::get().initialize(initialize);
+  MX_APP.initialize(initialize);
 
   // rendering loop
-  while (MX::Application::get().m_Running)
+  while (MX_APP.m_Running)
   {
-    MX::Application::get().update(update);
-    MX::Application::get().render(render);
+    MX_APP.update(update);
+    MX_APP.render(render);
   }
-  MX::Application::get().clean();
+  MX_APP.clean();
   
   return 0;
 }

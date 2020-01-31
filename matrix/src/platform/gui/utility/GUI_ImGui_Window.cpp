@@ -107,8 +107,8 @@ namespace MX
     auto x_win_pos = ImGui::GetWindowPos().x;
     auto y_win_pos = ImGui::GetWindowPos().y;
 
-    auto screen_x = Application::get().m_Window->m_Props.m_Width;
-    auto screen_y = Application::get().m_Window->m_Props.m_Height;
+    auto screen_x = MX_WINDOW->m_Props.m_Width;
+    auto screen_y = MX_WINDOW->m_Props.m_Height;
 
     auto x_win_pos_fix = screen_x - x_win_pos;
     auto y_win_pos_fix = screen_y - y_win_pos;
@@ -128,8 +128,8 @@ namespace MX
     auto x_win_pos = ImGui::GetWindowPos().x;
     auto y_win_pos = ImGui::GetWindowPos().y;
 
-    auto screen_x = Application::get().m_Window->m_Props.m_Width;
-    auto screen_y = Application::get().m_Window->m_Props.m_Height;
+    auto screen_x = MX_WINDOW->m_Props.m_Width;
+    auto screen_y = MX_WINDOW->m_Props.m_Height;
 
     auto x_win_pos_fix = screen_x - x_win_pos;
     auto y_win_pos_fix = screen_y - y_win_pos;

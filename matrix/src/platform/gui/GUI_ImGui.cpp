@@ -6,10 +6,10 @@
 #ifdef MX_IMGUI_ACTIVE
   #include <imgui_impl_sdl.h>
   #define MX_IMGUI_INIT       ImGui_ImplSDL2_InitForOpenGL(\
-                                static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Window,\
-                                static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Context\
+                                static_cast<Window_SDL2*>(MX_WINDOW->getWindow())->m_Window,\
+                                static_cast<Window_SDL2*>(MX_WINDOW->getWindow())->m_Context\
                               );
-  #define MX_IMGUI_NEW_FRAME  ImGui_ImplSDL2_NewFrame(static_cast<Window_SDL2*>(Application::get().m_Window->getWindow())->m_Window);
+  #define MX_IMGUI_NEW_FRAME  ImGui_ImplSDL2_NewFrame(static_cast<Window_SDL2*>(MX_WINDOW->getWindow())->m_Window);
   #define MX_IMGUI_CLEAN      ImGui_ImplSDL2_Shutdown();
 
   #ifdef MX_OPENGL_ACTIVE

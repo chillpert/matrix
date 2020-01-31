@@ -28,7 +28,7 @@ namespace MX
 
   void Camera::processKeyboard()
   {
-    float finalSpeed = speed * Application::get().m_Window->m_Props.m_DeltaTime;
+    float finalSpeed = speed * MX_WINDOW->m_Props.m_DeltaTime;
     if (key_w)
       m_Position += m_Front * finalSpeed;
     if (key_s)
@@ -45,8 +45,8 @@ namespace MX
 
   void Camera::processMouse(float xoffset, float yoffset)
   {
-    xoffset *= m_Sensitivity; // for mouse smoothing (* Application::get().m_Window->m_Props.m_DeltaTime;)
-    yoffset *= m_Sensitivity; // for mouse smoothing (* Application::get().m_Window->m_Props.m_DeltaTime;)
+    xoffset *= m_Sensitivity; // for mouse smoothing (* MX_WINDOW->m_Props.m_DeltaTime;)
+    yoffset *= m_Sensitivity; // for mouse smoothing (* MX_WINDOW->m_Props.m_DeltaTime;)
 
     m_Yaw   += xoffset;
     m_Pitch += yoffset;

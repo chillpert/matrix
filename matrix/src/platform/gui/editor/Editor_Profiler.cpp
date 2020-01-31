@@ -33,7 +33,7 @@ namespace MX
       // ImGui::Text("TVM: %u", m_data.get_tvm());
       // ImGui::Text("CVM: %u", m_data.get_cvm());
 
-      // auto current_fps = Application::get().m_Window->m_Props.m_Frames;
+      // auto current_fps = MX_WINDOW->m_Props.m_Frames;
     
     }
       ImGui_Window::end();

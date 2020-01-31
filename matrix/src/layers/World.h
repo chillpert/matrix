@@ -3,7 +3,7 @@
 
 #define MX_GET_SHADER(name) MX::MX_WORLD.getShader(name)
 #define MX_GET_MODEL(name) MX::MX_WORLD.getModel(name)
-#define MX_GET_TEXTURE(name) MX::MX_WORLD.getTexture(name)
+#define MX_GET_TEXTURE(name, type) MX::MX_WORLD.getTexture(name, type)
 #define MX_GET_TEXTURE_PROFILE(diffuse, normal, bump, height) MX::MX_WORLD.getTextureProfile(diffuse, normal, bump, height)
 
 #include "stdafx.h"
@@ -31,7 +31,7 @@ namespace MX
 
     MX_API std::shared_ptr<Model> getModel(const std::string& path);
     MX_API std::shared_ptr<Shader> getShader(const std::string& path);
-    MX_API std::shared_ptr<Texture> getTexture(const std::string& path, std::string& type);
+    MX_API std::shared_ptr<Texture> getTexture(const std::string& path, const std::string& type);
 
     MX_API std::shared_ptr<Scene> getScene(const std::string& name);
     

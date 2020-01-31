@@ -1,11 +1,18 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#define MX_WORLD Application::get().m_World
-#define MX_SCENEGRAPH Application::get().m_World.m_ActiveScene->m_Sg
-#define MX_CAMERA Application::get().m_World.m_ActiveScene->m_Cam
-#define MX_SCENE Application::get().m_World.m_ActiveScene
-#define MX_ROOT Application::get().m_World.m_ActiveScene->m_Sg.m_Root
+#define MX_APP          Application::get()
+
+#define MX_WINDOW       MX_APP.m_Window
+#define MX_GAPI         MX_APP.m_API
+#define MX_GUI          MX_APP.m_active_gui
+
+#define MX_WORLD        MX_APP.m_World
+#define MX_SCENEGRAPH   MX_APP.m_World.m_ActiveScene->m_Sg
+#define MX_CAMERA       MX_APP.m_World.m_ActiveScene->m_Cam
+#define MX_SCENE        MX_APP.m_World.m_ActiveScene
+#define MX_SCENES       MX_APP.m_World.m_ExistingScenes
+#define MX_ROOT         MX_APP.m_World.m_ActiveScene->m_Sg.m_Root
 
 #include "stdafx.h"
 #include "Window.h"

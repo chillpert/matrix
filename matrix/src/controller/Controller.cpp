@@ -325,12 +325,12 @@ namespace MX
 
   void Controller::handleCloseWindow()
   {
-    Application::get().m_Running = 0;
+    MX_APP.m_Running = 0;
   }
 
   void Controller::handleResizeWindow(int width, int height)
   {
-    Application::get().m_Window->resize(width, height);
-    Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+    MX_WINDOW->resize(width, height);
+    MX_GAPI->m_framebuffer.m_needs_refresh = 1;
   }
 }

@@ -1,5 +1,5 @@
 # Timeline
-This is an overview of planned and currently worked on features as well as issues that need to be fixed. 
+This is an overview of planned and currently worked on features as well as issues that need to be fixed.
 
 ##### Core features
 + fully ray-trace based renderer (and many traditional rendering techniques)
@@ -8,6 +8,7 @@ This is an overview of planned and currently worked on features as well as issue
 + scripting
 + audio
 + animations
++ physics
 
 ##### Important Features
 +
@@ -18,6 +19,7 @@ This is an overview of planned and currently worked on features as well as issue
 + (GUI) clickable elements in ```Viewport``` 
 + (GUI) implement highlighting in ```Explorer Window```
 + (GUI) add renaming feature to ```Hierachy Window```
++ (GUI) implement sorting features in ```Explorer Window```
 + (Transform) review rotation component
 + (Renderer) ray intersection algorithm for general meshes
 
@@ -25,13 +27,10 @@ This is an overview of planned and currently worked on features as well as issue
 + 
 
 ##### Issues
-+ freeze on loading another scene
-+ (Scene) make sure that file name and internal scene name are the same, or that only the correct names will be used 
-+ (Scene) make sure scenes with same names are not possible to create
 + (GUI) fix alignment of properties in ```Object Viewer```
 + (GUI) right click context menues are not intuitive enough
-+ (Scene Graph | GUI) setting parent results in deletion of node 
 + (GUI) only leafs are drop sources in ```Hierachy```
++ (GUI) can not drag and drop parent to ```Object Viewer``` manually
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types

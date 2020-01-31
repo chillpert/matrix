@@ -49,7 +49,7 @@ namespace MX
     return temp;
   }
 
-  std::shared_ptr<Texture> World::getTexture(const std::string& path, std::string& type)
+  std::shared_ptr<Texture> World::getTexture(const std::string& path, const std::string& type)
   {
     for (auto it : m_textures)
     {
@@ -110,7 +110,7 @@ namespace MX
         MX_INFO_LOG("MX: World: Scene: " + scene->m_Name + ": Added");
         return;
       }
-      
+
       uint64_t counter = 0;
       accepted = false;
       std::string current_name = scene->m_Name;
@@ -791,7 +791,7 @@ namespace MX
 
     push(scene);
 
-    MX_SUCCESS("MX: World: Load Scene: " + scene->m_Name + " Completed");
+    MX_SUCCESS("MX: World: Loaded Scene: " + scene->m_Name);
     return true;
   }
 

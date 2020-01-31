@@ -31,7 +31,7 @@ namespace MX
     m_quad_shader->setInt("screen_texture", 0);
     m_quad_shader->setInt("depth_texture", 1);
 
-    auto viewport = Application::get().m_Window->m_Props.m_Viewport;
+    auto viewport = MX_WINDOW->m_Props.m_Viewport;
 
     glGenFramebuffers(1, &m_fbo);
 
@@ -138,7 +138,7 @@ namespace MX
 
   void Framebuffer_OpenGL::refresh()
   {
-    auto viewport = Application::get().m_Window->m_Props.m_Viewport;
+    auto viewport = MX_WINDOW->m_Props.m_Viewport;
 
     if (m_depth_map)
     {

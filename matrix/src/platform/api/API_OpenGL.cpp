@@ -34,7 +34,7 @@ namespace MX
 
     MX_API_ERROR;
 
-    window = &Application::get().m_Window->m_Props;
+    window = &MX_WINDOW->m_Props;
 
     glEnable(GL_DEPTH_TEST);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

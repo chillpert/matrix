@@ -41,22 +41,22 @@ namespace MX
           if (ImGui::MenuItem("Fit",  NULL, &aspect_free, !aspect_free)) 
           {
             aspect_free = true; aspect_4_3 = false; aspect_16_9 = false; aspect_21_9 = false;
-            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+            MX_GAPI->m_framebuffer.m_needs_refresh = 1;
           }
           if (ImGui::MenuItem("4:3",  NULL, &aspect_4_3,  !aspect_4_3 ))
           {
             aspect_free = false; aspect_4_3 = true; aspect_16_9 = false; aspect_21_9 = false;
-            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+            MX_GAPI->m_framebuffer.m_needs_refresh = 1;
           }
           if (ImGui::MenuItem("16:9", NULL, &aspect_16_9, !aspect_16_9))
           {
             aspect_free = false; aspect_4_3 = false; aspect_16_9 = true; aspect_21_9 = false;
-            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+            MX_GAPI->m_framebuffer.m_needs_refresh = 1;
           }
           if (ImGui::MenuItem("21:9", NULL, &aspect_21_9, !aspect_21_9))
           {
             aspect_free = false; aspect_4_3 = false; aspect_16_9 = false; aspect_21_9 = true;
-            Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+            MX_GAPI->m_framebuffer.m_needs_refresh = 1;
           }
 
           ImGui::EndMenu();
@@ -69,7 +69,7 @@ namespace MX
       static ImVec2 prev_window_size;
       if (window_size.x != prev_window_size.x || window_size.y != prev_window_size.y)
       {
-        Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+        MX_GAPI->m_framebuffer.m_needs_refresh = 1;
 
         if (first_iteration)
         {
@@ -103,12 +103,12 @@ namespace MX
       prev_window_size = window_size;
 
       // update viewport for api
-      Window::WindowProps::ViewPort* app_viewport = &Application::get().m_Window->m_Props.m_Viewport;
+      Window::WindowProps::ViewPort* app_viewport = &MX_WINDOW->m_Props.m_Viewport;
 
       if (aspect_free)
       {
         app_viewport->m_Viewport_min_x = static_cast<int>(window_pos.x);
-        app_viewport->m_Viewport_min_y = static_cast<int>(Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y));
+        app_viewport->m_Viewport_min_y = static_cast<int>(MX_WINDOW->m_Props.m_Height - (window_size.y + window_pos.y));
 
         app_viewport->m_Viewport_max_x = static_cast<int>(window_size.x);
         app_viewport->m_Viewport_max_y = static_cast<int>(window_size.y);
@@ -116,7 +116,7 @@ namespace MX
       else if (aspect_4_3)
       {
         app_viewport->m_Viewport_min_x = static_cast<int>(window_pos.x);
-        app_viewport->m_Viewport_min_y = static_cast<int>(Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y));
+        app_viewport->m_Viewport_min_y = static_cast<int>(MX_WINDOW->m_Props.m_Height - (window_size.y + window_pos.y));
 
         int max_y = static_cast<int>((window_size.x / 4.0f) * 3.0f);
         
@@ -136,7 +136,7 @@ namespace MX
       else if (aspect_16_9)
       {
         app_viewport->m_Viewport_min_x = static_cast<int>(window_pos.x);
-        app_viewport->m_Viewport_min_y = static_cast<int>(Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y));
+        app_viewport->m_Viewport_min_y = static_cast<int>(MX_WINDOW->m_Props.m_Height - (window_size.y + window_pos.y));
 
         int max_y = static_cast<int>((window_size.x / 16.0f) * 9.0f);
 
@@ -156,7 +156,7 @@ namespace MX
       else if (aspect_21_9)
       {
         app_viewport->m_Viewport_min_x = static_cast<int>(window_pos.x);
-        app_viewport->m_Viewport_min_y = static_cast<int>(Application::get().m_Window->m_Props.m_Height - (window_size.y + window_pos.y));
+        app_viewport->m_Viewport_min_y = static_cast<int>(MX_WINDOW->m_Props.m_Height - (window_size.y + window_pos.y));
 
         int max_y = static_cast<int>((window_size.x / 21.0f) * 9.0f);
 
@@ -180,7 +180,7 @@ namespace MX
 
       if (docked != prev_docked)
       {
-        Application::get().m_API->m_framebuffer.m_needs_refresh = 1;
+        MX_GAPI->m_framebuffer.m_needs_refresh = 1;
         is_black = false;
         flag = false;
       }
@@ -190,7 +190,7 @@ namespace MX
       // draw render preview while window size doesn't change
       if (!is_black)
       {
-        m_id = (void*) Application::get().m_API->m_framebuffer.m_tex;
+        m_id = (void*) MX_GAPI->m_framebuffer.m_tex;
         ImGui::Image(m_id, ImVec2(window_size_avail.x, window_size_avail.y), ImVec2(0, 1), ImVec2(1, 0), ImVec4(1.0f, 1.0f, 1.0f, 1.0f), ImVec4(1.0f, 1.0f, 1.0f, 0.0f));
       }
 

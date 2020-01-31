@@ -53,7 +53,7 @@ namespace MX
         if (ImGui::BeginMenu("New"))
         {
           if (ImGui::MenuItem("Scene"))
-            Application::get().m_World.push(std::make_shared<Scene>("New Scene"));
+            MX_WORLD.push(std::make_shared<Scene>("New Scene"));
 
           if (ImGui::MenuItem("Folder")) { }
 
@@ -253,7 +253,7 @@ namespace MX
           {
             // load scene
             if (file_extension == ".mx")
-              Application::get().m_World.load_scene(file_name);
+              MX_WORLD.load_scene(file_name);
             else
             {
               enlarged_picture_update = true;

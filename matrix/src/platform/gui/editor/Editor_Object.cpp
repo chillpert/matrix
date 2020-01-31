@@ -143,7 +143,7 @@ namespace MX
                 {
                   IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                   std::string temp = (char*)payload->Data;
-                  current_ptr->m_Model = Application::get().m_World.getModel(temp);
+                  current_ptr->m_Model = MX_GET_MODEL(temp);
                   model_name = temp.substr(temp.find_last_of("/") + 1);
                 }
                 ImGui::EndDragDropTarget();
@@ -169,7 +169,7 @@ namespace MX
                     IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                     std::string temp = (char*)payload->Data;
                     std::string texture_type = "texture_diffuse";
-                    current_ptr->m_textures->diffuse = Application::get().m_World.getTexture(temp, texture_type);
+                    current_ptr->m_textures->diffuse = MX_GET_TEXTURE(temp, texture_type);
                     diffuse_name = temp.substr(temp.find_last_of("/") + 1);
                   }
                   ImGui::EndDragDropTarget();
@@ -192,7 +192,7 @@ namespace MX
                     IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                     std::string temp = (char*)payload->Data;
                     std::string texture_type = "texture_specular";
-                    current_ptr->m_textures->specular = Application::get().m_World.getTexture(temp, texture_type);
+                    current_ptr->m_textures->specular = MX_GET_TEXTURE(temp, texture_type);
                     specular_name = temp.substr(temp.find_last_of("/") + 1);
                   }
                   ImGui::EndDragDropTarget();
@@ -240,7 +240,7 @@ namespace MX
                 {
                   IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                   std::string temp = (char*)payload->Data;
-                  current->m_Shader = Application::get().m_World.getShader(temp.substr(0, temp.find_last_of(".")));
+                  current->m_Shader = MX_GET_SHADER(temp.substr(0, temp.find_last_of(".")));
                   shader_name = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
                 }
                 ImGui::EndDragDropTarget();

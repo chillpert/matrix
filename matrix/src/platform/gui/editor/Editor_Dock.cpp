@@ -102,7 +102,7 @@ namespace MX
       {
         if (ImGui::MenuItem("Save all##SaveProject"))
         {
-          for (std::shared_ptr<Scene> it : Application::get().m_World.m_ExistingScenes)
+          for (std::shared_ptr<Scene> it : MX_SCENES)
             it->save();
         }
 
@@ -133,7 +133,7 @@ namespace MX
           if (ImGui::MenuItem("Default"))
           {
             // reset layout by loading ini
-            Application::get().m_active_gui = std::make_unique<GUI_Editor>();
+            MX_GUI = std::make_unique<GUI_Editor>();
           }
 
           ImGui::EndMenu();
