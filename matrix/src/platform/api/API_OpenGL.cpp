@@ -48,8 +48,8 @@ namespace MX
     int viewport_x = window->m_Viewport.m_Viewport_max_x;
     int viewport_y = window->m_Viewport.m_Viewport_max_y;
 
-    if (MX_WORLD.m_ActiveScene != nullptr)
-      MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(viewport_x, viewport_y);
+    if (MX_SCENE != nullptr)
+      MX_CAMERA.setScreenDimensions(viewport_x, viewport_y);
 
     if (m_framebuffer.m_is_active)
       glViewport(0, 0, viewport_x, viewport_y);

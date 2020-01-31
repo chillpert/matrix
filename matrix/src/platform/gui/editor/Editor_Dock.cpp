@@ -92,35 +92,24 @@ namespace MX
     if (ImGui::BeginMenuBar())
     {
       ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.0f));
-      ImGui::Text(Application::get().m_World.m_ActiveScene->m_Name.c_str());
+
+      if (MX_SCENE != nullptr)
+        ImGui::Text(MX_SCENE->m_Name.c_str());
+
       ImGui::PopStyleColor();
 
-      if (ImGui::BeginMenu("Project"))
+      if (ImGui::BeginMenu("File##FileDock"))
       {
-        if (ImGui::MenuItem("Save##SaveProject"))
+        if (ImGui::MenuItem("Save all##SaveProject"))
         {
           for (std::shared_ptr<Scene> it : Application::get().m_World.m_ExistingScenes)
             it->save();
         }
 
-        if (ImGui::MenuItem("Open##OpenProject"))
+        if (ImGui::MenuItem("Save##SaveActiveScene"))
         {
-
-        }
-
-        ImGui::EndMenu();
-      }
-
-      if (ImGui::BeginMenu("Scene"))
-      {
-        if (ImGui::MenuItem("Save##SaveScene"))
-        {
-          Application::get().m_World.m_ActiveScene->save();
-        }
-
-        if (ImGui::MenuItem("Open##OpenScene"))
-        {
-
+          if (MX_SCENE != nullptr)
+            MX_SCENE->save();
         }
 
         ImGui::EndMenu();
@@ -144,6 +133,7 @@ namespace MX
           if (ImGui::MenuItem("Default"))
           {
             // reset layout by loading ini
+            Application::get().m_active_gui = std::make_unique<GUI_Editor>();
           }
 
           ImGui::EndMenu();

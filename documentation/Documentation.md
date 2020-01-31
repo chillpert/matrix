@@ -37,9 +37,9 @@ A node is an object of the base class. Most functions require a pointer to an ob
 Member | Meaning | Type
 ------ | ------- | ----
 m_name | An unique name | std::string
-m_shader | Shader used for rendering | std::shared_ptr<Shader>
+m_shader | Shader used for rendering | std::shared_ptr\<Shader>>
 m_parent | The parent of this node | Node*
-m_children | All this node's children | std::list<std::shared_ptr<Node>>
+m_children | All this node's children | std::list<std::shared_ptr\<Node>>
 m_trans | Used to handle all basic types of transformation | Transform
 m_visible | Toggle rendering visibility | bool
 
@@ -48,8 +48,8 @@ A geometry node is the only node that is actually visible, since it can hold any
 
 Member | Meaning | Type
 ------ | ------- | ----
-m_model | The model of this node | std::shared_ptr<Model>
-m_textures | Contains all supported types of textures | std::shared_ptr<TextureProfile>
+m_model | The model of this node | std::shared_ptr\<Model>
+m_textures | Contains all supported types of textures | std::shared_ptr\<TextureProfile>
 m_material | Contains ambient, diffuse, specular and shininess properties of object | MaterialProfile
 
 The supported texture types are diffuse, specular, normal, bump and height maps. As of now only the first two are implemented. 
@@ -104,8 +104,8 @@ To avoid any duplication of resources like textures or models, any already loade
 
 Member | Function | Type
 ------ | -------- | ----
-MX_GET_SHADER(x) | Returns a shader and initializes it, if not already done  | std::shared_ptr<Shader>
-MX_GET_MODEL(x) | Returns a model and initializes it, if not already done | std::shared_ptr<Model>
-MX_GET_TEXTURE(x) | Returns a texture and initializes it, if not already done | std::shared_ptr<Texture>
+MX_GET_SHADER(x) | Returns a shader and initializes it, if not already done  | std::shared_ptr\<Shader>
+MX_GET_MODEL(x) | Returns a model and initializes it, if not already done | std::shared_ptr\<Model>
+MX_GET_TEXTURE(x) | Returns a texture and initializes it, if not already done | std::shared_ptr\<Texture>
 
 These macros can not be used to create objects.

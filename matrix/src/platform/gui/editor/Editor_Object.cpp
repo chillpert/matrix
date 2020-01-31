@@ -28,7 +28,6 @@ namespace MX
 
   void Editor_Object::render()
   {
-    /*
     if (ImGui_Window::begin())
     {
       static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
@@ -108,8 +107,11 @@ namespace MX
                   IM_ASSERT(payload->DataSize == sizeof(char) * 200);
                   std::string temp = (char*)payload->Data;
 
-                  std::shared_ptr<Node> new_parent = Application::get().m_World.m_ActiveScene->m_Sg.search<Node>(temp);          
-                  current->setParent(new_parent.get());
+                  if (MX_SCENE != nullptr)
+                  {
+                    std::shared_ptr<Node> new_parent = MX_SCENEGRAPH.search<Node>(temp);
+                    current->setParent(new_parent.get());
+                  }
                 }
                 ImGui::EndDragDropTarget();
               }
@@ -273,7 +275,6 @@ namespace MX
     }
 
     ImGui_Window::end();
-    */
   }
 
   void Editor_Object::transformDrag(const std::string& label, glm::vec3* vec, float drag_speed, float spacing, float reset_value)

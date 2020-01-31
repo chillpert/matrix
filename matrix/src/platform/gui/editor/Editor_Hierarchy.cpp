@@ -4,11 +4,20 @@
 namespace MX
 {
   Editor_Hierarchy::Editor_Hierarchy()
-    : m_root(Application::get().m_World.m_ActiveScene->m_Sg.m_Root) { }
+  {
+    if (MX_SCENE != nullptr)
+      m_root = MX_ROOT;
+    else
+      m_root = nullptr;
+  }
 
   Editor_Hierarchy::Editor_Hierarchy(const std::string& name, ImGuiWindowFlags flags)
-    : m_root(Application::get().m_World.m_ActiveScene->m_Sg.m_Root)
   {
+    if (MX_SCENE != nullptr)
+      m_root = MX_ROOT;
+    else
+      m_root = nullptr;
+
     initialize(name, flags);
   }
 
@@ -36,13 +45,15 @@ namespace MX
           if (ImGui::MenuItem("Geometry"))
           {
             std::shared_ptr<GeometryNode> node = std::make_shared<GeometryNode>("Object");
-            Application::get().m_World.m_ActiveScene->m_Sg.push(node);
+            if (MX_SCENE != nullptr)
+              MX_SCENEGRAPH.push(node);
           }
 
           if (ImGui::MenuItem("Container"))
           {
             std::shared_ptr<ContainerNode> node = std::make_shared<ContainerNode>("Container");
-            Application::get().m_World.m_ActiveScene->m_Sg.push(node);
+            if (MX_SCENE != nullptr)
+              MX_SCENEGRAPH.push(node);
           }
 
           if (ImGui::BeginMenu("Light"))
@@ -50,19 +61,22 @@ namespace MX
             if (ImGui::MenuItem("Directional Light"))
             {
               std::shared_ptr<DirectionalLightNode> node = std::make_shared<DirectionalLightNode>("DirectionalLight");
-              Application::get().m_World.m_ActiveScene->m_Sg.push(node);
+              if (MX_SCENE != nullptr)
+                MX_SCENEGRAPH.push(node);
             }
 
             if (ImGui::MenuItem("Point Light"))
             {
               std::shared_ptr<PointLightNode> node = std::make_shared<PointLightNode>("PointLight");
-              Application::get().m_World.m_ActiveScene->m_Sg.push(node);
+              if (MX_SCENE != nullptr)
+                MX_SCENEGRAPH.push(node);
             }
 
             if (ImGui::MenuItem("Spot Light"))
             {
               std::shared_ptr<SpotLightNode> node = std::make_shared<SpotLightNode>("SpotLight");
-              Application::get().m_World.m_ActiveScene->m_Sg.push(node);
+              if (MX_SCENE != nullptr)
+                MX_SCENEGRAPH.push(node);
             }
 
             ImGui::EndMenu();
@@ -76,10 +90,13 @@ namespace MX
       ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
       // magic number (why IMGUI WHYY?!)
-      ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 10.0f);
-      if (traverse(Application::get().m_World.m_ActiveScene->m_Sg.m_Root, 0))
-        m_break_out = false;
-      ImGui::PopStyleVar();
+      if (MX_SCENE != nullptr)
+      {
+        ImGui::PushStyleVar(ImGuiStyleVar_IndentSpacing, 10.0f);
+        if (traverse(MX_ROOT, 0))
+          m_break_out = false;
+        ImGui::PopStyleVar();
+      }
     }
 
     static ImGui_ContextMenu hierarchy_context_menu("Hierarchy Context Menu");
@@ -196,8 +213,11 @@ namespace MX
 
           if (node != nullptr)
           {
-            std::shared_ptr<Node> new_parent = Application::get().m_World.m_ActiveScene->m_Sg.search<Node>(temp);  
-            node->addChild(new_parent);
+            if (MX_SCENE != nullptr)
+            {
+              std::shared_ptr<Node> new_parent = MX_SCENEGRAPH.search<Node>(temp);  
+              node->addChild(new_parent);
+            }
             
             m_break_out = true;              
           }

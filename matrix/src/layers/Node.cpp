@@ -18,7 +18,7 @@ namespace MX
 
   Node::~Node()
   {
-    MX_WARN("MX: Node: Destroyed Node: " + m_Name);
+    //MX_WARN_LOG("MX: Node: Destroyed Node: " + m_Name);
   }
 
   void Node::upload_uniforms()
@@ -61,6 +61,12 @@ namespace MX
 
   void Node::setParent(Node *node)
   {
+    if (node->m_Name == m_Name)
+    {
+      MX_WARN("MX: Scene Graph: Node can not be parent of itself");
+      return;
+    }
+    
     // if this node is the root, return because the root must not have a parent
     if (m_Name == default_root_name)
     {

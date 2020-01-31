@@ -16,6 +16,7 @@ namespace MX
   Editor_Explorer::Editor_Explorer(const std::string& name, ImGuiWindowFlags flags)
   {
     initialize(name, flags);
+    m_popup_delete.initialize("ExplorerConfirmDeletion", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
   }
 
   bool Editor_Explorer::initialize(const std::string& name, ImGuiWindowFlags flags)
@@ -78,17 +79,50 @@ namespace MX
         ImGui::EndMenuBar();
       }
 
-      static ImGui_Icon home_button("back.png", 15.0f, 15.0f);
-      if (current_path.length() > lowest_path.length())
+      static ImGui_Icon back_button("back.png", 15.0f, 15.0f);
+      
+      if (back_button.render_as_button())
       {
-        if (home_button.render_as_button())
-        {
+        // can not go further back that root directory
+        if (current_path.length() > lowest_path.length())
+        { 
           auto found = current_path.find_last_of('/');
           current_path = current_path.substr(0, found);
         }
       }
 
+      ImGui::SameLine();
+
+      if (ImGui::Button("Unselect##UnselectFileInExplorer"))
+        m_selection.clear();
+
+      ImGui::Separator();
+      ImGui::Spacing();
+
       load_directory(current_path.c_str());
+
+      //if (ImGui::Button("OPEN POPUP MODAL"))
+      //  m_popup_delete.open();
+
+      // render popups
+      if (m_popup_delete.begin())
+      {
+        ImGui::Text("This change can not be undone. Are you sure to proceed?");
+        
+        if (ImGui::Button("No"))
+        {
+          ImGui::EndPopup();
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button("Yes"))
+        {
+          ImGui::EndPopup();
+        }
+        
+        m_popup_delete.end();
+      }
     }
 
     ImGui_Window::end();
@@ -103,8 +137,9 @@ namespace MX
     static ImGui_Icon unknown_icon("unkown.png", 20.0f, 20.0f);
     static ImGui_Icon mx_icon("matrix_movie.png", 20.0f, 20.0f);
 
-    static std::string clicked_file_name;
-    static std::string clicked_full_path;
+    static std::string single_clicked_file_name;
+    static std::string double_clicked_file_name;
+    static std::string double_clicked_full_path;
     static bool show_explorer_context_menu = false;
     static bool show_file_inspector_context_menu = false;
     static bool can_be_displayed = false;
@@ -174,17 +209,43 @@ namespace MX
 
           ImGui::SameLine(0.0f, 2.0f);
 
-          if (ImGui::Button(file_name.c_str())) { }
+          bool file_name_in_selection = false;
+          for (const std::string& it : m_selection)
+          {
+            if (it == file_name)
+              file_name_in_selection = true;
+          }
+
+          if (file_name_in_selection)
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
+          else
+            ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.26f, 0.26f, 1.0f));
+          
+          if (ImGui::Button(file_name.c_str()))
+          {
+            // add to vector only if shift is pressed
+            if (ImGui::GetIO().KeyShift)
+              m_selection.push_back(file_name);
+            else
+            {
+              m_selection.clear();
+              m_selection.push_back(file_name);
+            }
+
+            single_clicked_file_name = file_name;
+          }
+
+          ImGui::PopStyleColor();
 
           setup_drag_drop_source(file_name, current_path);
-          
+
           // right click file to rename, copy, cut or delete it
           if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
           {
             show_explorer_context_menu = true;
             show_file_inspector_context_menu = false;
-            clicked_file_name = file_name;
-            clicked_full_path = full_path;
+            double_clicked_file_name = file_name;
+            double_clicked_full_path = full_path;
           }
 
           // double click on e.g. images to see what is inside
@@ -201,14 +262,14 @@ namespace MX
               enlarged_picture_update = true;
               show_file_inspector_context_menu = true;
               show_explorer_context_menu = false;
-              clicked_file_name = file_name;
-              clicked_full_path = full_path;
+              double_clicked_file_name = file_name;
+              double_clicked_full_path = full_path;
             }
           }
         }
       }
 
-      if (clicked_file_name.length() > 0)
+      if (double_clicked_file_name.length() > 0)
       {
         // render double click context menu (file inspector)
         static ImGuiWindowFlags flags_context_menu = 
@@ -227,11 +288,11 @@ namespace MX
             */
 
             // remove file name from full path temporarily since texture class does weird things with the naming
-            //static ImGui_Icon enlarged_picture(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
+            //static ImGui_Icon enlarged_picture(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
 
             if (enlarged_picture_update)
             {
-              //enlarged_picture = ImGui_Icon(clicked_file_name, clicked_full_path.substr(0, clicked_full_path.length() - clicked_file_name.length()));
+              //enlarged_picture = ImGui_Icon(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
               enlarged_picture_update = false;
             }
 
@@ -245,15 +306,16 @@ namespace MX
 
         if (explorer_context_menu.begin(show_explorer_context_menu))
         {
-          static char buffer[128];
-          ImGui::InputText("##rename file or folder", buffer, IM_ARRAYSIZE(buffer));
+          static ImGui_InputText rename_field("##Rename file or folder");
+          ImGui::SetNextItemWidth(100.0f);
+          bool enter_pressed = rename_field.render(double_clicked_file_name);
 
           ImGui::SameLine();
-          if (ImGui::Button("Rename") && clicked_file_name.length() > 0)
+          if ((ImGui::Button("Rename") || enter_pressed) && double_clicked_file_name.length() > 0)
           {
-            std::string original_file_name = clicked_file_name; 
+            std::string original_file_name = double_clicked_file_name; 
             // check if new file name has a point in it
-            std::string buffer_str = buffer;
+            std::string buffer_str = rename_field.m_buffer;
             auto found_point = buffer_str.find('.');
             if (found_point != std::string::npos)
             {
@@ -265,21 +327,30 @@ namespace MX
                 assertion = buffer_str.substr(0, found_point);
                 if (assertion.length() > 0)
                 {
-                  std::string old_full_path = clicked_full_path;
+                  std::string old_full_path = double_clicked_full_path;
 
-                  auto found_name = clicked_full_path.find_last_of('/');
+                  auto found_name = double_clicked_full_path.find_last_of('/');
 
-                  clicked_full_path = clicked_full_path.substr(0, found_name + 1) + buffer;
-                  clicked_file_name = buffer;
-                  
-                  boost::filesystem::rename(old_full_path, clicked_full_path);
+                  double_clicked_full_path = double_clicked_full_path.substr(0, found_name + 1) + rename_field.m_buffer;
+                  double_clicked_file_name = rename_field.m_buffer;
+
+                  bool allow_renaming = true;
 
                   // make sure that name of scene inside file will get changed as well
-                  if (clicked_file_name.find(".mx") != std::string::npos)
+                  if (double_clicked_file_name.find(".mx") != std::string::npos)
                   {
-                    MX_FATAL(original_file_name + " to " + clicked_file_name);            
-                    MX_WORLD.getScene(original_file_name)->rename(clicked_file_name);
+                    auto scene = MX_WORLD.getScene(original_file_name);
+                    if (scene != nullptr)
+                      scene->rename(double_clicked_file_name);
+                    else
+                    {
+                      allow_renaming = false;
+                      MX_WARN("MX: Scene: Can not rename a scene that has not been loaded.");
+                    }
                   }
+
+                  if (allow_renaming)
+                    boost::filesystem::rename(old_full_path, double_clicked_full_path);
                 }
               }
             }
@@ -287,8 +358,7 @@ namespace MX
 
           if (ImGui::Button("Delete"))
           {
-            // make a popup to confirm pop up LOL XD
-            // m_popup_delete.open();
+            m_popup_delete.open();
           }
 
           if (ImGui::Button("Copy")) { }
@@ -296,7 +366,7 @@ namespace MX
 
           explorer_context_menu.end();
         }   
-      }  
+      }
     }
   }
 

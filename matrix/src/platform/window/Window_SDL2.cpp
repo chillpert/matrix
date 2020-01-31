@@ -164,7 +164,8 @@ namespace MX
 
   void Window_SDL2::resize(int width, int height)
   {
-    MX_WORLD.m_ActiveScene->m_Cam.setScreenDimensions(width, height);
+    if (MX_SCENE != nullptr)
+      MX_CAMERA.setScreenDimensions(width, height);
     SDL_SetWindowSize(m_Window, width, height);
 
     m_Props.m_Width = width;

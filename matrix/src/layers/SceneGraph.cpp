@@ -7,9 +7,8 @@ namespace MX
 {
   SceneGraph::SceneGraph()
   {
-    std::shared_ptr<Node> temp_root = std::make_shared<ContainerNode>(default_root_name);
-    temp_root->m_Parent = nullptr;
-    m_Root = temp_root;
+    m_Root = std::make_shared<ContainerNode>(default_root_name);
+    m_Root->m_Parent = nullptr;
   }
 
   SceneGraph::~SceneGraph()
@@ -132,15 +131,16 @@ namespace MX
 
   void SceneGraph::recursive_initialize(std::shared_ptr<Node> it)
   {
+    if (it == nullptr)
+      return;
+
     if (it->m_Shader != nullptr && it->m_visible)
-    {
       it->upload_uniforms();
-    }
 
     if (!it->m_Children.empty())
     {
-      for (auto itChild : it->m_Children)
-        recursive_initialize(itChild);
+      for (std::shared_ptr<Node> it_child : it->m_Children)
+        recursive_initialize(it_child);
     }
   }
 
@@ -149,16 +149,12 @@ namespace MX
     it->m_Trans.update(mat);
 
     if (it->m_Shader != nullptr && it->m_visible)
-    {
       it->upload_uniforms();
-    }
 
     if (!it->m_Children.empty())
     {
       for (auto itChild : it->m_Children)
-      {
         recursive_render(itChild, it->m_Trans.m_world);
-      }
     }
   }
 }

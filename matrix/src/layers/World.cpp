@@ -73,17 +73,22 @@ namespace MX
   void World::initialize()
   {
     for (auto it : m_ExistingScenes)
-      it->initialize();
+    {
+      if (it != nullptr)
+        it->initialize();
+    }
   }
 
   void World::update()
   {
-    m_ActiveScene->update();
+    if (m_ActiveScene != nullptr)
+      m_ActiveScene->update();
   }
 
   void World::render()
   {
-    m_ActiveScene->render();
+    if (m_ActiveScene != nullptr)
+      m_ActiveScene->render();
   }
 
   void World::push(std::shared_ptr<Scene> scene)
@@ -99,10 +104,10 @@ namespace MX
 
       if (accepted)
       {
+        m_ActiveScene = scene;
         m_ExistingScenes.push_back(scene);
         scene->initialize();
-        m_ActiveScene = scene;
-        MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+        MX_INFO_LOG("MX: World: Scene: " + scene->m_Name + ": Added");
         return;
       }
       
@@ -135,7 +140,7 @@ namespace MX
       scene->initialize();
       m_ActiveScene = scene;
       m_ExistingScenes.push_back(scene);
-      MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+      MX_INFO_LOG("MX: World: Scene: " + scene->m_Name + ": Added");
       return;
     }
   }
@@ -779,7 +784,10 @@ namespace MX
     }
 
     if (scene->m_Name == "__UNDEF__")
+    {
+      MX_FATAL("MX: World: Load Scene: Error in naming");
       return false;
+    }
 
     push(scene);
 

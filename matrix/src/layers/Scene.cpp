@@ -9,7 +9,7 @@ namespace MX
 
   Scene::~Scene()
   {
-    MX_INFO("MX: Scene: Destructor: " + m_Name);
+    MX_INFO_LOG("MX: Scene: Destructor: " + m_Name);
   }
 
   bool Scene::object_already_exists(const std::string &name)
@@ -341,5 +341,6 @@ namespace MX
   void Scene::rename(const std::string& name)
   {
     m_Name = name;
+    save();
   }
 }
