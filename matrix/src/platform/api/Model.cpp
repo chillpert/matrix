@@ -5,8 +5,9 @@ namespace MX
   unsigned int load_texture(const std::string &path, const std::string &directory);
 
   Model::Model(const std::string &path, bool instant_init, bool gamma)
-    : m_name(path), m_gamma_correction(gamma)
+    : m_gamma_correction(gamma)
   {
+    m_name = path.substr(path.find_last_of("/") + 1);
     m_full_path = path;
     m_relative_path = path.substr(path.find(std::string("matrix")) + 7); // 7 = m + a + t + r + i + x + /
     m_directory = m_full_path.substr(0, m_full_path.find_last_of('/'));
