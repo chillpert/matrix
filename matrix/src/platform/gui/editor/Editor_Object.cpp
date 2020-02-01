@@ -269,7 +269,7 @@ namespace MX
 
           }
 
-          ImGui::Text(current->to_string().c_str());          
+          //ImGui::Text(current->to_string().c_str());          
         }
       }
     }

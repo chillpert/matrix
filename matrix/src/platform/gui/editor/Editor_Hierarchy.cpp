@@ -168,22 +168,11 @@ namespace MX
             Editor_Global::get_selection().push_back(node);
           }
         }
-        else if (ImGui::IsItemClicked(0))
+        else if (ImGui::IsItemActive() && ImGui::IsMouseDoubleClicked(0))
         {
-          //ImGui::IsMouseDown(0);&& !ImGui::IsMouseDragging()
-          if (ImGui::IsMouseReleased(0))
-          {
-            MX_WARN("ok");
-          }
-          else
-          {
-            MX_FATAL("ok");
-          }
-
           Editor_Global::get_selection().clear();
           Editor_Global::get_selection().push_back(node);
-
-        }     
+        }
         else if (ImGui::IsItemClicked(1))
         {
           m_rc_node = node;
@@ -224,12 +213,15 @@ namespace MX
 
           if (node != nullptr)
           {
-            if (MX_SCENE != nullptr)
+            if (temp != default_root_name)
             {
-              std::shared_ptr<Node> new_parent = MX_SCENEGRAPH.search<Node>(temp);  
-              node->addChild(new_parent);
+              if (MX_SCENE != nullptr)
+              {
+                std::shared_ptr<Node> new_parent = MX_SCENEGRAPH.search<Node>(temp);  
+                node->addChild(new_parent);
+              }
             }
-            
+
             m_break_out = true;              
           }
         }

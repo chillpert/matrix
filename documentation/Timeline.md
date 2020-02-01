@@ -30,7 +30,11 @@ This is an overview of planned and currently worked on features as well as issue
 + (GUI) fix alignment of properties in ```Object Viewer```
 + (GUI) right click context menues are not intuitive enough
 + (GUI) only leafs are drop sources in ```Hierachy```
-+ (GUI) can not drag and drop parent to ```Object Viewer``` manually
++ (Renderer) lights do not get reset when scene is changed
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types
+
+##### Planned Applications
++ solar system simulator
++ build a Quake-like game
