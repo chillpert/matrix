@@ -351,12 +351,11 @@ namespace MX
 
   void Scene::save_name()
   {
-
+    
   }
 
   void Scene::rename(const std::string& name)
   {
     m_Name = name;
-    save();
   }
 }

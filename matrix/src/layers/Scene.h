@@ -79,10 +79,10 @@ namespace MX
 
     MX_API void save();
     MX_API void save_name();
-    MX_API void rename(const std::string& name);
 
   private:
     MX_API bool object_already_exists(const std::string& name);
+    MX_API void rename(const std::string& name);
 
   public:
     Camera m_Cam;

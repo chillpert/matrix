@@ -4,7 +4,6 @@
 #define MX_GET_SHADER(name) MX::MX_WORLD.getShader(name)
 #define MX_GET_MODEL(name) MX::MX_WORLD.getModel(name)
 #define MX_GET_TEXTURE(name, type) MX::MX_WORLD.getTexture(name, type)
-#define MX_GET_TEXTURE_PROFILE(diffuse, normal, bump, height) MX::MX_WORLD.getTextureProfile(diffuse, normal, bump, height)
 
 #include "stdafx.h"
 #include "Scene.h"

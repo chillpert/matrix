@@ -31,6 +31,8 @@ namespace MX
     if (ImGui_Window::begin())
     {
       static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
+      const float button_height = 20.0f;
+      const float button_spacing = 75.0f;
 
       // only ever show components if an object is selected
       if (Editor_Global::get_selection().size() > 0)
@@ -96,7 +98,7 @@ namespace MX
 
             if (current->m_Parent != nullptr)
             {
-              ImGui::Text("Parent "); ImGui::SameLine();
+              ImGui::Text("Parent "); ImGui::SameLine(button_spacing);
               std::string current_parent_name = current->m_Parent->m_Name;
               ImGui::Button(current_parent_name.c_str(), ImVec2(-1, 0));
 
@@ -134,8 +136,8 @@ namespace MX
                 model_name = "undef";
 
               ImGui::Spacing();
-              ImGui::Text("Model "); ImGui::SameLine();
-              ImGui::Button(model_name.c_str(), ImVec2(-1.0f, 0.0f));
+              ImGui::Text("Model "); ImGui::SameLine(button_spacing);
+              ImGui::Button(model_name.c_str(), ImVec2(-1.0f, button_height));
 
               if (ImGui::BeginDragDropTarget())
               {
@@ -158,9 +160,9 @@ namespace MX
                 else
                   diffuse_name = "undef";
 
-                ImGui::Text("Textures");
-                ImGui::Text("Diffuse "); ImGui::SameLine();
-                ImGui::Button(diffuse_name.c_str() , ImVec2(-1.0f, 0.0f));
+                ImGui::Separator();
+                ImGui::Text("Diffuse"); ImGui::SameLine(button_spacing);
+                ImGui::Button(diffuse_name.c_str(), ImVec2(-1.0f, button_height));
 
                 if (ImGui::BeginDragDropTarget())
                 {
@@ -182,8 +184,8 @@ namespace MX
                 else
                   specular_name = "undef";
 
-                ImGui::Text("Specular "); ImGui::SameLine();
-                ImGui::Button(specular_name.c_str() , ImVec2(-1.0f, 0.0f));
+                ImGui::Text("Specular"); ImGui::SameLine(button_spacing);
+                ImGui::Button(specular_name.c_str() , ImVec2(-1.0f, button_height));
 
                 if (ImGui::BeginDragDropTarget())
                 {
@@ -207,7 +209,7 @@ namespace MX
           {
             ImGui::Spacing();
 
-            ImGui::Text("Visible "); ImGui::SameLine();
+            ImGui::Text("Visible "); ImGui::SameLine(button_spacing);
             ImGui::Checkbox("##NodeVisibilityToggle", &current->m_visible);
             
             if (current->m_Shader != nullptr)
@@ -217,7 +219,7 @@ namespace MX
               std::string temp = current->m_Shader->m_Name;
               std::string shader_name = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
             
-              ImGui::Text("Shader"); ImGui::SameLine();
+              ImGui::Text("Shader"); ImGui::SameLine(button_spacing);
 
               // if hovered over text ("Shader") display info window
               if (ImGui::IsItemHovered())
@@ -232,7 +234,7 @@ namespace MX
                 shader_info.end();
               }
 
-              if (ImGui::Button(shader_name.c_str(), ImVec2(-1.0f, 0.0f))) { }
+              if (ImGui::Button(shader_name.c_str(), ImVec2(-1.0f, button_height))) { }
 
               if (ImGui::BeginDragDropTarget())
               {
