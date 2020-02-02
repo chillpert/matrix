@@ -223,8 +223,7 @@ namespace MX
     //remove_scene(name);
 
     // load scene for the first time
-    std::ifstream file;
-    file.open(MX_SCENES_PATH + name);
+    std::ifstream file(MX_SCENES_PATH + name, std::ios::in);
 
     // name, name of parent, names of children, node type
     std::vector<std::tuple<std::string, std::string, std::vector<std::string>, NodeType>> nodes_config;
@@ -301,6 +300,9 @@ namespace MX
           {
             MX_INFO("MX: World: Load Scene: Scene " + name + " has already been loaded. Using existing data");
             m_ActiveScene = new_scene;
+            file.clear();
+            file.seekg(0, file.beg);
+            file.close();
             return true;
           }
         }
@@ -411,6 +413,9 @@ namespace MX
     else
     {
       MX_FATAL("MX: World: Load Scene: Can not open file");
+      file.clear();
+      file.seekg(0, file.beg);
+      file.close();
       return false;
     }
     
@@ -755,6 +760,7 @@ namespace MX
     // reset file
     file.clear();
     file.seekg(0, file.beg);
+    file.close();
 
     /*
       Third Pass:
@@ -792,6 +798,45 @@ namespace MX
     push(scene);
 
     MX_SUCCESS("MX: World: Loaded Scene: " + scene->m_Name);
+    return true;
+  }
+
+  bool World::rename_scene(const std::string old_path, const std::string& new_path)
+  {
+    if (!boost::filesystem::exists(old_path))
+      return false;
+    
+    boost::filesystem::ifstream old_file(old_path);
+    std::string content((std::istreambuf_iterator<char>(old_file)), (std::istreambuf_iterator<char>()));
+
+    auto found_name = content.find("Scene\n@Name{");
+    if (found_name != std::string::npos)
+    {
+      std::string temp = content.substr(found_name + 12);
+
+      // extract name for scene
+      std::string name = new_path.substr(new_path.find_last_of("/") + 1);
+
+      content.replace(found_name + 12, temp.find_first_of("}"), name);
+
+      // write to new file
+      boost::filesystem::ofstream new_file(new_path);
+      new_file << content;
+
+      // delete old file since it is not needed anymore
+      boost::filesystem::remove(old_path);
+    }
+    else
+    {
+      MX_FATAL("MX: World: The scene file you are trying to load is not syntax conform");
+      return false;
+    }
+
+    
+    
+
+    
+
     return true;
   }
 

@@ -16,8 +16,11 @@ namespace MX
 
   bool ImGui_InputText::render(const std::string& name)
   {
-    // by default always fill input field with the current name of the file
-    strcpy(m_buffer, name.c_str());
+    if (name == "")
+    {
+      // by default always fill input field with the current name of the file
+      strcpy(m_buffer, name.c_str());
+    }
     
     return ImGui::InputText(m_label.c_str(), m_buffer, IM_ARRAYSIZE(m_buffer), m_flags);    
   }

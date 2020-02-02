@@ -307,6 +307,8 @@ namespace MX
     std::string name = "Scene";
     ss << name << "\n@Name{" << m_Name << "}" << std::endl;
     name = ss.str();
+
+    std::cout << "Ok: " << name << std::endl;
     ss.str("");
 
     // camera @Position @Front
@@ -332,10 +334,24 @@ namespace MX
     ss.str("");
 
     // write to file
-    std::ofstream file;
-    file.open(MX_SCENES_PATH + m_Name);
-    file << name << camera << nodes;
-    file.close();
+    std::ofstream file(MX_SCENES_PATH + m_Name, std::ios::out);
+    file.flush();
+
+    if (!file)
+    {
+      file << name << camera << nodes;
+      file.flush();
+      file.close();
+    }
+    else
+    {
+      MX_FATAL("MX: Scene: Save: Can not open file at " MX_SCENES_PATH + m_Name);
+    }
+  }
+
+  void Scene::save_name()
+  {
+
   }
 
   void Scene::rename(const std::string& name)

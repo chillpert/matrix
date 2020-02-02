@@ -78,6 +78,7 @@ namespace MX
     MX_API bool pop(const std::string& name);
 
     MX_API void save();
+    MX_API void save_name();
     MX_API void rename(const std::string& name);
 
   private:

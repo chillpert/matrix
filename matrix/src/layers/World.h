@@ -36,6 +36,7 @@ namespace MX
     MX_API std::shared_ptr<Scene> getScene(const std::string& name);
     
     MX_API bool load_scene(const std::string &name);
+    MX_API bool rename_scene(const std::string old_path, const std::string& new_path);
     MX_API bool remove_scene(const std::string &name);
     MX_API bool remove_scene(const std::shared_ptr<Scene> scene);
 

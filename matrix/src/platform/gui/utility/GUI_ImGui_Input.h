@@ -12,7 +12,7 @@ namespace MX
     MX_API ImGui_InputText(const std::string& label);
     MX_API ImGui_InputText(const std::string& label, ImGuiInputTextFlags flags);
 
-    MX_API bool render(const std::string& name = "__UNDEF__");
+    MX_API bool render(const std::string& name = "");
   
     char m_buffer[128];
 

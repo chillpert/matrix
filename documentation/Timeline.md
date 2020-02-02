@@ -20,6 +20,7 @@ This is an overview of planned and currently worked on features as well as issue
 + (GUI) implement highlighting in ```Explorer Window```
 + (GUI) add renaming feature to ```Hierachy Window```
 + (GUI) implement sorting features in ```Explorer Window```
++ (GUI) add up and down arrow to move nodes in scene graph in ```Hierachy Window```
 + (Transform) review rotation component
 + (Renderer) ray intersection algorithm for general meshes
 
