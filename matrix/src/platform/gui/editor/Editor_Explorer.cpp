@@ -331,29 +331,10 @@ namespace MX
                   double_clicked_full_path = double_clicked_full_path.substr(0, found_name + 1) + rename_field.m_buffer;
                   double_clicked_file_name = rename_field.m_buffer;
 
-                  bool allow_renaming = true;
-
-                  // make sure that name of scene inside file will get changed as well
                   if (double_clicked_file_name.find(".mx") != std::string::npos)
                   {
-                    auto scene = MX_WORLD.getScene(original_file_name);
-                    if (scene != nullptr)
-                      scene->rename(double_clicked_file_name);
-                    else
-                    {
-                      if (!MX_WORLD.rename_scene(old_full_path, double_clicked_full_path))
-                      {
-                        allow_renaming = false;
-                        MX_WARN("MX: Scene: Can not rename a scene that has not been loaded.");
-                      }
-                    }
-                  }
-
-                  if (allow_renaming)
-                  {
-                    //boost::filesystem::rename(old_full_path, double_clicked_full_path);
-                    //boost::filesystem::remove(old_full_path);
-                    //boost::filesystem::
+                    if (!MX_WORLD.rename_scene(old_full_path, double_clicked_full_path))
+                      MX_WARN("MX: Scene: Can not rename a scene that has not been loaded.");
                   }
                 }
               }
