@@ -16,10 +16,10 @@ namespace MX
 
     m_Shader->use();
     
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".ambient", ambient);
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".diffuse", diffuse);
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".specular", specular);
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".ambientStrength", ambient_strength);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".ambient", m_ambient);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".diffuse", m_diffuse);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".specular", m_specular);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".ambientStrength", m_ambient_strength);
     m_Shader->setFloat(light_type + "[" + index_s + "]" + ".exists", 1.0);
   }
 
@@ -28,10 +28,10 @@ namespace MX
     std::stringstream ss;
     ss << Node::to_string();
 
-    ss << "\n@Ambient{" << glm::to_string(ambient) << "}";
-    ss << "\n@Diffuse{" << glm::to_string(diffuse) << "}";
-    ss << "\n@Specular{" << glm::to_string(specular) << "}";
-    ss << "\n@Strength{" << std::to_string(ambient_strength) << "}\n-";
+    ss << "\n@Ambient{" << glm::to_string(m_ambient) << "}";
+    ss << "\n@Diffuse{" << glm::to_string(m_diffuse) << "}";
+    ss << "\n@Specular{" << glm::to_string(m_specular) << "}";
+    ss << "\n@Strength{" << std::to_string(m_ambient_strength) << "}\n-";
 
     return ss.str();
   }
@@ -46,7 +46,7 @@ namespace MX
 
     LightNode::upload_uniforms(index);
 
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".direction", direction);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".direction", m_direction);
   }
 
   std::string DirectionalLightNode::to_string() const
@@ -54,7 +54,7 @@ namespace MX
     std::stringstream ss;
     ss << LightNode::to_string();
 
-    ss << "\n@DirectionalDirection{" << glm::to_string(direction) << "}\n-";
+    ss << "\n@DirectionalDirection{" << glm::to_string(m_direction) << "}\n-";
 
     return ss.str();
   }
@@ -69,11 +69,11 @@ namespace MX
 
     LightNode::upload_uniforms(index);
 
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".position", position);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".position", m_position);
 
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".constant", constant);
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".linear", linear);
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".quadratic", quadratic);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".constant", m_constant);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".linear", m_linear);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".quadratic", m_quadratic);
   }
 
   std::string PointLightNode::to_string() const
@@ -81,10 +81,10 @@ namespace MX
     std::stringstream ss;
     ss << LightNode::to_string();
 
-    ss << "\n@PointPosition{" << glm::to_string(position) << "}";
-    ss << "\n@PointConstant{" << std::to_string(constant) << "}";
-    ss << "\n@PointLinear{" << std::to_string(linear) << "}";
-    ss << "\n@PointQuadratic{" << std::to_string(quadratic) << "}\n-";
+    ss << "\n@PointPosition{" << glm::to_string(m_position) << "}";
+    ss << "\n@PointConstant{" << std::to_string(m_constant) << "}";
+    ss << "\n@PointLinear{" << std::to_string(m_linear) << "}";
+    ss << "\n@PointQuadratic{" << std::to_string(m_quadratic) << "}\n-";
 
     return ss.str();
   }
@@ -99,15 +99,15 @@ namespace MX
 
     LightNode::upload_uniforms(index);
 
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".position", position);
-    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".direction", direction);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".position", m_position);
+    m_Shader->setfVec3(light_type + "[" + index_s + "]" + ".direction", m_direction);
 
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".constant", constant);
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".linear", linear);
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".quadratic", quadratic);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".constant", m_constant);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".linear", m_linear);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".quadratic", m_quadratic);
 
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".cutOff", cut_off);
-    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".outerCutOff", outer_cut_off);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".cutOff", m_cut_off);
+    m_Shader->setFloat(light_type + "[" + index_s + "]" + ".outerCutOff", m_outer_cut_off);
   }
 
   std::string SpotLightNode::to_string() const
@@ -115,13 +115,13 @@ namespace MX
     std::stringstream ss;
     ss << LightNode::to_string();
 
-    ss << "\n@SpotPosition{" << glm::to_string(position) << "}";
-    ss << "\n@SpotDirection{" << glm::to_string(direction) << "}";
-    ss << "\n@SpotConstant{" << std::to_string(constant) << "}";
-    ss << "\n@SpotLinear{" << std::to_string(linear) << "}";
-    ss << "\n@SpotQuadratic{" << std::to_string(quadratic) << "}";
-    ss << "\n@CutOff{" << std::to_string(cut_off) << "}";
-    ss << "\n@OuterCutOff{" << std::to_string(outer_cut_off) << "}\n-";
+    ss << "\n@SpotPosition{" << glm::to_string(m_position) << "}";
+    ss << "\n@SpotDirection{" << glm::to_string(m_direction) << "}";
+    ss << "\n@SpotConstant{" << std::to_string(m_constant) << "}";
+    ss << "\n@SpotLinear{" << std::to_string(m_linear) << "}";
+    ss << "\n@SpotQuadratic{" << std::to_string(m_quadratic) << "}";
+    ss << "\n@CutOff{" << std::to_string(m_cut_off) << "}";
+    ss << "\n@OuterCutOff{" << std::to_string(m_outer_cut_off) << "}\n-";
 
     return ss.str();
   }

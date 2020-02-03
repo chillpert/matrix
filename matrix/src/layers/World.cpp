@@ -670,82 +670,82 @@ namespace MX
           else if (tag_ambient != std::string::npos)
           {
             auto light_node_ptr = dynamic_cast<LightNode*>(node.get());
-            light_node_ptr->ambient = parse_vec3(parse_single_string(line));
+            light_node_ptr->m_ambient = parse_vec3(parse_single_string(line));
           } 
           else if (tag_diffuse != std::string::npos)
           {
             auto light_node_ptr = dynamic_cast<LightNode*>(node.get());
-            light_node_ptr->diffuse = parse_vec3(parse_single_string(line));
+            light_node_ptr->m_diffuse = parse_vec3(parse_single_string(line));
           } 
           else if (tag_specular != std::string::npos)
           {
             auto light_node_ptr = dynamic_cast<LightNode*>(node.get());
-            light_node_ptr->specular = parse_vec3(parse_single_string(line));
+            light_node_ptr->m_specular = parse_vec3(parse_single_string(line));
           } 
           else if (tag_ambient_strength != std::string::npos)
           {
             auto light_node_ptr = dynamic_cast<LightNode*>(node.get());
-            light_node_ptr->ambient_strength = stof(parse_single_string(line));
+            light_node_ptr->m_ambient_strength = stof(parse_single_string(line));
           } 
           else if (tag_direction != std::string::npos)
           {
             auto directional_light_node_ptr = dynamic_cast<DirectionalLightNode*>(node.get());
-            directional_light_node_ptr->direction = parse_vec3(parse_single_string(line));
+            directional_light_node_ptr->m_direction = parse_vec3(parse_single_string(line));
           } 
           else if (tag_position != std::string::npos)
           {
             auto point_light_node_ptr = dynamic_cast<PointLightNode*>(node.get());
-            point_light_node_ptr->position = parse_vec3(parse_single_string(line));
+            point_light_node_ptr->m_position = parse_vec3(parse_single_string(line));
           } 
           else if (tag_constant != std::string::npos)
           {
             auto point_light_node_ptr = dynamic_cast<PointLightNode*>(node.get());
-            point_light_node_ptr->constant = stof(parse_single_string(line));
+            point_light_node_ptr->m_constant = stof(parse_single_string(line));
           } 
           else if (tag_linear != std::string::npos)
           {
             auto point_light_node_ptr = dynamic_cast<PointLightNode*>(node.get());
-            point_light_node_ptr->linear = stof(parse_single_string(line));
+            point_light_node_ptr->m_linear = stof(parse_single_string(line));
           }
           else if (tag_quadratic != std::string::npos)
           {
             auto point_light_node_ptr = dynamic_cast<PointLightNode*>(node.get());
-            point_light_node_ptr->quadratic = stof(parse_single_string(line));
+            point_light_node_ptr->m_quadratic = stof(parse_single_string(line));
           }
           else if (tag_position_2 != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->position = parse_vec3(parse_single_string(line));
+            spot_light_node_ptr->m_position = parse_vec3(parse_single_string(line));
           }
           else if (tag_direction_2 != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->direction = parse_vec3(parse_single_string(line));
+            spot_light_node_ptr->m_direction = parse_vec3(parse_single_string(line));
           }
           else if (tag_constant_2 != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->constant = stof(parse_single_string(line));
+            spot_light_node_ptr->m_constant = stof(parse_single_string(line));
           }
           else if (tag_linear_2 != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->linear = stof(parse_single_string(line));
+            spot_light_node_ptr->m_linear = stof(parse_single_string(line));
           } 
           else if (tag_quadratic_2 != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->quadratic = stof(parse_single_string(line));
+            spot_light_node_ptr->m_quadratic = stof(parse_single_string(line));
           } 
           else if (tag_cut_off != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->cut_off = stof(parse_single_string(line));
+            spot_light_node_ptr->m_cut_off = stof(parse_single_string(line));
           } 
           else if (tag_outer_cut_off != std::string::npos)
           {
             auto spot_light_node_ptr = dynamic_cast<SpotLightNode*>(node.get());
-            spot_light_node_ptr->outer_cut_off = stof(parse_single_string(line));
+            spot_light_node_ptr->m_outer_cut_off = stof(parse_single_string(line));
           }
           else if (line_temp == "-") { }
           else
@@ -825,6 +825,8 @@ namespace MX
 
       // delete old file since it is not needed anymore
       boost::filesystem::remove(old_path);
+
+      MX_INFO_LOG("MX: World: Renamed scene to " + name);
     }
     else
     {

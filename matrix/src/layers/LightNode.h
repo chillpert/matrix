@@ -35,11 +35,11 @@ namespace MX
 
     MX_API virtual std::string to_string() const;
 
-    glm::vec3 ambient = glm::fvec3(0.2f, 0.2f, 0.2f);
-    glm::vec3 diffuse = glm::fvec3(0.8f, 0.8f, 0.8f);
-    glm::vec3 specular = glm::fvec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 m_ambient = glm::fvec3(0.2f, 0.2f, 0.2f);
+    glm::vec3 m_diffuse = glm::fvec3(0.8f, 0.8f, 0.8f);
+    glm::vec3 m_specular = glm::fvec3(1.0f, 1.0f, 1.0f);
 
-    float ambient_strength = 0.7f;
+    float m_ambient_strength = 0.7f;
   };
 
   class DirectionalLightNode : public LightNode
@@ -57,7 +57,7 @@ namespace MX
     MX_API virtual std::string to_string() const;
   
   public:
-    glm::vec3 direction = glm::vec3(1.0f, -1.0f, -1.0f);
+    glm::vec3 m_direction = glm::vec3(1.0f, -1.0f, -1.0f);
   };
 
   class PointLightNode : public LightNode
@@ -75,11 +75,11 @@ namespace MX
     MX_API virtual std::string to_string() const;
 
   public:
-    glm::vec3 position = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 m_position = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    float constant = 1.0f;
-    float linear = 0.09f;
-    float quadratic = 0.032f;
+    float m_constant = 1.0f;
+    float m_linear = 0.09f;
+    float m_quadratic = 0.032f;
   };
 
   class SpotLightNode : public LightNode
@@ -97,15 +97,15 @@ namespace MX
     MX_API virtual std::string to_string() const;
 
   public:
-    glm::vec3 position = glm::vec3(0.0f, 5.0f, 0.0f);
-    glm::vec3 direction = glm::vec3(1.0f);
+    glm::vec3 m_position = glm::vec3(0.0f, 5.0f, 0.0f);
+    glm::vec3 m_direction = glm::vec3(1.0f);
 
-    float constant = 1.0f;
-    float linear = 0.09f;
-    float quadratic = 0.032f;
+    float m_constant = 1.0f;
+    float m_linear = 0.09f;
+    float m_quadratic = 0.032f;
 
-    float cut_off = glm::cos(glm::radians(12.5f));
-    float outer_cut_off = glm::cos(glm::radians(17.5f));
+    float m_cut_off = glm::cos(glm::radians(12.5f));
+    float m_outer_cut_off = glm::cos(glm::radians(17.5f));
   };
 }
 

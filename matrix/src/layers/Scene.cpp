@@ -2,6 +2,8 @@
 #include "World.h"
 #include "Application.h"
 
+#include "boost/filesystem.hpp"
+
 namespace MX
 {
   Scene::Scene(const std::string &name)
@@ -307,8 +309,6 @@ namespace MX
     std::string name = "Scene";
     ss << name << "\n@Name{" << m_Name << "}" << std::endl;
     name = ss.str();
-
-    std::cout << "Ok: " << name << std::endl;
     ss.str("");
 
     // camera @Position @Front
@@ -333,20 +333,14 @@ namespace MX
     nodes = ss.str();
     ss.str("");
 
-    // write to file
-    std::ofstream file(MX_SCENES_PATH + m_Name, std::ios::out);
-    file.flush();
+    // delete old file if it exists
+    if (boost::filesystem::exists(MX_SCENES_PATH + m_Name))
+      boost::filesystem::remove(MX_SCENES_PATH + m_Name);
 
-    if (!file)
-    {
-      file << name << camera << nodes;
-      file.flush();
-      file.close();
-    }
-    else
-    {
-      MX_FATAL("MX: Scene: Save: Can not open file at " MX_SCENES_PATH + m_Name);
-    }
+    // write to file
+    std::ofstream file(MX_SCENES_PATH + m_Name);
+    file << name << camera << nodes;
+    file.close();
   }
 
   void Scene::save_name()

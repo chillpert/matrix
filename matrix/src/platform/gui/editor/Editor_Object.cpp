@@ -5,7 +5,6 @@
 #include "Application.h"
 #include "Node.h"
 #include "GeometryNode.h"
-#include "LightNode.h"
 #include "ContainerNode.h"
 
 namespace MX
@@ -33,6 +32,7 @@ namespace MX
       static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
       const float button_height = 20.0f;
       const float button_spacing = 75.0f;
+      const float drag_speed = 0.05f;
 
       // only ever show components if an object is selected
       if (Editor_Global::get_selection().size() > 0)
@@ -203,6 +203,73 @@ namespace MX
             }
           }
 
+
+          if (dynamic_cast<DirectionalLightNode*>(current.get()))
+          {
+            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+            if (ImGui::CollapsingHeader("Directional Light"))
+            {               
+              render_light_node_props(std::dynamic_pointer_cast<LightNode>(current), button_spacing);
+
+              auto current_ptr = std::dynamic_pointer_cast<DirectionalLightNode>(current);
+              ImGui::Text("Direction"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat3("##Direction", &current_ptr->m_direction[0], drag_speed);
+            }
+          }
+
+          if (dynamic_cast<PointLightNode*>(current.get()))
+          {
+            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+            if (ImGui::CollapsingHeader("Point Light"))
+            {               
+              render_light_node_props(std::dynamic_pointer_cast<LightNode>(current), button_spacing);
+
+              auto current_ptr = std::dynamic_pointer_cast<PointLightNode>(current);
+              ImGui::Text("Position"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat3("##Position", &current_ptr->m_position[0], drag_speed);
+
+              ImGui::Text("Attenuation");
+              ImGui::Separator();
+              ImGui::Text("Constant"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##Constant", &current_ptr->m_constant, drag_speed, 0.0f);
+              ImGui::Text("Linear"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##Linear", &current_ptr->m_linear, drag_speed, 0.0f);
+              ImGui::Text("Quadratic"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##Quadratic", &current_ptr->m_quadratic, drag_speed, 0.0f);
+            }
+          }
+
+          if (dynamic_cast<SpotLightNode*>(current.get()))
+          {
+            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+            if (ImGui::CollapsingHeader("Spot Light"))
+            {               
+              render_light_node_props(std::dynamic_pointer_cast<LightNode>(current), button_spacing);
+
+              auto current_ptr = std::dynamic_pointer_cast<SpotLightNode>(current);
+              
+              ImGui::Text("Direction"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat3("##Direction", &current_ptr->m_direction[0], drag_speed);
+              ImGui::Text("Position"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat3("##Position", &current_ptr->m_position[0], drag_speed);
+
+              ImGui::Text("Attenuation");
+              ImGui::Separator();
+              ImGui::Text("Constant"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##Constant", &current_ptr->m_constant, drag_speed, 0.0f);
+              ImGui::Text("Linear"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##Linear", &current_ptr->m_linear, drag_speed, 0.0f);
+              ImGui::Text("Quadratic"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##Quadratic", &current_ptr->m_quadratic, drag_speed, 0.0f);
+
+              ImGui::Text("Light Cone");
+              ImGui::Text("Cut off"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##CutOff", &current_ptr->m_cut_off, drag_speed);
+              ImGui::Text("Outer cut off"); ImGui::SameLine(button_spacing);
+              ImGui::DragFloat("##OuterCutoff", &current_ptr->m_outer_cut_off, drag_speed);
+            }
+          }
+
           ImGui::Spacing();
           ImGui::SetNextItemOpen(true, ImGuiCond_Once);
           if (ImGui::CollapsingHeader("Rendering"))
@@ -302,5 +369,20 @@ namespace MX
     ImGui::DragFloat(full_label.c_str(), &vec->z, drag_speed);
     if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
       vec->z = reset_value;
+  }
+
+  void Editor_Object::render_light_node_props(std::shared_ptr<LightNode> light, float button_spacing)
+  {
+    ImGui::Text("Diffuse"); ImGui::SameLine(button_spacing);
+    ImGui::ColorEdit3("##DiffuseColor", &light->m_diffuse[0]);
+
+    ImGui::Text("Specular"); ImGui::SameLine(button_spacing);
+    ImGui::ColorEdit3("##SpecularColor", &light->m_specular[0]);
+
+    ImGui::Text("Ambient"); ImGui::SameLine(button_spacing);
+    ImGui::ColorEdit3("##AmbientColor", &light->m_ambient[0]);
+
+    ImGui::Text("Intensity"); ImGui::SameLine(button_spacing);
+    ImGui::DragFloat("##AmbientStrength", &light->m_ambient_strength, 0.05f);
   }
 }

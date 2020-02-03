@@ -3,6 +3,7 @@
 
 #include "GUI_ImGui_Window.h"
 #include "Editor_Global.h"
+#include "LightNode.h"
 
 namespace MX
 {
@@ -19,6 +20,7 @@ namespace MX
   private:
     // creates three drag sliders for all three axes
     MX_API void transformDrag(const std::string& label, glm::vec3* vec, float drag_speed, float spacing, float reset_value);
+    MX_API void render_light_node_props(std::shared_ptr<LightNode> light, float button_spacing);
   };
 }
 

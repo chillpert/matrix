@@ -18,12 +18,12 @@ Node
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
-@Ambient{vec3(0.200000, 0.200000, 0.200000)}
+@Ambient{vec3(0.168142, 0.168140, 0.168140)}
 @Diffuse{vec3(0.800000, 0.800000, 0.800000)}
 @Specular{vec3(1.000000, 1.000000, 1.000000)}
 @Strength{0.700000}
 -
-@DirectionalDirection{vec3(1.000000, -1.000000, -1.000000)}
+@DirectionalDirection{vec3(2.000000, 1.000000, -2.000000)}
 -
 
 Node
@@ -31,7 +31,7 @@ Node
 @Parent{Root}
 @Type{type_geometry}
 @Shader{resources/matrix/shaders/blinn_phong}
-@Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
+@Transform{T{vec3(0.485000, -0.310000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
 @Model{resources/models/sphere.obj}

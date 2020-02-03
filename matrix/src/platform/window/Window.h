@@ -48,7 +48,7 @@ namespace MX
       float m_Time = 0.0;
       int m_Frames = 0;
       
-      std::string m_Title = "Matrix-Framework";
+      std::string m_Title = "Matrix";
 
       struct ViewPort
       {
