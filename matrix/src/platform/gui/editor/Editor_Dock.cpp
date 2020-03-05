@@ -6,7 +6,7 @@ namespace MX
   Editor_Dock::Editor_Dock()
     : m_opt_fullscreen(false) { }
 
-  Editor_Dock::Editor_Dock(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Dock::Editor_Dock(const char* name, ImGuiWindowFlags flags)
     : m_opt_fullscreen(false)
   {
     initialize(name, flags);
@@ -31,7 +31,7 @@ namespace MX
     m_visibilities.push_back(item);
   }
 
-  bool Editor_Dock::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Dock::initialize(const char* name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }
@@ -141,7 +141,6 @@ namespace MX
             for (auto& it : m_visibilities)
               *it.second = false;
           }
-
 
           ImGui::EndMenu();
         }

@@ -13,13 +13,13 @@
 
 namespace MX
 {
-  Editor_Explorer::Editor_Explorer(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Explorer::Editor_Explorer(const char* name, ImGuiWindowFlags flags)
   {
     initialize(name, flags);
     m_popup_delete.initialize("ExplorerConfirmDeletion", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
   }
 
-  bool Editor_Explorer::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Explorer::initialize(const char* name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }

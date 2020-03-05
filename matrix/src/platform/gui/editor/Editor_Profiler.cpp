@@ -8,7 +8,7 @@ namespace MX
       m_max_fps(0),
       m_average_fps(0) { }
 
-  Editor_Profiler::Editor_Profiler(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Profiler::Editor_Profiler(const char* name, ImGuiWindowFlags flags)
     : m_min_fps(0), 
       m_max_fps(0),
       m_average_fps(0)
@@ -16,7 +16,7 @@ namespace MX
     initialize(name, flags);
   }
 
-  bool Editor_Profiler::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Profiler::initialize(const char* name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }

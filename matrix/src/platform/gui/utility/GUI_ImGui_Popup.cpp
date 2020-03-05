@@ -4,18 +4,16 @@ namespace MX
 {
   void ImGui_Popup::open()
   {
-    ImGui::OpenPopup(m_name.c_str());
+    ImGui::OpenPopup(m_name);
   }
 
   bool ImGui_Popup::begin()
   {
-    return ImGui::BeginPopupModal(m_name.c_str(), NULL, m_window_flags);
+    return ImGui::BeginPopupModal(m_name, NULL, m_window_flags);
   }
 
   void ImGui_Popup::end()
   {
     ImGui::EndPopup();
   }
-
-
 }

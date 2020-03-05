@@ -3,12 +3,12 @@
 
 namespace MX
 {
-  Editor_Console::Editor_Console(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Console::Editor_Console(const char* name, ImGuiWindowFlags flags)
   {
     initialize(name, flags);
   }
 
-  bool Editor_Console::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Console::initialize(const char* name, ImGuiWindowFlags flags)
   {
     m_clear_popup.initialize("Warning##Clear Console", ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
     return ImGui_Window::initialize(name, flags);

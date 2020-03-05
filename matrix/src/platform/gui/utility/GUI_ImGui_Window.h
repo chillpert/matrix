@@ -15,7 +15,7 @@ namespace MX
     MX_API virtual ~ImGui_Window() = default;
 
     MX_API virtual std::pair<std::string, bool*> visibilty() { return {m_name, &m_p_enabled}; }
-    MX_API virtual bool initialize(const std::string& name, ImGuiWindowFlags flags = 0);
+    MX_API virtual bool initialize(const char* name, ImGuiWindowFlags flags = 0);
     MX_API virtual bool update();
     MX_API virtual void render();
 
@@ -41,7 +41,7 @@ namespace MX
     bool m_p_open;
     bool m_called_begin;
 
-    std::string m_name = "undef";
+    const char* m_name = "undef";
     ImGuiWindowFlags m_window_flags;
     
     std::vector<std::pair<ImGuiStyleVar, ImVec2>> m_style_vector;

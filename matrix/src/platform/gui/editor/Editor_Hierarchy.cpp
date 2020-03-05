@@ -11,7 +11,7 @@ namespace MX
       m_root = nullptr;
   }
 
-  Editor_Hierarchy::Editor_Hierarchy(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Hierarchy::Editor_Hierarchy(const char* name, ImGuiWindowFlags flags)
   {
     if (MX_SCENE != nullptr)
       m_root = MX_ROOT;
@@ -21,7 +21,7 @@ namespace MX
     initialize(name, flags);
   }
 
-  bool Editor_Hierarchy::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Hierarchy::initialize(const char* name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }

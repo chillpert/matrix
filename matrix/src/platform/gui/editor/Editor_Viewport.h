@@ -9,9 +9,9 @@ namespace MX
   {
   public:
     MX_API Editor_Viewport() = default;
-    MX_API Editor_Viewport(const std::string& name, ImGuiWindowFlags flags = 0);
+    MX_API Editor_Viewport(const char* name, ImGuiWindowFlags flags = 0);
 
-    MX_API bool initialize(const std::string& name, ImGuiWindowFlags flags = 0) override;
+    MX_API bool initialize(const char* name, ImGuiWindowFlags flags = 0) override;
     MX_API bool update() override;
     MX_API void render() override;
 

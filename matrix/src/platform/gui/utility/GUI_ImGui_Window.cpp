@@ -9,7 +9,7 @@ namespace MX
       m_called_begin(false),
       m_window_flags(0) { }
 
-  bool ImGui_Window::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool ImGui_Window::initialize(const char* name, ImGuiWindowFlags flags)
   {
     m_name = name;
     set_flags(flags);
@@ -41,7 +41,7 @@ namespace MX
       return false;
 
     activate_styles();
-    m_called_begin = ImGui::Begin(m_name.c_str(), &m_p_open, m_window_flags);
+    m_called_begin = ImGui::Begin(m_name, &m_p_open, m_window_flags);
     remove_styles();
 
     if (m_called_begin)

@@ -9,12 +9,12 @@
 
 namespace MX
 {
-  Editor_Object::Editor_Object(const std::string& name, ImGuiWindowFlags flags)
+  Editor_Object::Editor_Object(const char* name, ImGuiWindowFlags flags)
   {
     initialize(name, flags);
   }
 
-  bool Editor_Object::initialize(const std::string& name, ImGuiWindowFlags flags)
+  bool Editor_Object::initialize(const char* name, ImGuiWindowFlags flags)
   {
     return ImGui_Window::initialize(name, flags);
   }
