@@ -17,6 +17,9 @@ message("MX: Build type not set. Continuing with: ${CMAKE_BUILD_TYPE}")
       FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
 
+set (CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/external")
+include(cotire)
+
 ################### CHANGE THIS ######################
 # needs clean reconfigure
 option(USE_OPENGL "use OpenGL" ON)

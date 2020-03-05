@@ -37,6 +37,9 @@ file(GLOB FILES_EXE
 # create executable
 add_executable(Sandbox application/src/EntryPoint.cpp ${FILES_EXE})
 
+set_target_properties(Sandbox PROPERTIES COTIRE_CXX_PREFIX_HEADER_INIT "${PROJECT_SOURCE_DIR}/matrix/src/pch/stdafx.h")
+cotire(Sandbox)
+
 # link against Matrix Framework
 target_link_libraries(Sandbox
   MatrixLib
