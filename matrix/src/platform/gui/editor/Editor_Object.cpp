@@ -112,7 +112,9 @@ namespace MX
                   if (MX_SCENE != nullptr)
                   {
                     std::shared_ptr<Node> new_parent = MX_SCENEGRAPH.search<Node>(temp);
-                    current->setParent(new_parent.get());
+                    
+                    if (new_parent != nullptr)
+                      current->setParent(new_parent.get());
                   }
                 }
                 ImGui::EndDragDropTarget();

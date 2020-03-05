@@ -7,8 +7,8 @@
 
 namespace MX
 {
-  const int initial_window_width = 1400;
-  const int initial_window_height = 800;
+  const int initial_window_width = 1200;
+  const int initial_window_height = 600;
 
   extern int max_window_width;
   extern int max_window_height;

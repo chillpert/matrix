@@ -76,7 +76,10 @@ namespace MX
 
     if (node != nullptr)
     {
-      // delete this node from its parent's children list
+      // add this node to new parent's children list      
+      node->m_Children.push_back(shared_from_this());
+
+      // delete this node from its old parent's children list
       if (m_Parent != nullptr)
       {
         std::list<std::shared_ptr<Node>>::iterator iter;
@@ -89,10 +92,7 @@ namespace MX
           }
         }
       }
-
-      // add this node to new parent's children list
-      node->m_Children.push_back(std::shared_ptr<Node>(this));
-
+      
       // set node to this node's parent
       m_Parent = node;
     }
