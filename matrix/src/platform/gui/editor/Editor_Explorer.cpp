@@ -336,6 +336,8 @@ namespace MX
                     if (!MX_WORLD.rename_scene(old_full_path, double_clicked_full_path))
                       MX_WARN("MX: Scene: Can not rename a scene that has not been loaded.");
                   }
+                  else
+                    boost::filesystem::rename(old_full_path, double_clicked_full_path);
                 }
               }
             }

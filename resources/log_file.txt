@@ -1,0 +1,28 @@
+INFO   [00:00:00]: MX: Application: Constructor
+SUCCESS[00:00:00]: MX: Window: SDL2: context
+SUCCESS[00:00:00]: MX: Window: SDL2
+SUCCESS[00:00:00]: MX: Window: SDL2: GL context
+SUCCESS[00:00:00]: MX: Application: Initialization: Window
+SUCCESS[00:00:00]: MX: API: OpenGL: GLEW: Initialization
+SUCCESS[00:00:00]: MX: Application: Initialization: API
+SUCCESS[00:00:00]: MX: Application: Initialization: Func
+SUCCESS[00:00:00]: MX: Application: Initialization: GUI
+SUCCESS[00:00:00]: MX: Application: Initialization
+INFO   [00:00:00]: MX: API: OpenGL: Shader: Initialization: screen_buffer
+SUCCESS[00:00:00]: MX: API: OpenGL: Shader: screen_buffer
+INFO   [00:00:00]: MX: World: GetShader: Created Shader at /home/n30/Repos/matrix/resources/matrix/shaders/screen_buffer
+INFO   [00:00:00]: MX: API: OpenGL: Shader: Initialization: simple_depth
+SUCCESS[00:00:00]: MX: API: OpenGL: Shader: simple_depth
+INFO   [00:00:00]: MX: World: GetShader: Created Shader at /home/n30/Repos/matrix/resources/matrix/shaders/simple_depth
+SUCCESS[00:00:00]: MX: Framebuffer: OpenGL: Initialization
+INFO   [00:00:02]: MX: API: OpenGL: Shader: Initialization: blinn_phong
+SUCCESS[00:00:02]: MX: API: OpenGL: Shader: blinn_phong
+INFO   [00:00:02]: MX: World: GetShader: Created Shader at /home/n30/Repos/matrix/resources/matrix/shaders/blinn_phong
+INFO   [00:00:02]: MX: World: GetShader: Shader at /home/n30/Repos/matrix/resources/matrix/shaders/blinn_phong already exists. Continue using existing data instead.
+INFO   [00:00:02]: MX: World: GetModel: Created Model at /home/n30/Repos/matrix/resources/models/sphere.obj
+INFO   [00:00:02]: MX: World: GetTexture: Created Texture at /home/n30/Repos/matrix/resources/textures/diffuse/2k_mars.jpg
+INFO   [00:00:02]: MX: World: GetTexture: Created Texture at /home/n30/Repos/matrix/resources/textures/specular/plastic_specular.png
+INFO   [00:00:02]: MX: Node: Object added to parent: Root
+INFO   [00:00:02]: MX: Node: DirectionalLight added to parent: Root
+INFO   [00:00:02]: MX: World: Scene: earth.mx: Added
+SUCCESS[00:00:02]: MX: World: Loaded Scene: earth.mx
