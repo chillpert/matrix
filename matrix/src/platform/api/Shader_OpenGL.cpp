@@ -58,9 +58,9 @@ namespace MX
   }
 
 
-  u_int32_t Shader_OpenGL::compile(u_int32_t type, const std::string& source)
+  uint32_t Shader_OpenGL::compile(uint32_t type, const std::string& source)
   {
-    u_int32_t ID = glCreateShader(type);
+    uint32_t ID = glCreateShader(type);
 	  const char* src = source.c_str();
 	  glShaderSource(ID, 1, &src, nullptr);
 	  glCompileShader(ID);

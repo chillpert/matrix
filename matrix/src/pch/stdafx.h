@@ -5,8 +5,6 @@
   #pragma GCC diagnostic ignored "-Wformat-security"
 #elif MX_PLATFORM_WINDOWS_X64
   #include <stdint.h>
-  typedef uint32_t u_int32_t;
-  typedef uint64_t u_int64_t;
 #endif
 
 // external

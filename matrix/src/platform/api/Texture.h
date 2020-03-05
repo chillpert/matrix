@@ -59,7 +59,7 @@ namespace MX
     MX_API virtual void use(int index = 0) const = 0;
     MX_API virtual void unbind() const = 0;
 
-    MX_API virtual u_int64_t getID() = 0;
+    MX_API virtual uint64_t getID() = 0;
     MX_API virtual Texture *get() { return this; }
 
   public:

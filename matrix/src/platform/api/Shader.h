@@ -25,8 +25,8 @@ namespace MX
     MX_API virtual void update() = 0;
     MX_API virtual void use() const = 0;
 
-    MX_API virtual u_int32_t getID() const = 0;
-    MX_API virtual u_int32_t compile(u_int32_t type, const std::string &source) = 0;
+    MX_API virtual uint32_t getID() const = 0;
+    MX_API virtual uint32_t compile(uint32_t type, const std::string &source) = 0;
     MX_API virtual bool errorCheck(int type) const = 0;
 
     MX_API virtual void setBool(const std::string &name, const bool &value) const = 0;

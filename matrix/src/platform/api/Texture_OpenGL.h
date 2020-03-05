@@ -20,7 +20,7 @@ namespace MX
     MX_API void use(int index = 0) const override;
     MX_API void unbind() const override;
 
-    MX_API u_int64_t getID() { return static_cast<u_int64_t>(m_ID); }
+    MX_API uint64_t getID() { return static_cast<uint64_t>(m_ID); }
     MX_API Texture_OpenGL *get() { return this; }
 
   public:

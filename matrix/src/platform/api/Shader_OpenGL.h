@@ -19,8 +19,8 @@ namespace MX
     MX_API void update() override;
     MX_API void use() const override;
 
-    MX_API u_int32_t getID() const override { return static_cast<u_int32_t>(m_ID); }
-    MX_API u_int32_t compile(u_int32_t type, const std::string &source);
+    MX_API uint32_t getID() const override { return static_cast<uint32_t>(m_ID); }
+    MX_API uint32_t compile(uint32_t type, const std::string &source);
     MX_API bool errorCheck(int type) const;
 
     MX_API void setBool(const std::string &name, const bool &value) const override;

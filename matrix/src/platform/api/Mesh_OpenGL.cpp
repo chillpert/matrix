@@ -42,12 +42,12 @@ namespace MX
 
   void Mesh_OpenGL::render_mesh(std::shared_ptr<Shader> shader)
   {
-    u_int64_t diffuse_nr = 1;
-    u_int64_t specular_nr = 1;
-    u_int64_t normal_nr = 1;
-    u_int64_t height_nr = 1;
+    size_t diffuse_nr = 1;
+    size_t specular_nr = 1;
+    size_t normal_nr = 1;
+    size_t height_nr = 1;
 
-    for (u_int64_t i = 0; i < m_textures.size(); i++)
+    for (size_t i = 0; i < m_textures.size(); i++)
     {
       glActiveTexture(GL_TEXTURE0 + i);
 
