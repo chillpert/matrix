@@ -37,7 +37,7 @@ add_compile_definitions(MX_TEXTURE_PATH="${PROJECT_SOURCE_DIR}/resources/texture
 add_compile_definitions(MX_MODEL_PATH="${PROJECT_SOURCE_DIR}/resources/models/")
 add_compile_definitions(MX_SCENES_PATH="${PROJECT_SOURCE_DIR}/resources/scenes/")
 add_compile_definitions(MX_FONTS_PATH="${PROJECT_SOURCE_DIR}/external/imgui/misc/fonts/")
-add_compile_definitions(MX_IMGUI_DEFAULT_INI_PATH="${PROJECT_SOURCE_DIR}/resources/imgui_init/")
+add_compile_definitions(MX_IMGUI_DEFAULT_INI_PATH="${PROJECT_SOURCE_DIR}/external/imgui_init/")
 
 add_compile_definitions(MX_MATRIX_RESOURCES="${PROJECT_SOURCE_DIR}/resources/matrix/")
 add_compile_definitions(MX_MATRIX_ICONS="${PROJECT_SOURCE_DIR}/resources/matrix/icons/")

@@ -1,7 +1,7 @@
 # Matrix
 
 A framework for creating real-time rendering applications.
-Runs on both Linux and Windows with OpenGL and DirectX [not implemented yet] respectively. 
+Runs on both Linux and Windows with either OpenGL or Vulkan [not implemented yet]. 
 
 ##### Requires Cmake Version 3.14.0 or higher
 

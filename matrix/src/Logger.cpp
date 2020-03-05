@@ -83,11 +83,11 @@ namespace MX
   {
     if (clearFlag)
     {
-      remove("resources/log.txt");
+      remove("resources/matrix/reports/log.txt");
       clearFlag = 0;
     }
     std::ofstream logFile;
-    logFile.open("resources/log.txt", std::ios::app);
+    logFile.open("resources/matrix/reports/log.txt", std::ios::app);
     logFile << message;
     logFile.close();
   }

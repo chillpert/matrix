@@ -11,7 +11,7 @@ This is an overview of planned and currently worked on features as well as issue
 + physics
 
 ##### Important Features
-+ 
++ (GUI) implement sorting features in ```Explorer Window```
 
 ##### Features
 + (GUI) add preview for all common file types to ```Explorer Window``` 
@@ -19,7 +19,6 @@ This is an overview of planned and currently worked on features as well as issue
 + (GUI) clickable elements in ```Viewport``` 
 + (GUI) implement highlighting in ```Explorer Window```
 + (GUI) add renaming feature to ```Hierachy Window```
-+ (GUI) implement sorting features in ```Explorer Window```
 + (GUI) add up and down arrow to move nodes in scene graph in ```Hierachy Window```
 + (GUI) implement ```Object Viewer``` for light sources
 + (Transform) review rotation component
