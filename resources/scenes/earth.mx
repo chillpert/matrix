@@ -2,10 +2,10 @@ Scene
 @Name{earth.mx}
 
 Camera
-@Position{vec3(0.514101, 0.178611, 2.926903)}
-@Front{vec3(-0.383491, -0.077415, -0.920295)}
-@Yaw{247.378296}
-@Pitch{-4.439974}
+@Position{vec3(0.553700, -0.555984, 2.085610)}
+@Front{vec3(-0.456594, 0.095151, -0.884572)}
+@Yaw{242.698364}
+@Pitch{5.460037}
 @FOV{45.000000}
 @Sensitivity{0.060000}
 
@@ -18,12 +18,12 @@ Node
 @Transform{T{vec3(0.000000, 0.000000, 0.000000)}R{vec3(0.000000, 0.000000, 0.000000)}S{vec3(1.000000, 1.000000, 1.000000)}}
 @Visible{1}
 -
-@Ambient{vec3(0.168142, 0.168140, 0.168140)}
+@Ambient{vec3(0.318584, 0.318581, 0.318581)}
 @Diffuse{vec3(0.800000, 0.800000, 0.800000)}
-@Specular{vec3(1.000000, 1.000000, 1.000000)}
-@Strength{0.700000}
+@Specular{vec3(1.000000, 0.827707, 0.756637)}
+@Strength{0.650000}
 -
-@DirectionalDirection{vec3(2.000000, 1.000000, -2.000000)}
+@DirectionalDirection{vec3(3.250000, 1.000000, -2.000000)}
 -
 
 Node
@@ -35,7 +35,7 @@ Node
 @Visible{1}
 -
 @Model{resources/models/sphere.obj}
-@TextureProfile{D{resources/textures/diffuse/2k_earth.jpg}S{resources/textures/diffuse/2k_earth.jpg}} 
+@TextureProfile{D{resources/textures/diffuse/2k_mars.jpg}S{resources/textures/specular/plastic_specular.png}} 
 @MaterialProfile{A{vec3(1.000000, 1.000000, 1.000000)}D{vec3(1.000000, 1.000000, 1.000000)}S{vec3(1.000000, 1.000000, 1.000000)}s{32.000000}}
 -
 

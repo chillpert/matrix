@@ -5,8 +5,6 @@ using namespace MX;
 void initialize()
 {
   MX_WORLD.initialize();
-  
-  //MX_WORLD.push(std::make_shared<Scene>("My First Scene"));
 }
 
 void update()
