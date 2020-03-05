@@ -117,7 +117,7 @@ namespace MX
 
       if (ImGui::BeginMenu("Window"))
       {
-        for (auto &it : m_visibilities)
+        for (auto& it : m_visibilities)
         {
           if (ImGui::MenuItem(it.first.c_str(), NULL, it.second))
           {
@@ -130,11 +130,18 @@ namespace MX
 
         if (ImGui::BeginMenu("Layout"))
         {
-          if (ImGui::MenuItem("Default"))
+          if (ImGui::MenuItem("Reset UI"))
           {
-            // reset layout by loading ini
-            MX_GUI = std::make_unique<GUI_Editor>();
+            for (auto& it : m_visibilities)
+              *it.second = true;
           }
+
+          if (ImGui::MenuItem("Hide UI"))
+          {
+            for (auto& it : m_visibilities)
+              *it.second = false;
+          }
+
 
           ImGui::EndMenu();
         }

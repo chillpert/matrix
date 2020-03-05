@@ -35,6 +35,7 @@ This is an overview of planned and currently worked on features as well as issue
 + (Events) imgui events are not bound to matrix event system
 + (Performance) add asynchronous model loading
 + (Performance) do small string optimizations
++ (GUI) reseting layout causes pure virtual method call and therefore ctd
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types
