@@ -9,9 +9,14 @@ namespace MX
   {
   public:
     MX_API ImGui_Popup() = default;
+    MX_API ImGui_Popup(const char* name, ImGuiWindowFlags flags = 0);
 
     MX_API void open();
+    MX_API void close();
+    
     MX_API bool begin() override;
+    MX_API bool beginModal();
+    
     MX_API void end() override;
   };
 }

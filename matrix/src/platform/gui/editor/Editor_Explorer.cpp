@@ -117,29 +117,6 @@ namespace MX
 
       update_directory(current_path.c_str());
       render_directory();
-
-      //if (ImGui::Button("OPEN POPUP MODAL"))
-      //  m_popup_delete.open();
-
-      // render popups
-      if (m_popup_delete.begin())
-      {
-        ImGui::Text("This change can not be undone. Are you sure to proceed?");
-        
-        if (ImGui::Button("No"))
-        {
-          ImGui::EndPopup();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Yes"))
-        {
-          ImGui::EndPopup();
-        }
-        
-        m_popup_delete.end();
-      }
     }
 
     ImGui_Window::end();
@@ -310,34 +287,44 @@ namespace MX
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
         
-      static ImGui_ContextMenu file_inspector("File Inspector", flags_context_menu);
-      if (can_be_displayed)
+      static ImGui_Popup file_inspector("File Inspector", flags_context_menu);
+      
+      if (show_file_inspector_context_menu)
       {
-        if (file_inspector.begin(show_file_inspector_context_menu))
+        show_file_inspector_context_menu = false;
+        file_inspector.open();
+      }
+        
+      if (file_inspector.begin())
+      {
+        /*
+          TODO:
+            - this should not be an icon but instead an actual texture (use ImGui::Image) (maybe write utility class for this)
+        */
+
+        // remove file name from full path temporarily since texture class does weird things with the naming
+        //static ImGui_Icon enlarged_picture(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
+
+        if (enlarged_picture_update)
         {
-          /*
-            TODO:
-              - this should not be an icon but instead an actual texture (use ImGui::Image) (maybe write utility class for this)
-          */
-
-          // remove file name from full path temporarily since texture class does weird things with the naming
-          //static ImGui_Icon enlarged_picture(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
-
-          if (enlarged_picture_update)
-          {
-            //enlarged_picture = ImGui_Icon(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
-            enlarged_picture_update = false;
-          }
-
-          //enlarged_picture.render();
-          file_inspector.end();
+          //enlarged_picture = ImGui_Icon(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
+          enlarged_picture_update = false;
         }
+
+        //enlarged_picture.render();
+        file_inspector.end();
       }
 
       // render right click context menu (properties)
-      static ImGui_ContextMenu explorer_context_menu("Explorer Context Menu");
+      static ImGui_Popup context_menu("ContextMenuFileExplorerPopup");
 
-      if (explorer_context_menu.begin(show_explorer_context_menu))
+      if (show_explorer_context_menu)
+      {
+        show_explorer_context_menu = false;
+        context_menu.open();
+      }
+
+      if (context_menu.begin())
       {
         static ImGui_InputText rename_field("##Rename file or folder");
         ImGui::SetNextItemWidth(100.0f);
@@ -396,7 +383,26 @@ namespace MX
         if (ImGui::Button("Copy")) { }
         if (ImGui::Button("Cut")) { }
 
-        explorer_context_menu.end();
+        if (m_popup_delete.begin())
+        {
+          ImGui::Text("This change can not be undone. Are you sure to proceed?");
+          
+          if (ImGui::Button("No"))
+          {
+            ImGui::EndPopup();
+          }
+
+          ImGui::SameLine();
+
+          if (ImGui::Button("Yes"))
+          {
+            ImGui::EndPopup();
+          }
+          
+          m_popup_delete.end();
+        }
+
+        context_menu.end();
       }   
     }
   }

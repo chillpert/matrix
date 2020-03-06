@@ -1,5 +1,4 @@
 #include "Editor_Object.h"
-#include "GUI_ImGui_ContextMenu.h"
 #include "GUI_ImGui_Icon.h"
 
 #include "Application.h"
@@ -52,7 +51,10 @@ namespace MX
             glm::vec3* rotation = &current->m_Trans.m_rotation; 
             glm::vec3* scale = &current->m_Trans.m_scale;
 
-            static ImGui_ContextMenu transform_context_menu("Context Menu Transform");
+            static ImGui_Popup transform_context_menu("Context Menu Transform");
+            
+            if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+              transform_context_menu.open();
 
             if (transform_context_menu.begin())
             {
@@ -283,21 +285,42 @@ namespace MX
             
             if (current->m_Shader != nullptr)
             {
-              static bool show_shader_info = false;
-
               std::string temp = current->m_Shader->m_Name;
               std::string shader_name = temp.substr(temp.find_last_of("/") + 1, temp.find_last_of(".") - temp.find_last_of("/") - 1);
             
               ImGui::Text("Shader"); ImGui::SameLine(button_spacing);
 
-              // if hovered over text ("Shader") display info window
-              if (ImGui::IsItemHovered())
-                show_shader_info = true;
-              else
-                show_shader_info = false;
+              static ImGui_Popup shader_info("Info##Shader Info");
 
-              static ImGui_ContextMenu shader_info("Info##Shader Info");
-              if (shader_info.begin(show_shader_info))
+              static float time_on_hover = 0;
+              static float initial_hover = true;
+              static float show_shader_info = false;
+
+              // if hovered over text ("Shader") display info window
+              if (ImGui::IsItemHovered() && !show_shader_info)
+              {
+                if (initial_hover)
+                {
+                  time_on_hover = MX_WINDOW->m_Props.m_Time;
+                  initial_hover = false;
+                }
+
+                if (MX_WINDOW->m_Props.m_Time - time_on_hover > 1.0f)
+                {
+                  MX_SUCCESS("Hovered long enough");
+                  initial_hover = true;
+                  time_on_hover = 0.0f;
+                  show_shader_info = true;
+                }
+              }
+
+              if (show_shader_info)
+              {
+                show_shader_info = false;
+                shader_info.open();
+              }
+
+              if (shader_info.begin())
               {
                 ImGui::Text("Drag and drop any shader file (.vert or .frag) onto this field");
                 shader_info.end();

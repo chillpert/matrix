@@ -99,8 +99,14 @@ namespace MX
       }
     }
 
-    static ImGui_ContextMenu hierarchy_context_menu("Hierarchy Context Menu");
-    if (hierarchy_context_menu.begin(m_right_clicked))
+    static ImGui_Popup hierarchy_context_menu("Hierachy Context Menu");
+    if (m_right_clicked)
+    {
+      m_right_clicked = false;
+      hierarchy_context_menu.open();
+    }
+
+    if (hierarchy_context_menu.begin())
     {
       if (ImGui::Button("Delete##Delete Node in Hierarchy"))
       {
@@ -110,7 +116,10 @@ namespace MX
           m_rc_node = nullptr;
           m_right_clicked = false;
         }
+
         Editor_Global::get_selection().clear();
+
+        hierarchy_context_menu.close();
       }
 
       hierarchy_context_menu.end();

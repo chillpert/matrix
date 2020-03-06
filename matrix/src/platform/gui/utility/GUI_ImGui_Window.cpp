@@ -9,6 +9,13 @@ namespace MX
       m_called_begin(false),
       m_window_flags(0) { }
 
+  ImGui_Window::ImGui_Window(const char* name, ImGuiWindowFlags flags)
+    : m_p_enabled(true),
+      m_p_open(true),
+      m_called_begin(false),
+      m_name(name),
+      m_window_flags(flags) { }
+
   bool ImGui_Window::initialize(const char* name, ImGuiWindowFlags flags)
   {
     m_name = name;
