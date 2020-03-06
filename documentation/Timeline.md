@@ -34,8 +34,9 @@ This is an overview of planned and currently worked on features as well as issue
 + (Events) imgui events are not bound to matrix event system
 + (Performance) add asynchronous model loading
 + (Performance) do small string optimizations
-+ (GUI) delete button does not work
 + (GUI) pop up modals don't open
++ (GUI) delete button does not work
++ (GUI) improve visual fidelity of ```Explorer Window```'s context menu 
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types

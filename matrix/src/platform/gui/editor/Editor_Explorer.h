@@ -14,7 +14,8 @@ namespace MX
     MX_API bool update() override;
     MX_API void render() override; 
 
-    MX_API void load_directory(const char* path);
+    MX_API void update_directory(const char* path);
+    MX_API void render_directory();
     MX_API void setup_drag_drop_source(const std::string& file_name, const std::string& file_path);
 
     std::vector<std::string> m_selection;
