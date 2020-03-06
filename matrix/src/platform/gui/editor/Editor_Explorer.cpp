@@ -49,14 +49,25 @@ namespace MX
       {
         if (ImGui::BeginMenu("Sort"))
         {
-          if (ImGui::MenuItem("Name"))
-          {
+          static bool sort_by_name = false;
+          static bool sort_by_file = false;
 
+          if (ImGui::MenuItem("Name", "", &sort_by_name))
+          {
+            sort_by_file = false;
+
+            std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
+              return std::get<0>(a) < std::get<0>(b);
+            });
           }
 
-          if (ImGui::MenuItem("File"))
+          if (ImGui::MenuItem("File", "", &sort_by_file))
           {
+            sort_by_name = false;
 
+            std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
+              return get_file_ending(std::get<0>(a)) < get_file_ending(std::get<0>(b));
+            });
           }
 
           ImGui::EndMenu();
@@ -191,8 +202,7 @@ namespace MX
       else
       {
         // get file extension and apply icons respectively
-        auto found_extension = std::get<0>(item).find_last_of('.');
-        std::string file_extension = std::get<0>(item).substr(found_extension);
+        std::string file_extension = get_file_ending(std::get<0>(item));
 
         if (file_extension == ".txt")
         {

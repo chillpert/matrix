@@ -22,6 +22,7 @@ namespace MX
   std::string f_str(float num);
   std::string f_str(float num, float num_decimals);
   std::string remove_file_ending(const std::string &name);
+  std::string get_file_ending(const std::string& file);
   uint64_t generate_id();
 
   // const char* str_c(const std::string &str);

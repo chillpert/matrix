@@ -72,6 +72,17 @@ namespace MX
     return name;
   }
 
+  std::string get_file_ending(const std::string& file)
+  {
+    auto found_extension = file.find_last_of('.');
+
+    if (found_extension != std::string::npos)
+      return file.substr(found_extension);
+    // is a directory
+    else
+      return ".d";
+  }
+
   uint64_t generate_id()
   {
     static uint64_t id = 0;
