@@ -8,6 +8,10 @@
 
 namespace MX
 {
+  const float button_height = 20.0f;
+  const float button_spacing = 75.0f;
+  const float drag_speed = 0.05f;
+
   Editor_Object::Editor_Object(const char* name, ImGuiWindowFlags flags)
   {
     initialize(name, flags);
@@ -29,9 +33,7 @@ namespace MX
     if (ImGui_Window::begin())
     {
       static ImGui_Icon info_icon("info.png", 15.0f, 15.0f);
-      const float button_height = 20.0f;
-      const float button_spacing = 75.0f;
-      const float drag_speed = 0.05f;
+      
 
       // only ever show components if an object is selected
       if (Editor_Global::get_selection().size() > 0)
@@ -233,6 +235,9 @@ namespace MX
               ImGui::DragFloat3("##Position", &current_ptr->m_position[0], drag_speed);
 
               ImGui::Text("Attenuation");
+              static ImGui_PopupHoverInfo attenuation_info("AttenuationInfo");
+              attenuation_info.render("Light attenuation describes how much the intensity of a light source will drop over distance.", ImGui::IsItemHovered());
+
               ImGui::Separator();
               ImGui::Text("Constant"); ImGui::SameLine(button_spacing);
               ImGui::DragFloat("##Constant", &current_ptr->m_constant, drag_speed, 0.0f);
@@ -258,6 +263,9 @@ namespace MX
               ImGui::DragFloat3("##Position", &current_ptr->m_position[0], drag_speed);
 
               ImGui::Text("Attenuation");
+              static ImGui_PopupHoverInfo attenuation_info("AttenuationInfo");
+              attenuation_info.render("Light attenuation describes how much the intensity of a light source will drop over distance.", ImGui::IsItemHovered());
+
               ImGui::Separator();
               ImGui::Text("Constant"); ImGui::SameLine(button_spacing);
               ImGui::DragFloat("##Constant", &current_ptr->m_constant, drag_speed, 0.0f);
@@ -281,6 +289,10 @@ namespace MX
             ImGui::Spacing();
 
             ImGui::Text("Visible "); ImGui::SameLine(button_spacing);
+
+            static ImGui_PopupHoverInfo visibility_info("VisibilityInfo");
+            visibility_info.render("Disables the object entirely.", ImGui::IsItemHovered());
+
             ImGui::Checkbox("##NodeVisibilityToggle", &current->m_visible);
             
             if (current->m_Shader != nullptr)
@@ -291,7 +303,7 @@ namespace MX
               ImGui::Text("Shader"); ImGui::SameLine(button_spacing);
 
               static ImGui_PopupHoverInfo shader_info("ShaderHoverInfo");
-              shader_info.render("Drag and drop any shader file (.vert or .frag) onto this field", ImGui::IsItemHovered());
+              shader_info.render("Drag and drop any shader file (.vert or .frag) onto this field.", ImGui::IsItemHovered());
 
               if (ImGui::Button(shader_name.c_str(), ImVec2(-1.0f, button_height))) { }
 

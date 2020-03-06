@@ -374,10 +374,6 @@ namespace MX
         if (ImGui::Button("Delete"))
         {
           m_popup_delete.open();
-
-          // reset
-          items_in_directory.clear();
-          update_items_in_directory = true;
         }
 
         if (ImGui::Button("Copy")) { }
@@ -389,14 +385,18 @@ namespace MX
           
           if (ImGui::Button("No"))
           {
-            ImGui::EndPopup();
+            m_popup_delete.close();
           }
 
           ImGui::SameLine();
 
           if (ImGui::Button("Yes"))
           {
-            ImGui::EndPopup();
+            boost::filesystem::remove(double_clicked_full_path);
+            
+            items_in_directory.clear();
+            update_items_in_directory = true;
+            m_popup_delete.close();
           }
           
           m_popup_delete.end();

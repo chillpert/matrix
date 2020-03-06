@@ -25,7 +25,6 @@ This is an overview of planned and currently worked on features as well as issue
 + (Renderer) ray intersection algorithm for general meshes
 + (GUI) add hard corners for buttons context menu in ```Explorer Window``` 
 + (GUI) image preview screen not working in ```Explorer Window``` 
-+ (GUI) abstract hover info logic into new inherited popup class 
 
 ##### Important Issues
 + 
@@ -38,9 +37,7 @@ This is an overview of planned and currently worked on features as well as issue
 + (Performance) add asynchronous model loading
 + (Performance) do small string optimizations
 + (GUI) pop up modals don't open
-+ (GUI) delete button causes CTD
 + (GUI) improve visual fidelity of ```Explorer Window```'s context menu 
-+ (GUI) continue swapping context menus with normal popups
 + (Events) right click to control viewport should only be possible if done on viewport itself
 
 ##### Documentation Updates
