@@ -80,12 +80,11 @@ namespace MX
 
           if (ImGui::MenuItem("Folder"))
           {
-
+            // initially set to end with '/', but boost does not add '/' to the end of the path - add it manually
             if (current_path[current_path.size() - 1] != '/')
               current_path += '/';
 
-            MX_FATAL(current_path + "folder");
-            //boost::filesystem::create_directory(current_path + "folder");
+            boost::filesystem::create_directory(current_path + Utility::get_unique_folder_name("folder", current_path));
             
             items_in_directory.clear();
             update_items_in_directory = true;

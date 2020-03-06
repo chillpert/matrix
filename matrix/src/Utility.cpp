@@ -1,7 +1,8 @@
-#include "Utils.h"
+#include "Utility.h"
 
 #include <sstream>
 #include <fstream>
+#include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/range/iterator_range.hpp>
 
@@ -106,6 +107,78 @@ namespace MX
             results->push_back(path);
         }
       }
+    }
+
+    std::string get_unique_folder_name(const std::string& name, const std::string& path)
+    {
+      std::string file_name = name;
+      std::vector<std::string> existing_names;
+      
+      // iterate through current
+      boost::filesystem::path p(path);
+      
+      if (boost::filesystem::is_directory(p))
+      {
+        boost::filesystem::directory_iterator end_itr;
+
+        for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
+          existing_names.push_back(get_file_name(itr->path().string()));        
+      }
+
+      bool accepted = true;
+
+      for (const auto& it : existing_names)
+      {
+        if (it == file_name)
+          accepted = false;
+      }
+
+      // given name is unique, does not need an appendix
+      if (accepted)
+        return file_name;
+
+      std::string appendix = "_1";
+      file_name += appendix;
+
+      uint64_t counter = 0;
+      // make sure application does not get caught in an infinite loop
+      uint64_t safe_counter = 0;
+
+      while (!accepted)
+      {
+        ++safe_counter;
+
+        if (safe_counter > Constants::max_amount_of_objects_per_scene)
+          throw std::runtime_error("MX: Utils: Get unique file name: Can not find unique file name for " + path);
+          
+        bool already_exists = false;
+        for (const std::string& it : existing_names)
+        {
+          if (it == file_name)
+          {
+            ++counter;
+            appendix = "_" + std::to_string(counter);
+            already_exists = true;
+            break;
+          }
+
+          // remove old appendix
+          auto appendix_pos = file_name.find_last_of("_");
+
+          if (appendix_pos != std::string::npos)
+          {
+            std::string name_without_file_type = file_name.substr(0, appendix_pos);
+            file_name = name_without_file_type + appendix;
+          }
+          else
+            throw std::runtime_error("MX: Utils: Get unique file name: Failed to add appendix for " + path);
+        }
+
+        if (!already_exists)
+          accepted = true;
+      }
+
+      return file_name;
     }
 
     // only considers MX_RESOURCE path

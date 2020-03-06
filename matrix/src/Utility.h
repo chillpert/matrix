@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UTILITY_H
+#define UTILITY_H
 
 #include <string>
 #include <vector>
@@ -33,6 +33,7 @@ namespace MX
     std::string get_file_ending(const std::string& file);
     std::string get_file_name(const std::string& path);
     void find_all_files_of_same_type(const char* path, std::vector<std::string>* results, const std::string& type, bool only_file_name = true);
+    std::string get_unique_folder_name(const std::string& name, const std::string& path);
     std::string get_unique_file_name(const std::string& name);
 
     uint64_t generate_id();
@@ -44,4 +45,4 @@ namespace MX
   }
 }
 
-#endif // UTILS_H
+#endif // UTILITY_H

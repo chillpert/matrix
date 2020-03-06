@@ -60,7 +60,7 @@
 #include <functional>
 
 // project files
-#include "Utils.h"
+#include "Utility.h"
 #include "Logger.h"
 #include "API_ErrorHandling.h"
 #include "MatrixExceptions.h"
