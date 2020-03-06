@@ -243,6 +243,7 @@ namespace MX
         // render folder icon
         folder_icon.render();
         ImGui::SameLine(0.0f, 2.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
         if (ImGui::Button(std::get<0>(item).c_str()))
         {
@@ -252,6 +253,8 @@ namespace MX
           items_in_directory.clear();
           update_items_in_directory = true;
         }
+
+        ImGui::PopStyleVar();
       }
       // is a file
       else
@@ -309,6 +312,8 @@ namespace MX
         else
           ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.26f, 0.26f, 1.0f));
         
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+
         if (ImGui::Button(std::get<0>(item).c_str()))
         {
           // add to vector only if shift is pressed
@@ -323,6 +328,7 @@ namespace MX
           single_clicked_file_name = std::get<0>(item);
         }
 
+        ImGui::PopStyleVar();
         ImGui::PopStyleColor();
 
         setup_drag_drop_source(std::get<0>(item), current_path);
@@ -400,47 +406,60 @@ namespace MX
       }
 
       static bool close_context_menu = false;
+      static bool show_rename_field = false;
+
       if (context_menu.begin())
       {
-        static ImGui_InputText rename_field("##Rename file or folder");
-        ImGui::SetNextItemWidth(100.0f);
-        bool enter_pressed = rename_field.render(double_clicked_file_name);
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
-        ImGui::SameLine();
-        if ((ImGui::Button("Rename") || enter_pressed) && double_clicked_file_name.length() > 0)
+        if (ImGui::Button("Rename", ImVec2(75.0f, 0.0f)))
         {
-          std::string original_file_name = double_clicked_file_name; 
-          // check if new file name has a point in it
-          std::string buffer_str = rename_field.m_buffer;
-          auto found_point = buffer_str.find('.');
-          if (found_point != std::string::npos)
+          show_rename_field = true;          
+        }
+
+        if (show_rename_field)
+        {
+          static ImGui_InputText rename_field("##Rename file or folder");
+          ImGui::SetNextItemWidth(75.0f);
+          bool enter_pressed = rename_field.render(double_clicked_file_name);
+
+          if (enter_pressed && double_clicked_file_name.length() > 0)
           {
-            // check if new file name has at least one letter after point
-            std::string assertion = buffer_str.substr(found_point);
-            if (assertion.length() > 1)
+            show_rename_field = false;
+
+            std::string original_file_name = double_clicked_file_name; 
+            // check if new file name has a point in it
+            std::string buffer_str = rename_field.m_buffer;
+            auto found_point = buffer_str.find('.');
+            if (found_point != std::string::npos)
             {
-              // check if new file name has at least one letter before point
-              assertion = buffer_str.substr(0, found_point);
-              if (assertion.length() > 0)
+              // check if new file name has at least one letter after point
+              std::string assertion = buffer_str.substr(found_point);
+              if (assertion.length() > 1)
               {
-                std::string old_full_path = double_clicked_full_path; 
-                auto found_name = double_clicked_full_path.find_last_of('/');
-
-                double_clicked_full_path = double_clicked_full_path.substr(0, found_name + 1) + rename_field.m_buffer;
-                double_clicked_file_name = rename_field.m_buffer;
-
-                if (double_clicked_file_name.find(".mx") != std::string::npos)
+                // check if new file name has at least one letter before point
+                assertion = buffer_str.substr(0, found_point);
+                if (assertion.length() > 0)
                 {
-                  if (!MX_WORLD.rename_scene(old_full_path, double_clicked_full_path))
-                    MX_WARN("MX: Scene: Can not rename a scene that has not been loaded.");
-                }
-                else
-                {
-                  boost::filesystem::rename(old_full_path, double_clicked_full_path);
+                  std::string old_full_path = double_clicked_full_path; 
+                  auto found_name = double_clicked_full_path.find_last_of('/');
 
-                  // reset
-                  items_in_directory.clear();
-                  update_items_in_directory = true;
+                  double_clicked_full_path = double_clicked_full_path.substr(0, found_name + 1) + rename_field.m_buffer;
+                  double_clicked_file_name = rename_field.m_buffer;
+
+                  if (double_clicked_file_name.find(".mx") != std::string::npos)
+                  {
+                    if (!MX_WORLD.rename_scene(old_full_path, double_clicked_full_path))
+                      MX_WARN("MX: Scene: Can not rename a scene that has not been loaded.");
+                  }
+                  else
+                  {
+                    boost::filesystem::rename(old_full_path, double_clicked_full_path);
+
+                    // reset
+                    items_in_directory.clear();
+                    update_items_in_directory = true;
+                  }
                 }
               }
             }
@@ -448,7 +467,7 @@ namespace MX
         }
 
         static ImGui_Popup m_popup_delete("ExplorerConfirmDeletion");
-        if (ImGui::Button("Delete"))
+        if (ImGui::Button("Delete", ImVec2(75.0f, 0.0f)))
         {
           m_popup_delete.open();
         }
@@ -456,11 +475,14 @@ namespace MX
         if (close_context_menu)
         {
           close_context_menu = false;
+          show_rename_field = false;
           m_popup_delete.close();
         }
 
-        if (ImGui::Button("Copy")) { }
-        if (ImGui::Button("Cut")) { }
+        if (ImGui::Button("Copy", ImVec2(75.0f, 0.0f))) { }
+        if (ImGui::Button("Cut", ImVec2(75.0f, 0.0f))) { }
+
+        ImGui::PopStyleVar();
 
         if (m_popup_delete.beginModal())
         {
@@ -502,7 +524,9 @@ namespace MX
         }
 
         context_menu.end();
-      }   
+      }
+      else
+        show_rename_field = false;
     }
   }
 
