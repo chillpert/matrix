@@ -186,18 +186,28 @@ namespace MX
     {
       std::string file_name = name;
       // add an appendix like _1, _2, ... to create unique names
-      uint64_t counter = 0;
-      bool accepted = false;
-
-      std::string appendix = "_1";
+      bool accepted = true;
 
       auto point_pos = file_name.find_last_of(".");
       std::string file_type = file_name.substr(point_pos);
-      file_name = file_name.substr(0, point_pos) + appendix + file_type;
 
       std::vector<std::string> existing_names;
       find_all_files_of_same_type(MX_RESOURCES, &existing_names, file_type);
 
+      for (const auto& it : existing_names)
+      {
+        if (it == file_name)
+          accepted = false;
+      }
+
+      // given name is unique, does not need an appendix
+      if (accepted)
+        return file_name;
+
+      std::string appendix = "_1";
+      file_name = file_name.substr(0, point_pos) + appendix + file_type;
+
+      uint64_t counter = 0;
       // make sure application does not get caught in an infinite loop
       uint64_t safe_counter = 0;
 

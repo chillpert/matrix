@@ -101,7 +101,7 @@ namespace MX
         }
         default:
         {
-          MX_FATAL("MX: Shader: OpenGL: Unkown Error Occured");
+          MX_FATAL("MX: Shader: OpenGL: Unknown Error Occured");
           break;
         }
       }

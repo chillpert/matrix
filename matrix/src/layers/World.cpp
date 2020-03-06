@@ -497,7 +497,7 @@ namespace MX
         }
         default:
         {
-          MX_FATAL("MX: World: Load Scene: Unkown node type");
+          MX_FATAL("MX: World: Load Scene: Unknown node type");
           break;
         }
       }

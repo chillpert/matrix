@@ -90,9 +90,29 @@ namespace MX
             update_items_in_directory = true;
           }
 
-          if (ImGui::MenuItem("Material")) { }
+          if (ImGui::MenuItem("Material"))
+          {
+            // initially set to end with '/', but boost does not add '/' to the end of the path - add it manually
+            if (current_path[current_path.size() - 1] != '/')
+              current_path += '/';
 
-          if (ImGui::MenuItem("Shader")) { }
+            std::ofstream file(current_path + Utility::get_unique_file_name("material.mat"));
+
+            items_in_directory.clear();
+            update_items_in_directory = true;
+          }
+
+          if (ImGui::MenuItem("Shader"))
+          {
+            // initially set to end with '/', but boost does not add '/' to the end of the path - add it manually
+            if (current_path[current_path.size() - 1] != '/')
+              current_path += '/';
+
+            std::ofstream file(current_path + Utility::get_unique_file_name("shader.frag"));
+
+            items_in_directory.clear();
+            update_items_in_directory = true;
+          }
 
           ImGui::EndMenu();
         }
@@ -130,6 +150,16 @@ namespace MX
 
       ImGui::SameLine();
 
+      static ImGui_Icon refresh_button("reload.png", 15.0f, 15.0f);
+
+      if (refresh_button.render_as_button())
+      {
+        items_in_directory.clear();
+        update_items_in_directory = true;
+      }
+
+      ImGui::SameLine();
+      
       if (ImGui::Button("Unselect##UnselectFileInExplorer"))
         m_selection.clear();
 
@@ -200,8 +230,10 @@ namespace MX
     static ImGui_Icon txt_icon("txt.png", 20.0f, 20.0f);
     static ImGui_Icon png_icon("png.png", 20.0f, 20.0f);
     static ImGui_Icon jpg_icon("jpg.png", 20.0f, 20.0f);
-    static ImGui_Icon unknown_icon("unkown.png", 20.0f, 20.0f);
+    static ImGui_Icon unknown_icon("unknown.png", 20.0f, 20.0f);
     static ImGui_Icon mx_icon("matrix_movie.png", 20.0f, 20.0f);
+    static ImGui_Icon vert_icon("unknown.png", 20.0f, 20.0f);
+    static ImGui_Icon frag_icon("unknown.png", 20.0f, 20.0f);
 
     for (auto& item : items_in_directory)
     {
@@ -245,6 +277,16 @@ namespace MX
         else if (file_extension == ".mx")
         {
           mx_icon.render();
+          can_be_displayed = false;
+        }
+        else if (file_extension == ".vert")
+        {
+          vert_icon.render();
+          can_be_displayed = false;
+        }
+        else if (file_extension == ".frag")
+        {
+          frag_icon.render();
           can_be_displayed = false;
         }
         else
@@ -433,20 +475,27 @@ namespace MX
 
           if (ImGui::Button("Yes"))
           {
+            items_in_directory.clear();
+            update_items_in_directory = true;
+
+            m_popup_delete.close();
+            close_context_menu = true;
+
             // handle different delete operations based on the file
-            if (Utility::get_file_ending(double_clicked_file_name) == ".mx")
+            std::string file_ending = Utility::get_file_ending(double_clicked_file_name);
+
+            if (file_ending == ".mx")
             {
               if (!MX_WORLD.remove_scene(double_clicked_file_name))
               {
                 MX_AASSERT(MX_WORLD.remove_scene_file(double_clicked_full_path), "MX: GUI: Failed to delete scene");
               }
             }
-
-            items_in_directory.clear();
-            update_items_in_directory = true;
-
-            m_popup_delete.close();
-            close_context_menu = true;
+            else 
+            {
+              MX_INFO_LOG("MX: GUI: Explorer: Deleting file: " + double_clicked_full_path);
+              boost::filesystem::remove(double_clicked_full_path);
+            }
           }
           
           m_popup_delete.end();
