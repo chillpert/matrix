@@ -25,7 +25,7 @@ namespace MX
     MX_API void update();
     MX_API void render();
 
-    MX_API void push(std::shared_ptr<Scene> scene);
+    MX_API void push(std::shared_ptr<Scene> scene, bool consider_local_files = false, bool instant_save = false);
     MX_API void pop(const std::string &name);
 
     MX_API std::shared_ptr<Model> getModel(const std::string& path);
@@ -36,6 +36,8 @@ namespace MX
     
     MX_API bool load_scene(const std::string &name);
     MX_API bool rename_scene(const std::string old_path, const std::string& new_path);
+
+    MX_API bool remove_scene_file(const std::string& path);
     MX_API bool remove_scene(const std::string &name);
     MX_API bool remove_scene(const std::shared_ptr<Scene> scene);
 

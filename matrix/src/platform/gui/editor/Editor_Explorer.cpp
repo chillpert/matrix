@@ -25,10 +25,12 @@ namespace MX
   bool can_be_displayed = false;
   bool enlarged_picture_update = false;
 
+  static bool sort_by_name = false;
+  static bool sort_by_file = false;
+
   Editor_Explorer::Editor_Explorer(const char* name, ImGuiWindowFlags flags)
   {
     initialize(name, flags);
-    m_popup_delete.initialize("ExplorerConfirmDeletion", ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
   }
 
   bool Editor_Explorer::initialize(const char* name, ImGuiWindowFlags flags)
@@ -49,25 +51,18 @@ namespace MX
       {
         if (ImGui::BeginMenu("Sort"))
         {
-          static bool sort_by_name = false;
-          static bool sort_by_file = false;
-
           if (ImGui::MenuItem("Name", "", &sort_by_name))
           {
             sort_by_file = false;
-
-            std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
-              return std::get<0>(a) < std::get<0>(b);
-            });
+            update_items_in_directory = true;
+            items_in_directory.clear();
           }
 
           if (ImGui::MenuItem("File", "", &sort_by_file))
           {
             sort_by_name = false;
-
-            std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
-              return get_file_ending(std::get<0>(a)) < get_file_ending(std::get<0>(b));
-            });
+            update_items_in_directory = true;
+            items_in_directory.clear();
           }
 
           ImGui::EndMenu();
@@ -76,7 +71,12 @@ namespace MX
         if (ImGui::BeginMenu("New"))
         {
           if (ImGui::MenuItem("Scene"))
-            MX_WORLD.push(std::make_shared<Scene>("New Scene"));
+          {
+            MX_WORLD.push(std::make_shared<Scene>("New Scene.mx"), true, true);
+
+            items_in_directory.clear();
+            update_items_in_directory = true;
+          }
 
           if (ImGui::MenuItem("Folder")) { }
 
@@ -164,6 +164,19 @@ namespace MX
           {
             items_in_directory.push_back({file_name, full_path, false});
           }
+        }
+
+        if (sort_by_name)
+        {
+          std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
+            return std::get<0>(a) < std::get<0>(b);
+          });
+        }
+        else if (sort_by_file)
+        {
+          std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
+            return get_file_ending(std::get<0>(a)) < get_file_ending(std::get<0>(b));
+          });
         }
       }
 
@@ -334,6 +347,7 @@ namespace MX
         context_menu.open();
       }
 
+      static bool close_context_menu = false;
       if (context_menu.begin())
       {
         static ImGui_InputText rename_field("##Rename file or folder");
@@ -381,15 +395,22 @@ namespace MX
           }
         }
 
+        static ImGui_Popup m_popup_delete("ExplorerConfirmDeletion");
         if (ImGui::Button("Delete"))
         {
           m_popup_delete.open();
         }
 
+        if (close_context_menu)
+        {
+          close_context_menu = false;
+          m_popup_delete.close();
+        }
+
         if (ImGui::Button("Copy")) { }
         if (ImGui::Button("Cut")) { }
 
-        if (m_popup_delete.begin())
+        if (m_popup_delete.beginModal())
         {
           ImGui::Text("This change can not be undone. Are you sure to proceed?");
           
@@ -402,11 +423,20 @@ namespace MX
 
           if (ImGui::Button("Yes"))
           {
-            boost::filesystem::remove(double_clicked_full_path);
-            
+            // handle different delete operations based on the file
+            if (get_file_ending(double_clicked_file_name) == ".mx")
+            {
+              if (!MX_WORLD.remove_scene(double_clicked_file_name))
+              {
+                MX_AASSERT(MX_WORLD.remove_scene_file(double_clicked_full_path), "MX: GUI: Failed to delete scene");
+              }
+            }
+
             items_in_directory.clear();
             update_items_in_directory = true;
+
             m_popup_delete.close();
+            close_context_menu = true;
           }
           
           m_popup_delete.end();

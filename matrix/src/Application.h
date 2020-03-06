@@ -14,6 +14,15 @@
 #define MX_SCENES       MX_APP.m_World.m_ExistingScenes
 #define MX_ROOT         MX_APP.m_World.m_ActiveScene->m_Sg.m_Root
 
+#ifdef MX_DEBUG
+  #define MX_ASSERT(x,y)  assert_condition(x, y)
+#elif
+  #define MX_ASSERT(x,y)
+#endif
+
+// always assert no matter release or debug
+#define MX_AASSERT(x,y)  assert_condition(x, y)
+
 #include "stdafx.h"
 #include "Window.h"
 #include "Window_SDL2.h"

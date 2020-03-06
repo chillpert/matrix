@@ -2,6 +2,8 @@
 
 #include <sstream>
 #include <fstream>
+#include <boost/filesystem.hpp>
+#include <boost/range/iterator_range.hpp>
 
 namespace MX
 {
@@ -13,7 +15,8 @@ namespace MX
 #elif MX_PLATFORM_UNIX_X64
   std::chrono::_V2::system_clock::time_point current_time;
 #endif
-  std::string parseFile(const std::string& path)
+
+  std::string parse_file(const std::string& path)
   {
     std::ifstream stream(path);
     std::string line;
@@ -45,23 +48,6 @@ namespace MX
     return temp.substr(0, found + static_cast<size_t>(num_decimals) + 1);
   }
 
-/*
-  const char* str_c(const std::string &str)
-  {
-    char test[str.size()];
-    const char* temp;
-  #ifdef MX_PLATFORM_UNIX_X64
-    #pragma GCC diagnostic push
-    #pragma GCC diagnostic ignored "-Wformat-security"
-    temp = str.c_str();
-    #pragma GCC diagnostic pop
-  #else
-    temp = str.c_str();
-  #endif
-    return temp;
-  }
-*/
-
   std::string remove_file_ending(const std::string &name)
   {
     size_t hit = name.find_last_of('.');
@@ -81,6 +67,57 @@ namespace MX
     // is a directory
     else
       return ".d";
+  }
+
+  std::string get_file_name(const std::string& path)
+  {
+    auto found_last_slash = path.find_last_of('/');
+    
+    std::string result = "__UNDEF__";
+
+    if (found_last_slash != std::string::npos)
+    {
+      result = path.substr(found_last_slash + 1);  
+    }
+    else
+      throw std::runtime_error("MX: Utils: Get File Name: Invalid path: " + path);
+  
+    return result;
+  }
+
+
+
+  void assert_condition(bool condition, const char* message)
+  {
+    if (!condition)
+      throw std::runtime_error(message);
+  }
+
+  void find_all_files_of_same_type(const char* path, std::vector<std::string>* results, const std::string& type, bool only_file_name)
+  {
+    boost::filesystem::path p(path);
+
+    // is a folder
+    if (boost::filesystem::is_directory(p))
+    {
+      boost::filesystem::directory_iterator end_itr;
+
+      for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
+      {
+        find_all_files_of_same_type(itr->path().c_str(), results, type);
+      }
+    }
+    // is a file
+    else
+    {
+      if (get_file_ending(path) == type)
+      {
+        if (only_file_name)
+          results->push_back(get_file_name(path));
+        else
+          results->push_back(path);
+      }
+    }
   }
 
   uint64_t generate_id()

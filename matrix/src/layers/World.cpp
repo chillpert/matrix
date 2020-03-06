@@ -91,14 +91,47 @@ namespace MX
       m_ActiveScene->render();
   }
 
-  void World::push(std::shared_ptr<Scene> scene)
+  void World::push(std::shared_ptr<Scene> scene, bool consider_local_files, bool instant_save)
   {
     if (scene != nullptr)
     {
-      bool accepted = true;
-      for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+      if (scene->m_Name.find(".mx") == std::string::npos)
       {
-        if (it->m_Name == scene->m_Name)
+        MX_FATAL("MX: World: Push: Scene does not have .mx file ending");
+        return;
+      }
+
+      // combine all already loaded scene names (and not loaded scene names) into a single container
+      std::vector<std::string> existing_scene_names;
+
+      for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+        existing_scene_names.push_back(it->m_Name);
+
+      if (consider_local_files)
+      {
+        std::vector<std::string> all_local_files;
+        find_all_files_of_same_type(MX_RESOURCES, &all_local_files, ".mx");
+
+        for (const std::string& it : all_local_files)
+        {
+          bool accepted = true;
+          for (const std::string& it2 : existing_scene_names)
+          {
+            if (it == it2)
+            {
+              accepted = false;
+            }
+          }
+
+          if (accepted)
+            existing_scene_names.push_back(it);
+        }
+      }
+
+      bool accepted = true;
+      for (const std::string& it : existing_scene_names)
+      {
+        if (it == scene->m_Name)
           accepted = false;
       }
 
@@ -107,40 +140,71 @@ namespace MX
         m_ActiveScene = scene;
         m_ExistingScenes.push_back(scene);
         scene->initialize();
-        MX_INFO_LOG("MX: World: Scene: " + scene->m_Name + ": Added");
+        MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+
+        if (instant_save)
+          scene->save();
         return;
       }
 
+      // add an appendix like _1, _2, ... to create unique names
       uint64_t counter = 0;
       accepted = false;
-      std::string current_name = scene->m_Name;
-      std::string appendix = "";
+
+      std::string appendix = "_1";
+
+      auto mx_pos = scene->m_Name.find_last_of(".mx");
+      scene->m_Name = scene->m_Name.substr(0, mx_pos - 2) + appendix + ".mx";
+
+      // make sure application does not get caught in an infinite loop
+      uint64_t safe_counter = 0;
 
       while (!accepted)
       {
-        bool already_exists = false;
-        for (const std::shared_ptr<Scene> it : m_ExistingScenes)
+        ++safe_counter;
+
+        if (safe_counter > max_amount_of_objects_per_scene)
         {
-          if (it->m_Name == current_name)
+          MX_WARN("MX: World: Push: Could not determine unique name for scene " + scene->m_Name);
+          return;
+        }
+          
+        bool already_exists = false;
+        for (const std::string& it : existing_scene_names)
+        {
+          if (it == scene->m_Name)
           {
             ++counter;
             appendix = "_" + std::to_string(counter);
             already_exists = true;
             break;
           }
+
+          // remove old appendix
+          auto appendix_pos = scene->m_Name.find_last_of("_");
+          mx_pos = scene->m_Name.find_last_of(".mx");
+
+          if (appendix_pos != std::string::npos && mx_pos != std::string::npos)
+          {
+            std::string name_without_mx = scene->m_Name.substr(0, appendix_pos);
+            scene->m_Name = name_without_mx + appendix + ".mx";
+          }
+          else
+            throw std::runtime_error("MX: World: Push: Failed to add appendix");
         }
 
         if (!already_exists)
-        {
           accepted = true;
-        }
       }
 
-      scene->m_Name += appendix;
-      scene->initialize();
       m_ActiveScene = scene;
       m_ExistingScenes.push_back(scene);
-      MX_INFO_LOG("MX: World: Scene: " + scene->m_Name + ": Added");
+      scene->initialize();
+      MX_INFO("MX: World: Scene: " + scene->m_Name + ": Added");
+
+      if (instant_save)
+        scene->save();
+
       return;
     }
   }
@@ -837,10 +901,20 @@ namespace MX
     return true;
   }
 
-  bool World::remove_scene(const std::string &name)
+  // the scene might not have been loaded into the application yet - delete local file it it exists
+  bool World::remove_scene_file(const std::string& path)
+  {
+    if (boost::filesystem::remove(path))
+      return true;
+    
+    return false;
+  }
+
+  bool World::remove_scene(const std::string& name)
   {
     for (std::vector<std::shared_ptr<Scene>>::iterator it = m_ExistingScenes.begin(); it != m_ExistingScenes.begin(); ++it)
     {
+      std::cout << (*it)->m_Name << " vs. " << name << std::endl;
       if ((*it)->m_Name == name)
       {
         m_ExistingScenes.erase(it);

@@ -11,7 +11,7 @@ This is an overview of planned and currently worked on features as well as issue
 + physics
 
 ##### Important Features
-+ (GUI) implement sorting features in ```Explorer Window```
++ (GUI) implement functions to add folders and files of all kind for ```Explorer Window``` 
 
 ##### Features
 + (GUI) add preview for all common file types to ```Explorer Window``` 
@@ -23,8 +23,8 @@ This is an overview of planned and currently worked on features as well as issue
 + (GUI) implement ```Object Viewer``` for light sources
 + (Transform) review rotation component
 + (Renderer) ray intersection algorithm for general meshes
-+ (GUI) add hard corners for buttons context menu in ```Explorer Window``` 
-+ (GUI) image preview screen not working in ```Explorer Window``` 
++ (GUI) add hard corners for buttons context menu in ```Explorer Window```
++ (GUI) image preview screen not working in ```Explorer Window```
 
 ##### Important Issues
 + 
@@ -36,7 +36,6 @@ This is an overview of planned and currently worked on features as well as issue
 + (Events) imgui events are not bound to matrix event system
 + (Performance) add asynchronous model loading
 + (Performance) do small string optimizations
-+ (GUI) pop up modals don't open
 + (GUI) improve visual fidelity of ```Explorer Window```'s context menu 
 + (Events) right click to control viewport should only be possible if done on viewport itself
 

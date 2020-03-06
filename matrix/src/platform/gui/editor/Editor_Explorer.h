@@ -21,8 +21,6 @@ namespace MX
     std::vector<std::string> m_selection;
 
   private:
-    ImGui_Popup m_popup_delete;
-
     std::string current_path = MX_RESOURCES;
     const std::string lowest_path = MX_RESOURCES;
   };
