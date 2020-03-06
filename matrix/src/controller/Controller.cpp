@@ -264,8 +264,8 @@ namespace MX
     }
   }
 
-  float lastX = initial_window_width / 2.0f;
-  float lastY = initial_window_height / 2.0f;
+  float lastX = Constants::initial_window_width / 2.0f;
+  float lastY = Constants::initial_window_height / 2.0f;
 
   void Controller::handleMouseMoved(int x, int y)
   {

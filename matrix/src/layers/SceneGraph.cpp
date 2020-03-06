@@ -7,7 +7,7 @@ namespace MX
 {
   SceneGraph::SceneGraph()
   {
-    m_Root = std::make_shared<ContainerNode>(default_root_name);
+    m_Root = std::make_shared<ContainerNode>(Constants::default_root_name);
     m_Root->m_Parent = nullptr;
   }
 
@@ -81,7 +81,7 @@ namespace MX
   {
     if (node != nullptr)
     {
-      node->setShader(MX_GET_SHADER(MX_MATRIX_SHADERS + default_shader_name));
+      node->setShader(MX_GET_SHADER(MX_MATRIX_SHADERS + Constants::default_shader_name));
       node->upload_uniforms();
 
       if (search<Node>(node->m_Name) == nullptr)

@@ -222,7 +222,7 @@ namespace MX
 
           if (node != nullptr)
           {
-            if (temp != default_root_name)
+            if (temp != Constants::default_root_name)
             {
               if (MX_SCENE != nullptr)
               {

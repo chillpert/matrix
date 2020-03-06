@@ -78,7 +78,18 @@ namespace MX
             update_items_in_directory = true;
           }
 
-          if (ImGui::MenuItem("Folder")) { }
+          if (ImGui::MenuItem("Folder"))
+          {
+
+            if (current_path[current_path.size() - 1] != '/')
+              current_path += '/';
+
+            MX_FATAL(current_path + "folder");
+            //boost::filesystem::create_directory(current_path + "folder");
+            
+            items_in_directory.clear();
+            update_items_in_directory = true;
+          }
 
           if (ImGui::MenuItem("Material")) { }
 
@@ -175,7 +186,7 @@ namespace MX
         else if (sort_by_file)
         {
           std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
-            return get_file_ending(std::get<0>(a)) < get_file_ending(std::get<0>(b));
+            return Utility::get_file_ending(std::get<0>(a)) < Utility::get_file_ending(std::get<0>(b));
           });
         }
       }
@@ -215,7 +226,7 @@ namespace MX
       else
       {
         // get file extension and apply icons respectively
-        std::string file_extension = get_file_ending(std::get<0>(item));
+        std::string file_extension = Utility::get_file_ending(std::get<0>(item));
 
         if (file_extension == ".txt")
         {
@@ -424,7 +435,7 @@ namespace MX
           if (ImGui::Button("Yes"))
           {
             // handle different delete operations based on the file
-            if (get_file_ending(double_clicked_file_name) == ".mx")
+            if (Utility::get_file_ending(double_clicked_file_name) == ".mx")
             {
               if (!MX_WORLD.remove_scene(double_clicked_file_name))
               {

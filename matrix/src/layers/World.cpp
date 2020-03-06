@@ -110,7 +110,7 @@ namespace MX
       if (consider_local_files)
       {
         std::vector<std::string> all_local_files;
-        find_all_files_of_same_type(MX_RESOURCES, &all_local_files, ".mx");
+        Utility::find_all_files_of_same_type(MX_RESOURCES, &all_local_files, ".mx");
 
         for (const std::string& it : all_local_files)
         {
@@ -147,55 +147,7 @@ namespace MX
         return;
       }
 
-      // add an appendix like _1, _2, ... to create unique names
-      uint64_t counter = 0;
-      accepted = false;
-
-      std::string appendix = "_1";
-
-      auto mx_pos = scene->m_Name.find_last_of(".mx");
-      scene->m_Name = scene->m_Name.substr(0, mx_pos - 2) + appendix + ".mx";
-
-      // make sure application does not get caught in an infinite loop
-      uint64_t safe_counter = 0;
-
-      while (!accepted)
-      {
-        ++safe_counter;
-
-        if (safe_counter > max_amount_of_objects_per_scene)
-        {
-          MX_WARN("MX: World: Push: Could not determine unique name for scene " + scene->m_Name);
-          return;
-        }
-          
-        bool already_exists = false;
-        for (const std::string& it : existing_scene_names)
-        {
-          if (it == scene->m_Name)
-          {
-            ++counter;
-            appendix = "_" + std::to_string(counter);
-            already_exists = true;
-            break;
-          }
-
-          // remove old appendix
-          auto appendix_pos = scene->m_Name.find_last_of("_");
-          mx_pos = scene->m_Name.find_last_of(".mx");
-
-          if (appendix_pos != std::string::npos && mx_pos != std::string::npos)
-          {
-            std::string name_without_mx = scene->m_Name.substr(0, appendix_pos);
-            scene->m_Name = name_without_mx + appendix + ".mx";
-          }
-          else
-            throw std::runtime_error("MX: World: Push: Failed to add appendix");
-        }
-
-        if (!already_exists)
-          accepted = true;
-      }
+      scene->m_Name = Utility::get_unique_file_name(scene->m_Name);
 
       m_ActiveScene = scene;
       m_ExistingScenes.push_back(scene);
@@ -832,7 +784,7 @@ namespace MX
     */
 
     // set root
-    scene->m_Sg.m_Root = find_node_in_vec(nodes, default_root_name);
+    scene->m_Sg.m_Root = find_node_in_vec(nodes, Constants::default_root_name);
 
     for (std::shared_ptr<Node> it : nodes)
     {

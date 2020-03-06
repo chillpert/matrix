@@ -73,6 +73,12 @@
 
 namespace MX
 {
+  #ifdef MX_PLATFORM_WINDOWS_X64
+    std::chrono::time_point<std::chrono::steady_clock> current_time;
+  #elif MX_PLATFORM_UNIX_X64
+    std::chrono::_V2::system_clock::time_point current_time;
+  #endif
+
   MX_CONSOLE_HANDLE;
 
   auto start_time = std::chrono::high_resolution_clock::now();

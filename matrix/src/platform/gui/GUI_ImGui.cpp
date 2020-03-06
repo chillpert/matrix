@@ -29,7 +29,7 @@ namespace MX
   {
 #ifdef MX_IMGUI_ACTIVE
     MX_IMGUI_INIT
-    ImGui_ImplOpenGL3_Init(glsl_version.c_str());
+    ImGui_ImplOpenGL3_Init(Constants::glsl_version.c_str());
 #endif
   }
 

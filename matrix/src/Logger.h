@@ -35,6 +35,12 @@
 
 namespace MX
 {
+  #ifdef MX_PLATFORM_WINDOWS_X64
+    extern std::chrono::time_point<std::chrono::steady_clock> current_time;
+  #elif MX_PLATFORM_UNIX_X64
+    extern std::chrono::_V2::system_clock::time_point current_time;
+  #endif
+
   enum logger_message_type {
     mx_warn,
     mx_info,

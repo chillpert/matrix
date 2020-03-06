@@ -26,8 +26,8 @@ namespace MX
     MX_INFO_LOG("MX: API: OpenGL: Shader: Initialization: " + m_Name);
     m_ID = glCreateProgram();
 
-    m_VsSource = parse_file(m_VsPath);
-    m_FsSource = parse_file(m_FsPath);
+    m_VsSource = Utility::parse_file(m_VsPath);
+    m_FsSource = Utility::parse_file(m_FsPath);
     
 	  GLuint vs = compile(GL_VERTEX_SHADER, m_VsSource);
 	  GLuint fs = compile(GL_FRAGMENT_SHADER, m_FsSource);

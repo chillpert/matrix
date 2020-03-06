@@ -7,13 +7,13 @@ namespace MX
   Node::Node(const std::string &node_name, std::shared_ptr<MX_SHADER> shader)
     : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(NodeType::type_node)
   {
-    m_id = generate_id();
+    m_id = Utility::generate_id();
   }
 
   Node::Node(const std::string &node_name, const NodeType& type, std::shared_ptr<MX_SHADER> shader)
     : m_Name(node_name), m_Shader(shader), m_visible(true), m_type(type)
   {
-    m_id = generate_id();
+    m_id = Utility::generate_id();
   }
 
   Node::~Node()
@@ -68,7 +68,7 @@ namespace MX
     }
     
     // if this node is the root, return because the root must not have a parent
-    if (m_Name == default_root_name)
+    if (m_Name == Constants::default_root_name)
     {
       MX_WARN("MX: Node: Root Node must not have a parent");
       return;
@@ -125,7 +125,7 @@ namespace MX
 
   void Node::destroy()
   {
-    if (m_Name == default_root_name)
+    if (m_Name == Constants::default_root_name)
       return;
 
     if (m_Parent != nullptr)

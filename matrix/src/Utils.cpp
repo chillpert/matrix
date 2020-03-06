@@ -7,123 +7,179 @@
 
 namespace MX
 {
-  int max_window_width = 1920;
-  int max_window_height = 1080;
+  int max_window_width = Constants::max_screen_width;
+  int max_window_height = Constants::max_screen_height;
 
-#ifdef MX_PLATFORM_WINDOWS_X64
-  std::chrono::time_point<std::chrono::steady_clock> current_time;
-#elif MX_PLATFORM_UNIX_X64
-  std::chrono::_V2::system_clock::time_point current_time;
-#endif
-
-  std::string parse_file(const std::string& path)
+  namespace Utility
   {
-    std::ifstream stream(path);
-    std::string line;
-    std::stringstream ss[1];
-
-    while (getline(stream, line))
+    std::string parse_file(const std::string& path)
     {
-      ss[0] << line << '\n';
+      std::ifstream stream(path);
+      std::string line;
+      std::stringstream ss[1];
+
+      while (getline(stream, line))
+      {
+        ss[0] << line << '\n';
+      }
+      return ss[0].str();
     }
-    return ss[0].str();
-  }
 
-  std::string tokenizeLine(const std::string &delimiter)
-  {
-    return "";
-  }
+    std::string tokenizeLine(const std::string &delimiter)
+    {
+      return "";
+    }
 
-  std::string f_str(float num)
-  {
-    std::ostringstream buff;
-    buff << num;
-    return buff.str();
-  }
+    std::string f_str(float num)
+    {
+      std::ostringstream buff;
+      buff << num;
+      return buff.str();
+    }
 
-  std::string f_str(float num, float num_decimals)
-  {
-    std::string temp = std::to_string(num);
-    size_t found = temp.find('.');
-    return temp.substr(0, found + static_cast<size_t>(num_decimals) + 1);
-  }
+    std::string f_str(float num, float num_decimals)
+    {
+      std::string temp = std::to_string(num);
+      size_t found = temp.find('.');
+      return temp.substr(0, found + static_cast<size_t>(num_decimals) + 1);
+    }
 
-  std::string remove_file_ending(const std::string &name)
-  {
-    size_t hit = name.find_last_of('.');
+    std::string remove_file_ending(const std::string &name)
+    {
+      size_t hit = name.find_last_of('.');
 
-    if (hit != std::string::npos)
-      return name.substr(0, hit);
+      if (hit != std::string::npos)
+        return name.substr(0, hit);
 
-    return name;
-  }
+      return name;
+    }
 
-  std::string get_file_ending(const std::string& file)
-  {
-    auto found_extension = file.find_last_of('.');
+    std::string get_file_ending(const std::string& file)
+    {
+      auto found_extension = file.find_last_of('.');
 
-    if (found_extension != std::string::npos)
-      return file.substr(found_extension);
-    // is a directory
-    else
-      return ".d";
-  }
+      if (found_extension != std::string::npos)
+        return file.substr(found_extension);
+      // is a directory
+      else
+        return ".d";
+    }
 
-  std::string get_file_name(const std::string& path)
-  {
-    auto found_last_slash = path.find_last_of('/');
+    std::string get_file_name(const std::string& path)
+    {
+      auto found_last_slash = path.find_last_of('/');
+      
+      std::string result = "__UNDEF__";
+
+      if (found_last_slash != std::string::npos)
+      {
+        result = path.substr(found_last_slash + 1);  
+      }
+      else
+        throw std::runtime_error("MX: Utils: Get File Name: Invalid path: " + path);
     
-    std::string result = "__UNDEF__";
-
-    if (found_last_slash != std::string::npos)
-    {
-      result = path.substr(found_last_slash + 1);  
+      return result;
     }
-    else
-      throw std::runtime_error("MX: Utils: Get File Name: Invalid path: " + path);
-  
-    return result;
-  }
 
-
-
-  void assert_condition(bool condition, const char* message)
-  {
-    if (!condition)
-      throw std::runtime_error(message);
-  }
-
-  void find_all_files_of_same_type(const char* path, std::vector<std::string>* results, const std::string& type, bool only_file_name)
-  {
-    boost::filesystem::path p(path);
-
-    // is a folder
-    if (boost::filesystem::is_directory(p))
+    void find_all_files_of_same_type(const char* path, std::vector<std::string>* results, const std::string& type, bool only_file_name)
     {
-      boost::filesystem::directory_iterator end_itr;
+      boost::filesystem::path p(path);
 
-      for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
+      // is a folder
+      if (boost::filesystem::is_directory(p))
       {
-        find_all_files_of_same_type(itr->path().c_str(), results, type);
+        boost::filesystem::directory_iterator end_itr;
+
+        for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
+        {
+          find_all_files_of_same_type(itr->path().c_str(), results, type);
+        }
+      }
+      // is a file
+      else
+      {
+        if (get_file_ending(path) == type)
+        {
+          if (only_file_name)
+            results->push_back(get_file_name(path));
+          else
+            results->push_back(path);
+        }
       }
     }
-    // is a file
-    else
+
+    // only considers MX_RESOURCE path
+    std::string get_unique_file_name(const std::string& name)
     {
-      if (get_file_ending(path) == type)
+      std::string file_name = name;
+      // add an appendix like _1, _2, ... to create unique names
+      uint64_t counter = 0;
+      bool accepted = false;
+
+      std::string appendix = "_1";
+
+      auto point_pos = file_name.find_last_of(".");
+      std::string file_type = file_name.substr(point_pos);
+      file_name = file_name.substr(0, point_pos) + appendix + file_type;
+
+      std::vector<std::string> existing_names;
+      find_all_files_of_same_type(MX_RESOURCES, &existing_names, file_type);
+
+      // make sure application does not get caught in an infinite loop
+      uint64_t safe_counter = 0;
+
+      while (!accepted)
       {
-        if (only_file_name)
-          results->push_back(get_file_name(path));
-        else
-          results->push_back(path);
+        ++safe_counter;
+
+        if (safe_counter > Constants::max_amount_of_objects_per_scene)
+          throw std::runtime_error("MX: Utils: Get unique file name: Can not find unique file name for " + name);
+          
+        bool already_exists = false;
+        for (const std::string& it : existing_names)
+        {
+          if (it == file_name)
+          {
+            ++counter;
+            appendix = "_" + std::to_string(counter);
+            already_exists = true;
+            break;
+          }
+
+          // remove old appendix
+          auto appendix_pos = file_name.find_last_of("_");
+          auto file_type_pos = file_name.find_last_of(file_type);
+
+          if (appendix_pos != std::string::npos && file_type_pos != std::string::npos)
+          {
+            std::string name_without_file_type = file_name.substr(0, appendix_pos);
+            file_name = name_without_file_type + appendix + file_type;
+          }
+          else
+            throw std::runtime_error("MX: Utils: Get unique file name: Failed to add appendix for " + name);
+        }
+
+        if (!already_exists)
+          accepted = true;
       }
+
+      return file_name;
+    }
+
+    uint64_t generate_id()
+    {
+      static uint64_t id = 0;
+      return ++id;
     }
   }
 
-  uint64_t generate_id()
+  namespace Debug
   {
-    static uint64_t id = 0;
-    return ++id;
+    void assert_condition(bool condition, const char* message)
+    {
+      if (!condition)
+        throw std::runtime_error(message);
+    }
   }
 }
 

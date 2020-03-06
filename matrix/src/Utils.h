@@ -7,39 +7,41 @@
 
 namespace MX
 {
-  const int initial_window_width = 1200;
-  const int initial_window_height = 600;
-
-  const uint64_t max_amount_of_objects_per_scene = 999999;
+  namespace Constants
+  {
+    const int initial_window_width = 1200;
+    const int initial_window_height = 600;
+    const int max_screen_width = 1920;
+    const int max_screen_height = 1080;
+    const uint64_t max_amount_of_objects_per_scene = 999999;
+    const std::string default_root_name = "Root";
+    const std::string default_shader_name = "blinn_phong";
+    const std::string glsl_version = "#version 330 core";
+  }
 
   extern int max_window_width;
   extern int max_window_height;
 
-  const std::string default_root_name = "Root";
-  const std::string default_shader_name = "blinn_phong";
-  const std::string glsl_version = "#version 330 core";
+  namespace Utility
+  {
+    std::string parse_file(const std::string &path);
+    std::string tokenizeLine(const std::string &delimiter);
+    std::string f_str(float num);
+    std::string f_str(float num, float num_decimals);
 
-  std::string parse_file(const std::string &path);
-  std::string tokenizeLine(const std::string &delimiter);
-  std::string f_str(float num);
-  std::string f_str(float num, float num_decimals);
+    std::string remove_file_ending(const std::string &name);
+    std::string get_file_ending(const std::string& file);
+    std::string get_file_name(const std::string& path);
+    void find_all_files_of_same_type(const char* path, std::vector<std::string>* results, const std::string& type, bool only_file_name = true);
+    std::string get_unique_file_name(const std::string& name);
 
-  std::string remove_file_ending(const std::string &name);
-  std::string get_file_ending(const std::string& file);
-  std::string get_file_name(const std::string& path);
+    uint64_t generate_id();
+  }
 
-  
-
-  void assert_condition(bool condition, const char* message);
-  void find_all_files_of_same_type(const char* path, std::vector<std::string>* results, const std::string& type, bool only_file_name = 1);
-
-  uint64_t generate_id();
-
-#ifdef MX_PLATFORM_WINDOWS_X64
-  extern std::chrono::time_point<std::chrono::steady_clock> current_time;
-#elif MX_PLATFORM_UNIX_X64
-  extern std::chrono::_V2::system_clock::time_point current_time;
-#endif
+  namespace Debug
+  {
+    void assert_condition(bool condition, const char* message);
+  }
 }
 
 #endif // UTILS_H

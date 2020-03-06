@@ -37,8 +37,8 @@ namespace MX
     {
       void update_time();
 
-      int m_Width = initial_window_width;
-      int m_Height = initial_window_height;
+      int m_Width = Constants::initial_window_width;
+      int m_Height = Constants::initial_window_height;
 
       bool m_FullScreen = 0;
 
@@ -55,8 +55,8 @@ namespace MX
         int m_Viewport_min_x = 0;
         int m_Viewport_min_y = 0;
 
-        int m_Viewport_max_x = initial_window_width;
-        int m_Viewport_max_y = initial_window_height;
+        int m_Viewport_max_x = Constants::initial_window_width;
+        int m_Viewport_max_y = Constants::initial_window_height;
       };
 
       ViewPort m_Viewport;
