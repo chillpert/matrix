@@ -49,4 +49,4 @@ This is an overview of planned and currently worked on features as well as issue
 
 ##### Planned Applications
 + solar system simulator (with actual orbit physics)
-+ build a Quake-like game
++ build a Quake-like game showing matrix entire raytracing capabilities

@@ -290,41 +290,8 @@ namespace MX
             
               ImGui::Text("Shader"); ImGui::SameLine(button_spacing);
 
-              static ImGui_Popup shader_info("Info##Shader Info");
-
-              static float time_on_hover = 0;
-              static float initial_hover = true;
-              static float show_shader_info = false;
-
-              // if hovered over text ("Shader") display info window
-              if (ImGui::IsItemHovered() && !show_shader_info)
-              {
-                if (initial_hover)
-                {
-                  time_on_hover = MX_WINDOW->m_Props.m_Time;
-                  initial_hover = false;
-                }
-
-                if (MX_WINDOW->m_Props.m_Time - time_on_hover > 1.0f)
-                {
-                  MX_SUCCESS("Hovered long enough");
-                  initial_hover = true;
-                  time_on_hover = 0.0f;
-                  show_shader_info = true;
-                }
-              }
-
-              if (show_shader_info)
-              {
-                show_shader_info = false;
-                shader_info.open();
-              }
-
-              if (shader_info.begin())
-              {
-                ImGui::Text("Drag and drop any shader file (.vert or .frag) onto this field");
-                shader_info.end();
-              }
+              static ImGui_PopupHoverInfo shader_info("ShaderHoverInfo");
+              shader_info.render("Drag and drop any shader file (.vert or .frag) onto this field", ImGui::IsItemHovered());
 
               if (ImGui::Button(shader_name.c_str(), ImVec2(-1.0f, button_height))) { }
 
