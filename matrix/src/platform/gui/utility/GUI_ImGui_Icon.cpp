@@ -8,6 +8,7 @@ namespace MX
     m_uv1(ImVec2(1, 1)),
     m_tint_col(ImVec4(1.0f, 1.0f, 1.0f, 1.0f)),
     m_border_col(ImVec4(1.0f, 1.0f, 1.0f, 0.0f)),
+    m_name(name),
     m_path(MX_MATRIX_ICONS + name),
     m_size_x(size_x),
     m_size_y(size_y),

@@ -397,16 +397,15 @@ namespace MX
     {
       ImGui::BeginGroup();
 
-      if (ImGui::IsItemHovered())
-        std::cout << std::get<0>(item).c_str() << std::endl;
-
       // is a folder
       if (std::get<2>(item) == true)
       {
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
+        folder_icon.render_as_button();
+
         // render folder icon
-        if (folder_icon.render_as_button())
+        if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
         {
           current_path = std::get<1>(item).c_str();
           refresh_directory();
@@ -451,7 +450,9 @@ namespace MX
 
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
-        if (current_icon->render_as_button())
+        current_icon->render_as_button();
+
+        if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
         {
           // add to vector only if shift is pressed
           if (ImGui::GetIO().KeyShift)
