@@ -86,14 +86,14 @@ namespace MX
     GUI_ImGui::initialize();
 
     // create modules
-    auto dockspace = std::make_shared<Editor_Dock>("Dockspace", ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
-    auto viewport = std::make_shared<Editor_Viewport>("Viewport", ImGuiWindowFlags_MenuBar);
-    auto profiler = std::make_shared<Editor_Profiler>("Profiler", ImGuiWindowFlags_MenuBar);
-    auto console = std::make_shared<Editor_Console>("Console", ImGuiWindowFlags_MenuBar);
-    auto object = std::make_shared<Editor_Object>("Object");
-    auto hierarchy = std::make_shared<Editor_Hierarchy>("Hierarchy", ImGuiWindowFlags_MenuBar);
-    auto explorer = std::make_shared<Editor_Explorer>("Explorer", ImGuiWindowFlags_MenuBar);
-    auto editor = std::make_shared<Editor_Editor>("Editor");
+    auto dockspace = std::make_shared<Editor_Dock>(Constants::Modules::dockspace_name, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
+    auto viewport = std::make_shared<Editor_Viewport>(Constants::Modules::viewport_name, ImGuiWindowFlags_MenuBar);
+    auto profiler = std::make_shared<Editor_Profiler>(Constants::Modules::profiler_name, ImGuiWindowFlags_MenuBar);
+    auto console = std::make_shared<Editor_Console>(Constants::Modules::console_name, ImGuiWindowFlags_MenuBar);
+    auto object = std::make_shared<Editor_Object>(Constants::Modules::object_name);
+    auto hierarchy = std::make_shared<Editor_Hierarchy>(Constants::Modules::hierarchy_name, ImGuiWindowFlags_MenuBar);
+    auto explorer = std::make_shared<Editor_Explorer>(Constants::Modules::explorer_name, ImGuiWindowFlags_MenuBar);
+    auto editor = std::make_shared<Editor_Editor>(Constants::Modules::editor_name);
     
     // makes editor not show up by default
     editor->close();

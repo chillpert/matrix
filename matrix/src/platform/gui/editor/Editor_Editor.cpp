@@ -24,6 +24,9 @@ namespace MX
     if (ImGui_Window::begin())
     {
       static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput | ImGuiInputTextFlags_CtrlEnterForNewLine;
+      
+      
+      
       ImGui::InputTextMultiline("##source", m_text, IM_ARRAYSIZE(m_text), ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), flags);
     }
     ImGui_Window::end(); 

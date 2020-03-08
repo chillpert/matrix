@@ -17,6 +17,19 @@ namespace MX
     const std::string default_root_name = "Root";
     const std::string default_shader_name = "blinn_phong";
     const std::string glsl_version = "#version 330 core";
+
+    namespace Modules
+    {
+      // names for GUI modules
+      const char* const dockspace_name = "Dockspace";
+      const char* const viewport_name = "Viewport";
+      const char* const profiler_name = "Profiler";
+      const char* const console_name = "Console";
+      const char* const object_name = "Object";
+      const char* const hierarchy_name = "Hierarchy";
+      const char* const explorer_name = "Explorer";
+      const char* const editor_name = "Editor";
+    }
   }
 
   extern int max_window_width;

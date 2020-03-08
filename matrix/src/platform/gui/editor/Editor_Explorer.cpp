@@ -318,32 +318,36 @@ namespace MX
         // right click file to rename, copy, cut or delete it
         if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
         {
-          show_explorer_context_menu = true;
-          show_file_inspector_context_menu = false;
           double_clicked_file_name = std::get<0>(item);
           double_clicked_full_path = std::get<1>(item);
+          
+          show_explorer_context_menu = true;
+          show_file_inspector_context_menu = false;
         }
 
         // double click on e.g. images to see what is inside
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
         {
+          double_clicked_file_name = std::get<0>(item);
+          double_clicked_full_path = std::get<1>(item);
+
           // load scene
           if (file_extension == ".mx")
             MX_WORLD.load_scene(std::get<0>(item));
-          else if (file_extension == ".vert")
+          else if (file_extension == ".vert" || file_extension == ".frag")
           {
-            std::string temp = Utility::parse_file(double_clicked_full_path);
-            GUI_Editor* derived_ptr = static_cast<GUI_Editor*>(MX_GUI.get());
+            GUI_MODULES.at("Editor")->open();
 
-            derived_ptr->m_modules.at("Editor")->open();
+            // display file content
+            std::string temp = Utility::parse_file(double_clicked_full_path);
+            std::shared_ptr<Editor_Editor> derived_ptr = std::dynamic_pointer_cast<Editor_Editor>(GUI_MODULES.at(Constants::Modules::editor_name));
+            strcpy(derived_ptr->m_text, temp.c_str());
           }
           else
           {
             enlarged_picture_update = true;
             show_file_inspector_context_menu = true;
             show_explorer_context_menu = false;
-            double_clicked_file_name = std::get<0>(item);
-            double_clicked_full_path = std::get<1>(item);
           }
         }
       }

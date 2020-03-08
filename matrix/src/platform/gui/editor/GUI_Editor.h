@@ -4,6 +4,8 @@
 #include "GUI_ImGui.h"
 #include "Editor_Modules.h"
 
+#define GUI_MODULES static_cast<GUI_Editor*>(MX_GUI.get())->m_modules
+
 namespace MX
 {
   class GUI_Editor : public GUI_ImGui
@@ -19,7 +21,6 @@ namespace MX
   
     std::vector<std::pair<std::string, bool*>>* m_visibilities;
     std::map<std::string, std::shared_ptr<ImGui_Window>> m_modules;
-  private:
   };
 }
 
