@@ -50,12 +50,12 @@ namespace MX
     }
   }
 
-  void ImGui_Icon::render()
+  void ImGui_Icon::render() const
   {
     ImGui::Image(m_tex_id, ImVec2(m_size_x, m_size_y), m_uv0, m_uv1, m_tint_col, m_border_col);
   }
 
-  bool ImGui_Icon::render_as_button(int frame_padding, const ImVec4& bg_col)
+  bool ImGui_Icon::render_as_button(int frame_padding, const ImVec4& bg_col) const
   {
     return ImGui::ImageButton(m_tex_id, ImVec2(m_size_x, m_size_y), m_uv0, m_uv1, frame_padding, bg_col, m_tint_col);
   }

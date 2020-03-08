@@ -13,18 +13,32 @@
 
 namespace MX
 {
+  using namespace Constants;
+
+  std::string file_extension;
   std::string single_clicked_file_name;
   std::string single_clicked_full_path;
   std::string double_clicked_file_name;
   std::string double_clicked_full_path;
+
   bool show_explorer_context_menu = false;
   bool show_file_inspector_context_menu = false;
   bool can_be_displayed = false;
   bool enlarged_picture_update = false;
-  std::string file_extension;
+  
+  bool sort_by_name = false;
+  bool sort_by_file = false;
 
-  static bool sort_by_name = false;
-  static bool sort_by_file = false;
+  bool compact_view = true;
+  bool large_view = false;
+
+  void match_icon(const ImGui_Icon& icon_compact, const ImGui_Icon& icon_large)
+  {
+    if (compact_view)
+      icon_compact.render();
+    else
+      icon_large.render_as_button();
+  }
 
   Editor_Explorer::Editor_Explorer(const char* name, ImGuiWindowFlags flags)
   {
@@ -47,24 +61,6 @@ namespace MX
     {
       if (ImGui::BeginMenuBar())
       {
-        if (ImGui::BeginMenu("Sort"))
-        {
-          if (ImGui::MenuItem("Name", "", &sort_by_name))
-          {
-            sort_by_file = false;
-            refresh_directory();
-
-          }
-
-          if (ImGui::MenuItem("File", "", &sort_by_file))
-          {
-            sort_by_name = false;
-            refresh_directory();
-          }
-
-          ImGui::EndMenu();
-        }
-
         if (ImGui::BeginMenu("New"))
         {
           if (ImGui::MenuItem("Scene"))
@@ -110,10 +106,44 @@ namespace MX
           ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Sort"))
+        {
+          if (ImGui::MenuItem("Name", "", &sort_by_name))
+          {
+            sort_by_file = false;
+            refresh_directory();
+          }
+
+          if (ImGui::MenuItem("File", "", &sort_by_file))
+          {
+            sort_by_name = false;
+            refresh_directory();
+          }
+
+          ImGui::EndMenu();
+        }
+
+
+        if (ImGui::BeginMenu("View"))
+        {
+          if (ImGui::MenuItem("Compact", "", &compact_view))
+          {
+            large_view = false;
+            refresh_directory();
+          }
+
+          if (ImGui::MenuItem("Large", "", &large_view))
+          {
+            compact_view = false;
+            refresh_directory();
+          }
+          ImGui::EndMenu();
+        }
+
         ImGui::EndMenuBar();
       }
 
-      static ImGui_Icon back_button("back.png", 15.0f, 15.0f);
+      static ImGui_Icon back_button("back.png", m_menu_icon_size, m_menu_icon_size);
       
       if (back_button.render_as_button())
       {
@@ -129,7 +159,7 @@ namespace MX
 
       ImGui::SameLine();
 
-      static ImGui_Icon home_button("house.png", 15.0f, 15.0f);
+      static ImGui_Icon home_button("house.png", m_menu_icon_size, m_menu_icon_size);
 
       if (home_button.render_as_button())
       {
@@ -139,7 +169,7 @@ namespace MX
 
       ImGui::SameLine();
 
-      static ImGui_Icon refresh_button("reload.png", 15.0f, 15.0f);
+      static ImGui_Icon refresh_button("reload.png", m_menu_icon_size, m_menu_icon_size);
 
       if (refresh_button.render_as_button())
       {
@@ -155,7 +185,13 @@ namespace MX
       ImGui::Spacing();
 
       update_directory(current_path.c_str());
-      render_directory();
+      
+      if (compact_view)
+        render_directory_compact();
+      else
+        render_directory_large();
+
+      handle_file_interaction();
     }
 
     ImGui_Window::end();
@@ -212,16 +248,16 @@ namespace MX
     }
   }
 
-  void Editor_Explorer::render_directory()
+  void Editor_Explorer::render_directory_compact()
   {
-    static ImGui_Icon folder_icon("folder2.png", 20.0f, 20.0f);
-    static ImGui_Icon txt_icon("txt.png", 20.0f, 20.0f);
-    static ImGui_Icon png_icon("png.png", 20.0f, 20.0f);
-    static ImGui_Icon jpg_icon("jpg.png", 20.0f, 20.0f);
-    static ImGui_Icon unknown_icon("unknown.png", 20.0f, 20.0f);
-    static ImGui_Icon mx_icon("matrix_movie.png", 20.0f, 20.0f);
-    static ImGui_Icon vert_icon("unknown.png", 20.0f, 20.0f);
-    static ImGui_Icon frag_icon("unknown.png", 20.0f, 20.0f);
+    static ImGui_Icon folder_icon("folder2.png", Icons::compact, Icons::compact);
+    static ImGui_Icon txt_icon("txt.png", Icons::compact, Icons::compact);
+    static ImGui_Icon png_icon("png.png", Icons::compact, Icons::compact);
+    static ImGui_Icon jpg_icon("jpg.png", Icons::compact, Icons::compact);
+    static ImGui_Icon unknown_icon("unknown.png", Icons::compact, Icons::compact);
+    static ImGui_Icon mx_icon("matrix_movie.png", Icons::compact, Icons::compact);
+    static ImGui_Icon vert_icon("unknown.png", Icons::compact, Icons::compact);
+    static ImGui_Icon frag_icon("unknown.png", Icons::compact, Icons::compact);
 
     for (auto& item : m_items_in_directory)
     {
@@ -230,6 +266,7 @@ namespace MX
       {
         // render folder icon
         folder_icon.render();
+        
         ImGui::SameLine(0.0f, 2.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
@@ -324,7 +361,7 @@ namespace MX
             GUI_MODULES.at("Editor")->open();
 
             // display file content
-            auto editor_ptr = std::dynamic_pointer_cast<Editor_Editor>(GUI_MODULES.at(Constants::Modules::editor_name));
+            auto editor_ptr = std::dynamic_pointer_cast<Editor_Editor>(GUI_MODULES.at(Modules::editor_name));
             editor_ptr->set_input(double_clicked_full_path);
           }
           else
@@ -336,7 +373,167 @@ namespace MX
         }
       }
     }
+  }
 
+  void Editor_Explorer::render_directory_large()
+  {
+    static ImGui_Icon folder_icon("folder2.png", Icons::large, Icons::large);
+    static ImGui_Icon txt_icon("txt.png", Icons::large, Icons::large);
+    static ImGui_Icon png_icon("png.png", Icons::large, Icons::large);
+    static ImGui_Icon jpg_icon("jpg.png", Icons::large, Icons::large);
+    static ImGui_Icon unknown_icon("unknown.png", Icons::large, Icons::large);
+    static ImGui_Icon mx_icon("matrix_movie.png", Icons::large, Icons::large);
+    static ImGui_Icon vert_icon("unknown.png", Icons::large, Icons::large);
+    static ImGui_Icon frag_icon("unknown.png", Icons::large, Icons::large);
+
+    // calculate how many folders in large view fit in one line
+    int max_items_per_line = static_cast<int>(ImGui::GetWindowWidth() / (Icons::large + 15.0f));
+    if (max_items_per_line <= 0)
+      max_items_per_line = 1;
+
+    uint32_t counter = 0;
+
+    for (const auto& item : m_items_in_directory)
+    {
+      ImGui::BeginGroup();
+
+      if (ImGui::IsItemHovered())
+        std::cout << std::get<0>(item).c_str() << std::endl;
+
+      // is a folder
+      if (std::get<2>(item) == true)
+      {
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+
+        // render folder icon
+        if (folder_icon.render_as_button())
+        {
+          current_path = std::get<1>(item).c_str();
+          refresh_directory();
+        }
+
+        ImGui::PopStyleVar();
+      }
+      // is a file
+      else
+      {
+        // get file extension and apply icons respectively
+        file_extension = Utility::get_file_ending(std::get<0>(item));
+
+        const ImGui_Icon* current_icon;
+
+        if (file_extension == ".txt")
+          current_icon = &txt_icon; 
+        else if (file_extension == ".png")
+          current_icon = &png_icon;
+        else if (file_extension == ".jpg")
+          current_icon = &jpg_icon;
+        else if (file_extension == ".mx")
+          current_icon = &mx_icon;
+        else if (file_extension == ".vert") // TODO needs icon
+          current_icon = &vert_icon;
+        else if (file_extension == ".frag") // TODO needs icon
+          current_icon = &frag_icon;
+        else
+          current_icon = &unknown_icon;
+
+        bool file_name_in_selection = false;
+        for (const std::string& it : m_selection)
+        {
+          if (it == std::get<0>(item))
+            file_name_in_selection = true;
+        }
+
+        if (file_name_in_selection)
+          ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
+        else
+          ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.26f, 0.26f, 1.0f));
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+
+        if (current_icon->render_as_button())
+        {
+          // add to vector only if shift is pressed
+          if (ImGui::GetIO().KeyShift)
+            m_selection.push_back(std::get<0>(item));
+          else
+          {
+            m_selection.clear();
+            m_selection.push_back(std::get<0>(item));
+          }
+
+          single_clicked_file_name = std::get<0>(item);
+          single_clicked_full_path = std::get<1>(item);
+        }
+
+        ImGui::PopStyleVar();
+        ImGui::PopStyleColor();
+
+        setup_drag_drop_source(std::get<0>(item), current_path);
+
+        // right click file to rename, copy, cut or delete it
+        if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(1))
+        {
+          double_clicked_file_name = std::get<0>(item);
+          double_clicked_full_path = std::get<1>(item);
+
+          show_explorer_context_menu = true;
+          show_file_inspector_context_menu = false;
+        }
+
+        // double click on e.g. images to see what is inside
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+        {
+          double_clicked_file_name = std::get<0>(item);
+          double_clicked_full_path = std::get<1>(item);
+
+          // load scene
+          if (file_extension == ".mx")
+            MX_WORLD.load_scene(std::get<0>(item));
+          // open text files
+          else if (file_extension == ".vert" || file_extension == ".frag" || file_extension == ".txt")
+          {
+            GUI_MODULES.at("Editor")->open();
+
+            // display file content
+            auto editor_ptr = std::dynamic_pointer_cast<Editor_Editor>(GUI_MODULES.at(Modules::editor_name));
+            editor_ptr->set_input(double_clicked_full_path);
+          }
+          else
+          {
+            enlarged_picture_update = true;
+            show_file_inspector_context_menu = true;
+            show_explorer_context_menu = false;
+          }
+        }
+      }
+
+      // shorten file names if too long
+      if (std::get<0>(item).length() > 7)
+      {
+        std::string temp = std::get<0>(item).substr(0, 6) + "...";
+        ImGui::Text(temp.c_str());
+
+        // display full name when name is hovered
+        if (ImGui::IsItemHovered())
+          ImGui::SetTooltip(std::get<0>(item).c_str());
+      }
+      else
+        ImGui::Text(std::get<0>(item).c_str());
+
+      ImGui::EndGroup();
+
+      if ((counter + 1) % max_items_per_line != 0)
+      {
+        ImGui::SameLine();
+      }
+
+      ++counter;
+    }
+  }
+
+  void Editor_Explorer::handle_file_interaction()
+  {
     if (double_clicked_file_name.length() > 0)
     {
       // render double click context menu (file inspector)

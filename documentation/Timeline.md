@@ -11,29 +11,26 @@ This is an overview of planned and currently worked on features as well as issue
 + physics
 
 ##### Important Features
-+ 
-
-##### Features
-+ (GUI) add preview for all common file types to ```Explorer Window``` 
-+ (GUI) display axes for selected node
-+ (GUI) clickable elements in ```Viewport```
++ (GUI) add alternative view to ```Explorer Window```
 + (GUI) add renaming feature to ```Hierachy Window```
 + (GUI) add up and down arrow to move nodes in scene graph in ```Hierachy Window```
-+ (GUI) implement ```Object Viewer``` for light sources
+
+##### Features
++ (GUI) display axes for selected node
++ (GUI) clickable elements in ```Viewport```
 + (Transform) review rotation component
 + (Renderer) ray intersection algorithm for general meshes
 
 ##### Important Issues
-+ 
++ (GUI) image preview screen not working in ```Explorer Window```
++ (Renderer) lights do not get reset when scene is changed
 
 ##### Issues
 + (GUI) only leafs are drop sources in ```Hierachy```
-+ (Renderer) lights do not get reset when scene is changed
 + (Events) imgui events are not bound to matrix event system
 + (Performance) add asynchronous model loading
 + (Performance) do small string optimizations
 + (Events) right click to control viewport should only be possible if done on viewport itself
-+ (GUI) image preview screen not working in ```Explorer Window```
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types

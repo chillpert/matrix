@@ -88,7 +88,7 @@ namespace MX
     // create modules
     auto dockspace = std::make_shared<Editor_Dock>(Constants::Modules::dockspace_name, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking);
     auto viewport = std::make_shared<Editor_Viewport>(Constants::Modules::viewport_name, ImGuiWindowFlags_MenuBar);
-    auto profiler = std::make_shared<Editor_Profiler>(Constants::Modules::profiler_name, ImGuiWindowFlags_MenuBar);
+    //auto profiler = std::make_shared<Editor_Profiler>(Constants::Modules::profiler_name, ImGuiWindowFlags_MenuBar);
     auto console = std::make_shared<Editor_Console>(Constants::Modules::console_name, ImGuiWindowFlags_MenuBar);
     auto object = std::make_shared<Editor_Object>(Constants::Modules::object_name);
     auto hierarchy = std::make_shared<Editor_Hierarchy>(Constants::Modules::hierarchy_name, ImGuiWindowFlags_MenuBar);
@@ -97,14 +97,14 @@ namespace MX
     
     // makes editor not show up by default
     editor->close();
-    profiler->close();
+    //profiler->close();
 
     m_visibilities = {&dockspace->m_visibilities};
 
     // toggle window visibility
     dockspace->set_visibilities({
       viewport->visibilty(),
-      profiler->visibilty(),
+      //profiler->visibilty(),
       console->visibilty(),
       object->visibilty(),
       hierarchy->visibilty(),
@@ -119,7 +119,7 @@ namespace MX
     m_modules = {
       {dockspace->m_name, dockspace},
       {viewport->m_name, viewport},
-      {profiler->m_name, profiler},
+      //{profiler->m_name, profiler},
       {console->m_name, console},
       {object->m_name, object},
       {hierarchy->m_name, hierarchy},

@@ -31,6 +31,16 @@ namespace MX
       const char* const explorer_name = "Explorer";
       const char* const editor_name = "Editor";
     }
+
+    namespace Icons
+    {
+      // for all buttons in menu bars etc.
+      const float menu = 15.0f;
+
+      // for all items in explorer
+      const float compact = 20.0f;
+      const float large = 50.0f;
+    }
   }
 
   extern int max_window_width;
