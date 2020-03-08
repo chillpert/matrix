@@ -93,7 +93,7 @@ namespace MX
     auto object = std::make_shared<Editor_Object>(Constants::Modules::object_name);
     auto hierarchy = std::make_shared<Editor_Hierarchy>(Constants::Modules::hierarchy_name, ImGuiWindowFlags_MenuBar);
     auto explorer = std::make_shared<Editor_Explorer>(Constants::Modules::explorer_name, ImGuiWindowFlags_MenuBar);
-    auto editor = std::make_shared<Editor_Editor>(Constants::Modules::editor_name);
+    auto editor = std::make_shared<Editor_Editor>(Constants::Modules::editor_name, ImGuiWindowFlags_MenuBar);
     
     // makes editor not show up by default
     editor->close();

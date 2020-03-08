@@ -17,6 +17,7 @@ namespace MX
     const std::string default_root_name = "Root";
     const std::string default_shader_name = "blinn_phong";
     const std::string glsl_version = "#version 330 core";
+    const std::string undefined_string = "__UNDEF__";
 
     namespace Modules
     {
@@ -37,8 +38,10 @@ namespace MX
 
   namespace Utility
   {
+    bool write_file(const std::string& message, const std::string &path);
+    bool write_file(const char* message, const std::string &path);
     std::string parse_file(const std::string &path);
-    std::string tokenizeLine(const std::string &delimiter);
+    std::string tokenize_line(const std::string &delimiter);
     std::string f_str(float num);
     std::string f_str(float num, float num_decimals);
 

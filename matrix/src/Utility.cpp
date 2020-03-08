@@ -1,4 +1,5 @@
 #include "Utility.h"
+#include "Logger.h"
 
 #include <sstream>
 #include <fstream>
@@ -13,9 +14,46 @@ namespace MX
 
   namespace Utility
   {
+    bool write_file(const std::string& message, const std::string &path)
+    {
+      std::ofstream stream(path);
+
+      if (!stream)
+      {
+        MX_FATAL("MX: Utility: Write to file: Can not open file: " + path);
+        return false;
+      }
+
+      stream << message;
+      stream.close();
+      return true;
+    }
+
+    bool write_file(const char* message, const std::string &path)
+    {
+      std::ofstream stream(path);
+
+      if (!stream)
+      {
+        MX_FATAL("MX: Utility: Write to file: Can not open file: " + path);
+        return false;
+      }
+
+      stream << message;
+      stream.close();
+      return true;
+    }
+
     std::string parse_file(const std::string& path)
     {
       std::ifstream stream(path);
+
+      if (!stream)
+      {
+        MX_FATAL("MX: Utility: Parse file: Can not open file: " + path);
+        return "";
+      }
+
       std::string line;
       std::stringstream ss[1];
 
@@ -23,10 +61,12 @@ namespace MX
       {
         ss[0] << line << '\n';
       }
+
+      stream.close();
       return ss[0].str();
     }
 
-    std::string tokenizeLine(const std::string &delimiter)
+    std::string tokenize_line(const std::string &delimiter)
     {
       return "";
     }
