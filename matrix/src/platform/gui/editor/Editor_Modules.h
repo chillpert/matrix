@@ -8,5 +8,6 @@
 #include "Editor_Console.h"
 #include "Editor_Object.h"
 #include "Editor_Explorer.h"
+#include "Editor_Editor.h"
 
 #endif // EDITOR_MODULES_H

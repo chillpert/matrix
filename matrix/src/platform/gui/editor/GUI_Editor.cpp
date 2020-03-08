@@ -5,11 +5,7 @@ namespace MX
 {
   ImFont* font_global;
 
-  GUI_Editor::GUI_Editor()
-  {
-    // allocate space for 20 windows
-    m_modules.reserve(20);
-  }
+  GUI_Editor::GUI_Editor() { }
 
   void GUI_Editor::initialize()
   {
@@ -97,6 +93,13 @@ namespace MX
     auto object = std::make_shared<Editor_Object>("Object");
     auto hierarchy = std::make_shared<Editor_Hierarchy>("Hierarchy", ImGuiWindowFlags_MenuBar);
     auto explorer = std::make_shared<Editor_Explorer>("Explorer", ImGuiWindowFlags_MenuBar);
+    auto editor = std::make_shared<Editor_Editor>("Editor");
+    
+    // makes editor not show up by default
+    editor->close();
+    profiler->close();
+
+    m_visibilities = {&dockspace->m_visibilities};
 
     // toggle window visibility
     dockspace->set_visibilities({
@@ -105,14 +108,24 @@ namespace MX
       console->visibilty(),
       object->visibilty(),
       hierarchy->visibilty(),
-      explorer->visibilty()
+      explorer->visibilty(),
+      editor->visibilty()
     });
 
     // set style variables for modules
     viewport->push_style(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
     // add single modules to vector
-    m_modules = {dockspace, viewport, profiler, console, object, hierarchy, explorer};
+    m_modules = {
+      {dockspace->m_name, dockspace},
+      {viewport->m_name, viewport},
+      {profiler->m_name, profiler},
+      {console->m_name, console},
+      {object->m_name, object},
+      {hierarchy->m_name, hierarchy},
+      {explorer->m_name, explorer},
+      {editor->m_name, editor}
+    };
   }
 
   void GUI_Editor::update()
@@ -121,7 +134,7 @@ namespace MX
     
     // update modules
     for (auto it : m_modules)
-      it->update();
+      it.second->update();
   }
 
   void GUI_Editor::render()
@@ -132,7 +145,7 @@ namespace MX
 
     // render modules
     for (auto it : m_modules)
-      it->render();
+      it.second->render();
 
     GUI_ImGui::render();
   }

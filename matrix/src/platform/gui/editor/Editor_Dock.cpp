@@ -141,7 +141,7 @@ namespace MX
             for (auto& it : m_visibilities)
               *it.second = false;
           }
-
+          
           ImGui::EndMenu();
         }
 

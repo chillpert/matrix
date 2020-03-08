@@ -18,12 +18,14 @@ namespace MX
   bool update_items_in_directory = true;
 
   std::string single_clicked_file_name;
+  std::string single_clicked_full_path;
   std::string double_clicked_file_name;
   std::string double_clicked_full_path;
   bool show_explorer_context_menu = false;
   bool show_file_inspector_context_menu = false;
   bool can_be_displayed = false;
   bool enlarged_picture_update = false;
+  std::string file_extension;
 
   static bool sort_by_name = false;
   static bool sort_by_file = false;
@@ -260,43 +262,22 @@ namespace MX
       else
       {
         // get file extension and apply icons respectively
-        std::string file_extension = Utility::get_file_ending(std::get<0>(item));
+        file_extension = Utility::get_file_ending(std::get<0>(item));
 
         if (file_extension == ".txt")
-        {
           txt_icon.render();
-          can_be_displayed = false;
-        }
         else if (file_extension == ".png")
-        {
           png_icon.render();
-          can_be_displayed = true;
-        }
         else if (file_extension == ".jpg")
-        {
           jpg_icon.render();
-          can_be_displayed = true;
-        }
         else if (file_extension == ".mx")
-        {
           mx_icon.render();
-          can_be_displayed = false;
-        }
-        else if (file_extension == ".vert")
-        {
+        else if (file_extension == ".vert") // TODO needs icon
           vert_icon.render();
-          can_be_displayed = false;
-        }
-        else if (file_extension == ".frag")
-        {
+        else if (file_extension == ".frag") // TODO needs icon
           frag_icon.render();
-          can_be_displayed = false;
-        }
         else
-        {
           unknown_icon.render();
-          can_be_displayed = false;
-        }
 
         ImGui::SameLine(0.0f, 2.0f);
 
@@ -311,7 +292,7 @@ namespace MX
           ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
         else
           ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.26f, 0.26f, 0.26f, 1.0f));
-        
+
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
         if (ImGui::Button(std::get<0>(item).c_str()))
@@ -326,6 +307,7 @@ namespace MX
           }
 
           single_clicked_file_name = std::get<0>(item);
+          single_clicked_full_path = std::get<1>(item);
         }
 
         ImGui::PopStyleVar();
@@ -348,6 +330,13 @@ namespace MX
           // load scene
           if (file_extension == ".mx")
             MX_WORLD.load_scene(std::get<0>(item));
+          else if (file_extension == ".vert")
+          {
+            std::string temp = Utility::parse_file(double_clicked_full_path);
+            GUI_Editor* derived_ptr = static_cast<GUI_Editor*>(MX_GUI.get());
+
+            derived_ptr->m_modules.at("Editor")->open();
+          }
           else
           {
             enlarged_picture_update = true;
@@ -367,15 +356,14 @@ namespace MX
         ImGuiWindowFlags_AlwaysAutoResize |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_NoTitleBar;
-        
+
       static ImGui_Popup file_inspector("File Inspector", flags_context_menu);
-      
       if (show_file_inspector_context_menu)
       {
         show_file_inspector_context_menu = false;
         file_inspector.open();
       }
-        
+
       if (file_inspector.begin())
       {
         /*
@@ -398,7 +386,6 @@ namespace MX
 
       // render right click context menu (properties)
       static ImGui_Popup context_menu("ContextMenuFileExplorerPopup");
-
       if (show_explorer_context_menu)
       {
         show_explorer_context_menu = false;

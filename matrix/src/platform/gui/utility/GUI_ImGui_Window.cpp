@@ -58,11 +58,29 @@ namespace MX
   }
 
   void ImGui_Window::end()
-  {  
+  {
     if (!m_p_enabled)
       return;
 
+    if (m_p_open == false)
+    {
+      close();
+      m_p_open = true;
+    }
+    else
+      open();
+    
     ImGui::End();
+  }
+
+  void ImGui_Window::open()
+  {
+    m_p_enabled = true;
+  }
+
+  void ImGui_Window::close()
+  {
+    m_p_enabled = false;
   }
 
   void ImGui_Window::add_flags(ImGuiWindowFlags flags)

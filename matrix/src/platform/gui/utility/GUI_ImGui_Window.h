@@ -25,6 +25,9 @@ namespace MX
     // invokes imgui end
     MX_API virtual void end();
 
+    MX_API virtual void open();
+    MX_API virtual void close();
+
     MX_API virtual void add_flags(ImGuiWindowFlags flags);
     MX_API virtual void set_flags(ImGuiWindowFlags flags);
 

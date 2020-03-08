@@ -16,9 +16,10 @@ namespace MX
     MX_API void render() override;
     MX_API void clean() override;
     MX_API void clear() override;
-
+  
+    std::vector<std::pair<std::string, bool*>>* m_visibilities;
+    std::map<std::string, std::shared_ptr<ImGui_Window>> m_modules;
   private:
-    std::vector<std::shared_ptr<ImGui_Window>> m_modules; 
   };
 }
 
