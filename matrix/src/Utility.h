@@ -25,7 +25,7 @@ namespace MX
       const char* const dockspace_name = "Dockspace";
       const char* const viewport_name = "Viewport";
       const char* const profiler_name = "Profiler";
-      const char* const console_name = "Console";
+      const char* const console_name = "Terminal";
       const char* const object_name = "Object";
       const char* const hierarchy_name = "Hierarchy";
       const char* const explorer_name = "Explorer";
