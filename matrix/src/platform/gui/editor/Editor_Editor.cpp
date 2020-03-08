@@ -24,11 +24,16 @@ namespace MX
     if (ImGui_Window::begin())
     {
       static ImGuiInputTextFlags flags = ImGuiInputTextFlags_AllowTabInput | ImGuiInputTextFlags_CtrlEnterForNewLine;
-      
-      
-      
       ImGui::InputTextMultiline("##source", m_text, IM_ARRAYSIZE(m_text), ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), flags);
     }
     ImGui_Window::end(); 
+  }
+
+  void Editor_Editor::set_input(const std::string& path)
+  {
+    m_active_path = path;
+    
+    std::string temp = Utility::parse_file(path);
+    strcpy(m_text, temp.c_str());
   }
 }

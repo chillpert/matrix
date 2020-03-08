@@ -15,7 +15,10 @@ namespace MX
     MX_API bool update() override;
     MX_API void render() override;
 
+    MX_API void set_input(const std::string& path);
+
     char m_text[1024 * 16];
+    std::string m_active_path = "";
   };
 }
 

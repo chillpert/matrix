@@ -13,10 +13,6 @@
 
 namespace MX
 {
-  // parameters: file_name, full_path, is_directory
-  std::vector<std::tuple<std::string, std::string, bool>> items_in_directory;
-  bool update_items_in_directory = true;
-
   std::string single_clicked_file_name;
   std::string single_clicked_full_path;
   std::string double_clicked_file_name;
@@ -56,15 +52,14 @@ namespace MX
           if (ImGui::MenuItem("Name", "", &sort_by_name))
           {
             sort_by_file = false;
-            update_items_in_directory = true;
-            items_in_directory.clear();
+            refresh_directory();
+
           }
 
           if (ImGui::MenuItem("File", "", &sort_by_file))
           {
             sort_by_name = false;
-            update_items_in_directory = true;
-            items_in_directory.clear();
+            refresh_directory();
           }
 
           ImGui::EndMenu();
@@ -76,8 +71,7 @@ namespace MX
           {
             MX_WORLD.push(std::make_shared<Scene>("New Scene.mx"), true, true);
 
-            items_in_directory.clear();
-            update_items_in_directory = true;
+            refresh_directory();
           }
 
           if (ImGui::MenuItem("Folder"))
@@ -88,8 +82,7 @@ namespace MX
 
             boost::filesystem::create_directory(current_path + Utility::get_unique_folder_name("folder", current_path));
             
-            items_in_directory.clear();
-            update_items_in_directory = true;
+            refresh_directory();
           }
 
           if (ImGui::MenuItem("Material"))
@@ -100,8 +93,7 @@ namespace MX
 
             std::ofstream file(current_path + Utility::get_unique_file_name("material.mat"));
 
-            items_in_directory.clear();
-            update_items_in_directory = true;
+            refresh_directory();
           }
 
           if (ImGui::MenuItem("Shader"))
@@ -112,23 +104,10 @@ namespace MX
 
             std::ofstream file(current_path + Utility::get_unique_file_name("shader.frag"));
 
-            items_in_directory.clear();
-            update_items_in_directory = true;
+            refresh_directory();
           }
 
           ImGui::EndMenu();
-        }
-
-        // make sure user can not press back button to get out of resources folder
-        if (current_path.length() > lowest_path.length())
-        {
-          if (ImGui::BeginMenu("Root"))
-          {
-            auto found = current_path.find_last_of('/');
-            current_path = current_path.substr(0, found);
-            
-            ImGui::EndMenu();
-          }
         }
 
         ImGui::EndMenuBar();
@@ -138,16 +117,24 @@ namespace MX
       
       if (back_button.render_as_button())
       {
-        // can not go further back that root directory
+        // can not go further back than root directory
         if (current_path.length() > lowest_path.length())
         { 
           auto found = current_path.find_last_of('/');
           current_path = current_path.substr(0, found);
         }
 
-        // reset
-        items_in_directory.clear();
-        update_items_in_directory = true;
+        refresh_directory();
+      }
+
+      ImGui::SameLine();
+
+      static ImGui_Icon home_button("house.png", 15.0f, 15.0f);
+
+      if (home_button.render_as_button())
+      {
+        current_path = lowest_path;
+        refresh_directory();
       }
 
       ImGui::SameLine();
@@ -156,8 +143,7 @@ namespace MX
 
       if (refresh_button.render_as_button())
       {
-        items_in_directory.clear();
-        update_items_in_directory = true;
+        refresh_directory();
       }
 
       ImGui::SameLine();
@@ -177,7 +163,7 @@ namespace MX
 
   void Editor_Explorer::update_directory(const char* path)
   {
-    if (update_items_in_directory)
+    if (m_update_items_in_directory)
     {
       boost::filesystem::path p(path);
       
@@ -200,29 +186,29 @@ namespace MX
           
           if (boost::filesystem::is_directory(itr->path()))
           {
-            items_in_directory.push_back({file_name, full_path, true});
+            m_items_in_directory.push_back({file_name, full_path, true});
           }
           else
           {
-            items_in_directory.push_back({file_name, full_path, false});
+            m_items_in_directory.push_back({file_name, full_path, false});
           }
         }
 
         if (sort_by_name)
         {
-          std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
+          std::sort(m_items_in_directory.begin(), m_items_in_directory.end(), [](auto& a, auto& b){
             return std::get<0>(a) < std::get<0>(b);
           });
         }
         else if (sort_by_file)
         {
-          std::sort(items_in_directory.begin(), items_in_directory.end(), [](auto& a, auto& b){
+          std::sort(m_items_in_directory.begin(), m_items_in_directory.end(), [](auto& a, auto& b){
             return Utility::get_file_ending(std::get<0>(a)) < Utility::get_file_ending(std::get<0>(b));
           });
         }
       }
 
-      update_items_in_directory = false;
+      m_update_items_in_directory = false;
     }
   }
 
@@ -237,7 +223,7 @@ namespace MX
     static ImGui_Icon vert_icon("unknown.png", 20.0f, 20.0f);
     static ImGui_Icon frag_icon("unknown.png", 20.0f, 20.0f);
 
-    for (auto& item : items_in_directory)
+    for (auto& item : m_items_in_directory)
     {
       // is a folder
       if (std::get<2>(item) == true)
@@ -251,9 +237,7 @@ namespace MX
         {
           current_path = std::get<1>(item).c_str();
 
-          // reset items_in_directory
-          items_in_directory.clear();
-          update_items_in_directory = true;
+          refresh_directory();
         }
 
         ImGui::PopStyleVar();
@@ -320,7 +304,7 @@ namespace MX
         {
           double_clicked_file_name = std::get<0>(item);
           double_clicked_full_path = std::get<1>(item);
-          
+
           show_explorer_context_menu = true;
           show_file_inspector_context_menu = false;
         }
@@ -334,14 +318,14 @@ namespace MX
           // load scene
           if (file_extension == ".mx")
             MX_WORLD.load_scene(std::get<0>(item));
-          else if (file_extension == ".vert" || file_extension == ".frag")
+          // open text files
+          else if (file_extension == ".vert" || file_extension == ".frag" || file_extension == ".txt")
           {
             GUI_MODULES.at("Editor")->open();
 
             // display file content
-            std::string temp = Utility::parse_file(double_clicked_full_path);
-            std::shared_ptr<Editor_Editor> derived_ptr = std::dynamic_pointer_cast<Editor_Editor>(GUI_MODULES.at(Constants::Modules::editor_name));
-            strcpy(derived_ptr->m_text, temp.c_str());
+            auto editor_ptr = std::dynamic_pointer_cast<Editor_Editor>(GUI_MODULES.at(Constants::Modules::editor_name));
+            editor_ptr->set_input(double_clicked_full_path);
           }
           else
           {
@@ -446,10 +430,7 @@ namespace MX
                   else
                   {
                     boost::filesystem::rename(old_full_path, double_clicked_full_path);
-
-                    // reset
-                    items_in_directory.clear();
-                    update_items_in_directory = true;
+                    refresh_directory();
                   }
                 }
               }
@@ -488,8 +469,7 @@ namespace MX
 
           if (ImGui::Button("Yes"))
           {
-            items_in_directory.clear();
-            update_items_in_directory = true;
+            refresh_directory();
 
             m_popup_delete.close();
             close_context_menu = true;
@@ -504,7 +484,7 @@ namespace MX
                 MX_AASSERT(MX_WORLD.remove_scene_file(double_clicked_full_path), "MX: GUI: Failed to delete scene");
               }
             }
-            else 
+            else
             {
               MX_INFO_LOG("MX: GUI: Explorer: Deleting file: " + double_clicked_full_path);
               boost::filesystem::remove(double_clicked_full_path);
@@ -519,6 +499,12 @@ namespace MX
       else
         show_rename_field = false;
     }
+  }
+
+  void Editor_Explorer::refresh_directory()
+  {
+    m_items_in_directory.clear();
+    m_update_items_in_directory = true;
   }
 
   void Editor_Explorer::setup_drag_drop_source(const std::string& file_name, const std::string& file_path)
