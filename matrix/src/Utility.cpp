@@ -133,7 +133,7 @@ namespace MX
 
         for (boost::filesystem::directory_iterator itr(p); itr != end_itr; ++itr)
         {
-          find_all_files_of_same_type(itr->path().c_str(), results, type);
+          find_all_files_of_same_type(itr->path().string().c_str(), results, type);
         }
       }
       // is a file
