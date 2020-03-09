@@ -46,6 +46,7 @@ namespace MX
     virtual std::string toString() const = 0;
 
     inline bool isInCategory(EventCategory category) { return getCategoryFlags() & category; }
+    inline bool isHandled() { return m_handled; }
 
   protected:
     bool m_handled = false;

@@ -7,6 +7,18 @@
 
 namespace MX
 {
+  #ifdef MX_DEBUG
+    #define MX_ASSERT(x,y)  MX::Debug::assert_condition(x, y)
+    #define ASSERT(x,y)     Debug::assert_condition(x,y)
+  #elif
+    #define MX_ASSERT(x,y)
+    #define ASSERT(x,y)
+  #endif
+
+  // always assert no matter release or debug
+  #define MX_AASSERT(x,y)  MX::Debug::assert_condition(x, y)
+  #define AASERT(x,y)      Debug::assert_condition(x,y)
+
   namespace Constants
   {
     const int initial_window_width = 1200;

@@ -99,7 +99,8 @@ namespace MX
     while (SDL_PollEvent(&SDLevent) != 0)
     {
     #ifdef MX_IMGUI_ACTIVE
-      ImGui_ImplSDL2_ProcessEvent(&SDLevent);
+      if (MX_GUI != nullptr)
+        ImGui_ImplSDL2_ProcessEvent(&SDLevent);
     #endif
       if (SDLevent.type == SDL_KEYDOWN)
       {

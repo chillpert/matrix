@@ -325,7 +325,7 @@ namespace MX
 
   void Controller::handleCloseWindow()
   {
-    MX_APP.m_Running = 0;
+    MX_IS_RUNNING(false);
   }
 
   void Controller::handleResizeWindow(int width, int height)

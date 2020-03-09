@@ -9,18 +9,16 @@ namespace MX
   class Layer
   {
   public:
-    MX_API Layer(const std::string& name) 
-      : m_Name(name) {}
-    MX_API virtual ~Layer() {}
+    MX_API Layer(const std::string& name = "Layer");
+    MX_API virtual ~Layer();
 
-    MX_API virtual void attach() {}
-    MX_API virtual void detach() {}
-    MX_API virtual void update() {}
-    MX_API virtual void handleEvent(Event& event) {}
+    MX_API virtual void onAttach() {}
+    MX_API virtual void onDetach() {}
+    MX_API virtual void onUpdate() {}
+    MX_API virtual void onRender() {}
+    MX_API virtual void onEvent(Event& event) {}
 
-    MX_API inline const std::string getName() { return m_Name; }
-  private:
-    std::string m_Name;
+    std::string m_name;
   };
 }
 

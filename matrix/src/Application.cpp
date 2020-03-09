@@ -1,15 +1,16 @@
 #include "Application.h"
+#include "WindowEvent.h"
+
+#include "Window_Layer.h"
+#include "API_Layer.h"
+#include "Editor_Layer.h"
+#include "World_Layer.h"
 
 namespace MX
 {
   Application::Application()
   {
     MX_INFO_LOG("MX: Application: Constructor");
-
-    m_API = std::make_unique<MX_API_TYPE>();
-    m_active_gui = std::make_unique<GUI_Editor>();
-
-    m_Window =  std::make_unique<Window_SDL2>();
   }
 
   Application::~Application()
@@ -23,8 +24,44 @@ namespace MX
     return instance;
   }
 
-  void Application::initialize(void (*initialize_func)())
+  void Application::run()
   {
+    //PushLayer(new MX::Window_Layer("Window"));
+    m_API = std::make_unique<MX_API_TYPE>();
+    m_active_gui = std::make_unique<GUI_Editor>();
+    m_Window = std::make_unique<Window_SDL2>();
+
+    m_Running = m_Window->initialize();
+    m_Running = m_API->initialize();
+    m_active_gui->initialize();
+
+    PushLayer(new World_Layer("World"));
+
+    while (m_Running)
+    {
+      for (Layer* layer : m_LayerStack)
+        layer->onUpdate();
+
+      update();
+
+      for (Layer* layer : m_LayerStack)
+        layer->onRender();
+      
+      render();
+    }
+
+    for (Layer* layer : m_LayerStack)
+      layer->onDetach();
+
+    clean();
+  }
+
+  void Application::initialize()
+  {
+    m_API = std::make_unique<MX_API_TYPE>();
+    m_active_gui = std::make_unique<GUI_Editor>();
+    m_Window =  std::make_unique<Window_SDL2>(); 
+
     // set up window
     m_Running = m_Window->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: Window");
@@ -33,8 +70,8 @@ namespace MX
     m_Running = m_API->initialize();
     MX_SUCCESS_LOG("MX: Application: Initialization: API");
 
-    initialize_func();
-    MX_SUCCESS_LOG("MX: Application: Initialization: Func");
+    m_World.initialize();
+    MX_SUCCESS_LOG("MX: Application: Initialization: World");
 
     // set up GUI
     m_active_gui->initialize();
@@ -46,7 +83,7 @@ namespace MX
       MX_FATAL("MX: Application: Initialization");
   }
 
-  void Application::update(void (*update_func)())
+  void Application::update()
   {
     m_Window->update();
 
@@ -54,12 +91,12 @@ namespace MX
 
     m_active_gui->update();
 
-    update_func();
+    //m_World.update();
   }
 
-  void Application::render(void (*render_func)())
+  void Application::render()
   {
-    render_func();
+    //m_World.render();
 
     m_API->render();
 
@@ -73,7 +110,43 @@ namespace MX
     m_active_gui->clean();
 
     m_Window->close();
-
+    
     MX_SUCCESS_LOG("MX: Application: Closed");
+  }
+
+  void Application::setRunning(bool flag)
+  {
+    m_Running = flag;
+  }
+
+  void Application::OnEvent(Event& event)
+  {
+    EventDispatcher dispatcher(event);
+    dispatcher.dispatch<WindowClosed>(std::bind(&Application::OnWindowClose, this, std::placeholders::_1));
+
+    for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+    {
+      (*--it)->onEvent(event);
+      if (event.isHandled())
+        break;
+    }
+  }
+
+  void Application::PushLayer(Layer* layer)
+  {
+    m_LayerStack.pushLayer(layer);
+		layer->onAttach();
+  }
+
+  void Application::PushOverlay(Layer* overlay)
+  {
+    m_LayerStack.pushOverlay(overlay);
+		overlay->onAttach();
+  }
+
+  bool Application::OnWindowClose(WindowClosed& event)
+  {
+    m_Running = false;
+    return true;
   }
 }

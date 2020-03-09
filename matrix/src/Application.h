@@ -1,32 +1,8 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
-#define MX_APP          Application::get()
-
-#define MX_WINDOW       MX_APP.m_Window
-#define MX_GAPI         MX_APP.m_API
-#define MX_GUI          MX_APP.m_active_gui
-
-#define MX_WORLD        MX_APP.m_World
-#define MX_SCENEGRAPH   MX_APP.m_World.m_ActiveScene->m_Sg
-#define MX_CAMERA       MX_APP.m_World.m_ActiveScene->m_Cam
-#define MX_SCENE        MX_APP.m_World.m_ActiveScene
-#define MX_SCENES       MX_APP.m_World.m_ExistingScenes
-#define MX_ROOT         MX_APP.m_World.m_ActiveScene->m_Sg.m_Root
-
-#ifdef MX_DEBUG
-  #define MX_ASSERT(x,y)  MX::Debug::assert_condition(x, y)
-  #define ASSERT(x,y)     Debug::assert_condition(x,y)
-#elif
-  #define MX_ASSERT(x,y)
-  #define ASSERT(x,y)
-#endif
-
-// always assert no matter release or debug
-#define MX_AASSERT(x,y)  MX::Debug::assert_condition(x, y)
-#define AASERT(x,y)      Debug::assert_condition(x,y)
-
 #include "stdafx.h"
+#include "WindowEvent.h"
 #include "Window.h"
 #include "Window_SDL2.h"
 #include "API.h"
@@ -37,6 +13,20 @@
 #include "LayerStack.h"
 #include "World.h"
 
+#define MX_APP           Application::get()
+#define MX_IS_RUNNING(x) MX_APP.setRunning(x)
+
+#define MX_WINDOW        MX_APP.m_Window
+#define MX_GAPI          MX_APP.m_API
+#define MX_GUI           MX_APP.m_active_gui
+
+#define MX_WORLD         MX_APP.getWorld()
+#define MX_SCENE         MX_WORLD.m_ActiveScene
+#define MX_SCENES        MX_WORLD.m_ExistingScenes
+#define MX_SCENEGRAPH    MX_SCENE->m_Sg
+#define MX_CAMERA        MX_SCENE->m_Cam
+#define MX_ROOT          MX_SCENE->m_Sg.m_Root
+
 namespace MX
 {
   class Application
@@ -44,27 +34,40 @@ namespace MX
   public:
     MX_API static Application &get();
 
-    MX_API void initialize(void (*initialize_func)());
-    MX_API void render(void (*render_func)());
-    MX_API void update(void (*update_func)());
-    MX_API void clean();
+    MX_API void run();
 
-    std::unique_ptr<API> m_API;
-    std::unique_ptr<Window> m_Window;
-    std::unique_ptr<GUI> m_active_gui;
+    MX_API void OnEvent(Event& event);
+    MX_API void PushLayer(Layer* layer);
+    MX_API void PushOverlay(Layer* overlay);
 
-    LayerStack m_LayerStack;
-    World m_World;
-
-    bool m_Running;
+    MX_API World& getWorld() { return m_World; }
+    MX_API void setRunning(bool flag);
 
   private:
     MX_API Application();
     MX_API ~Application();
 
+    MX_API void initialize();
+    MX_API void render();
+    MX_API void update();
+    MX_API void clean();
+
     MX_API Application(const Application&) = delete;
     MX_API Application &operator=(const Application&) = delete;
-  };  
+
+    MX_API bool OnWindowClose(WindowClosed& event);
+
+  private:
+    World m_World;
+    LayerStack m_LayerStack;
+    bool m_Running = true;
+    
+  public:
+    std::unique_ptr<API> m_API;
+    std::unique_ptr<Window> m_Window;
+    std::unique_ptr<GUI> m_active_gui;
+
+  };
 }
 
 #endif // APPLICATION_H
