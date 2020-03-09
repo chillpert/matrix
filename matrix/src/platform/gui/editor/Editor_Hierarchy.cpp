@@ -106,9 +106,35 @@ namespace MX
       hierarchy_context_menu.open();
     }
 
+    static bool show_rename_field = false;
+
     if (hierarchy_context_menu.begin())
     {
-      if (ImGui::Button("Delete##Delete Node in Hierarchy"))
+      ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+
+      if (ImGui::Button("Rename", ImVec2(75.0f, 0.0f)))
+      {
+        show_rename_field = true;          
+      }
+
+      if (show_rename_field)
+      {
+        static ImGui_InputText rename_field("##Rename node");
+        ImGui::SetNextItemWidth(75.0f);
+        bool enter_pressed = rename_field.render(m_rc_node->m_Name);
+
+        if (enter_pressed && m_rc_node->m_Name.length() > 0)
+        {
+          show_rename_field = false;
+
+          if (MX_SCENEGRAPH.search<Node>(rename_field.m_buffer) == nullptr) 
+            m_rc_node->m_Name = rename_field.m_buffer;
+          else
+            MX_WARN("MX: GUI: Editor: Hierachy: This name is already being used");
+        }
+      }
+
+      if (ImGui::Button("Delete##Delete Node in Hierarchy", ImVec2(75.0f, 0.0f)))
       {
         if (m_rc_node != nullptr)
         {
@@ -121,6 +147,8 @@ namespace MX
 
         hierarchy_context_menu.close();
       }
+
+      ImGui::PopStyleVar();
 
       hierarchy_context_menu.end();
     }

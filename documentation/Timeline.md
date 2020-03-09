@@ -32,7 +32,6 @@ This is an overview of planned and currently worked on features as well as issue
 + (Performance) add asynchronous model loading
 + (Performance) do small string optimizations
 + (Events) right click to control viewport should only be possible if done on viewport itself
-+ (GUI) make ```Editor``` use the entire surface (does not seem to be possible in IMGUI)
 + (GUI) preview texture icons in large view in ```Explorer Window``` should be of smaller size
 
 ##### Documentation Updates
