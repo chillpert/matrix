@@ -11,7 +11,6 @@ This is an overview of planned and currently worked on features as well as issue
 + physics
 
 ##### Important Features
-+ (GUI) add scroll bar to ```Explorer Window```
 + (GUI) add renaming feature to ```Hierachy Window```
 + (GUI) add up and down arrow to move nodes in scene graph in ```Hierachy Window```
 
@@ -20,10 +19,11 @@ This is an overview of planned and currently worked on features as well as issue
 + (GUI) clickable elements in ```Viewport```
 + (Transform) review rotation component
 + (Renderer) ray intersection algorithm for general meshes
++ (GUI) asynchronus image loading in ```Explorer Window```
 
 ##### Important Issues
-+ (GUI) buttons in ```Explorer Window``` should not move when scrolled
 + (GUI) image preview screen not working in ```Explorer Window```
++ (GUI) buttons in ```Explorer Window``` should not move when scrolled
 + (Renderer) lights do not get reset when scene is changed
 
 ##### Issues
@@ -33,6 +33,7 @@ This is an overview of planned and currently worked on features as well as issue
 + (Performance) do small string optimizations
 + (Events) right click to control viewport should only be possible if done on viewport itself
 + (GUI) make ```Editor``` use the entire surface (does not seem to be possible in IMGUI)
++ (GUI) preview texture icons in large view in ```Explorer Window``` should be of smaller size
 
 ##### Documentation Updates
 + add explanation on how to search nodes and cast their types

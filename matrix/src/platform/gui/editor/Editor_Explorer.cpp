@@ -386,6 +386,8 @@ namespace MX
     static ImGui_Icon vert_icon("unknown.png", Icons::large, Icons::large);
     static ImGui_Icon frag_icon("unknown.png", Icons::large, Icons::large);
 
+    static std::map<std::string, std::shared_ptr<ImGui_Icon>> images;
+
     // calculate how many folders in large view fit in one line
     int max_items_per_line = static_cast<int>(ImGui::GetWindowWidth() / (Icons::large + 15.0f));
     if (max_items_per_line <= 0)
@@ -421,12 +423,19 @@ namespace MX
 
         const ImGui_Icon* current_icon;
 
-        if (file_extension == ".txt")
-          current_icon = &txt_icon; 
-        else if (file_extension == ".png")
-          current_icon = &png_icon;
-        else if (file_extension == ".jpg")
-          current_icon = &jpg_icon;
+        if (file_extension == ".png" || file_extension == ".jpg")
+        {
+          // does not already exists so create new one
+          if (images.find(std::get<0>(item)) == images.end())
+          {
+            auto temp = std::make_shared<ImGui_Icon>(std::get<1>(item), Icons::large, Icons::large, true);
+            images.insert({temp->m_name, temp});
+          }
+
+          current_icon = images.at(std::get<0>(item)).get();
+        }
+        else if (file_extension == ".txt")
+          current_icon = &txt_icon;
         else if (file_extension == ".mx")
           current_icon = &mx_icon;
         else if (file_extension == ".vert") // TODO needs icon
@@ -450,6 +459,7 @@ namespace MX
 
         ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
 
+        MX_ASSERT(current_icon != nullptr, "YARE YARE DAZE");
         current_icon->render_as_button();
 
         if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
@@ -557,16 +567,16 @@ namespace MX
             - this should not be an icon but instead an actual texture (use ImGui::Image) (maybe write utility class for this)
         */
 
-        // remove file name from full path temporarily since texture class does weird things with the naming
-        //static ImGui_Icon enlarged_picture(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
+        static ImGui_Icon enlarged_picture(double_clicked_full_path, 250.0f, 250.0f, true);
 
+        // remove file name from full path temporarily since texture class does weird things with the naming
         if (enlarged_picture_update)
         {
-          //enlarged_picture = ImGui_Icon(double_clicked_file_name, double_clicked_full_path.substr(0, double_clicked_full_path.length() - double_clicked_file_name.length()));
+          enlarged_picture = ImGui_Icon(double_clicked_full_path, 250.0f, 250.0f, true);
           enlarged_picture_update = false;
         }
 
-        //enlarged_picture.render();
+        enlarged_picture.render();
         file_inspector.end();
       }
 
