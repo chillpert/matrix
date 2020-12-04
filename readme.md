@@ -1,6 +1,6 @@
 # Matrix
 
-A framework for creating real-time rendering applications.
+A tiny WIP game engine.
 Runs on both Linux and Windows using OpenGL. 
 
 ##### Requires Cmake Version 3.14.0 or higher
