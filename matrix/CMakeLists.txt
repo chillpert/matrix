@@ -49,7 +49,7 @@ add_compile_definitions(MX_MATRIX_SHADERS="${PROJECT_SOURCE_DIR}/resources/matri
 ####################################################################################################
 
 # sdl
-set(SDL_DIRECTORY SDL-mirror)
+set(SDL_DIRECTORY SDL)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY})
 include_directories(${PROJECT_SOURCE_DIR}/external/${SDL_DIRECTORY}/include)
