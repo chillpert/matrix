@@ -13,3 +13,6 @@ $ cd build
 $ cmake ..
 $ make all
 ```
+
+![Sample_Img1](resources/mx.png)
+
