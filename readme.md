@@ -14,5 +14,7 @@ $ cmake ..
 $ make all
 ```
 
+##### MX Editor
+
 ![Sample_Img1](resources/mx.png)
 
